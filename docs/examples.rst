@@ -5,7 +5,7 @@ Examples
 RadialState
 -----------
 
-Some examples demonstrating the usage of the RadialState class, which uses the Numerov method for solving the radial Schrödinger equation.
+Some examples demonstrating the usage of the RadialKet class, which uses the Numerov method for solving the radial Schrödinger equation.
 
 .. nbgallery::
    examples/radial/hydrogen_wavefunction

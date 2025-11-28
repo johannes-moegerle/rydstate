@@ -10,7 +10,7 @@ import numpy as np
 
 from rydstate.angular import AngularKetJJ, AngularKetLS
 from rydstate.angular.utils import try_trivial_spin_addition
-from rydstate.radial import RadialState
+from rydstate.radial import RadialKet
 from rydstate.species.species_object import SpeciesObject
 from rydstate.species.utils import calc_energy_from_nu
 from rydstate.units import BaseQuantities, MatrixElementOperatorRanks, ureg
@@ -33,11 +33,13 @@ class RydbergStateBase(ABC):
 
     @property
     @abstractmethod
-    def radial(self) -> RadialState: ...
+    def radial(self) -> RadialKet:
+        """The radial part of the Rydberg electron."""
 
     @property
     @abstractmethod
-    def angular(self) -> AngularKetBase: ...
+    def angular(self) -> AngularKetBase:
+        """The angular/spin part of the Rydberg electron."""
 
     @abstractmethod
     def get_nu(self) -> float:
@@ -227,15 +229,13 @@ class RydbergStateAlkali(RydbergStateBase):
 
     @cached_property
     def angular(self) -> AngularKetLS:
-        """The angular/spin state of the Rydberg electron."""
         return AngularKetLS(l_r=self.l, j_tot=self.j, m=self.m, f_tot=self.f, species=self.species)
 
     @cached_property
-    def radial(self) -> RadialState:
-        """The radial state of the Rydberg electron."""
-        radial_state = RadialState(self.species, nu=self.get_nu(), l_r=self.l)
-        radial_state.set_n_for_sanity_check(self.n)
-        return radial_state
+    def radial(self) -> RadialKet:
+        radial_ket = RadialKet(self.species, nu=self.get_nu(), l_r=self.l)
+        radial_ket.set_n_for_sanity_check(self.n)
+        return radial_ket
 
     def __repr__(self) -> str:
         species, n, l, j, f, m = self.species, self.n, self.l, self.j, self.f, self.m
@@ -292,17 +292,15 @@ class RydbergStateAlkalineLS(RydbergStateBase):
 
     @cached_property
     def angular(self) -> AngularKetLS:
-        """The angular/spin state of the Rydberg electron."""
         return AngularKetLS(
             l_r=self.l, s_tot=self.s_tot, j_tot=self.j_tot, f_tot=self.f_tot, m=self.m, species=self.species
         )
 
     @cached_property
-    def radial(self) -> RadialState:
-        """The radial state of the Rydberg electron."""
-        radial_state = RadialState(self.species, nu=self.get_nu(), l_r=self.l)
-        radial_state.set_n_for_sanity_check(self.n)
-        return radial_state
+    def radial(self) -> RadialKet:
+        radial_ket = RadialKet(self.species, nu=self.get_nu(), l_r=self.l)
+        radial_ket.set_n_for_sanity_check(self.n)
+        return radial_ket
 
     def __repr__(self) -> str:
         species, n, l, s_tot, j_tot, f_tot, m = self.species, self.n, self.l, self.s_tot, self.j_tot, self.f_tot, self.m
@@ -360,17 +358,15 @@ class RydbergStateAlkalineJJ(RydbergStateBase):
 
     @cached_property
     def angular(self) -> AngularKetJJ:
-        """The angular/spin state of the Rydberg electron."""
         return AngularKetJJ(
             l_r=self.l, j_r=self.j_r, j_tot=self.j_tot, f_tot=self.f_tot, m=self.m, species=self.species
         )
 
     @cached_property
-    def radial(self) -> RadialState:
-        """The radial state of the Rydberg electron."""
-        radial_state = RadialState(self.species, nu=self.get_nu(), l_r=self.l)
-        radial_state.set_n_for_sanity_check(self.n)
-        return radial_state
+    def radial(self) -> RadialKet:
+        radial_ket = RadialKet(self.species, nu=self.get_nu(), l_r=self.l)
+        radial_ket.set_n_for_sanity_check(self.n)
+        return radial_ket
 
     def __repr__(self) -> str:
         species, n, l, j_r, j_tot, f_tot, m = self.species, self.n, self.l, self.j_r, self.j_tot, self.f_tot, self.m

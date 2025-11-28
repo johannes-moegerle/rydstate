@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from rydstate.radial import RadialState
+from rydstate.radial import RadialKet
 from rydstate.rydberg_state import RydbergStateAlkali
 from rydstate.species import SpeciesObject
 
@@ -61,7 +61,7 @@ def test_circular_expectation_value(species_name: str, n: int, l: int, j_tot: fl
     species = SpeciesObject.from_name(species_name)
     nu = species.calc_nu(n, l, j_tot)
 
-    state = RadialState(species, nu=nu, l_r=l)
+    state = RadialKet(species, nu=nu, l_r=l)
     state.set_n_for_sanity_check(n)
     state.create_wavefunction()
 

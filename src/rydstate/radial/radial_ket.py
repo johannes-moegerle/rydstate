@@ -21,7 +21,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-class RadialState:
+class RadialKet:
     r"""Class representing a radial Rydberg state."""
 
     def __init__(
@@ -30,7 +30,7 @@ class RadialState:
         nu: float,
         l_r: int,
     ) -> None:
-        r"""Initialize the radial state.
+        r"""Initialize the radial ket.
 
         Args:
             species: Atomic species.
@@ -197,11 +197,11 @@ class RadialState:
         self._wavefunction.apply_sign_convention(sign_convention)
         self._grid = self._wavefunction.grid
 
-    def calc_overlap(self, other: RadialState, *, integration_method: INTEGRATION_METHODS = "sum") -> float:
-        r"""Calculate the overlap <self|other> of two radial states.
+    def calc_overlap(self, other: RadialKet, *, integration_method: INTEGRATION_METHODS = "sum") -> float:
+        r"""Calculate the overlap <self|other> of two radial kets.
 
         Args:
-            other: Other radial state
+            other: Other radial ket
             integration_method: Integration method to use
 
         Returns:
@@ -212,17 +212,17 @@ class RadialState:
 
     @overload
     def calc_matrix_element(
-        self, other: RadialState, k_radial: int, *, integration_method: INTEGRATION_METHODS = "sum"
+        self, other: RadialKet, k_radial: int, *, integration_method: INTEGRATION_METHODS = "sum"
     ) -> PintFloat: ...
 
     @overload
     def calc_matrix_element(
-        self, other: RadialState, k_radial: int, unit: str, *, integration_method: INTEGRATION_METHODS = "sum"
+        self, other: RadialKet, k_radial: int, unit: str, *, integration_method: INTEGRATION_METHODS = "sum"
     ) -> float: ...
 
     def calc_matrix_element(
         self,
-        other: RadialState,
+        other: RadialKet,
         k_radial: int,
         unit: str | None = None,
         *,
@@ -241,7 +241,7 @@ class RadialState:
         and w(z) = z^{-1/2} \tilde{u}(z^2) = (r/_a_0)^{1/4} \sqrt{a_0} r R(r).
 
         Args:
-            other: Other radial state
+            other: Other radial ket
             k_radial: Power of r in the matrix element
                 (default=0, this corresponds to the overlap integral \int dr r^2 R_1(r) R_2(r))
             unit: Unit of the returned matrix element, default None returns a Pint quantity.

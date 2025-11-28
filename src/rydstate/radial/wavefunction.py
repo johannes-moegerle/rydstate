@@ -14,7 +14,7 @@ from rydstate.species.utils import calc_energy_from_nu
 
 if TYPE_CHECKING:
     from rydstate.radial import Grid, Model
-    from rydstate.radial.radial_state import RadialState
+    from rydstate.radial.radial_ket import RadialKet
     from rydstate.units import NDArray
 
 logger = logging.getLogger(__name__)
@@ -27,17 +27,17 @@ class Wavefunction(ABC):
 
     def __init__(
         self,
-        radial_state: RadialState,
+        radial_ket: RadialKet,
         grid: Grid,
     ) -> None:
         """Create a Wavefunction object.
 
         Args:
-            radial_state: The RadialState object.
+            radial_ket: The RadialKet object.
             grid: The grid object.
 
         """
-        self.radial_state = radial_state
+        self.radial_ket = radial_ket
         self.grid = grid
 
         self._w_list: NDArray | None = None
@@ -92,8 +92,8 @@ class Wavefunction(ABC):
                 break
 
         if sign_convention == "n_l_1":
-            assert self.radial_state.n is not None, "n must be given to apply the n_l_1 sign convention."
-            if current_outer_sign != (-1) ** (self.radial_state.n - self.radial_state.l_r - 1):
+            assert self.radial_ket.n is not None, "n must be given to apply the n_l_1 sign convention."
+            if current_outer_sign != (-1) ** (self.radial_ket.n - self.radial_ket.l_r - 1):
                 self._w_list = -self._w_list
         elif sign_convention == "positive_at_outer_bound":
             if current_outer_sign != 1:
@@ -115,19 +115,19 @@ class WavefunctionNumerov(Wavefunction):
 
     def __init__(
         self,
-        radial_state: RadialState,
+        radial_ket: RadialKet,
         grid: Grid,
         model: Model,
     ) -> None:
         """Create a Wavefunction object.
 
         Args:
-            radial_state: The RadialState object.
+            radial_ket: The RadialKet object.
             grid: The grid object.
             model: The model object.
 
         """
-        super().__init__(radial_state, grid)
+        super().__init__(radial_ket, grid)
         self.model = model
 
     def integrate(self, run_backward: bool = True, w0: float = 1e-10, *, _use_njit: bool = True) -> None:
@@ -172,8 +172,8 @@ class WavefunctionNumerov(Wavefunction):
         # and not like in the rest of this class, i.e. y = w(z) and x = z
         grid = self.grid
 
-        species = self.radial_state.species
-        energy_au = calc_energy_from_nu(species.reduced_mass_au, self.radial_state.nu)
+        species = self.radial_ket.species
+        energy_au = calc_energy_from_nu(species.reduced_mass_au, self.radial_ket.nu)
         v_eff = self.model.calc_total_effective_potential(grid.x_list)
         glist = 8 * species.reduced_mass_au * grid.z_list * grid.z_list * (energy_au - v_eff)
 
@@ -201,7 +201,7 @@ class WavefunctionNumerov(Wavefunction):
             y0, y1 = 0, w0
             x_start, x_stop, dx = grid.z_min, grid.z_max, grid.dz
             g_list_directed = glist
-            n = self.radial_state.n if self.radial_state.n is not None else self.radial_state.nu
+            n = self.radial_ket.n if self.radial_ket.n is not None else self.radial_ket.nu
             x_min = math.sqrt(n * (n + 15))
 
         if _use_njit:
@@ -238,7 +238,7 @@ class WavefunctionNumerov(Wavefunction):
         warning_msgs: list[str] = []
 
         grid = self.grid
-        state = self.radial_state
+        state = self.radial_ket
 
         # Check and Correct if divergence of the wavefunction
         w_list_abs = np.abs(self.w_list)
@@ -283,7 +283,7 @@ class WavefunctionNumerov(Wavefunction):
         elif n <= 16:
             tol = 2e-3
 
-        species = self.radial_state.species
+        species = self.radial_ket.species
         if species.number_valence_electrons == 2:
             # For divalent atoms the inner boundary is less well behaved ...
             tol = 2e-2
@@ -338,8 +338,8 @@ class WavefunctionNumerov(Wavefunction):
 class WavefunctionWhittaker(Wavefunction):
     def integrate(self) -> None:
         logger.warning("Using Whittaker to get the wavefunction is not recommended! Use this only for comparison.")
-        l = self.radial_state.l_r
-        nu = self.radial_state.nu
+        l = self.radial_ket.l_r
+        nu = self.radial_ket.nu
 
         whitw_vectorized = np.vectorize(whitw, otypes=[float])
         whitw_list = whitw_vectorized(nu, l + 0.5, 2 * self.grid.x_list / nu)
