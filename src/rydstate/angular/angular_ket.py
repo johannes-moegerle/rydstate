@@ -186,6 +186,34 @@ class AngularKetBase(ABC):
             raise ValueError(f"Quantum number {qn} not found in {self!r}.")
         return getattr(self, qn)  # type: ignore [no-any-return]
 
+    def calc_exp_qn(self, qn: AngularMomentumQuantumNumbers) -> float:
+        """Calculate the expectation value of a quantum number qn.
+
+        If the quantum number is a good quantum number simply return it,
+        otherwise calculate it, see also AngularState.calc_exp_qn for more details.
+
+        Args:
+            qn: The quantum number to calculate the expectation value for.
+
+        """
+        if qn in self.quantum_number_names:
+            return self.get_qn(qn)
+        return self.to_state().calc_exp_qn(qn)
+
+    def calc_std_qn(self, qn: AngularMomentumQuantumNumbers) -> float:
+        """Calculate the standard deviation of a quantum number qn.
+
+        If the quantum number is a good quantum number return 0,
+        otherwise calculate the std, see also AngularState.calc_std_qn for more details.
+
+        Args:
+            qn: The quantum number to calculate the standard deviation for.
+
+        """
+        if qn in self.quantum_number_names:
+            return 0
+        return self.to_state().calc_std_qn(qn)
+
     @overload
     def to_state(self, coupling_scheme: Literal["LS"]) -> AngularState[AngularKetLS]: ...
 
