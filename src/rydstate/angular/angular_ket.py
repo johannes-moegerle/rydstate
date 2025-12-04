@@ -2,15 +2,15 @@ from __future__ import annotations
 
 import logging
 from abc import ABC
-from typing import TYPE_CHECKING, Any, ClassVar, Literal, get_args, overload
+from typing import TYPE_CHECKING, Any, ClassVar, Literal, overload
 
 from rydstate.angular.angular_matrix_element import (
-    AngularMomentumQuantumNumbers,
-    AngularOperatorType,
     calc_prefactor_of_operator_in_coupled_scheme,
     calc_reduced_identity_matrix_element,
     calc_reduced_spherical_matrix_element,
     calc_reduced_spin_matrix_element,
+    is_angular_momentum_quantum_number,
+    is_angular_operator_type,
 )
 from rydstate.angular.utils import (
     calc_wigner_3j,
@@ -26,6 +26,7 @@ from rydstate.species import SpeciesObject
 if TYPE_CHECKING:
     from typing_extensions import Self
 
+    from rydstate.angular.angular_matrix_element import AngularMomentumQuantumNumbers, AngularOperatorType
     from rydstate.angular.angular_state import AngularState
 
 logger = logging.getLogger(__name__)
@@ -410,12 +411,12 @@ class AngularKetBase(ABC):
             \left\langle self || \hat{O}^{(\kappa)} || other \right\rangle
 
         """
-        if operator not in get_args(AngularOperatorType):
+        if not is_angular_operator_type(operator):
             raise NotImplementedError(f"calc_reduced_matrix_element is not implemented for operator {operator}.")
 
         if type(self) is not type(other):
             return self.to_state().calc_reduced_matrix_element(other.to_state(), operator, kappa)
-        if operator in get_args(AngularMomentumQuantumNumbers) and operator not in self.quantum_number_names:
+        if is_angular_momentum_quantum_number(operator) and operator not in self.quantum_number_names:
             return self.to_state().calc_reduced_matrix_element(other.to_state(), operator, kappa)
 
         qn_name: AngularMomentumQuantumNumbers
