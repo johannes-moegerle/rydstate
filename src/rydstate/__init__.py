@@ -3,6 +3,7 @@ from rydstate.basis import BasisSQDTAlkali, BasisSQDTAlkalineLS
 from rydstate.rydberg import (
     RydbergStateSQDT,
     RydbergStateSQDTAlkali,
+    RydbergStateSQDTAlkalineFJ,
     RydbergStateSQDTAlkalineJJ,
     RydbergStateSQDTAlkalineLS,
 )
@@ -13,6 +14,7 @@ __all__ = [
     "BasisSQDTAlkalineLS",
     "RydbergStateSQDT",
     "RydbergStateSQDTAlkali",
+    "RydbergStateSQDTAlkalineFJ",
     "RydbergStateSQDTAlkalineJJ",
     "RydbergStateSQDTAlkalineLS",
     "angular",

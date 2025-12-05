@@ -15,7 +15,7 @@ from rydstate.species.utils import calc_energy_from_nu
 from rydstate.units import BaseQuantities, MatrixElementOperatorRanks, ureg
 
 if TYPE_CHECKING:
-    from rydstate.angular.angular_ket import AngularKetBase, AngularKetJJ, AngularKetLS
+    from rydstate.angular.angular_ket import AngularKetBase, AngularKetFJ, AngularKetJJ, AngularKetLS
     from rydstate.units import MatrixElementOperator, PintFloat
 
 
@@ -418,11 +418,74 @@ class RydbergStateSQDTAlkalineJJ(RydbergStateSQDT):
         if self._nu is not None:
             return self._nu
         assert self.n is not None
-        nu_singlet = self.species.calc_nu(self.n, self.l, self.j_tot, s_tot=0)
-        nu_triplet = self.species.calc_nu(self.n, self.l, self.j_tot, s_tot=1)
-        if abs(nu_singlet - nu_triplet) > 1e-10:
+        nus = [self.species.calc_nu(self.n, self.l, self.j_tot, s_tot=s_tot) for s_tot in [0, 1]]
+
+        if any(abs(nu - nus[0]) > 1e-10 for nu in nus[1:]):
             raise ValueError(
                 "RydbergStateSQDTAlkalineJJ is intended for high-l states only, "
                 "where the quantum defects are the same for singlet and triplet states."
             )
-        return nu_singlet
+        return nus[0]
+
+
+class RydbergStateSQDTAlkalineFJ(RydbergStateSQDT):
+    """Create an Alkaline Rydberg state, including the radial and angular states."""
+
+    angular: AngularKetFJ
+
+    def __init__(
+        self,
+        species: str | SpeciesObject,
+        n: int,
+        l: int,
+        j_r: float,
+        f_c: float | None = None,
+        f_tot: float | None = None,
+        m: float | None = None,
+        nu: float | None = None,
+    ) -> None:
+        r"""Initialize the Rydberg state.
+
+        Args:
+            species: Atomic species.
+            n: Principal quantum number of the rydberg electron.
+            l: Orbital angular momentum quantum number of the rydberg electron.
+            j_r: Total angular momentum quantum number of the Rydberg electron.
+            f_c: Total angular momentum quantum number of the core (core electron + nucleus).
+            f_tot: Total angular momentum quantum number of the atom (rydberg electron + core)
+              Optional, only needed if the species supports hyperfine structure (i.e. species.i_c is not None or 0).
+            m: Total magnetic quantum number.
+              Optional, only needed for concrete angular matrix elements.
+            nu: Effective principal quantum number of the rydberg electron.
+              Optional, if not given it will be calculated from n, l.
+
+        """
+        super().__init__(species=species, n=n, nu=nu, l_r=l, j_r=j_r, f_c=f_c, f_tot=f_tot, m=m)
+
+        self.l = self.angular.l_r
+        self.j_r = self.angular.j_r
+        self.f_c = self.angular.f_c
+        self.f_tot = self.angular.f_tot
+        self.m = self.angular.m
+
+    def __repr__(self) -> str:
+        species, n, l, j_r, f_c, f_tot, m = self.species, self.n, self.l, self.j_r, self.f_c, self.f_tot, self.m
+        return f"{self.__class__.__name__}({species.name}, {n=}, {l=}, {j_r=}, {f_c=}, {f_tot=}, {m=})"
+
+    @cached_property
+    def nu(self) -> float:
+        if self._nu is not None:
+            return self._nu
+        assert self.n is not None
+        nus = [
+            self.species.calc_nu(self.n, self.l, float(j_tot), s_tot=s_tot)
+            for s_tot in [0, 1]
+            for j_tot in np.arange(abs(self.j_r - 1 / 2), self.j_r + 1 / 2 + 1)
+        ]
+
+        if any(abs(nu - nus[0]) > 1e-10 for nu in nus[1:]):
+            raise ValueError(
+                "RydbergStateSQDTAlkalineFJ is intended for high-l states only, "
+                "where the quantum defects are the same for singlet and triplet states."
+            )
+        return nus[0]
