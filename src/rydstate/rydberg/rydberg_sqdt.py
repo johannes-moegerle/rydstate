@@ -11,7 +11,7 @@ import numpy as np
 from rydstate.angular import AngularKetJJ, AngularKetLS
 from rydstate.angular.utils import try_trivial_spin_addition
 from rydstate.radial import RadialKet
-from rydstate.species.species_object import SpeciesObject
+from rydstate.species import SpeciesObject
 from rydstate.species.utils import calc_energy_from_nu
 from rydstate.units import BaseQuantities, MatrixElementOperatorRanks, ureg
 
@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-class RydbergStateBase(ABC):
+class RydbergStateSQDTBase(ABC):
     species: SpeciesObject
 
     def __str__(self) -> str:
@@ -70,7 +70,7 @@ class RydbergStateBase(ABC):
             return energy
         return energy.to(unit, "spectroscopy").magnitude
 
-    def calc_reduced_overlap(self, other: RydbergStateBase) -> float:
+    def calc_reduced_overlap(self, other: RydbergStateSQDTBase) -> float:
         """Calculate the reduced overlap <self|other> (ignoring the magnetic quantum number m)."""
         radial_overlap = self.radial.calc_overlap(other.radial)
         angular_overlap = self.angular.calc_reduced_overlap(other.angular)
@@ -187,7 +187,7 @@ class RydbergStateBase(ABC):
         return prefactor * reduced_matrix_element
 
 
-class RydbergStateAlkali(RydbergStateBase):
+class RydbergStateSQDTAlkali(RydbergStateSQDTBase):
     """Create an Alkali Rydberg state, including the radial and angular states."""
 
     def __init__(
@@ -198,6 +198,7 @@ class RydbergStateAlkali(RydbergStateBase):
         j: float | None = None,
         f: float | None = None,
         m: float | None = None,
+        nu: float | None = None,
     ) -> None:
         r"""Initialize the Rydberg state.
 
@@ -210,6 +211,8 @@ class RydbergStateAlkali(RydbergStateBase):
               Optional, only needed if the species supports hyperfine structure (i.e. species.i_c is not None or 0).
             m: Total magnetic quantum number.
               Optional, only needed for concrete angular matrix elements.
+            nu: Effective principal quantum number of the rydberg electron.
+              Optional, if not given it will be calculated from n, l, j.
 
         """
         if isinstance(species, str):
@@ -221,6 +224,7 @@ class RydbergStateAlkali(RydbergStateBase):
         self.j = try_trivial_spin_addition(l, 0.5, j, "j")
         self.f = try_trivial_spin_addition(self.j, i_c, f, "f")
         self.m = m
+        self._nu = nu
 
         if species.number_valence_electrons != 1:
             raise ValueError(f"The species {species.name} is not an alkali atom.")
@@ -242,12 +246,12 @@ class RydbergStateAlkali(RydbergStateBase):
         return f"{self.__class__.__name__}({species.name}, {n=}, {l=}, {j=}, {f=}, {m=})"
 
     def get_nu(self) -> float:
-        if not hasattr(self, "_nu"):
+        if self._nu is None:
             self._nu = self.species.calc_nu(self.n, self.l, self.j, s_tot=1 / 2)
         return self._nu
 
 
-class RydbergStateAlkalineLS(RydbergStateBase):
+class RydbergStateSQDTAlkalineLS(RydbergStateSQDTBase):
     """Create an Alkaline Rydberg state, including the radial and angular states."""
 
     def __init__(
@@ -259,6 +263,7 @@ class RydbergStateAlkalineLS(RydbergStateBase):
         j_tot: int | None = None,
         f_tot: float | None = None,
         m: float | None = None,
+        nu: float | None = None,
     ) -> None:
         r"""Initialize the Rydberg state.
 
@@ -272,6 +277,8 @@ class RydbergStateAlkalineLS(RydbergStateBase):
               Optional, only needed if the species supports hyperfine structure (i.e. species.i_c is not None or 0).
             m: Total magnetic quantum number.
               Optional, only needed for concrete angular matrix elements.
+            nu: Effective principal quantum number of the rydberg electron.
+              Optional, if not given it will be calculated from n, l, j_tot, s_tot.
 
         """
         if isinstance(species, str):
@@ -284,6 +291,7 @@ class RydbergStateAlkalineLS(RydbergStateBase):
         self.j_tot = try_trivial_spin_addition(l, s_tot, j_tot, "j_tot")
         self.f_tot = try_trivial_spin_addition(self.j_tot, i_c, f_tot, "f_tot")
         self.m = m
+        self._nu = nu
 
         if species.number_valence_electrons != 2:
             raise ValueError(f"The species {species.name} is not an alkaline atom.")
@@ -307,10 +315,12 @@ class RydbergStateAlkalineLS(RydbergStateBase):
         return f"{self.__class__.__name__}({species.name}, {n=}, {l=}, {s_tot=}, {j_tot=}, {f_tot=}, {m=})"
 
     def get_nu(self) -> float:
-        return self.species.calc_nu(self.n, self.l, self.j_tot, s_tot=self.s_tot)
+        if self._nu is None:
+            self._nu = self.species.calc_nu(self.n, self.l, self.j_tot, s_tot=self.s_tot)
+        return self._nu
 
 
-class RydbergStateAlkalineJJ(RydbergStateBase):
+class RydbergStateSQDTAlkalineJJ(RydbergStateSQDTBase):
     """Create an Alkaline Rydberg state, including the radial and angular states."""
 
     def __init__(
@@ -322,6 +332,7 @@ class RydbergStateAlkalineJJ(RydbergStateBase):
         j_tot: int | None = None,
         f_tot: float | None = None,
         m: float | None = None,
+        nu: float | None = None,
     ) -> None:
         r"""Initialize the Rydberg state.
 
@@ -336,6 +347,8 @@ class RydbergStateAlkalineJJ(RydbergStateBase):
               (i.e. species.i_c is not None and species.i_c != 0).
             m: Total magnetic quantum number.
               Optional, only needed for concrete angular matrix elements.
+            nu: Effective principal quantum number of the rydberg electron.
+              Optional, if not given it will be calculated from n, l, j_tot.
 
         """
         if isinstance(species, str):
@@ -349,6 +362,7 @@ class RydbergStateAlkalineJJ(RydbergStateBase):
         self.j_tot = try_trivial_spin_addition(self.j_r, s_c, j_tot, "j_tot")
         self.f_tot = try_trivial_spin_addition(self.j_tot, i_c, f_tot, "f_tot")
         self.m = m
+        self._nu = nu
 
         if species.number_valence_electrons != 2:
             raise ValueError(f"The species {species.name} is not an alkaline atom.")
@@ -373,11 +387,13 @@ class RydbergStateAlkalineJJ(RydbergStateBase):
         return f"{self.__class__.__name__}({species.name}, {n=}, {l=}, {j_r=}, {j_tot=}, {f_tot=}, {m=})"
 
     def get_nu(self) -> float:
-        nu_singlet = self.species.calc_nu(self.n, self.l, self.j_tot, s_tot=0)
-        nu_triplet = self.species.calc_nu(self.n, self.l, self.j_tot, s_tot=1)
-        if abs(nu_singlet - nu_triplet) > 1e-10:
-            raise ValueError(
-                "RydbergStateAlkalineJJ is intended for high-l states only, "
-                "where the quantum defects are the same for singlet and triplet states."
-            )
-        return nu_singlet
+        if self._nu is None:
+            nu_singlet = self.species.calc_nu(self.n, self.l, self.j_tot, s_tot=0)
+            nu_triplet = self.species.calc_nu(self.n, self.l, self.j_tot, s_tot=1)
+            if abs(nu_singlet - nu_triplet) > 1e-10:
+                raise ValueError(
+                    "RydbergStateSQDTAlkalineJJ is intended for high-l states only, "
+                    "where the quantum defects are the same for singlet and triplet states."
+                )
+            self._nu = nu_singlet
+        return self._nu

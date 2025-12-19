@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from rydstate.rydberg_state import RydbergStateAlkali
+from rydstate import RydbergStateSQDTAlkali
 from rydstate.units import BaseUnits, ureg
 
 
@@ -10,7 +10,7 @@ def test_magnetic(l: int) -> None:
     g_s = 2.002319304363
     g_l = 1
 
-    state = RydbergStateAlkali("Rb", n=max(l + 1, 10), l=l, j=l + 0.5, m=l + 0.5)
+    state = RydbergStateSQDTAlkali("Rb", n=max(l + 1, 10), l=l, j=l + 0.5, m=l + 0.5)
 
     # Check that for m = j_tot = l + s_tot the magnetic matrix element is - mu_B * (g_l * l + g_s * s_tot)
     mu = state.calc_matrix_element(state, "magnetic_dipole", q=0)

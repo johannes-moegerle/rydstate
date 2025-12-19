@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
+from rydstate import RydbergStateSQDTAlkali
 from rydstate.radial import RadialKet
-from rydstate.rydberg_state import RydbergStateAlkali
 from rydstate.species import SpeciesObject
 
 
@@ -28,8 +28,8 @@ def test_circular_matrix_element(species: str, n: int, dn: int, dl: int) -> None
 
     matrix_element = {}
     for _species in [species, "H_textbook"]:
-        state_i = RydbergStateAlkali(_species, n=n, l=l1, j=l1 + 0.5)
-        state_f = RydbergStateAlkali(_species, n=n + dn, l=l2, j=l2 + 0.5)
+        state_i = RydbergStateSQDTAlkali(_species, n=n, l=l1, j=l1 + 0.5)
+        state_f = RydbergStateSQDTAlkali(_species, n=n + dn, l=l2, j=l2 + 0.5)
         matrix_element[_species] = state_i.radial.calc_matrix_element(state_f.radial, 1, unit="bohr")
 
     assert np.isclose(matrix_element[species], matrix_element["H_textbook"], rtol=1e-4)

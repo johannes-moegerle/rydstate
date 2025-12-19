@@ -178,7 +178,7 @@ class SpeciesObject(ABC):
         This approach allows for easy extension of the library with new species.
         A user can even subclass SpeciesObject in his code (without modifying the rydstate library),
         e.g. `class CustomRubidium(SpeciesObject): name = "Custom_Rb" ...`
-        and then use the new species by calling RydbergStateAlkali("Custom_Rb", ...)
+        and then use the new species by calling RydbergStateSQDTAlkali("Custom_Rb", ...)
 
         Args:
             name: The species name (e.g. "Rb").
