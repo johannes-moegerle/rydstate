@@ -15,7 +15,7 @@ from rydstate.angular.angular_ket import (
 from rydstate.angular.angular_matrix_element import is_angular_momentum_quantum_number
 
 if TYPE_CHECKING:
-    from collections.abc import Iterator
+    from collections.abc import Iterator, Sequence
 
     from typing_extensions import Self
 
@@ -30,13 +30,15 @@ _AngularKet = TypeVar("_AngularKet", bound=AngularKetBase)
 
 class AngularState(Generic[_AngularKet]):
     def __init__(
-        self, coefficients: list[float], kets: list[_AngularKet], *, warn_if_not_normalized: bool = True
+        self, coefficients: Sequence[float], kets: Sequence[_AngularKet], *, warn_if_not_normalized: bool = True
     ) -> None:
         self.coefficients = np.array(coefficients)
         self.kets = kets
 
         if len(coefficients) != len(kets):
             raise ValueError("Length of coefficients and kets must be the same.")
+        if len(kets) == 0:
+            raise ValueError("At least one ket must be provided.")
         if not all(type(ket) is type(kets[0]) for ket in kets):
             raise ValueError("All kets must be of the same type.")
         if len(set(kets)) != len(kets):
