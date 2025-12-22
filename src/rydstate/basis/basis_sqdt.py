@@ -19,6 +19,8 @@ class BasisSQDTAlkali(BasisBase[RydbergStateSQDTAlkali]):
         self.states = []
         for n in range(n_min, n_max + 1):
             for l in range(n):
+                if not self.species.is_allowed_shell(n, l, s):
+                    continue
                 for j in np.arange(abs(l - s), l + s + 1):
                     for f in np.arange(abs(j - i_c), j + i_c + 1):
                         state = RydbergStateSQDTAlkali(species, n=n, l=l, j=float(j), f=float(f))
@@ -35,9 +37,11 @@ class BasisSQDTAlkalineLS(BasisBase[RydbergStateSQDTAlkalineLS]):
         i_c = self.species.i_c if self.species.i_c is not None else 0
 
         self.states = []
-        for s_tot in [0, 1]:
-            for n in range(n_min, n_max + 1):
-                for l in range(n):
+        for n in range(n_min, n_max + 1):
+            for l in range(n):
+                for s_tot in [0, 1]:
+                    if not self.species.is_allowed_shell(n, l, s_tot):
+                        continue
                     for j_tot in range(abs(l - s_tot), l + s_tot + 1):
                         for f_tot in np.arange(abs(j_tot - i_c), j_tot + i_c + 1):
                             state = RydbergStateSQDTAlkalineLS(
