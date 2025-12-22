@@ -28,7 +28,26 @@ class BasisBase(ABC, Generic[_RydbergState]):
     def __len__(self) -> int:
         return len(self.states)
 
-    def filter_states(self, qn: str, qn_min: float, qn_max: float) -> Self:
+    def copy(self) -> Self:
+        new_basis = self.__class__.__new__(self.__class__)
+        new_basis.species = self.species
+        new_basis.states = list(self.states)
+        return new_basis
+
+    @overload
+    def filter_states(self, qn: str, value: tuple[float, float], *, delta: float = 1e-10) -> Self: ...
+
+    @overload
+    def filter_states(self, qn: str, value: float, *, delta: float = 1e-10) -> Self: ...
+
+    def filter_states(self, qn: str, value: float | tuple[float, float], *, delta: float = 1e-10) -> Self:
+        if isinstance(value, tuple):
+            qn_min = value[0] - delta
+            qn_max = value[1] + delta
+        else:
+            qn_min = value - delta
+            qn_max = value + delta
+
         if is_angular_momentum_quantum_number(qn):
             self.states = [state for state in self.states if qn_min <= state.angular.calc_exp_qn(qn) <= qn_max]
         elif qn in ["n", "nu", "nu_energy"]:
