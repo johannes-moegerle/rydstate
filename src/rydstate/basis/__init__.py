@@ -1,3 +1,3 @@
-from rydstate.basis.basis_sqdt import BasisSQDTAlkali, BasisSQDTAlkalineLS
+from rydstate.basis.basis_sqdt import BasisSQDTAlkali, BasisSQDTAlkalineFJ, BasisSQDTAlkalineJJ, BasisSQDTAlkalineLS
 
-__all__ = ["BasisSQDTAlkali", "BasisSQDTAlkalineLS"]
+__all__ = ["BasisSQDTAlkali", "BasisSQDTAlkalineFJ", "BasisSQDTAlkalineJJ", "BasisSQDTAlkalineLS"]
