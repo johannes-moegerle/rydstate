@@ -319,7 +319,8 @@ class RydbergStateSQDTAlkali(RydbergStateSQDT):
 
     def __repr__(self) -> str:
         species, n, l, j, f, m = self.species, self.n, self.l, self.j, self.f, self.m
-        return f"{self.__class__.__name__}({species.name}, {n=}, {l=}, {j=}, {f=}, {m=})"
+        f_string = f", {f=}" if self.species.i_c not in (None, 0) else ""
+        return f"{self.__class__.__name__}({species.name}, {n=}, {l=}, {j=}{f_string}, {m=})"
 
 
 class RydbergStateSQDTAlkalineLS(RydbergStateSQDT):
