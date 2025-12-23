@@ -1,7 +1,11 @@
+from typing import TYPE_CHECKING, Any
+
 import numpy as np
 import pytest
-from rydstate import BasisSQDTAlkali
-from rydstate.basis.basis_sqdt import BasisSQDTAlkalineLS
+from rydstate import BasisSQDTAlkali, BasisSQDTAlkalineFJ, BasisSQDTAlkalineJJ, BasisSQDTAlkalineLS
+
+if TYPE_CHECKING:
+    from rydstate.basis.basis_base import BasisBase
 
 
 @pytest.mark.parametrize("species_name", ["Rb", "Na", "H"])
@@ -62,3 +66,13 @@ def test_alkaline_basis(species_name: str) -> None:
     me_matrix = basis.calc_reduced_matrix_elements(basis, "electric_dipole", unit="e a0")
     assert np.shape(me_matrix) == (len(basis.states), len(basis.states))
     assert np.count_nonzero(me_matrix) > 0
+
+    basis = BasisSQDTAlkalineLS(species_name, n_min=30, n_max=35)
+    basis.filter_states("l_r", (6, 10))
+    for basis_class in [BasisSQDTAlkalineJJ, BasisSQDTAlkalineFJ]:
+        basis2: BasisBase[Any] = basis_class(species_name, n_min=30, n_max=35)  # type: ignore [assignment]
+        basis2.filter_states("l_r", (6, 10))
+        assert len(basis2.states) == len(basis.states)
+        trafo = basis.calc_reduced_overlaps(basis2)
+        trafo_inv = basis2.calc_reduced_overlaps(basis)
+        assert np.allclose(trafo @ trafo_inv, np.eye(len(basis.states)), atol=1e-3)
