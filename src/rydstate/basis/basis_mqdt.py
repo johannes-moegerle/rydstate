@@ -3,12 +3,20 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING, Any
 
+import numpy as np
+
 from rydstate.angular.angular_ket import julia_qn_to_dict
 from rydstate.basis.basis_base import BasisBase
 from rydstate.rydberg.rydberg_mqdt import RydbergStateMQDT
 from rydstate.rydberg.rydberg_sqdt import RydbergStateSQDT
 
 if TYPE_CHECKING:
+    from juliacall import (
+        JuliaError,
+        Main as jl,  # noqa: N813
+        convert,
+    )
+
     from rydstate.species import SpeciesObject
 
 logger = logging.getLogger(__name__)
@@ -32,8 +40,6 @@ if USE_JULIACALL:
         logger.exception("Failed to load Julia MQDT or CGcoefficient package")
         USE_JULIACALL = False
 
-FMODEL_MAX_L = {"Sr87": 2, "Sr88": 2, "Yb171": 4, "Yb173": 1, "Yb174": 4}
-
 
 class BasisMQDT(BasisBase[RydbergStateMQDT[Any]]):
     def __init__(
@@ -43,54 +49,50 @@ class BasisMQDT(BasisBase[RydbergStateMQDT[Any]]):
         n_max: int | None = None,
         *,
         skip_high_l: bool = True,
-        model_names: list[str] | None = None,
     ) -> None:
         super().__init__(species)
-
-        if not USE_JULIACALL:
-            raise ImportError("JuliaCall or the MQDT Julia package is not available.")
-
-        try:
-            self.jl_species = getattr(jl.MQDT, self.species.name)
-            parameters = self.jl_species.PARA
-        except AttributeError as e:
-            raise ValueError(f"Species '{species}' is not supported in the MQDT Julia package.") from e
-
-        # TODO use n_min and n_max of the different models
 
         if n_max is None:
             raise ValueError("n_max must be given")
 
+        if not USE_JULIACALL:
+            raise ImportError("JuliaCall or the MQDT Julia package is not available.")
+
         # initialize Wigner symbol calculation
         if skip_high_l:
-            jl.CGcoefficient.wigner_init_float(5, "Jmax", 9)
+            jl.CGcoefficient.wigner_init_float(10, "Jmax", 9)
         else:
             jl.CGcoefficient.wigner_init_float(n_max - 1, "Jmax", 9)
 
-        logger.debug("Calculating low l MQDT states...")
+        jl_species = jl.Symbol(self.species.name)
+        parameters = jl.MQDT.get_parameters(jl_species)
 
-        jl_species_attr_names = [str(name) for name in jl.seval(f"names(MQDT.{self.species.name}, all=true)")]
-        self.models = {name: getattr(self.jl_species, name) for name in jl_species_attr_names}
-        self.models = {k: v for k, v in self.models.items() if str(v).startswith("fModel")}
-        if model_names is not None:
-            self.models = {k: v for k, v in self.models.items() if k in model_names}
+        self.models = []
+        i_c = self.species.i_c if self.species.i_c is not None else 0
+        for l in range(n_max):
+            jtot_min = min(l, abs(l - 1))
+            jtot_max = l + 1
+            for f_tot in np.arange(abs(jtot_min - i_c), jtot_max + i_c + 1):
+                models = jl.MQDT.get_fmodels(jl_species, l, f_tot)
+                self.models.extend(models)
 
-        if skip_high_l:
-            logger.debug("Skipping high l states.")
-        else:
-            logger.debug("Calculating high l SQDT states...")
-            l_start = FMODEL_MAX_L[self.species.name] + 1
-            high_l_models = {
-                f"high_l_{l_ryd}": jl.single_channel_models(species, l_ryd, parameters)
-                for l_ryd in range(l_start, n_max)
-            }
-            self.models.update(high_l_models)
+        n_min_high_l = 25
 
-        model_names = list(self.models.keys())
-        jl_states = {name: jl.eigenstates(n_min, n_max, model, parameters) for name, model in self.models.items()}
-        _models_vector = convert(jl.Vector, [self.models[name] for name in model_names])
-        _jl_states_vector = convert(jl.Vector, [jl_states[name] for name in model_names])
-        jl_basis = jl.basisarray(_jl_states_vector, _models_vector)
+        logger.debug("Calculating MQDT states...")
+        jl_states = []
+        for model in self.models:
+            _n_min = n_min
+            if model.name.startswith("SQDT"):
+                if skip_high_l:
+                    continue
+                _n_min = n_min_high_l
+
+            logger.debug(f"{model.name}:")
+            states = jl.MQDT.eigenstates(_n_min, n_max, model, parameters)
+            jl_states.append(states)
+            logger.debug(f"  found nu_min={min(states.n)}, nu_max={max(states.n)}, total states={len(states.n)}")
+
+        jl_basis = jl.basisarray(convert(jl.Vector, jl_states), convert(jl.Vector, self.models))
 
         logger.debug("Generated state table with %d states", len(jl_basis.states))
 
