@@ -8,6 +8,7 @@ import numpy as np
 
 from rydstate.angular.angular_ket import (
     AngularKetBase,
+    AngularKetDummy,
     AngularKetFJ,
     AngularKetJJ,
     AngularKetLS,
@@ -17,7 +18,7 @@ from rydstate.angular.angular_matrix_element import is_angular_momentum_quantum_
 if TYPE_CHECKING:
     from collections.abc import Iterator, Sequence
 
-    from typing_extensions import Self
+    from typing_extensions import Never, Self
 
     from rydstate.angular.angular_ket import CouplingScheme
     from rydstate.angular.angular_matrix_element import AngularMomentumQuantumNumbers, AngularOperatorType
@@ -32,22 +33,28 @@ class AngularState(Generic[_AngularKet]):
     def __init__(
         self, coefficients: Sequence[float], kets: Sequence[_AngularKet], *, warn_if_not_normalized: bool = True
     ) -> None:
-        self.coefficients = np.array(coefficients)
-        self.kets = kets
+        """Initialize an angular state as a linear combination of angular kets.
+
+        All kets must be of the same type (coupling scheme), and no duplicate kets are allowed.
+        Dummy kets (AngularKetDummy) are ignored in the state representation,
+        however adding them is recommended for normalization purposes.
+        """
+        self._coefficients = np.array(coefficients)
+        self._kets = kets
         self._warn_if_not_normalized = warn_if_not_normalized
 
         if len(coefficients) != len(kets):
             raise ValueError("Length of coefficients and kets must be the same.")
         if len(kets) == 0:
             raise ValueError("At least one ket must be provided.")
-        if not all(type(ket) is type(kets[0]) for ket in kets):
+        if not all(type(ket) is type(self.kets[0]) for ket in self.kets):
             raise ValueError("All kets must be of the same type.")
-        if len(set(kets)) != len(kets):
-            raise ValueError("AngularState initialized with duplicate kets.")
+        if len(set(self.kets)) != len(self.kets):
+            raise ValueError("AngularState initialized with duplicate kets: %s", self.kets)
         if abs(self.norm - 1) > 1e-10 and warn_if_not_normalized:
             logger.warning("AngularState initialized with non-normalized coefficients: %s, %s", coefficients, kets)
         if self.norm > 1:
-            self.coefficients /= self.norm
+            self._coefficients /= self.norm
 
     def __iter__(self) -> Iterator[tuple[float, _AngularKet]]:
         return zip(self.coefficients, self.kets).__iter__()
@@ -61,6 +68,16 @@ class AngularState(Generic[_AngularKet]):
         return f"{', '.join(terms)}"
 
     @property
+    def kets(self) -> list[_AngularKet]:
+        return [ket for ket in self._kets if not isinstance(ket, AngularKetDummy)]
+
+    @property
+    def coefficients(self) -> np.ndarray:
+        return np.array(
+            [coeff for coeff, ket in zip(self._coefficients, self._kets) if not isinstance(ket, AngularKetDummy)]
+        )
+
+    @property
     def coupling_scheme(self) -> CouplingScheme:
         """Return the coupling scheme of the state."""
         return self.kets[0].coupling_scheme
@@ -68,7 +85,7 @@ class AngularState(Generic[_AngularKet]):
     @property
     def norm(self) -> float:
         """Return the norm of the state (should be 1)."""
-        return np.linalg.norm(self.coefficients)  # type: ignore [return-value]
+        return np.linalg.norm(self._coefficients)  # type: ignore [return-value]
 
     @overload
     def to(self, coupling_scheme: Literal["LS"]) -> AngularState[AngularKetLS]: ...
@@ -78,6 +95,9 @@ class AngularState(Generic[_AngularKet]):
 
     @overload
     def to(self, coupling_scheme: Literal["FJ"]) -> AngularState[AngularKetFJ]: ...
+
+    @overload
+    def to(self, coupling_scheme: Literal["Dummy"]) -> Never: ...
 
     def to(self, coupling_scheme: CouplingScheme) -> AngularState[Any]:
         """Convert to specified coupling scheme.
