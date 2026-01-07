@@ -13,9 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 class RydbergStateBase(ABC):
-    @property
-    @abstractmethod
-    def angular(self) -> AngularState[Any] | AngularKetBase: ...
+    angular: AngularState[Any] | AngularKetBase
 
     @abstractmethod
     def calc_reduced_overlap(self, other: RydbergStateBase) -> float: ...
