@@ -5,7 +5,11 @@ from typing import TYPE_CHECKING, Any
 
 import numpy as np
 
-from rydstate.angular.angular_ket import julia_qn_to_dict
+from rydstate.angular.angular_ket import (
+    AngularKetDummy,
+    julia_qn_to_dict,
+    quantum_numbers_to_angular_ket,
+)
 from rydstate.basis.basis_base import BasisBase
 from rydstate.rydberg.rydberg_mqdt import RydbergStateMQDT
 from rydstate.rydberg.rydberg_sqdt import RydbergStateSQDT
@@ -17,6 +21,7 @@ if TYPE_CHECKING:
         convert,
     )
 
+    from rydstate.angular.angular_ket import AngularKetBase
     from rydstate.species import SpeciesObject
 
 logger = logging.getLogger(__name__)
@@ -42,7 +47,7 @@ if USE_JULIACALL:
 
 
 class BasisMQDT(BasisBase[RydbergStateMQDT[Any]]):
-    def __init__(
+    def __init__(  # noqa: PLR0915, C901, PLR0912
         self,
         species: str | SpeciesObject,
         n_min: int = 0,
@@ -73,7 +78,7 @@ class BasisMQDT(BasisBase[RydbergStateMQDT[Any]]):
             jtot_min = min(l, abs(l - 1))
             jtot_max = l + 1
             for f_tot in np.arange(abs(jtot_min - i_c), jtot_max + i_c + 1):
-                models = jl.MQDT.get_fmodels(jl_species, l, f_tot)
+                models = jl.MQDT.get_fmodels(jl_species, l, float(f_tot))
                 self.models.extend(models)
 
         n_min_high_l = 25
@@ -87,10 +92,14 @@ class BasisMQDT(BasisBase[RydbergStateMQDT[Any]]):
                     continue
                 _n_min = n_min_high_l
 
-            logger.debug(f"{model.name}:")
+            logger.debug("model name: %s", model.name)
             states = jl.MQDT.eigenstates(_n_min, n_max, model, parameters)
             jl_states.append(states)
-            logger.debug(f"  found nu_min={min(states.n)}, nu_max={max(states.n)}, total states={len(states.n)}")
+
+            if len(states.n) == 0:
+                logger.debug("  no states found")
+            else:
+                logger.debug("  nu_min=%s, nu_max=%s, total states=%d", min(states.n), max(states.n), len(states.n))
 
         jl_basis = jl.basisarray(convert(jl.Vector, jl_states), convert(jl.Vector, self.models))
 
@@ -98,15 +107,32 @@ class BasisMQDT(BasisBase[RydbergStateMQDT[Any]]):
 
         self.states = []
         for jl_state in jl_basis.states:
-            coeffs = jl_state.coeff
-            nus = jl_state.nu
+            nus = jl_state.nu_list
             nu_energy = jl_state.energy
-            qns = jl_state.channels.i
-            qns = [julia_qn_to_dict(qn) for qn in qns]
+            angular_kets: list[AngularKetBase] = []
+            iqn = 0
+            model = jl_state.model
+            for i, core in enumerate(model.core):
+                if not core:
+                    name = model.name + model.terms[i]
+                    angular_kets.append(AngularKetDummy(name, f_tot=model.f_tot))
+                    continue
 
-            sqdt_states = [RydbergStateSQDT(species, nu=nu, **qn) for nu, qn in zip(nus, qns)]
+                qn = julia_qn_to_dict(jl_state.channels.i[iqn])
+                try:
+                    angular_kets.append(quantum_numbers_to_angular_ket(species=self.species, **qn))  # type: ignore[arg-type]
+                except ValueError:
+                    name = model.name + model.terms[i]
+                    angular_kets.append(AngularKetDummy(name, f_tot=model.f_tot))
+
+                iqn += 1
+
+            sqdt_states = [
+                RydbergStateSQDT.from_angular_ket(species, angular_ket, nu=nu)
+                for nu, angular_ket in zip(nus, angular_kets)
+            ]
             # check angular and radial are created correctly
-            [(s.angular, s.radial) for s in sqdt_states]
+            assert len([(s.angular, s.radial) for s in sqdt_states]) > 0
 
-            mqdt_state = RydbergStateMQDT(coeffs, sqdt_states, nu_energy=nu_energy, warn_if_not_normalized=False)
+            mqdt_state = RydbergStateMQDT(jl_state.coefficients, sqdt_states, nu_energy=nu_energy)
             self.states.append(mqdt_state)
