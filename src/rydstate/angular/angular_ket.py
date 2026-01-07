@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import contextlib
 import logging
 from abc import ABC
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, overload
@@ -773,15 +774,17 @@ def quantum_numbers_to_angular_ket(
           Optional, only needed for concrete angular matrix elements.
 
     """
-    if all(qn is None for qn in [j_c, f_c, j_r]):
+    with contextlib.suppress(InvalidQuantumNumbersError, ValueError):
         return AngularKetLS(
             s_c=s_c, l_c=l_c, s_r=s_r, l_r=l_r, s_tot=s_tot, l_tot=l_tot, j_tot=j_tot, f_tot=f_tot, m=m, species=species
         )
-    if all(qn is None for qn in [s_tot, l_tot, f_c]):
+
+    with contextlib.suppress(InvalidQuantumNumbersError, ValueError):
         return AngularKetJJ(
             s_c=s_c, l_c=l_c, j_c=j_c, s_r=s_r, l_r=l_r, j_r=j_r, j_tot=j_tot, f_tot=f_tot, m=m, species=species
         )
-    if all(qn is None for qn in [s_tot, l_tot, j_tot]):
+
+    with contextlib.suppress(InvalidQuantumNumbersError, ValueError):
         return AngularKetFJ(
             s_c=s_c, l_c=l_c, j_c=j_c, f_c=f_c, s_r=s_r, l_r=l_r, j_r=j_r, f_tot=f_tot, m=m, species=species
         )
