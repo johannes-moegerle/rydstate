@@ -23,6 +23,7 @@ from rydstate.angular.wigner_symbols import calc_wigner_3j, clebsch_gordan_6j, c
 from rydstate.species import SpeciesObject
 
 if TYPE_CHECKING:
+    import juliacall
     from typing_extensions import Self
 
     from rydstate.angular.angular_matrix_element import AngularMomentumQuantumNumbers, AngularOperatorType
@@ -736,6 +737,17 @@ class AngularKetFJ(AngularKetBase):
             msgs.append(f"{self.f_c=}, {self.j_r=}, {self.f_tot=} don't satisfy spin addition rule.")
 
         super().sanity_check(msgs)
+
+
+def julia_qn_to_dict(qn: juliacall.AnyValue) -> dict[str, float]:
+    """Convert MQDT Julia quantum numbers to dict object."""
+    if "fjQuantumNumbers" in str(qn):
+        return dict(s_c=qn.sc, l_c=qn.lc, j_c=qn.Jc, f_c=qn.Fc, l_r=qn.lr, j_r=qn.Jr, f_tot=qn.F)  # noqa: C408
+    if "jjQuantumNumbers" in str(qn):
+        return dict(s_c=qn.sc, l_c=qn.lc, j_c=qn.Jc, l_r=qn.lr, j_r=qn.Jr, j_tot=qn.J, f_tot=qn.F)  # noqa: C408
+    if "lsQuantumNumbers" in str(qn):
+        return dict(s_c=qn.sc, s_tot=qn.S, l_c=qn.lc, l_r=qn.lr, l_tot=qn.L, j_tot=qn.J, f_tot=qn.F)  # noqa: C408
+    raise ValueError(f"Unknown MQDT Julia quantum numbers  {qn!s}.")
 
 
 def quantum_numbers_to_angular_ket(

@@ -34,6 +34,7 @@ class AngularState(Generic[_AngularKet]):
     ) -> None:
         self.coefficients = np.array(coefficients)
         self.kets = kets
+        self._warn_if_not_normalized = warn_if_not_normalized
 
         if len(coefficients) != len(kets):
             raise ValueError("Length of coefficients and kets must be the same.")
@@ -98,7 +99,8 @@ class AngularState(Generic[_AngularKet]):
                 else:
                     kets.append(scheme_ket)
                     coefficients.append(coeff * scheme_coeff)
-        return AngularState(coefficients, kets, warn_if_not_normalized=abs(self.norm - 1) < 1e-10)
+        warn_if_not_normalized = self._warn_if_not_normalized and (abs(self.norm - 1) < 1e-10)
+        return AngularState(coefficients, kets, warn_if_not_normalized=warn_if_not_normalized)
 
     def calc_exp_qn(self, q: AngularMomentumQuantumNumbers) -> float:
         """Calculate the expectation value of a quantum number q.

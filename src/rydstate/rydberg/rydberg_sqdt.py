@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 import math
 from functools import cached_property
-from typing import TYPE_CHECKING, overload
+from typing import TYPE_CHECKING, Any, overload
 
 import numpy as np
 
@@ -15,6 +15,7 @@ from rydstate.species.utils import calc_energy_from_nu
 from rydstate.units import BaseQuantities, MatrixElementOperatorRanks, ureg
 
 if TYPE_CHECKING:
+    from rydstate import RydbergStateMQDT
     from rydstate.angular.angular_ket import AngularKetBase, AngularKetFJ, AngularKetJJ, AngularKetLS
     from rydstate.units import MatrixElementOperator, PintFloat
 
@@ -182,10 +183,16 @@ class RydbergStateSQDT(RydbergStateBase):
             return energy
         return energy.to(unit, "spectroscopy").magnitude
 
+    def to_mqdt(self) -> RydbergStateMQDT[Any]:
+        """Convert to a trivial RydbergMQDT state with only one contribution with coefficient 1."""
+        from rydstate import RydbergStateMQDT  # noqa: PLC0415
+
+        return RydbergStateMQDT([1], [self])
+
     def calc_reduced_overlap(self, other: RydbergStateBase) -> float:
         """Calculate the reduced overlap <self|other> (ignoring the magnetic quantum number m)."""
         if not isinstance(other, RydbergStateSQDT):
-            raise NotImplementedError("Reduced overlap only implemented between RydbergStateSQDT states.")
+            return self.to_mqdt().calc_reduced_overlap(other)
 
         radial_overlap = self.radial.calc_overlap(other.radial)
         angular_overlap = self.angular.calc_reduced_overlap(other.angular)
@@ -226,7 +233,7 @@ class RydbergStateSQDT(RydbergStateBase):
 
         """
         if not isinstance(other, RydbergStateSQDT):
-            raise NotImplementedError("Reduced matrix element only implemented between RydbergStateSQDT states.")
+            return self.to_mqdt().calc_reduced_matrix_element(other, operator, unit=unit)
 
         if operator not in MatrixElementOperatorRanks:
             raise ValueError(

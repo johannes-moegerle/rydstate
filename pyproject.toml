@@ -44,6 +44,9 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+mqdt = [
+  "juliacall >= 0.9.24",
+]
 tests = [
   "pytest >= 8.0",
   "nbmake >= 1.3",
