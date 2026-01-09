@@ -7,7 +7,8 @@ from typing import TYPE_CHECKING, Callable, Literal, TypeVar, get_args
 import numpy as np
 from typing_extensions import TypeGuard
 
-from rydstate.angular.utils import calc_wigner_3j, calc_wigner_6j, minus_one_pow
+from rydstate.angular.utils import minus_one_pow
+from rydstate.angular.wigner_symbols import calc_wigner_3j, calc_wigner_6j
 
 if TYPE_CHECKING:
     from typing_extensions import ParamSpec

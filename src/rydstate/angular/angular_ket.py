@@ -14,14 +14,12 @@ from rydstate.angular.angular_matrix_element import (
     is_angular_operator_type,
 )
 from rydstate.angular.utils import (
-    calc_wigner_3j,
     check_spin_addition_rule,
-    clebsch_gordan_6j,
-    clebsch_gordan_9j,
     get_possible_quantum_number_values,
     minus_one_pow,
     try_trivial_spin_addition,
 )
+from rydstate.angular.wigner_symbols import calc_wigner_3j, clebsch_gordan_6j, clebsch_gordan_9j
 from rydstate.species import SpeciesObject
 
 if TYPE_CHECKING:
