@@ -1,3 +1,4 @@
+from rydstate.rydberg.rydberg_base import RydbergStateBase
 from rydstate.rydberg.rydberg_sqdt import (
     RydbergStateSQDT,
     RydbergStateSQDTAlkali,
@@ -7,6 +8,7 @@ from rydstate.rydberg.rydberg_sqdt import (
 )
 
 __all__ = [
+    "RydbergStateBase",
     "RydbergStateSQDT",
     "RydbergStateSQDTAlkali",
     "RydbergStateSQDTAlkalineFJ",
