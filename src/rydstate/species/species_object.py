@@ -10,12 +10,14 @@ from typing import TYPE_CHECKING, ClassVar, overload
 
 import numpy as np
 
+from rydstate.angular.angular_ket import AngularKetLS
 from rydstate.species.utils import calc_nu_from_energy, convert_electron_configuration
 from rydstate.units import rydberg_constant, ureg
 
 if TYPE_CHECKING:
     from pathlib import Path
 
+    from rydstate.angular.angular_ket import AngularKetBase
     from rydstate.radial.model import PotentialType
     from rydstate.units import PintFloat
 
@@ -27,7 +29,6 @@ class SpeciesObject(ABC):
 
     For the electronic ground state configurations and sorted shells,
     see e.g. https://www.webelements.com/atoms.html
-
     """
 
     name: ClassVar[str]
@@ -329,9 +330,7 @@ class SpeciesObject(ABC):
     def calc_nu(
         self,
         n: int,
-        l: int,
-        j_tot: float,
-        s_tot: float | None = None,
+        angular_ket: AngularKetBase,
         *,
         use_nist_data: bool = True,
         nist_n_max: int = 15,
@@ -357,15 +356,17 @@ class SpeciesObject(ABC):
 
         Args:
             n: The principal quantum number of the Rydberg state.
-            l: The orbital angular momentum quantum number of the Rydberg state.
-            j_tot: The total angular momentum quantum number of the Rydberg state.
-            s_tot: The total spin quantum number of the Rydberg state.
+            angular_ket: The angular ket specifying l, j_tot, and s_tot of the Rydberg state.
             use_nist_data: Whether to use NIST energy data.
                 Default is True.
             nist_n_max: Maximum principal quantum number for which to use the NIST energy data.
                 Default is 15.
 
         """
+        if not isinstance(angular_ket, AngularKetLS):
+            raise NotImplementedError("calc_nu is only implemented for AngularKetLS.")
+
+        l, j_tot, s_tot = angular_ket.l_r, angular_ket.j_tot, angular_ket.s_r
         if s_tot is None:
             if self.number_valence_electrons != 1:
                 raise ValueError("s_tot must be specified for species with more than one valence electron.")

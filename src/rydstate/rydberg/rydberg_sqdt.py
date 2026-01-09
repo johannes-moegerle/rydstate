@@ -155,9 +155,7 @@ class RydbergStateSQDT(RydbergStateBase):
         assert self.n is not None
         if any(qn not in self.angular.quantum_number_names for qn in ["j_tot", "s_tot"]):
             raise ValueError("j_tot and s_tot must be defined to calculate nu from n.")
-        return self.species.calc_nu(
-            self.n, self.angular.l_r, self.angular.get_qn("j_tot"), s_tot=self.angular.get_qn("s_tot")
-        )
+        return self.species.calc_nu(self.n, self.angular)
 
     @overload
     def get_energy(self, unit: None = None) -> PintFloat: ...
@@ -456,14 +454,7 @@ class RydbergStateSQDTAlkalineJJ(RydbergStateSQDT):
         if self._nu is not None:
             return self._nu
         assert self.n is not None
-        nus = [self.species.calc_nu(self.n, self.l, self.j_tot, s_tot=s_tot) for s_tot in [0, 1]]
-
-        if any(abs(nu - nus[0]) > 1e-10 for nu in nus[1:]):
-            raise ValueError(
-                "RydbergStateSQDTAlkalineJJ is intended for high-l states only, "
-                "where the quantum defects are the same for singlet and triplet states."
-            )
-        return nus[0]
+        return self.species.calc_nu(self.n, self.angular)
 
 
 class RydbergStateSQDTAlkalineFJ(RydbergStateSQDT):
@@ -516,15 +507,4 @@ class RydbergStateSQDTAlkalineFJ(RydbergStateSQDT):
         if self._nu is not None:
             return self._nu
         assert self.n is not None
-        nus = [
-            self.species.calc_nu(self.n, self.l, float(j_tot), s_tot=s_tot)
-            for s_tot in [0, 1]
-            for j_tot in np.arange(abs(self.j_r - 1 / 2), self.j_r + 1 / 2 + 1)
-        ]
-
-        if any(abs(nu - nus[0]) > 1e-10 for nu in nus[1:]):
-            raise ValueError(
-                "RydbergStateSQDTAlkalineFJ is intended for high-l states only, "
-                "where the quantum defects are the same for singlet and triplet states."
-            )
-        return nus[0]
+        return self.species.calc_nu(self.n, self.angular)
