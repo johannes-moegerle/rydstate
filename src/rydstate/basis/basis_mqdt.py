@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, Any
 
 import numpy as np
 
+from rydstate.angular.angular_core_ket import AngularCoreKet, AngularCoreKetDummy
 from rydstate.angular.angular_ket_dummy import AngularKetDummy
 from rydstate.angular.utils import julia_qn_to_dict, quantum_numbers_to_angular_ket
 from rydstate.basis.basis_base import BasisBase
@@ -60,6 +61,7 @@ class BasisMQDT(BasisBase[RydbergStateMQDT[Any]]):
         n_max: int | None = None,
         *,
         skip_high_l: bool = True,
+        model_names: list[str] | None = None,
     ) -> None:
         if not USE_JULIACALL:
             raise ImportError("JuliaCall is not available, try `pip install rydstate[mqdt]`.")
@@ -80,6 +82,8 @@ class BasisMQDT(BasisBase[RydbergStateMQDT[Any]]):
             jtot_max = l + 1
             for f_tot in np.arange(abs(jtot_min - i_c), jtot_max + i_c + 1):
                 models = jl.MQDT.get_fmodels(jl_species, l, float(f_tot))
+                if model_names is not None:
+                    models = [model for model in models if model.name in model_names]
                 self.models.extend(models)
 
         n_min_high_l = 25
@@ -114,17 +118,24 @@ class BasisMQDT(BasisBase[RydbergStateMQDT[Any]]):
             iqn = 0
             model = jl_state.model
             for i, core in enumerate(model.core):
+                core_ket: AngularCoreKet
                 if not core:
-                    name = model.name + model.terms[i]
-                    angular_kets.append(AngularKetDummy(name, f_tot=model.f_tot))
+                    name = f"model='{model.name}'; term='{model.terms[i]}'"
+                    core_ket_name = model.terms[i].split("n")[0]
+                    core_ket = AngularCoreKetDummy(core_ket_name)
+                    angular_kets.append(AngularKetDummy(name, f_tot=model.f_tot, core_ket=core_ket))
                     continue
 
                 qn = julia_qn_to_dict(jl_state.channels.i[iqn])
                 try:
                     angular_kets.append(quantum_numbers_to_angular_ket(species=self.species, **qn))  # type: ignore[arg-type]
                 except ValueError:
-                    name = model.name + model.terms[i]
-                    angular_kets.append(AngularKetDummy(name, f_tot=model.f_tot))
+                    name = f"model='{model.name}'; term='{model.terms[i]}'"
+                    core_qn = {k: v for k, v in qn.items() if k in ["i_c", "s_c", "l_c", "j_c", "f_c"]}
+                    core_qn["i_c"] = self.species.i_c if self.species.i_c is not None else 0
+                    core_qn["s_c"] = 1 / 2
+                    core_ket = AngularCoreKet(**core_qn)  # type: ignore [arg-type]
+                    angular_kets.append(AngularKetDummy(name, f_tot=model.f_tot, core_ket=core_ket))
 
                 iqn += 1
 
