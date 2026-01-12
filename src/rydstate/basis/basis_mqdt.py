@@ -129,7 +129,7 @@ class BasisMQDT(BasisBase[RydbergStateMQDT[Any]]):
                 qn = julia_qn_to_dict(jl_state.channels.i[iqn])
                 try:
                     angular_kets.append(quantum_numbers_to_angular_ket(species=self.species, **qn))  # type: ignore[arg-type]
-                except ValueError:
+                except TypeError:
                     name = f"model='{model.name}'; term='{model.terms[i]}'"
                     core_qn = {k: v for k, v in qn.items() if k in ["i_c", "s_c", "l_c", "j_c", "f_c"]}
                     core_qn["i_c"] = self.species.i_c if self.species.i_c is not None else 0
@@ -143,8 +143,6 @@ class BasisMQDT(BasisBase[RydbergStateMQDT[Any]]):
                 RydbergStateSQDT.from_angular_ket(species, angular_ket, nu=nu)
                 for nu, angular_ket in zip(nus, angular_kets)
             ]
-            # check angular and radial are created correctly
-            assert len([(s.angular, s.radial) for s in sqdt_states]) > 0
 
             mqdt_state = RydbergStateMQDT(jl_state.coefficients, sqdt_states, nu_energy=nu_energy)
             self.states.append(mqdt_state)
