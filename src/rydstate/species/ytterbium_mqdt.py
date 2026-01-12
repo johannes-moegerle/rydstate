@@ -1,23 +1,18 @@
 from __future__ import annotations
 
-from pathlib import Path
 from typing import ClassVar
 
-from rydstate.species.species_object import SpeciesObject
+from rydstate.species.species_mqdt_object import SpeciesMQDTObject
 from rydstate.units import electron_mass, rydberg_constant
 
 
-class _YtterbiumAbstract(SpeciesObject):
+class _YtterbiumMQDTAbstract(SpeciesMQDTObject):
     Z = 70
     number_valence_electrons = 2
     ground_state_shell = (6, 0)
     _additional_allowed_shells: ClassVar = [(5, 2), (5, 3), (5, 4)]
 
     _core_electron_configuration = "4f14.6s"
-    _nist_energy_levels_file = Path(__file__).parent / "nist_energy_levels" / "ytterbium.txt"
-
-    # https://webbook.nist.gov/cgi/inchi?ID=C7440644&Mask=20
-    _ionization_energy = (6.25416, None, "eV")
 
     potential_type_default = "model_potential_fei_2009"
 
@@ -25,8 +20,8 @@ class _YtterbiumAbstract(SpeciesObject):
     model_potential_parameter_fei_2009 = (0.8704, 22.0040, 0.1513, 0.3306)
 
 
-class Ytterbium171(_YtterbiumAbstract):
-    name = "Yb171"
+class YtterbiumMQDT171(_YtterbiumMQDTAbstract):
+    name = "Yb171_mqdt"
     i_c = 1 / 2
 
     # https://physics.nist.gov/PhysRefData/Handbook/Tables/ytterbiumtable1.htm
@@ -38,8 +33,8 @@ class Ytterbium171(_YtterbiumAbstract):
     )
 
 
-class Ytterbium173(_YtterbiumAbstract):
-    name = "Yb173"
+class YtterbiumMQDT173(_YtterbiumMQDTAbstract):
+    name = "Yb173_mqdt"
     i_c = 5 / 2
 
     # https://physics.nist.gov/PhysRefData/Handbook/Tables/ytterbiumtable1.htm
@@ -51,8 +46,8 @@ class Ytterbium173(_YtterbiumAbstract):
     )
 
 
-class Ytterbium174(_YtterbiumAbstract):
-    name = "Yb174"
+class YtterbiumMQDT174(_YtterbiumMQDTAbstract):
+    name = "Yb174_mqdt"
     i_c = 0
 
     # https://physics.nist.gov/PhysRefData/Handbook/Tables/ytterbiumtable1.htm

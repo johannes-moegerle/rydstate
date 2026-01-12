@@ -1,23 +1,18 @@
 from __future__ import annotations
 
-from pathlib import Path
 from typing import ClassVar
 
-from rydstate.species.species_object import SpeciesObject
+from rydstate.species.species_mqdt_object import SpeciesMQDTObject
 from rydstate.units import electron_mass, rydberg_constant
 
 
-class _StrontiumAbstract(SpeciesObject):
+class _StrontiumMQDTAbstract(SpeciesMQDTObject):
     Z = 38
     number_valence_electrons = 2
     ground_state_shell = (5, 0)
     _additional_allowed_shells: ClassVar = [(4, 2), (4, 3)]
 
     _core_electron_configuration = "5s"
-    _nist_energy_levels_file = Path(__file__).parent / "nist_energy_levels" / "strontium.txt"
-
-    # https://webbook.nist.gov/cgi/inchi?ID=C7440246&Mask=20
-    _ionization_energy: tuple[float, float | None, str] = (5.694_84, 0.000_02, "eV")
 
     potential_type_default = "model_potential_fei_2009"
 
@@ -35,8 +30,8 @@ class _StrontiumAbstract(SpeciesObject):
     model_potential_parameter_fei_2009 = (0.9959, 16.9567, 0.2648, 0.1439)
 
 
-class Strontium87(_StrontiumAbstract):
-    name = "Sr87"
+class StrontiumMQDT87(_StrontiumMQDTAbstract):
+    name = "Sr87_mqdt"
     i_c = 9 / 2
 
     # https://physics.nist.gov/PhysRefData/Handbook/Tables/strontiumtable1.htm
@@ -48,8 +43,8 @@ class Strontium87(_StrontiumAbstract):
     )
 
 
-class Strontium88(_StrontiumAbstract):
-    name = "Sr88"
+class StrontiumMQDT88(_StrontiumMQDTAbstract):
+    name = "Sr88_mqdt"
     i_c = 0
 
     # https://physics.nist.gov/PhysRefData/Handbook/Tables/strontiumtable1.htm

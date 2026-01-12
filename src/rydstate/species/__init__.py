@@ -7,7 +7,9 @@ from rydstate.species.sodium import Sodium
 from rydstate.species.species_mqdt_object import SpeciesMQDTObject
 from rydstate.species.species_object import SpeciesObject
 from rydstate.species.strontium import Strontium87, Strontium88
+from rydstate.species.strontium_mqdt import StrontiumMQDT87, StrontiumMQDT88
 from rydstate.species.ytterbium import Ytterbium171, Ytterbium173, Ytterbium174
+from rydstate.species.ytterbium_mqdt import YtterbiumMQDT171, YtterbiumMQDT173, YtterbiumMQDT174
 
 __all__ = [
     "Cesium",
@@ -21,7 +23,12 @@ __all__ = [
     "SpeciesObject",
     "Strontium87",
     "Strontium88",
+    "StrontiumMQDT87",
+    "StrontiumMQDT88",
     "Ytterbium171",
     "Ytterbium173",
     "Ytterbium174",
+    "YtterbiumMQDT171",
+    "YtterbiumMQDT173",
+    "YtterbiumMQDT174",
 ]
