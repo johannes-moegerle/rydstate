@@ -7,7 +7,7 @@ import numpy as np
 
 from rydstate.angular import AngularKetFJ
 from rydstate.angular.angular_core_ket import AngularCoreKetDummy
-from rydstate.angular.utils import Unknown
+from rydstate.angular.utils import UnknownType
 from rydstate.basis.basis_base import BasisBase
 from rydstate.rydberg import (
     RydbergStateSQDT,
@@ -18,6 +18,7 @@ from rydstate.rydberg import (
 )
 
 if TYPE_CHECKING:
+    from rydstate.angular.angular_ket import AngularKetBase
     from rydstate.species.species_mqdt_object import SpeciesMQDTObject
 
 
@@ -140,8 +141,14 @@ class BasisSQDTAlkalineFJMultiChannel(BasisBase[RydbergStateSQDT]):
         s_r = 0.5
 
         self.states = []
+        angular_ket: AngularKetBase
         for core_ket in self.species.ionization_thresholds_dict:
-            if isinstance(core_ket, AngularCoreKetDummy) or core_ket.j_c is Unknown or core_ket.f_c is Unknown:
+            if (
+                isinstance(core_ket, AngularCoreKetDummy)
+                or isinstance(core_ket.l_c, UnknownType)
+                or isinstance(core_ket.j_c, UnknownType)
+                or isinstance(core_ket.f_c, UnknownType)
+            ):
                 # we will handle these below
                 continue
 
