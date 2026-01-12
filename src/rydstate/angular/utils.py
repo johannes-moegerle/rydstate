@@ -93,6 +93,7 @@ def julia_qn_to_dict(qn: juliacall.AnyValue) -> dict[str, float | UnknownType]:
         qns = dict(s_c=qn.sc, l_c=qn.lc, j_c=qn.Jc, f_c=qn.Fc, l_r=qn.lr, j_r=qn.Jr, f_tot=qn.F)  # noqa: C408
     elif "jjQuantumNumbers" in str(qn):
         qns = dict(s_c=qn.sc, l_c=qn.lc, j_c=qn.Jc, l_r=qn.lr, j_r=qn.Jr, j_tot=qn.J, f_tot=qn.F)  # noqa: C408
+        qns["f_c"] = qn.Jc  # ensure we treat this state as FJ coupled (with i_c=0)
     elif "lsQuantumNumbers" in str(qn):
         qns = dict(s_c=qn.sc, s_tot=qn.S, l_c=qn.lc, l_r=qn.lr, l_tot=qn.L, j_tot=qn.J, f_tot=qn.F)  # noqa: C408
     else:
@@ -134,24 +135,36 @@ def quantum_numbers_to_angular_ket(
           Optional, only needed for concrete angular matrix elements.
 
     """
-    if isinstance(f_c, UnknownType) or isinstance(j_c, UnknownType):
-        raise TypeError("Cannot create AngularKet with unknown j_c or f_c quantum numbers.")
+    if isinstance(l_c, UnknownType) or isinstance(j_c, UnknownType) or isinstance(f_c, UnknownType):
+        raise TypeError("Cannot create AngularKet with unknown l_c, j_c or f_c quantum numbers.")
 
     from rydstate.angular.angular_ket import AngularKetFJ, AngularKetJJ, AngularKetLS  # noqa: PLC0415
 
-    with contextlib.suppress(InvalidQuantumNumbersError, ValueError):
-        return AngularKetLS(
-            s_c=s_c, l_c=l_c, s_r=s_r, l_r=l_r, s_tot=s_tot, l_tot=l_tot, j_tot=j_tot, f_tot=f_tot, m=m, species=species
-        )
+    if all(q is None for q in [j_c, f_c, j_r]):
+        with contextlib.suppress(InvalidQuantumNumbersError, ValueError):
+            return AngularKetLS(
+                s_c=s_c,
+                l_c=l_c,
+                s_r=s_r,
+                l_r=l_r,
+                s_tot=s_tot,
+                l_tot=l_tot,
+                j_tot=j_tot,
+                f_tot=f_tot,
+                m=m,
+                species=species,
+            )
 
-    with contextlib.suppress(InvalidQuantumNumbersError, ValueError):
-        return AngularKetJJ(
-            s_c=s_c, l_c=l_c, j_c=j_c, s_r=s_r, l_r=l_r, j_r=j_r, j_tot=j_tot, f_tot=f_tot, m=m, species=species
-        )
+    if all(q is None for q in [s_tot, l_tot, f_c]):
+        with contextlib.suppress(InvalidQuantumNumbersError, ValueError):
+            return AngularKetJJ(
+                s_c=s_c, l_c=l_c, j_c=j_c, s_r=s_r, l_r=l_r, j_r=j_r, j_tot=j_tot, f_tot=f_tot, m=m, species=species
+            )
 
-    with contextlib.suppress(InvalidQuantumNumbersError, ValueError):
-        return AngularKetFJ(
-            s_c=s_c, l_c=l_c, j_c=j_c, f_c=f_c, s_r=s_r, l_r=l_r, j_r=j_r, f_tot=f_tot, m=m, species=species
-        )
+    if all(q is None for q in [s_tot, l_tot, j_tot]):
+        with contextlib.suppress(InvalidQuantumNumbersError, ValueError):
+            return AngularKetFJ(
+                s_c=s_c, l_c=l_c, j_c=j_c, f_c=f_c, s_r=s_r, l_r=l_r, j_r=j_r, f_tot=f_tot, m=m, species=species
+            )
 
     raise ValueError("Invalid combination of angular quantum numbers provided.")
