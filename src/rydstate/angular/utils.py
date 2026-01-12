@@ -13,7 +13,15 @@ if TYPE_CHECKING:
 
 CouplingScheme = Literal["LS", "JJ", "FJ", "Dummy"]
 
-Unknown = "Unknown"  # or np.nan or custom Singleton?
+
+class UnknownType:
+    __slots__ = ()
+
+    def __repr__(self) -> str:
+        return "Unknown"
+
+
+Unknown = UnknownType()
 
 
 class InvalidQuantumNumbersError(ValueError):
@@ -39,11 +47,22 @@ def try_trivial_spin_addition(s_1: float, s_2: float, s_tot: float | None, name:
     If s_tot is None and cannot be uniquely determined from s_1 and s_2, raise an error.
     Otherwise return s_tot or the trivial sum s_1 + s_2.
     """
-    if s_tot is Unknown:
+    if s_tot is not None:
+        return float(s_tot)
+    if s_1 != 0 and s_2 != 0:
+        msg = f"{name} must be set if both parts ({s_1} and {s_2}) are non-zero."
+        raise ValueError(msg)
+    return float(s_1 + s_2)
+
+
+def try_trivial_spin_addition_with_unkown(
+    s_1: float | UnknownType, s_2: float | UnknownType, s_tot: float | UnknownType | None, name: str
+) -> float | UnknownType:
+    if isinstance(s_tot, UnknownType):
         return Unknown
     if s_tot is not None:
         return float(s_tot)
-    if s_1 is Unknown or s_2 is Unknown:
+    if isinstance(s_1, UnknownType) or isinstance(s_2, UnknownType):
         return Unknown
     if s_1 != 0 and s_2 != 0:
         msg = f"{name} must be set if both parts ({s_1} and {s_2}) are non-zero."
@@ -58,21 +77,17 @@ def check_spin_addition_rule(s_1: float, s_2: float, s_tot: float) -> bool:
     - |s_1 - s_2| <= s_tot <= s_1 + s_2
     - s_1 + s_2 + s_tot is an integer
     """
-    if any(s is Unknown for s in [s_1, s_2, s_tot]):
-        return True
     return abs(s_1 - s_2) <= s_tot <= s_1 + s_2 and (s_1 + s_2 + s_tot) % 1 == 0
 
 
 def get_possible_quantum_number_values(s_1: float, s_2: float, s_tot: float | None) -> list[float]:
     """Determine a list of possible s_tot values from s_1 and s_2 if s_tot is not given, else return [s_tot]."""
-    if np.isscalar(s_tot):
+    if s_tot is not None:
         return [float(s_tot)]
-    if any(s is Unknown for s in [s_1, s_2, s_tot]):
-        return [Unknown]
     return [float(s) for s in np.arange(abs(s_1 - s_2), s_1 + s_2 + 1, 1)]
 
 
-def julia_qn_to_dict(qn: juliacall.AnyValue) -> dict[str, float]:
+def julia_qn_to_dict(qn: juliacall.AnyValue) -> dict[str, float | UnknownType]:
     """Convert MQDT Julia quantum numbers to dict object."""
     if "fjQuantumNumbers" in str(qn):
         qns = dict(s_c=qn.sc, l_c=qn.lc, j_c=qn.Jc, f_c=qn.Fc, l_r=qn.lr, j_r=qn.Jr, f_tot=qn.F)  # noqa: C408
@@ -119,13 +134,8 @@ def quantum_numbers_to_angular_ket(
           Optional, only needed for concrete angular matrix elements.
 
     """
-    if f_c is Unknown or j_c is Unknown:
-        raise ValueError("Cannot create AngularKet with unknown j_c or f_c quantum numbers.")
-        from rydstate.angular.angular_core_ket import AngularCoreKet  # noqa: PLC0415
-        from rydstate.angular.angular_ket_dummy import AngularKetDummy  # noqa: PLC0415
-
-        core_ket = AngularCoreKet(species.i_c, s_c, l_c, j_c, f_c)
-        return AngularKetDummy(f"test2 {f_tot=}", f_tot, core_ket=core_ket)
+    if isinstance(f_c, UnknownType) or isinstance(j_c, UnknownType):
+        raise TypeError("Cannot create AngularKet with unknown j_c or f_c quantum numbers.")
 
     from rydstate.angular.angular_ket import AngularKetFJ, AngularKetJJ, AngularKetLS  # noqa: PLC0415
 
