@@ -30,7 +30,7 @@ class SpeciesMQDTObject(SpeciesObject):
         jl.seval("using MQDT")
 
         i_c = self.i_c if self.i_c is not None else 0
-        self.jl_species = jl.Symbol(self.name)
+        self.jl_species = jl.Symbol(self.name.replace("_mqdt", ""))
         self.jl_parameters = jl.MQDT.get_parameters(self.jl_species)
 
         self.ionization_thresholds_dict: dict[AngularCoreKet, float] = {}
