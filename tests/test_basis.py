@@ -46,8 +46,7 @@ def test_alkaline_basis(species_name: str) -> None:
     assert (basis.states[-1].n, basis.states[-1].l) == (35, 34)
     assert len(basis.states) == {"Sr88": 768, "Sr87": 7188, "Yb174": 768, "Yb171": 1524}[species_name]
 
-    if species_name in ["Sr87", "Yb171"]:
-        pytest.skip("Quantum defects for Sr87 and Yb171 not implemented yet.")
+    pytest.skip("Quantum defects not implemented yet for SQDT alkaline.")
 
     state0 = basis.states[0]
     ov = basis.calc_reduced_overlap(state0)
