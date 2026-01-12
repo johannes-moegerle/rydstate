@@ -3,6 +3,7 @@ from rydstate.basis import (
     BasisMQDT,
     BasisSQDTAlkali,
     BasisSQDTAlkalineFJ,
+    BasisSQDTAlkalineFJMultiChannel,
     BasisSQDTAlkalineJJ,
     BasisSQDTAlkalineLS,
 )
@@ -20,6 +21,7 @@ __all__ = [
     "BasisMQDT",
     "BasisSQDTAlkali",
     "BasisSQDTAlkalineFJ",
+    "BasisSQDTAlkalineFJMultiChannel",
     "BasisSQDTAlkalineJJ",
     "BasisSQDTAlkalineLS",
     "RydbergStateMQDT",

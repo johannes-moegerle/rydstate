@@ -1,16 +1,25 @@
 from __future__ import annotations
 
 import logging
+from typing import TYPE_CHECKING
 
 import numpy as np
 
+from rydstate.angular import AngularKetFJ
+from rydstate.angular.angular_core_ket import AngularCoreKetDummy
+from rydstate.angular.utils import Unknown
 from rydstate.basis.basis_base import BasisBase
 from rydstate.rydberg import (
+    RydbergStateSQDT,
     RydbergStateSQDTAlkali,
     RydbergStateSQDTAlkalineFJ,
     RydbergStateSQDTAlkalineJJ,
     RydbergStateSQDTAlkalineLS,
 )
+
+if TYPE_CHECKING:
+    from rydstate.species.species_mqdt_object import SpeciesMQDTObject
+
 
 logger = logging.getLogger(__name__)
 
@@ -117,3 +126,53 @@ class BasisSQDTAlkalineFJ(BasisBase[RydbergStateSQDTAlkalineFJ]):
                                 species, n=n, l=l_r, j_r=float(j_r), f_c=float(f_c), f_tot=float(f_tot)
                             )
                             self.states.append(state)
+
+
+class BasisSQDTAlkalineFJMultiChannel(BasisBase[RydbergStateSQDT]):
+    species: SpeciesMQDTObject
+
+    def __init__(self, species: str, n_min: int = 0, n_max: int | None = None) -> None:  # noqa: C901
+        super().__init__(species)
+
+        if n_max is None:
+            raise ValueError("n_max must be given")
+
+        s_r = 0.5
+
+        self.states = []
+        for core_ket in self.species.ionization_thresholds_dict:
+            if isinstance(core_ket, AngularCoreKetDummy) or core_ket.j_c is Unknown or core_ket.f_c is Unknown:
+                # we will handle these below
+                continue
+
+            logger.info("Generating states for core ket: %s", core_ket)
+            for n in range(n_min, n_max + 1):
+                for l_r in range(n):
+                    if not all(self.species.is_allowed_shell(n, l_r, s_tot) for s_tot in [0]):
+                        # TODO [0, 1] actually for lowest maybe only add singlet
+                        continue
+                    for j_r in np.arange(abs(l_r - s_r), l_r + s_r + 1):
+                        for f_tot in np.arange(abs(core_ket.f_c - j_r), core_ket.f_c + j_r + 1):
+                            angular_ket = AngularKetFJ(
+                                l_c=core_ket.l_c,
+                                j_c=core_ket.j_c,
+                                f_c=core_ket.f_c,
+                                l_r=l_r,
+                                j_r=float(j_r),
+                                f_tot=float(f_tot),
+                                species=self.species,
+                            )
+                            nu = self.species.calc_nu(n, angular_ket)
+
+                            state = RydbergStateSQDT.from_angular_ket(species, angular_ket, n=n, nu=nu)
+                            self.states.append(state)
+
+        # add all addition series, which are defined in the mqdt.jl but have dummy core kets
+        for angular_ket in self.species._models_dict:  # noqa: SLF001
+            if not angular_ket.is_dummy():
+                # handled above
+                continue
+            for n in range(max(n_min, self.species.ground_state_shell[0]), n_max + 1):
+                nu = self.species.calc_nu(n, angular_ket)
+                state = RydbergStateSQDT.from_angular_ket(species, angular_ket, n=n, nu=nu)
+                self.states.append(state)
