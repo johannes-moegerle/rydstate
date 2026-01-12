@@ -187,15 +187,17 @@ class RydbergStateSQDT(RydbergStateBase):
         """Convert to a trivial RydbergMQDT state with only one contribution with coefficient 1."""
         from rydstate import RydbergStateMQDT  # noqa: PLC0415
 
-        return RydbergStateMQDT([1], [self])
+        return RydbergStateMQDT([1], [self], nu_energy=self.nu)
 
     def calc_reduced_overlap(self, other: RydbergStateBase) -> float:
         """Calculate the reduced overlap <self|other> (ignoring the magnetic quantum number m)."""
         if not isinstance(other, RydbergStateSQDT):
             return self.to_mqdt().calc_reduced_overlap(other)
 
-        radial_overlap = self.radial.calc_overlap(other.radial)
         angular_overlap = self.angular.calc_reduced_overlap(other.angular)
+        if angular_overlap == 0:
+            return 0.0
+        radial_overlap = self.radial.calc_overlap(other.radial)
         return radial_overlap * angular_overlap
 
     @overload  # type: ignore [override]
