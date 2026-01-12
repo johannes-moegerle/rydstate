@@ -93,7 +93,9 @@ def julia_qn_to_dict(qn: juliacall.AnyValue) -> dict[str, float | UnknownType]:
         qns = dict(s_c=qn.sc, l_c=qn.lc, j_c=qn.Jc, f_c=qn.Fc, l_r=qn.lr, j_r=qn.Jr, f_tot=qn.F)  # noqa: C408
     elif "jjQuantumNumbers" in str(qn):
         qns = dict(s_c=qn.sc, l_c=qn.lc, j_c=qn.Jc, l_r=qn.lr, j_r=qn.Jr, j_tot=qn.J, f_tot=qn.F)  # noqa: C408
-        qns["f_c"] = qn.Jc  # ensure we treat this state as FJ coupled (with i_c=0)
+        # ensure we treat this state as FJ coupled (with i_c=0)
+        del qns["j_tot"]
+        qns["f_c"] = qn.Jc
     elif "lsQuantumNumbers" in str(qn):
         qns = dict(s_c=qn.sc, s_tot=qn.S, l_c=qn.lc, l_r=qn.lr, l_tot=qn.L, j_tot=qn.J, f_tot=qn.F)  # noqa: C408
     else:
