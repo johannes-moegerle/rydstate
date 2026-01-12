@@ -34,13 +34,22 @@ except ImportError:
     USE_JULIACALL = False
 
 
-if USE_JULIACALL:
-    try:
-        jl.seval("using MQDT")
-        jl.seval("using CGcoefficient")
-    except JuliaError:
-        logger.exception("Failed to load Julia MQDT or CGcoefficient package")
-        USE_JULIACALL = False
+IS_MQDT_IMPORTED = False
+
+
+def import_mqdt() -> bool:
+    """Load the MQDT Julia package.
+
+    Since this might be time-consuming, we only do it if needed and ensure it is called only once.
+    """
+    global IS_MQDT_IMPORTED  # noqa: PLW0603
+    if not IS_MQDT_IMPORTED:
+        try:
+            jl.seval("using MQDT")
+            IS_MQDT_IMPORTED = True
+        except JuliaError:
+            logger.exception("Failed to load Julia MQDT package")
+    return IS_MQDT_IMPORTED
 
 
 class BasisMQDT(BasisBase[RydbergStateMQDT[Any]]):
@@ -52,19 +61,14 @@ class BasisMQDT(BasisBase[RydbergStateMQDT[Any]]):
         *,
         skip_high_l: bool = True,
     ) -> None:
+        if not USE_JULIACALL:
+            raise ImportError("JuliaCall is not available, try `pip install rydstate[mqdt]`.")
+        if not import_mqdt():
+            raise ImportError("Failed to load the MQDT Julia package, try `pip install rydstate[mqdt]`.")
         super().__init__(species)
 
         if n_max is None:
             raise ValueError("n_max must be given")
-
-        if not USE_JULIACALL:
-            raise ImportError("JuliaCall or the MQDT Julia package is not available.")
-
-        # initialize Wigner symbol calculation
-        if skip_high_l:
-            jl.CGcoefficient.wigner_init_float(10, "Jmax", 9)
-        else:
-            jl.CGcoefficient.wigner_init_float(n_max - 1, "Jmax", 9)
 
         jl_species = jl.Symbol(self.species.name)
         parameters = jl.MQDT.get_parameters(jl_species)
