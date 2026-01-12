@@ -72,7 +72,7 @@ class BasisMQDT(BasisBase[RydbergStateMQDT[Any]]):
         if n_max is None:
             raise ValueError("n_max must be given")
 
-        jl_species = jl.Symbol(self.species.name)
+        jl_species = jl.Symbol(self.species.name.replace("_mqdt", ""))
         parameters = jl.MQDT.get_parameters(jl_species)
 
         self.models = []
