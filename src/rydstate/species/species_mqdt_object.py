@@ -136,8 +136,15 @@ class SpeciesMQDTObject(SpeciesObject):
                 angular_ket: AngularKetBase
                 if model.core[i]:
                     qn_dict = julia_qn_to_dict(model.outer_channels.i[i_core])
-                    angular_ket = quantum_numbers_to_angular_ket(self, **qn_dict)  # type: ignore [arg-type]
                     i_core += 1
+                    if any(qn is Unknown for qn in qn_dict.values()):
+                        name = f"model='{model.name}'; term='{term}'"
+                        core_qn_dict = {k: v for k, v in qn_dict.items() if k in ["s_c", "l_c", "j_c", "f_c"]}
+                        core_ket = AngularCoreKet(i_c=self.i_c, **core_qn_dict)  # type: ignore [arg-type]
+                        angular_ket = AngularKetDummy(name, f_tot=model.f_tot, core_ket=core_ket)
+                    else:
+                        angular_ket = quantum_numbers_to_angular_ket(self, **qn_dict)  # type: ignore [arg-type]
+
                 else:
                     name = f"model='{model.name}'; term='{term}'"
                     core_ket_name = term.split("n")[0]
