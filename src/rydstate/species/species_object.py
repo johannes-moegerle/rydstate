@@ -247,21 +247,32 @@ class SpeciesObject(ABC):
         return (n, l) in self._additional_allowed_shells
 
     @overload
-    def get_ionization_energy(self, unit: None = None) -> PintFloat: ...
+    def get_ionization_energy(self, angular_ket: AngularKetBase | None = None, unit: None = None) -> PintFloat: ...
 
     @overload
-    def get_ionization_energy(self, unit: str) -> float: ...
+    def get_ionization_energy(self, angular_ket: AngularKetBase | None = None, *, unit: str) -> float: ...
 
-    def get_ionization_energy(self, unit: str | None = "hartree") -> PintFloat | float:
+    @overload
+    def get_ionization_energy(self, angular_ket: AngularKetBase | None, unit: str) -> float: ...
+
+    def get_ionization_energy(
+        self, angular_ket: AngularKetBase | None = None, unit: str | None = "hartree"
+    ) -> PintFloat | float:
         """Return the ionization energy in the desired unit.
 
         Args:
+            angular_ket: The angular ket specifying the core state, which determines the ionization energy.
+                For most Alkali atoms we assume a constant ionization energy for all angular kets.
             unit: Desired unit for the ionization energy. Default is atomic units "hartree".
 
         Returns:
             Ionization energy in the desired unit.
 
         """
+        if not hasattr(self, "_ionization_energy"):
+            raise NotImplementedError(f"Ionization energy not defined for species {self.name} and {angular_ket}.")
+
+        # if _ionization_energy is defined, we assume a constant ionization energy for all angular kets
         ionization_energy: PintFloat = ureg.Quantity(self._ionization_energy[0], self._ionization_energy[2])
         ionization_energy = ionization_energy.to("hartree", "spectroscopy")
         if unit is None:
@@ -270,10 +281,23 @@ class SpeciesObject(ABC):
             return ionization_energy.magnitude
         return ionization_energy.to(unit, "spectroscopy").magnitude
 
-    @cached_property
-    def ionization_energy_au(self) -> float:
-        """Ionization energy in atomic units (Hartree)."""
-        return self.get_ionization_energy("hartree")
+    @overload
+    def get_reference_ionization_energy(self, unit: None = None) -> PintFloat: ...
+
+    @overload
+    def get_reference_ionization_energy(self, unit: str) -> float: ...
+
+    def get_reference_ionization_energy(self, unit: str | None = "hartree") -> PintFloat | float:
+        """Return the reference ionization energy in the desired unit.
+
+        Args:
+            unit: Desired unit for the ionization energy. Default is atomic units "hartree".
+
+        Returns:
+            Reference ionization energy in the desired unit.
+
+        """
+        return self.get_ionization_energy(None, unit=unit)
 
     @overload
     def get_corrected_rydberg_constant(self, unit: None = None) -> PintFloat: ...
@@ -379,7 +403,7 @@ class SpeciesObject(ABC):
         if n <= nist_n_max and use_nist_data:  # try to use NIST data
             if (n, l, j_tot, s_tot) in self._nist_energy_levels:
                 energy_au = self._nist_energy_levels[(n, l, j_tot, s_tot)]
-                energy_au -= self.ionization_energy_au  # use the cached ionization energy for better performance
+                energy_au -= self.get_ionization_energy(angular_ket, "hartree")
                 return calc_nu_from_energy(self.reduced_mass_au, energy_au)
             logger.debug(
                 "NIST energy levels for (n=%d, l=%d, j_tot=%s, s_tot=%s) not found, using quantum defect theory.",
