@@ -391,7 +391,8 @@ class AngularKetBase(ABC):
             fj = next(s for s in kets if isinstance(s, AngularKetFJ))
             ls = next(s for s in kets if isinstance(s, AngularKetLS))
             ov: float = 0
-            for coeff, jj_ket in fj.to_state("JJ"):
+            state_jj = fj.to_state("JJ")
+            for coeff, jj_ket in zip(state_jj.coefficients, state_jj.kets):
                 ov += coeff * ls.calc_reduced_overlap(jj_ket)
             return float(ov)
 
