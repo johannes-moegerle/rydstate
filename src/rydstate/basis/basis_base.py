@@ -7,6 +7,7 @@ import numpy as np
 from typing_extensions import Self
 
 from rydstate.angular.angular_matrix_element import is_angular_momentum_quantum_number
+from rydstate.angular.angular_state import AngularState
 from rydstate.rydberg.rydberg_base import RydbergStateBase
 from rydstate.species.species_object import SpeciesObject
 from rydstate.units import ureg
@@ -48,13 +49,29 @@ class BasisBase(ABC, Generic[_RydbergState]):
             qn_min = value - delta
             qn_max = value + delta
 
-        if is_angular_momentum_quantum_number(qn):
-            self.states = [state for state in self.states if qn_min <= state.angular.calc_exp_qn(qn) <= qn_max]
+        if qn == "f_tot":
+            self.states = [state for state in self.states if (qn_min <= state.angular.f_tot <= qn_max)]
+
+        elif is_angular_momentum_quantum_number(qn):
+            self.states = [
+                state
+                for state in self.states
+                if (not state.angular.is_dummy()) and (qn_min <= state.angular.calc_exp_qn(qn) <= qn_max)
+            ]
         elif qn in ["n", "nu", "nu_energy"]:
             self.states = [state for state in self.states if qn_min <= getattr(state, qn) <= qn_max]
         else:
             raise ValueError(f"Unknown quantum number {qn}")
 
+        return self
+
+    def filter_dummy_states(self, name: str, *, exact: bool = True) -> Self:
+        if any(isinstance(state.angular, AngularState) for state in self.states):
+            raise ValueError("filter_dummy_states can only be used on bases with dummy angular kets")
+        if exact:
+            self.states = [state for state in self.states if state.angular.is_dummy() and state.angular.name == name]  # type: ignore [union-attr]
+        else:
+            self.states = [state for state in self.states if state.angular.is_dummy() and name in state.angular.name]  # type: ignore [union-attr]
         return self
 
     def sort_states(self, *qns: str) -> Self:
