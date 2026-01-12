@@ -391,15 +391,7 @@ class SpeciesObject(ABC):
         if not isinstance(angular_ket, AngularKetLS):
             raise NotImplementedError("calc_nu is only implemented for AngularKetLS.")
 
-        l, j_tot, s_tot = angular_ket.l_r, angular_ket.j_tot, angular_ket.s_r
-        if s_tot is None:
-            if self.number_valence_electrons != 1:
-                raise ValueError("s_tot must be specified for species with more than one valence electron.")
-            s_tot = 0.5
-        if (s_tot % 1) != ((self.number_valence_electrons / 2) % 1):
-            raise ValueError(f"Invalid spin {s_tot=} for {self.name}.")
-        if j_tot % 1 != (l + s_tot) % 1:
-            raise ValueError(f"Invalid quantum numbers: ({l=}, {j_tot=}, {s_tot=})")
+        l, j_tot, s_tot = angular_ket.l_r, angular_ket.j_tot, angular_ket.s_tot
 
         if n <= nist_n_max and use_nist_data:  # try to use NIST data
             if (n, l, j_tot, s_tot) in self._nist_energy_levels:
