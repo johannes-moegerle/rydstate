@@ -140,8 +140,8 @@ def quantum_numbers_to_angular_ket(
     from rydstate.angular.angular_ket import AngularKetFJ, AngularKetJJ, AngularKetLS  # noqa: PLC0415
 
     with contextlib.suppress(InvalidQuantumNumbersError, ValueError):
-        return AngularKetFJ(
-            s_c=s_c, l_c=l_c, j_c=j_c, f_c=f_c, s_r=s_r, l_r=l_r, j_r=j_r, f_tot=f_tot, m=m, species=species
+        return AngularKetLS(
+            s_c=s_c, l_c=l_c, s_r=s_r, l_r=l_r, s_tot=s_tot, l_tot=l_tot, j_tot=j_tot, f_tot=f_tot, m=m, species=species
         )
 
     with contextlib.suppress(InvalidQuantumNumbersError, ValueError):
@@ -150,8 +150,8 @@ def quantum_numbers_to_angular_ket(
         )
 
     with contextlib.suppress(InvalidQuantumNumbersError, ValueError):
-        return AngularKetLS(
-            s_c=s_c, l_c=l_c, s_r=s_r, l_r=l_r, s_tot=s_tot, l_tot=l_tot, j_tot=j_tot, f_tot=f_tot, m=m, species=species
+        return AngularKetFJ(
+            s_c=s_c, l_c=l_c, j_c=j_c, f_c=f_c, s_r=s_r, l_r=l_r, j_r=j_r, f_tot=f_tot, m=m, species=species
         )
 
     raise ValueError("Invalid combination of angular quantum numbers provided.")
