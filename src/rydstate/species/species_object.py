@@ -10,7 +10,6 @@ from typing import TYPE_CHECKING, ClassVar, overload
 
 import numpy as np
 
-from rydstate.angular.angular_ket import AngularKetLS
 from rydstate.species.utils import calc_nu_from_energy, convert_electron_configuration
 from rydstate.units import rydberg_constant, ureg
 
@@ -387,6 +386,8 @@ class SpeciesObject(ABC):
                 Default is 15.
 
         """
+        from rydstate.angular.angular_ket import AngularKetLS  # noqa: PLC0415
+
         if not isinstance(angular_ket, AngularKetLS):
             raise NotImplementedError("calc_nu is only implemented for AngularKetLS.")
 
