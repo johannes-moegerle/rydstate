@@ -561,6 +561,13 @@ class AngularKetBase(ABC):
             f_c=self.f_c,
         )
 
+    @property
+    def is_dummy(self) -> bool:
+        """Return True if this ket is a dummy ket."""
+        from rydstate.angular.angular_ket_dummy import AngularKetDummy  # noqa: PLC0415
+
+        return isinstance(self, AngularKetDummy)
+
 
 class AngularKetLS(AngularKetBase):
     """Spin ket in LS coupling."""

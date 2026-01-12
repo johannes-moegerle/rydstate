@@ -12,8 +12,8 @@ from rydstate.angular.angular_ket import (
     AngularKetJJ,
     AngularKetLS,
 )
-from rydstate.angular.angular_ket_dummy import AngularKetDummy
 from rydstate.angular.angular_matrix_element import is_angular_momentum_quantum_number
+from rydstate.angular.utils import Unknown
 
 if TYPE_CHECKING:
     from collections.abc import Iterator, Sequence
@@ -30,6 +30,8 @@ _AngularKet = TypeVar("_AngularKet", bound=AngularKetBase)
 
 
 class AngularState(Generic[_AngularKet]):
+    is_dummy: bool = False
+
     def __init__(
         self, coefficients: Sequence[float], kets: Sequence[_AngularKet], *, warn_if_not_normalized: bool = True
     ) -> None:
@@ -69,13 +71,11 @@ class AngularState(Generic[_AngularKet]):
 
     @property
     def kets(self) -> list[_AngularKet]:
-        return [ket for ket in self._kets if not isinstance(ket, AngularKetDummy)]
+        return [ket for ket in self._kets if not ket.is_dummy]
 
     @property
     def coefficients(self) -> np.ndarray:
-        return np.array(
-            [coeff for coeff, ket in zip(self._coefficients, self._kets) if not isinstance(ket, AngularKetDummy)]
-        )
+        return np.array([coeff for coeff, ket in zip(self._coefficients, self._kets) if not ket.is_dummy])
 
     @property
     def coupling_scheme(self) -> CouplingScheme:

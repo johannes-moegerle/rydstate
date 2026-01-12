@@ -67,7 +67,7 @@ class AngularKetDummy(AngularKetBase):
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, AngularKetBase):
             raise NotImplementedError(f"Cannot compare {self!r} with {other!r}.")
-        if not isinstance(other, AngularKetDummy):
+        if not other.is_dummy:
             return False
         return self.name == other.name and self.f_tot == other.f_tot and self.m == other.m
 
