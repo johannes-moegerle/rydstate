@@ -154,6 +154,11 @@ class AngularKetBase(ABC):
     def __str__(self) -> str:
         return self.__repr__().replace("AngularKet", "")
 
+    @property
+    def name(self) -> str:
+        """Unique name of the ket."""
+        return str(self)
+
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, AngularKetBase):
             raise NotImplementedError(f"Cannot compare {self!r} with {other!r}.")
@@ -562,7 +567,6 @@ class AngularKetBase(ABC):
             f_c=self.f_c,
         )
 
-    @property
     def is_dummy(self) -> bool:
         """Return True if this ket is a dummy ket."""
         from rydstate.angular.angular_ket_dummy import AngularKetDummy  # noqa: PLC0415

@@ -29,8 +29,6 @@ _AngularKet = TypeVar("_AngularKet", bound=AngularKetBase)
 
 
 class AngularState(Generic[_AngularKet]):
-    is_dummy: bool = False
-
     def __init__(
         self, coefficients: Sequence[float], kets: Sequence[_AngularKet], *, warn_if_not_normalized: bool = True
     ) -> None:
@@ -65,13 +63,17 @@ class AngularState(Generic[_AngularKet]):
         terms = [f"{coeff}*{ket!s}" for coeff, ket in zip(self.coefficients, self.kets)]
         return f"{', '.join(terms)}"
 
+    def is_dummy(self) -> bool:
+        """Check if the AngularState consists only of dummy kets."""
+        return all(ket.is_dummy() for ket in self.kets)
+
     @property
     def nondummy_kets(self) -> list[_AngularKet]:
-        return [ket for ket in self.kets if not ket.is_dummy]
+        return [ket for ket in self.kets if not ket.is_dummy()]
 
     @property
     def nondummy_coefficients(self) -> np.ndarray:
-        return np.array([coeff for coeff, ket in zip(self.coefficients, self.kets) if not ket.is_dummy])
+        return np.array([coeff for coeff, ket in zip(self.coefficients, self.kets) if not ket.is_dummy()])
 
     @property
     def coupling_scheme(self) -> CouplingScheme:
@@ -115,7 +117,7 @@ class AngularState(Generic[_AngularKet]):
         newkets: list[AngularKetBase] = []
         new_coefficients: list[float] = []
         for coeff, ket in zip(self.coefficients, self.kets):
-            state = ket.to_state() if ket.is_dummy else ket.to_state(coupling_scheme)
+            state = ket.to_state() if ket.is_dummy() else ket.to_state(coupling_scheme)
             for coeff2, ket2 in zip(state.coefficients, state.kets):
                 if ket2 in newkets:
                     index = newkets.index(ket2)  # type: ignore [arg-type]
@@ -211,10 +213,10 @@ class AngularState(Generic[_AngularKet]):
 
         value = 0
         for coeff1, ket1 in zip(self.coefficients, self.kets):
-            if ket1.is_dummy:
+            if ket1.is_dummy():
                 continue
             for coeff2, ket2 in zip(other.coefficients, other.kets):
-                if ket2.is_dummy:
+                if ket2.is_dummy():
                     continue
                 value += np.conjugate(coeff1) * coeff2 * ket1.calc_reduced_matrix_element(ket2, operator, kappa)
 
