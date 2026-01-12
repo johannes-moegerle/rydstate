@@ -13,6 +13,8 @@ if TYPE_CHECKING:
 
 CouplingScheme = Literal["LS", "JJ", "FJ", "Dummy"]
 
+Unknown = "Unknown"  # or np.nan or custom Singleton?
+
 
 class InvalidQuantumNumbersError(ValueError):
     def __init__(self, ket: AngularKetBase, msg: str = "") -> None:
@@ -37,12 +39,16 @@ def try_trivial_spin_addition(s_1: float, s_2: float, s_tot: float | None, name:
     If s_tot is None and cannot be uniquely determined from s_1 and s_2, raise an error.
     Otherwise return s_tot or the trivial sum s_1 + s_2.
     """
-    if s_tot is None:
-        if s_1 != 0 and s_2 != 0:
-            msg = f"{name} must be set if both parts ({s_1} and {s_2}) are non-zero."
-            raise ValueError(msg)
-        s_tot = s_1 + s_2
-    return float(s_tot)
+    if s_tot is Unknown:
+        return Unknown
+    if s_tot is not None:
+        return float(s_tot)
+    if s_1 is Unknown or s_2 is Unknown:
+        return Unknown
+    if s_1 != 0 and s_2 != 0:
+        msg = f"{name} must be set if both parts ({s_1} and {s_2}) are non-zero."
+        raise ValueError(msg)
+    return float(s_1 + s_2)
 
 
 def check_spin_addition_rule(s_1: float, s_2: float, s_tot: float) -> bool:
@@ -52,25 +58,31 @@ def check_spin_addition_rule(s_1: float, s_2: float, s_tot: float) -> bool:
     - |s_1 - s_2| <= s_tot <= s_1 + s_2
     - s_1 + s_2 + s_tot is an integer
     """
+    if any(s is Unknown for s in [s_1, s_2, s_tot]):
+        return True
     return abs(s_1 - s_2) <= s_tot <= s_1 + s_2 and (s_1 + s_2 + s_tot) % 1 == 0
 
 
 def get_possible_quantum_number_values(s_1: float, s_2: float, s_tot: float | None) -> list[float]:
     """Determine a list of possible s_tot values from s_1 and s_2 if s_tot is not given, else return [s_tot]."""
-    if s_tot is not None:
-        return [s_tot]
+    if np.isscalar(s_tot):
+        return [float(s_tot)]
+    if any(s is Unknown for s in [s_1, s_2, s_tot]):
+        return [Unknown]
     return [float(s) for s in np.arange(abs(s_1 - s_2), s_1 + s_2 + 1, 1)]
 
 
 def julia_qn_to_dict(qn: juliacall.AnyValue) -> dict[str, float]:
     """Convert MQDT Julia quantum numbers to dict object."""
     if "fjQuantumNumbers" in str(qn):
-        return dict(s_c=qn.sc, l_c=qn.lc, j_c=qn.Jc, f_c=qn.Fc, l_r=qn.lr, j_r=qn.Jr, f_tot=qn.F)  # noqa: C408
-    if "jjQuantumNumbers" in str(qn):
-        return dict(s_c=qn.sc, l_c=qn.lc, j_c=qn.Jc, l_r=qn.lr, j_r=qn.Jr, j_tot=qn.J, f_tot=qn.F)  # noqa: C408
-    if "lsQuantumNumbers" in str(qn):
-        return dict(s_c=qn.sc, s_tot=qn.S, l_c=qn.lc, l_r=qn.lr, l_tot=qn.L, j_tot=qn.J, f_tot=qn.F)  # noqa: C408
-    raise ValueError(f"Unknown MQDT Julia quantum numbers  {qn!s}.")
+        qns = dict(s_c=qn.sc, l_c=qn.lc, j_c=qn.Jc, f_c=qn.Fc, l_r=qn.lr, j_r=qn.Jr, f_tot=qn.F)  # noqa: C408
+    elif "jjQuantumNumbers" in str(qn):
+        qns = dict(s_c=qn.sc, l_c=qn.lc, j_c=qn.Jc, l_r=qn.lr, j_r=qn.Jr, j_tot=qn.J, f_tot=qn.F)  # noqa: C408
+    elif "lsQuantumNumbers" in str(qn):
+        qns = dict(s_c=qn.sc, s_tot=qn.S, l_c=qn.lc, l_r=qn.lr, l_tot=qn.L, j_tot=qn.J, f_tot=qn.F)  # noqa: C408
+    else:
+        raise ValueError(f"Unknown MQDT Julia quantum numbers  {qn!s}.")
+    return {k: v if str(v) != "nan" else Unknown for k, v in qns.items()}
 
 
 def quantum_numbers_to_angular_ket(
@@ -107,11 +119,19 @@ def quantum_numbers_to_angular_ket(
           Optional, only needed for concrete angular matrix elements.
 
     """
+    if f_c is Unknown or j_c is Unknown:
+        raise ValueError("Cannot create AngularKet with unknown j_c or f_c quantum numbers.")
+        from rydstate.angular.angular_core_ket import AngularCoreKet  # noqa: PLC0415
+        from rydstate.angular.angular_ket_dummy import AngularKetDummy  # noqa: PLC0415
+
+        core_ket = AngularCoreKet(species.i_c, s_c, l_c, j_c, f_c)
+        return AngularKetDummy(f"test2 {f_tot=}", f_tot, core_ket=core_ket)
+
     from rydstate.angular.angular_ket import AngularKetFJ, AngularKetJJ, AngularKetLS  # noqa: PLC0415
 
     with contextlib.suppress(InvalidQuantumNumbersError, ValueError):
-        return AngularKetLS(
-            s_c=s_c, l_c=l_c, s_r=s_r, l_r=l_r, s_tot=s_tot, l_tot=l_tot, j_tot=j_tot, f_tot=f_tot, m=m, species=species
+        return AngularKetFJ(
+            s_c=s_c, l_c=l_c, j_c=j_c, f_c=f_c, s_r=s_r, l_r=l_r, j_r=j_r, f_tot=f_tot, m=m, species=species
         )
 
     with contextlib.suppress(InvalidQuantumNumbersError, ValueError):
@@ -120,8 +140,8 @@ def quantum_numbers_to_angular_ket(
         )
 
     with contextlib.suppress(InvalidQuantumNumbersError, ValueError):
-        return AngularKetFJ(
-            s_c=s_c, l_c=l_c, j_c=j_c, f_c=f_c, s_r=s_r, l_r=l_r, j_r=j_r, f_tot=f_tot, m=m, species=species
+        return AngularKetLS(
+            s_c=s_c, l_c=l_c, s_r=s_r, l_r=l_r, s_tot=s_tot, l_tot=l_tot, j_tot=j_tot, f_tot=f_tot, m=m, species=species
         )
 
     raise ValueError("Invalid combination of angular quantum numbers provided.")

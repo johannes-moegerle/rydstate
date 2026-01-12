@@ -3,6 +3,7 @@ from rydstate.angular.angular_core_ket import AngularCoreKet, AngularCoreKetDumm
 from rydstate.angular.angular_ket import AngularKetFJ, AngularKetJJ, AngularKetLS
 from rydstate.angular.angular_ket_dummy import AngularKetDummy
 from rydstate.angular.angular_state import AngularState
+from rydstate.angular.utils import Unknown
 
 __all__ = [
     "AngularCoreKet",
@@ -12,5 +13,6 @@ __all__ = [
     "AngularKetJJ",
     "AngularKetLS",
     "AngularState",
+    "Unknown",
     "utils",
 ]
