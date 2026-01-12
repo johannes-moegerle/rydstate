@@ -76,9 +76,6 @@ class AngularKetDummy(AngularKetBase):
     def __hash__(self) -> int:
         return hash((self.name, self.f_tot, self.m))
 
-    def calc_reduced_overlap(self, other: AngularKetBase) -> float:
-        return int(self == other)
-
     def calc_reduced_matrix_element(
         self: Self,
         other: AngularKetBase,  # noqa: ARG002

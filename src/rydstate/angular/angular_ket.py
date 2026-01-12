@@ -366,14 +366,18 @@ class AngularKetBase(ABC):
         If the kets are of different types, the overlap is calculated using the corresponding
         Clebsch-Gordan coefficients (/ Wigner-j symbols).
         """
+        if type(self) is type(other):
+            return int(self == other)
+
         for q in set(self.quantum_number_names) & set(other.quantum_number_names):
             if self.get_qn(q) != other.get_qn(q):
                 return 0
 
-        if type(self) is type(other):
-            return 1
-
         kets: list[AngularKetBase] = [self, other]
+
+        # Dummy overlaps
+        if any(s.is_dummy() for s in kets) and any(not s.is_dummy() for s in kets):
+            return 0
 
         # JJ - FJ overlaps
         if any(isinstance(s, AngularKetJJ) for s in kets) and any(isinstance(s, AngularKetFJ) for s in kets):
