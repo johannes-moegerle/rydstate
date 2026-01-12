@@ -132,7 +132,7 @@ class BasisSQDTAlkalineFJ(BasisBase[RydbergStateSQDTAlkalineFJ]):
 class BasisSQDTAlkalineFJMultiChannel(BasisBase[RydbergStateSQDT]):
     species: SpeciesMQDTObject
 
-    def __init__(self, species: str, n_min: int = 0, n_max: int | None = None) -> None:  # noqa: C901
+    def __init__(self, species: str | SpeciesMQDTObject, n_min: int = 0, n_max: int | None = None) -> None:  # noqa: C901
         super().__init__(species)
 
         if n_max is None:
