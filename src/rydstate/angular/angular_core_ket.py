@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from rydstate.angular.utils import try_trivial_spin_addition
+from rydstate.angular.utils import UnknownType, try_trivial_spin_addition_with_unkown
 
 
 class AngularCoreKet:
@@ -10,9 +10,9 @@ class AngularCoreKet:
         self,
         i_c: float | None = None,
         s_c: float | None = None,
-        l_c: int | None = None,
-        j_c: float | None = None,
-        f_c: float | None = None,
+        l_c: int | UnknownType | None = None,
+        j_c: float | UnknownType | None = None,
+        f_c: float | UnknownType | None = None,
     ) -> None:
         """Initialize the core angular ket."""
         if i_c is None:
@@ -25,10 +25,10 @@ class AngularCoreKet:
 
         if l_c is None:
             raise ValueError("Core orbital angular momentum l_c must be set.")
-        self.l_c = int(l_c)
+        self.l_c = int(l_c) if not isinstance(l_c, UnknownType) else l_c
 
-        self.j_c = try_trivial_spin_addition(self.l_c, self.s_c, j_c, "j_c")
-        self.f_c = try_trivial_spin_addition(self.j_c, self.i_c, f_c, "f_c")
+        self.j_c = try_trivial_spin_addition_with_unkown(self.l_c, self.s_c, j_c, "j_c")
+        self.f_c = try_trivial_spin_addition_with_unkown(self.j_c, self.i_c, f_c, "f_c")
 
     def __repr__(self) -> str:
         return f"AngularCoreKet(i_c={self.i_c}, s_c={self.s_c}, l_c={self.l_c}, j_c={self.j_c}, f_c={self.f_c})"
