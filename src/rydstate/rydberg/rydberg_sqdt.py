@@ -197,6 +197,8 @@ class RydbergStateSQDT(RydbergStateBase):
         angular_overlap = self.angular.calc_reduced_overlap(other.angular)
         if angular_overlap == 0:
             return 0.0
+        if self.angular.is_dummy():
+            return angular_overlap
         radial_overlap = self.radial.calc_overlap(other.radial)
         return radial_overlap * angular_overlap
 
