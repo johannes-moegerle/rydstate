@@ -25,6 +25,7 @@ from rydstate.species import SpeciesObject
 if TYPE_CHECKING:
     from typing_extensions import Never, Self
 
+    from rydstate.angular.angular_core_ket import AngularCoreKet
     from rydstate.angular.angular_matrix_element import AngularMomentumQuantumNumbers, AngularOperatorType
     from rydstate.angular.angular_state import AngularState
     from rydstate.angular.utils import CouplingScheme
@@ -170,6 +171,10 @@ class AngularKetBase(ABC):
                 self.m,
             )
         )
+
+    def get_qn_dict(self) -> dict[AngularMomentumQuantumNumbers, float]:
+        """Get a dictionary of all quantum numbers."""
+        return dict(zip(self.quantum_number_names, self.quantum_numbers))
 
     def get_qn(self, qn: AngularMomentumQuantumNumbers) -> float:
         """Get the value of a quantum number by name."""
@@ -363,7 +368,7 @@ class AngularKetBase(ABC):
         if type(self) is type(other):
             return 1
 
-        kets = [self, other]
+        kets: list[AngularKetBase] = [self, other]
 
         # JJ - FJ overlaps
         if any(isinstance(s, AngularKetJJ) for s in kets) and any(isinstance(s, AngularKetFJ) for s in kets):
@@ -541,6 +546,20 @@ class AngularKetBase(ABC):
             return 0
         prefactor = calc_prefactor_of_operator_in_coupled_scheme(f1, f2, f_tot, i1, i2, i_tot, kappa, operator_acts_on)
         return prefactor * self._calc_prefactor_of_operator_in_coupled_scheme(other, qn_combined, kappa)
+
+    def get_core_ket(self) -> AngularCoreKet:
+        """Return the core ket corresponding to this angular ket."""
+        if not isinstance(self, AngularKetFJ):
+            raise NotImplementedError("get_core_ket is only implemented for AngularKetFJ.")
+        from rydstate.angular.angular_core_ket import AngularCoreKet  # noqa: PLC0415
+
+        return AngularCoreKet(
+            i_c=self.i_c,
+            s_c=self.s_c,
+            l_c=self.l_c,
+            j_c=self.j_c,
+            f_c=self.f_c,
+        )
 
 
 class AngularKetLS(AngularKetBase):

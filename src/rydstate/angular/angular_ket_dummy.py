@@ -10,6 +10,7 @@ from rydstate.angular.utils import InvalidQuantumNumbersError
 if TYPE_CHECKING:
     from typing_extensions import Self
 
+    from rydstate.angular.angular_core_ket import AngularCoreKet
     from rydstate.angular.angular_matrix_element import AngularOperatorType
 
 logger = logging.getLogger(__name__)
@@ -18,7 +19,7 @@ logger = logging.getLogger(__name__)
 class AngularKetDummy(AngularKetBase):
     """Dummy spin ket for unknown quantum numbers."""
 
-    __slots__ = ("name",)
+    __slots__ = ("name", "_core_ket")
     quantum_number_names: ClassVar = ("f_tot",)
     coupled_quantum_numbers: ClassVar = {}
     coupling_scheme = "Dummy"
@@ -31,12 +32,15 @@ class AngularKetDummy(AngularKetBase):
         name: str,
         f_tot: float,
         m: float | None = None,
+        core_ket: AngularCoreKet | None = None,
     ) -> None:
         """Initialize the Spin ket."""
         self.name = name
 
         self.f_tot = f_tot
         self.m = m
+
+        self._core_ket = core_ket
 
         super()._post_init()
 
@@ -84,3 +88,9 @@ class AngularKetDummy(AngularKetBase):
 
         # ignore contributions from dummy kets
         return 0
+
+    def get_core_ket(self) -> AngularCoreKet:
+        """Return the core ket corresponding to this angular ket."""
+        if self._core_ket is None:
+            raise NotImplementedError("Core ket not set for this AngularKetDummy.")
+        return self._core_ket
