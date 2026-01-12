@@ -88,6 +88,7 @@ class RydbergStateMQDT(RydbergStateBase, Generic[_RydbergState]):
     def get_energy(self, unit: str | None = None) -> PintFloat | float:
         r"""Get the energy of the Rydberg state."""
         energy_au = calc_energy_from_nu(self.species.reduced_mass_au, self.nu_energy)
+        energy_au += self.species.get_reference_ionization_energy("hartree")
 
         if unit == "a.u.":
             return energy_au

@@ -174,6 +174,8 @@ class RydbergStateSQDT(RydbergStateBase):
         where `\mu = R_M/R_\infty` is the reduced mass and `\nu` the effective principal quantum number.
         """
         energy_au = calc_energy_from_nu(self.species.reduced_mass_au, self.nu)
+        energy_au += self.species.get_ionization_energy(self.angular, unit="hartree")
+
         if unit == "a.u.":
             return energy_au
         energy: PintFloat = energy_au * BaseQuantities["energy"]
