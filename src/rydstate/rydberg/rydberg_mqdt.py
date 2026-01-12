@@ -8,6 +8,8 @@ import numpy as np
 from rydstate.angular import AngularState
 from rydstate.rydberg.rydberg_base import RydbergStateBase
 from rydstate.rydberg.rydberg_sqdt import RydbergStateSQDT
+from rydstate.species.utils import calc_energy_from_nu
+from rydstate.units import BaseQuantities
 
 if TYPE_CHECKING:
     from collections.abc import Iterator, Sequence
@@ -33,6 +35,10 @@ class RydbergStateMQDT(RydbergStateBase, Generic[_RydbergState]):
         nu_energy: float | None = None,
         warn_if_not_normalized: bool = True,
     ) -> None:
+        if nu_energy is None:
+            raise ValueError("nu_energy must be provided for RydbergStateMQDT.")
+
+        self.species = sqdt_states[0].species
         self.coefficients = np.array(coefficients)
         self.sqdt_states = sqdt_states
         self.nu_energy = nu_energy
@@ -42,6 +48,8 @@ class RydbergStateMQDT(RydbergStateBase, Generic[_RydbergState]):
             raise ValueError("Length of coefficients and sqdt_states must be the same.")
         if not all(type(sqdt_state) is type(sqdt_states[0]) for sqdt_state in sqdt_states):
             raise ValueError("All sqdt_states must be of the same type.")
+        if not all(sqdt_state.species == self.species for sqdt_state in sqdt_states):
+            raise ValueError("All sqdt_states must have the same species.")
         if len(set(sqdt_states)) != len(sqdt_states):
             raise ValueError("RydbergStateMQDT initialized with duplicate sqdt_states.")
         if abs(self.norm - 1) > 1e-10 and warn_if_not_normalized:
@@ -70,6 +78,24 @@ class RydbergStateMQDT(RydbergStateBase, Generic[_RydbergState]):
     def norm(self) -> float:
         """Return the norm of the state (should be 1)."""
         return np.linalg.norm(self.coefficients)  # type: ignore [return-value]
+
+    @overload
+    def get_energy(self, unit: None = None) -> PintFloat: ...
+
+    @overload
+    def get_energy(self, unit: str) -> float: ...
+
+    def get_energy(self, unit: str | None = None) -> PintFloat | float:
+        r"""Get the energy of the Rydberg state."""
+        energy_au = calc_energy_from_nu(self.species.reduced_mass_au, self.nu_energy)
+
+        if unit == "a.u.":
+            return energy_au
+
+        energy: PintFloat = energy_au * BaseQuantities["energy"]
+        if unit is None:
+            return energy
+        return energy.to(unit, "spectroscopy").magnitude
 
     def calc_reduced_overlap(self, other: RydbergStateBase) -> float:
         """Calculate the reduced overlap <self|other> (ignoring the magnetic quantum number m)."""
