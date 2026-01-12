@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Any, overload
 
 import numpy as np
 
-from rydstate.angular.angular_ket import quantum_numbers_to_angular_ket
+from rydstate.angular.utils import quantum_numbers_to_angular_ket
 from rydstate.radial import RadialKet
 from rydstate.rydberg.rydberg_base import RydbergStateBase
 from rydstate.species import SpeciesObject

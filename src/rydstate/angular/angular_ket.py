@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import contextlib
 import logging
 from abc import ABC
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, overload
@@ -14,6 +13,7 @@ from rydstate.angular.angular_matrix_element import (
     is_angular_operator_type,
 )
 from rydstate.angular.utils import (
+    InvalidQuantumNumbersError,
     check_spin_addition_rule,
     get_possible_quantum_number_values,
     minus_one_pow,
@@ -23,23 +23,13 @@ from rydstate.angular.wigner_symbols import calc_wigner_3j, clebsch_gordan_6j, c
 from rydstate.species import SpeciesObject
 
 if TYPE_CHECKING:
-    import juliacall
     from typing_extensions import Never, Self
 
     from rydstate.angular.angular_matrix_element import AngularMomentumQuantumNumbers, AngularOperatorType
     from rydstate.angular.angular_state import AngularState
+    from rydstate.angular.utils import CouplingScheme
 
 logger = logging.getLogger(__name__)
-
-CouplingScheme = Literal["LS", "JJ", "FJ", "Dummy"]
-
-
-class InvalidQuantumNumbersError(ValueError):
-    def __init__(self, ket: AngularKetBase, msg: str = "") -> None:
-        _msg = f"Invalid quantum numbers for {ket!r}"
-        if len(msg) > 0:
-            _msg += f"\n  {msg}"
-        super().__init__(_msg)
 
 
 class AngularKetBase(ABC):
@@ -375,10 +365,6 @@ class AngularKetBase(ABC):
 
         kets = [self, other]
 
-        # Dummy overlaps
-        if any(isinstance(s, AngularKetDummy) for s in kets):
-            return int(self == other)
-
         # JJ - FJ overlaps
         if any(isinstance(s, AngularKetJJ) for s in kets) and any(isinstance(s, AngularKetFJ) for s in kets):
             jj = next(s for s in kets if isinstance(s, AngularKetJJ))
@@ -420,10 +406,6 @@ class AngularKetBase(ABC):
         """
         if not is_angular_operator_type(operator):
             raise NotImplementedError(f"calc_reduced_matrix_element is not implemented for operator {operator}.")
-
-        # Dummy matrix elements
-        if any(isinstance(s, AngularKetDummy) for s in [self, other]):
-            return 0
 
         if type(self) is not type(other):
             return self.to_state().calc_reduced_matrix_element(other.to_state(), operator, kappa)
@@ -748,122 +730,3 @@ class AngularKetFJ(AngularKetBase):
             msgs.append(f"{self.f_c=}, {self.j_r=}, {self.f_tot=} don't satisfy spin addition rule.")
 
         super().sanity_check(msgs)
-
-
-class AngularKetDummy(AngularKetBase):
-    """Dummy spin ket for unknown quantum numbers."""
-
-    __slots__ = ("name",)
-    quantum_number_names: ClassVar = ("f_tot",)
-    coupled_quantum_numbers: ClassVar = {}
-    coupling_scheme = "Dummy"
-
-    name: str
-    """Name of the dummy ket."""
-
-    def __init__(
-        self,
-        name: str,
-        f_tot: float,
-        m: float | None = None,
-    ) -> None:
-        """Initialize the Spin ket."""
-        self.name = name
-
-        self.f_tot = f_tot
-        self.m = m
-
-        super()._post_init()
-
-    def sanity_check(self, msgs: list[str] | None = None) -> None:
-        """Check that the quantum numbers are valid."""
-        msgs = msgs if msgs is not None else []
-
-        if self.m is not None and not -self.f_tot <= self.m <= self.f_tot:
-            msgs.append(f"m must be between -f_tot and f_tot, but {self.f_tot=}, {self.m=}")
-
-        if msgs:
-            msg = "\n  ".join(msgs)
-            raise InvalidQuantumNumbersError(self, msg)
-
-    def __repr__(self) -> str:
-        args = f"{self.name}, f_tot={self.f_tot}"
-        if self.m is not None:
-            args += f", m={self.m}"
-        return f"{self.__class__.__name__}({args})"
-
-    def __str__(self) -> str:
-        return self.__repr__().replace("AngularKet", "")
-
-    def __eq__(self, other: object) -> bool:
-        if not isinstance(other, AngularKetBase):
-            raise NotImplementedError(f"Cannot compare {self!r} with {other!r}.")
-        if not isinstance(other, AngularKetDummy):
-            return False
-        return self.name == other.name and self.f_tot == other.f_tot and self.m == other.m
-
-    def __hash__(self) -> int:
-        return hash((self.name, self.f_tot, self.m))
-
-
-def julia_qn_to_dict(qn: juliacall.AnyValue) -> dict[str, float]:
-    """Convert MQDT Julia quantum numbers to dict object."""
-    if "fjQuantumNumbers" in str(qn):
-        return dict(s_c=qn.sc, l_c=qn.lc, j_c=qn.Jc, f_c=qn.Fc, l_r=qn.lr, j_r=qn.Jr, f_tot=qn.F)  # noqa: C408
-    if "jjQuantumNumbers" in str(qn):
-        return dict(s_c=qn.sc, l_c=qn.lc, j_c=qn.Jc, l_r=qn.lr, j_r=qn.Jr, j_tot=qn.J, f_tot=qn.F)  # noqa: C408
-    if "lsQuantumNumbers" in str(qn):
-        return dict(s_c=qn.sc, s_tot=qn.S, l_c=qn.lc, l_r=qn.lr, l_tot=qn.L, j_tot=qn.J, f_tot=qn.F)  # noqa: C408
-    raise ValueError(f"Unknown MQDT Julia quantum numbers  {qn!s}.")
-
-
-def quantum_numbers_to_angular_ket(
-    species: str | SpeciesObject,
-    s_c: float | None = None,
-    l_c: int = 0,
-    j_c: float | None = None,
-    f_c: float | None = None,
-    s_r: float = 0.5,
-    l_r: int | None = None,
-    j_r: float | None = None,
-    s_tot: float | None = None,
-    l_tot: int | None = None,
-    j_tot: float | None = None,
-    f_tot: float | None = None,
-    m: float | None = None,
-) -> AngularKetBase:
-    r"""Return an AngularKet object in the corresponding coupling scheme from the given quantum numbers.
-
-    Args:
-        species: Atomic species.
-        s_c: Spin quantum number of the core electron (0 for Alkali, 0.5 for divalent atoms).
-        l_c: Orbital angular momentum quantum number of the core electron.
-        j_c: Total angular momentum quantum number of the core electron.
-        f_c: Total angular momentum quantum number of the core (core electron + nucleus).
-        s_r: Spin quantum number of the rydberg electron (always 0.5).
-        l_r: Orbital angular momentum quantum number of the rydberg electron.
-        j_r: Total angular momentum quantum number of the rydberg electron.
-        s_tot: Total spin quantum number of all electrons.
-        l_tot: Total orbital angular momentum quantum number of all electrons.
-        j_tot: Total angular momentum quantum number of all electrons.
-        f_tot: Total angular momentum quantum number of the atom (rydberg electron + core).
-        m: Total magnetic quantum number.
-          Optional, only needed for concrete angular matrix elements.
-
-    """
-    with contextlib.suppress(InvalidQuantumNumbersError, ValueError):
-        return AngularKetLS(
-            s_c=s_c, l_c=l_c, s_r=s_r, l_r=l_r, s_tot=s_tot, l_tot=l_tot, j_tot=j_tot, f_tot=f_tot, m=m, species=species
-        )
-
-    with contextlib.suppress(InvalidQuantumNumbersError, ValueError):
-        return AngularKetJJ(
-            s_c=s_c, l_c=l_c, j_c=j_c, s_r=s_r, l_r=l_r, j_r=j_r, j_tot=j_tot, f_tot=f_tot, m=m, species=species
-        )
-
-    with contextlib.suppress(InvalidQuantumNumbersError, ValueError):
-        return AngularKetFJ(
-            s_c=s_c, l_c=l_c, j_c=j_c, f_c=f_c, s_r=s_r, l_r=l_r, j_r=j_r, f_tot=f_tot, m=m, species=species
-        )
-
-    raise ValueError("Invalid combination of angular quantum numbers provided.")

@@ -8,11 +8,11 @@ import numpy as np
 
 from rydstate.angular.angular_ket import (
     AngularKetBase,
-    AngularKetDummy,
     AngularKetFJ,
     AngularKetJJ,
     AngularKetLS,
 )
+from rydstate.angular.angular_ket_dummy import AngularKetDummy
 from rydstate.angular.angular_matrix_element import is_angular_momentum_quantum_number
 
 if TYPE_CHECKING:
@@ -20,8 +20,8 @@ if TYPE_CHECKING:
 
     from typing_extensions import Never, Self
 
-    from rydstate.angular.angular_ket import CouplingScheme
     from rydstate.angular.angular_matrix_element import AngularMomentumQuantumNumbers, AngularOperatorType
+    from rydstate.angular.utils import CouplingScheme
 
 logger = logging.getLogger(__name__)
 

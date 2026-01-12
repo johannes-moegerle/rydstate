@@ -5,11 +5,8 @@ from typing import TYPE_CHECKING, Any
 
 import numpy as np
 
-from rydstate.angular.angular_ket import (
-    AngularKetDummy,
-    julia_qn_to_dict,
-    quantum_numbers_to_angular_ket,
-)
+from rydstate.angular.angular_ket_dummy import AngularKetDummy
+from rydstate.angular.utils import julia_qn_to_dict, quantum_numbers_to_angular_ket
 from rydstate.basis.basis_base import BasisBase
 from rydstate.rydberg.rydberg_mqdt import RydbergStateMQDT
 from rydstate.rydberg.rydberg_sqdt import RydbergStateSQDT
