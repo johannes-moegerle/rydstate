@@ -58,7 +58,7 @@ class BasisBase(ABC, Generic[_RydbergState]):
                 for state in self.states
                 if (not state.angular.is_dummy()) and (qn_min <= state.angular.calc_exp_qn(qn) <= qn_max)
             ]
-        elif qn in ["n", "nu", "nu_energy"]:
+        elif qn in ["n", "nu", "nu_energy", "nu_reference"]:
             self.states = [state for state in self.states if qn_min <= getattr(state, qn) <= qn_max]
         else:
             raise ValueError(f"Unknown quantum number {qn}")
@@ -88,14 +88,14 @@ class BasisBase(ABC, Generic[_RydbergState]):
     def calc_exp_qn(self, qn: str) -> list[float]:
         if is_angular_momentum_quantum_number(qn):
             return [state.angular.calc_exp_qn(qn) for state in self.states]
-        if qn in ["n", "nu", "nu_energy"]:
+        if qn in ["n", "nu", "nu_energy", "nu_reference"]:
             return [getattr(state, qn) for state in self.states]
         raise ValueError(f"Unknown quantum number {qn}")
 
     def calc_std_qn(self, qn: str) -> list[float]:
         if is_angular_momentum_quantum_number(qn):
             return [state.angular.calc_std_qn(qn) for state in self.states]
-        if qn in ["n", "nu", "nu_energy"]:
+        if qn in ["n", "nu", "nu_energy", "nu_reference"]:
             return [0 for state in self.states]
         raise ValueError(f"Unknown quantum number {qn}")
 

@@ -15,6 +15,11 @@ logger = logging.getLogger(__name__)
 class RydbergStateBase(ABC):
     angular: AngularState[Any] | AngularKetBase
 
+    @property
+    @abstractmethod
+    def nu_reference(self) -> float:
+        """Return the effective principal quantum number reference for the state."""
+
     @abstractmethod
     def calc_reduced_overlap(self, other: RydbergStateBase) -> float: ...
 
