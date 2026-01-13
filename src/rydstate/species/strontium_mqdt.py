@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import ClassVar
 
 from rydstate.species.species_mqdt_object import SpeciesMQDTObject
-from rydstate.units import electron_mass, rydberg_constant
 
 
 class _StrontiumMQDTAbstract(SpeciesMQDTObject):
@@ -34,23 +33,7 @@ class StrontiumMQDT87(_StrontiumMQDTAbstract):
     name = "Sr87_mqdt"
     i_c = 9 / 2
 
-    # https://physics.nist.gov/PhysRefData/Handbook/Tables/strontiumtable1.htm
-    _isotope_mass_u = 86.908884  # u
-    _corrected_rydberg_constant = (
-        rydberg_constant.m / (1 + electron_mass.to("u").m / _isotope_mass_u),
-        None,
-        str(rydberg_constant.u),
-    )
-
 
 class StrontiumMQDT88(_StrontiumMQDTAbstract):
     name = "Sr88_mqdt"
     i_c = 0
-
-    # https://physics.nist.gov/PhysRefData/Handbook/Tables/strontiumtable1.htm
-    _isotope_mass = 87.905619  # u
-    _corrected_rydberg_constant = (
-        rydberg_constant.m / (1 + electron_mass.to("u").m / _isotope_mass),
-        None,
-        str(rydberg_constant.u),
-    )

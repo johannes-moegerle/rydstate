@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import ClassVar
 
 from rydstate.species.species_mqdt_object import SpeciesMQDTObject
-from rydstate.units import electron_mass, rydberg_constant
 
 
 class _YtterbiumMQDTAbstract(SpeciesMQDTObject):
@@ -24,36 +23,12 @@ class YtterbiumMQDT171(_YtterbiumMQDTAbstract):
     name = "Yb171_mqdt"
     i_c = 1 / 2
 
-    # https://physics.nist.gov/PhysRefData/Handbook/Tables/ytterbiumtable1.htm
-    _isotope_mass = 170.936323  # u
-    _corrected_rydberg_constant = (
-        rydberg_constant.m / (1 + electron_mass.to("u").m / _isotope_mass),
-        None,
-        str(rydberg_constant.u),
-    )
-
 
 class YtterbiumMQDT173(_YtterbiumMQDTAbstract):
     name = "Yb173_mqdt"
     i_c = 5 / 2
 
-    # https://physics.nist.gov/PhysRefData/Handbook/Tables/ytterbiumtable1.htm
-    _isotope_mass = 172.938208  # u
-    _corrected_rydberg_constant = (
-        rydberg_constant.m / (1 + electron_mass.to("u").m / _isotope_mass),
-        None,
-        str(rydberg_constant.u),
-    )
-
 
 class YtterbiumMQDT174(_YtterbiumMQDTAbstract):
     name = "Yb174_mqdt"
     i_c = 0
-
-    # https://physics.nist.gov/PhysRefData/Handbook/Tables/ytterbiumtable1.htm
-    _isotope_mass = 173.938859  # u
-    _corrected_rydberg_constant = (
-        rydberg_constant.m / (1 + electron_mass.to("u").m / _isotope_mass),
-        None,
-        str(rydberg_constant.u),
-    )

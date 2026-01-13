@@ -9,7 +9,7 @@ from rydstate.angular.angular_core_ket import AngularCoreKet, AngularCoreKetDumm
 from rydstate.angular.utils import Unknown
 from rydstate.species.species_object import SpeciesObject
 from rydstate.species.utils import calc_energy_from_nu, calc_nu_from_energy
-from rydstate.units import ureg
+from rydstate.units import electron_mass, rydberg_constant, ureg
 
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase
@@ -54,6 +54,18 @@ class SpeciesMQDTObject(SpeciesObject):
             for f_tot in np.arange(abs(jtot_min - i_c), jtot_max + i_c + 1):
                 models = jl.MQDT.get_fmodels(self.jl_species, l, float(f_tot))
                 self.jl_models.extend(models)
+
+    @property
+    def _isotope_mass(self) -> float:
+        return float(self.jl_parameters.mass)
+
+    @property
+    def _corrected_rydberg_constant(self) -> tuple[float, None, str]:  # type: ignore [override]
+        return (
+            rydberg_constant.m / (1 + electron_mass.to("u").m ** 2 / self._isotope_mass),
+            None,
+            str(rydberg_constant.u),
+        )
 
     @overload
     def get_ionization_energy(self, angular_ket: AngularKetBase | None = None, unit: None = None) -> PintFloat: ...
