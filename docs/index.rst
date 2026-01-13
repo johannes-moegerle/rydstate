@@ -9,11 +9,4 @@
     :hidden:
 
     examples.rst
-
-
-.. toctree::
-    :maxdepth: 2
-    :caption: References
-    :hidden:
-
-    modules.rst
+    api_reference.rst

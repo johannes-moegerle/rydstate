@@ -1,3 +1,4 @@
+from rydstate.radial import numerov
 from rydstate.radial.grid import Grid
 from rydstate.radial.model import Model, PotentialType
 from rydstate.radial.numerov import run_numerov_integration
@@ -14,5 +15,6 @@ __all__ = [
     "WavefunctionNumerov",
     "WavefunctionWhittaker",
     "calc_radial_matrix_element_from_w_z",
+    "numerov",
     "run_numerov_integration",
 ]

@@ -152,7 +152,7 @@ class WavefunctionNumerov(Wavefunction):
         The resulting radial wavefunction is normalized such that
 
         .. math::
-            \int_{0}^{\infty} r^2 |R(x)|^2 dr
+            \int_{0}^{\infty} r^2 |R(r)|^2 dr
             = \int_{0}^{\infty} |\tilde{u}(x)|^2 dx
             = \int_{0}^{\infty} 2 z^2 |w(z)|^2 dz
             = 1

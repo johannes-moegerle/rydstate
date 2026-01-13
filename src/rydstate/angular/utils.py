@@ -27,11 +27,12 @@ def try_trivial_spin_addition(s_1: float, s_2: float, s_tot: float | None, name:
 
 
 def check_spin_addition_rule(s_1: float, s_2: float, s_tot: float) -> bool:
-    """Check if the spin addition rule is satisfied.
+    r"""Check if the spin addition rule is satisfied.
 
     This means check the following conditions:
-    - |s_1 - s_2| <= s_tot <= s_1 + s_2
-    - s_1 + s_2 + s_tot is an integer
+    :math:`|s_1 - s_2| \leq s_{tot} \leq s_1 + s_2`
+    and
+    :math:`s_1 + s_2 + s_{tot}` is an integer
     """
     return abs(s_1 - s_2) <= s_tot <= s_1 + s_2 and (s_1 + s_2 + s_tot) % 1 == 0
 
