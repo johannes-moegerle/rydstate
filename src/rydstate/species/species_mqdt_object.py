@@ -175,7 +175,11 @@ class SpeciesMQDTObject(SpeciesObject):
         self,
         n: int,
         angular_ket: AngularKetBase,
+        prev_nus: list[float] | None = None,
     ) -> float:
+        if prev_nus is None:
+            prev_nus = [n]
+        prev_nu = prev_nus[-1]
         from juliacall import Main as jl  # noqa: N813, PLC0415
 
         jl_models = self.get_possible_models(angular_ket)
@@ -191,24 +195,43 @@ class SpeciesMQDTObject(SpeciesObject):
             logger.debug("calc_nu MQDT.jl models found for %s for %s, but not for n=%d.", angular_ket, self.name, n)
             return n
 
-        energy_nu = _calc_energy_nu(self, angular_ket, n)
+        nu_ref = _calc_nu_ref(self, angular_ket, nu_i=prev_nu)
 
-        t = jl.MQDT.transform(energy_nu, jl_model, self.jl_parameters)
+        t = jl.MQDT.transform(nu_ref, jl_model, self.jl_parameters)
         t = np.array(t)
-        nu_i = jl.MQDT.nu(energy_nu, jl_model, self.jl_parameters)
+        nu_i = jl.MQDT.nu(nu_ref, jl_model, self.jl_parameters)
         mu_diag = jl.MQDT.theta(nu_i, jl_model.defects)
         mu_diag = np.diag(mu_diag)
-        mu_fj = t @ mu_diag @ np.conjugate(t).T
-        mu = mu_fj[ind, ind]
 
-        return float(n - mu)
+        mu_fj = t.T @ mu_diag @ t
+
+        mu1 = mu_fj[ind, ind]
+
+        k = t @ np.tan(np.pi * mu_diag) @ t.T
+        tan_mu = k[ind, ind]
+        mu = np.arctan(tan_mu) / np.pi
+        # TODO this is a bit hacky
+        mu += round(mu1)
+
+        nu = float(n - mu)
+        prev_nus.append(nu)
+        if abs(prev_nus[-1] - prev_nus[-2]) < 1e-3:
+            return nu
+
+        if len(prev_nus) > 10:
+            logger.warning(
+                "calc_nu did not converge for %s at %d after %s iterations, returning last value %f.",
+                *(angular_ket, n, prev_nus, nu),
+            )
+            return nu
+
+        return self.calc_nu(n, angular_ket, prev_nus=prev_nus)
 
 
-def _calc_energy_nu(species: SpeciesMQDTObject, angular_ket: AngularKetBase, n: int) -> float:
+def _calc_nu_ref(species: SpeciesMQDTObject, angular_ket: AngularKetBase, nu_i: float) -> float:
     core_energy = species.get_ionization_energy(angular_ket, unit="hartree")
     reference_core_energy = species.get_reference_ionization_energy(unit="hartree")
 
-    nu_i = n  # TODO this is an approximation
     eps_i = calc_energy_from_nu(species.reduced_mass_au, nu_i)
     # E_tot = I_i + eps_i = I_ref + eps_ref with eps_i = -1 / (2 * (nu_i^2))
     # => eps_ref = eps_i + I_i - I_ref
