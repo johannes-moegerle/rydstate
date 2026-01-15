@@ -198,7 +198,7 @@ class RydbergStateSQDT(RydbergStateBase):
         if angular_overlap == 0:
             return 0.0
         if self.angular.is_dummy():
-            return angular_overlap
+            return 1  # WIP: only return 1 if energetically close? abs(self.nu_reference - other.nu_reference) < 5
         radial_overlap = self.radial.calc_overlap(other.radial)
         return radial_overlap * angular_overlap
 
