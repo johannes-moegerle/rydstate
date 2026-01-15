@@ -33,7 +33,7 @@ class SpeciesMQDTObject(SpeciesObject):
         self.jl_species = jl.Symbol(self.name.replace("_mqdt", ""))
         self.jl_parameters = jl.MQDT.get_parameters(self.jl_species)
 
-        self.ionization_thresholds_dict: dict[AngularCoreKet, float] = {}
+        self.ionization_thresholds_au_dict: dict[AngularCoreKet, float] = {}
         for key, value in self.jl_parameters.thresholds_dict.items():
             core_ket: AngularCoreKet
             if isinstance(key, str):
@@ -45,7 +45,7 @@ class SpeciesMQDTObject(SpeciesObject):
                 if i_c == 0 and f_c is Unknown:
                     f_c = j_c
                 core_ket = AngularCoreKet(i_c=self.i_c, s_c=1 / 2, l_c=l_c, j_c=j_c, f_c=f_c)
-            self.ionization_thresholds_dict[core_ket] = value
+            self.ionization_thresholds_au_dict[core_ket] = ureg.Quantity(value, "cm^-1").to("hartree", "spectroscopy").m
 
         self.jl_models = []
         for l in range(10):
@@ -82,13 +82,13 @@ class SpeciesMQDTObject(SpeciesObject):
         if angular_ket is None:
             raise ValueError("angular_ket must be provided to get the ionization energy for a MQDT species.")
         core_ket = angular_ket.get_core_ket()
-        if core_ket not in self.ionization_thresholds_dict:
+        if core_ket not in self.ionization_thresholds_au_dict:
             raise ValueError(
-                f"Ionic core state {core_ket} not found for {self.name} in {self.ionization_thresholds_dict=}."
+                f"Ionic core state {core_ket} not found for {self.name} in {self.ionization_thresholds_au_dict=}."
             )
 
-        ionization_energy_cm = self.ionization_thresholds_dict[core_ket]  # in cm^-1
-        ionization_energy: PintFloat = ureg.Quantity(ionization_energy_cm, "cm^-1")
+        ionization_energy_au = self.ionization_thresholds_au_dict[core_ket]
+        ionization_energy: PintFloat = ureg.Quantity(ionization_energy_au, "hartree")
 
         ionization_energy = ionization_energy.to("hartree", "spectroscopy")
         if unit is None:

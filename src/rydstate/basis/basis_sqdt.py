@@ -142,7 +142,7 @@ class BasisSQDTAlkalineFJMultiChannel(BasisBase[RydbergStateSQDT]):
 
         self.states = []
         angular_ket: AngularKetBase
-        for core_ket in self.species.ionization_thresholds_dict:
+        for core_ket in self.species.ionization_thresholds_au_dict:
             if (
                 isinstance(core_ket, AngularCoreKetDummy)
                 or isinstance(core_ket.l_c, UnknownType)
