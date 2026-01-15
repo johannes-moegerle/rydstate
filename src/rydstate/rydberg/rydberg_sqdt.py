@@ -157,10 +157,6 @@ class RydbergStateSQDT(RydbergStateBase):
             raise ValueError("j_tot and s_tot must be defined to calculate nu from n.")
         return self.species.calc_nu(self.n, self.angular)
 
-    @property
-    def nu_reference(self) -> float:
-        return self.nu
-
     @overload
     def get_energy(self, unit: None = None) -> PintFloat: ...
 

@@ -79,10 +79,6 @@ class RydbergStateMQDT(RydbergStateBase, Generic[_RydbergState]):
         """Return the norm of the state (should be 1)."""
         return np.linalg.norm(self.coefficients)  # type: ignore [return-value]
 
-    @property
-    def nu_reference(self) -> float:
-        return self.nu_energy
-
     @overload
     def get_energy(self, unit: None = None) -> PintFloat: ...
 
