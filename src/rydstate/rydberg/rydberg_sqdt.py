@@ -136,13 +136,13 @@ class RydbergStateSQDT(RydbergStateBase):
             )
 
         radial_ket = RadialKet(self.species, nu=self.nu, l_r=self.angular.l_r)
-        if self.n is not None:
+        if self.n is not None and self.angular.l_c == 0:
             radial_ket.set_n_for_sanity_check(self.n)
             s_tot_list = [self.angular.get_qn("s_tot")] if "s_tot" in self.angular.quantum_number_names else [0, 1]
             for s_tot in s_tot_list:
                 if not self.species.is_allowed_shell(self.n, self.angular.l_r, s_tot=s_tot):
                     raise ValueError(
-                        f"The shell (n={self.n}, l_r={self.angular.l_r}, s_tot={s_tot}) "
+                        f"The shell (n={self.n}, {self.angular}) "
                         f"is not allowed for the species {self.species}."
                     )
         return radial_ket
