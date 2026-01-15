@@ -89,6 +89,7 @@ class BasisMQDT(BasisBase[RydbergStateMQDT[Any]]):
         n_min_high_l = 25
 
         logger.debug("Calculating MQDT states...")
+        self.states = []
         jl_states = []
         for model in self.models:
             _n_min = n_min
@@ -106,11 +107,13 @@ class BasisMQDT(BasisBase[RydbergStateMQDT[Any]]):
             else:
                 logger.debug("  nu_min=%s, nu_max=%s, total states=%d", min(states.n), max(states.n), len(states.n))
 
-        jl_basis = jl.basisarray(convert(jl.Vector, jl_states), convert(jl.Vector, self.models))
+        if len(jl_states) == 0:
+            logger.error("No MQDT states found for given BasisMQDT parameters, returning empty basis.")
+            return
 
+        jl_basis = jl.basisarray(convert(jl.Vector, jl_states), convert(jl.Vector, self.models))
         logger.debug("Generated state table with %d states", len(jl_basis.states))
 
-        self.states = []
         for jl_state in jl_basis.states:
             nus = jl_state.nu_list
             nu_energy = jl_state.energy
