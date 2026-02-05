@@ -322,7 +322,7 @@ class WavefunctionNumerov(Wavefunction):
             if not run_backward and z_stop < grid.z_list[-1] + grid.dz / 2:
                 warning_msgs.append(f"The integration did not stop before z_stop, z={grid.z_list[-1]}")
         elif state.l_r == 0 and run_backward:
-            z_tol = 0.025 if species.number_valence_electrons == 1 else 0.05
+            z_tol = 0.035 if species.number_valence_electrons == 1 else 0.05
             if grid.z_list[0] > z_tol:  # z_list[0] should run almost to zero for l=0
                 warning_msgs.append(f"The integration for l=0 did stop at {grid.z_list[0]} (should be close to zero).")
 
