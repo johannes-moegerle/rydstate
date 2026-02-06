@@ -143,7 +143,7 @@ def calc_wigner_3j_with_symmetries(j1: float, j2: float, j3: float, m1: float, m
         j1, j2, j3, m1, m2, m3 = j1, j3, j2, m1, m3, m2  # noqa: PLW0127
 
     # sign of m -> make m1 positive (or m2 if m1==0)
-    if m1 <= 0 or (m1 == 0 and m2 < 0):
+    if m1 < 0 or (m1 == 0 and m2 < 0):
         symmetry_factor *= minus_one_pow(j1 + j2 + j3)
         m1, m2, m3 = -m1, -m2, -m3
 
