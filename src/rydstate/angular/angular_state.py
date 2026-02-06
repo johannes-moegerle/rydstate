@@ -19,8 +19,8 @@ if TYPE_CHECKING:
 
     from typing_extensions import Self
 
-    from rydstate.angular.angular_ket import CouplingScheme
     from rydstate.angular.angular_matrix_element import AngularMomentumQuantumNumbers, AngularOperatorType
+    from rydstate.angular.utils import CouplingScheme
 
 logger = logging.getLogger(__name__)
 

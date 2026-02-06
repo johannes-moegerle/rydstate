@@ -8,8 +8,9 @@ from rydstate.angular import AngularKetFJ, AngularKetJJ, AngularKetLS
 from rydstate.angular.angular_matrix_element import AngularMomentumQuantumNumbers
 
 if TYPE_CHECKING:
-    from rydstate.angular.angular_ket import AngularKetBase, CouplingScheme
+    from rydstate.angular.angular_ket import AngularKetBase
     from rydstate.angular.angular_matrix_element import AngularOperatorType
+    from rydstate.angular.utils import CouplingScheme
 
 TEST_KET_PAIRS = [
     (
