@@ -62,7 +62,10 @@ class BasisMQDT(BasisBase[RydbergStateMQDT[Any]]):
         *,
         skip_high_l: bool = True,
         model_names: list[str] | None = None,
+        f_tot: list[float] | float | None = None,
     ) -> None:
+        if f_tot is not None and not hasattr(f_tot, "__iter__"):
+            f_tot = [f_tot]
         if not USE_JULIACALL:
             raise ImportError("JuliaCall is not available, try `pip install rydstate[mqdt]`.")
         if not import_mqdt():
@@ -80,8 +83,10 @@ class BasisMQDT(BasisBase[RydbergStateMQDT[Any]]):
         for l in range(n_max):
             jtot_min = min(l, abs(l - 1))
             jtot_max = l + 1
-            for f_tot in np.arange(abs(jtot_min - i_c), jtot_max + i_c + 1):
-                models = jl.MQDT.get_fmodels(jl_species, l, float(f_tot))
+            for _f_tot in np.arange(abs(jtot_min - i_c), jtot_max + i_c + 1):
+                if f_tot is not None and _f_tot not in f_tot:
+                    continue
+                models = jl.MQDT.get_fmodels(jl_species, l, float(_f_tot))
                 if model_names is not None:
                     models = [model for model in models if model.name in model_names]
                 self.models.extend(models)

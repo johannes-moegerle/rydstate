@@ -85,18 +85,18 @@ class BasisBase(ABC, Generic[_RydbergState]):
         self.states = [self.states[i] for i in sorted_indices]
         return self
 
-    def calc_exp_qn(self, qn: str) -> list[float]:
+    def calc_exp_qn(self, qn: str) -> NDArray:
         if is_angular_momentum_quantum_number(qn):
-            return [state.angular.calc_exp_qn(qn) for state in self.states]
+            return np.array([state.angular.calc_exp_qn(qn) for state in self.states])
         if qn in ["n", "nu", "nu_energy", "nu_reference"]:
-            return [getattr(state, qn) for state in self.states]
+            return np.array([getattr(state, qn) for state in self.states])
         raise ValueError(f"Unknown quantum number {qn}")
 
-    def calc_std_qn(self, qn: str) -> list[float]:
+    def calc_std_qn(self, qn: str) -> NDArray:
         if is_angular_momentum_quantum_number(qn):
-            return [state.angular.calc_std_qn(qn) for state in self.states]
+            return np.array([state.angular.calc_std_qn(qn) for state in self.states])
         if qn in ["n", "nu", "nu_energy", "nu_reference"]:
-            return [0 for state in self.states]
+            return np.array([0 for state in self.states])
         raise ValueError(f"Unknown quantum number {qn}")
 
     def calc_reduced_overlap(self, other: RydbergStateBase) -> NDArray:
