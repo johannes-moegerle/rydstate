@@ -303,7 +303,8 @@ class RydbergStateSQDTAlkali(RydbergStateSQDT):
             l: Orbital angular momentum quantum number of the rydberg electron.
             j: Angular momentum quantum number of the rydberg electron.
             f: Total angular momentum quantum number of the atom (rydberg electron + core)
-              Optional, only needed if the species supports hyperfine structure (i.e. species.i_c is not None or 0).
+              Optional, only needed if the species supports hyperfine structure
+              (i.e. species.i_c is not None and species.i_c != 0).
             m: Total magnetic quantum number.
               Optional, only needed for concrete angular matrix elements.
             nu: Effective principal quantum number of the rydberg electron.
@@ -348,7 +349,8 @@ class RydbergStateSQDTAlkalineLS(RydbergStateSQDT):
             s_tot: Total spin quantum number of all electrons.
             j_tot: Total angular momentum quantum number of all electrons.
             f_tot: Total angular momentum quantum number of the atom (rydberg electron + core)
-              Optional, only needed if the species supports hyperfine structure (i.e. species.i_c is not None or 0).
+              Optional, only needed if the species supports hyperfine structure
+              (i.e. species.i_c is not None and species.i_c != 0).
             m: Total magnetic quantum number.
               Optional, only needed for concrete angular matrix elements.
             nu: Effective principal quantum number of the rydberg electron.
@@ -453,7 +455,8 @@ class RydbergStateSQDTAlkalineFJ(RydbergStateSQDT):
             j_r: Total angular momentum quantum number of the Rydberg electron.
             f_c: Total angular momentum quantum number of the core (core electron + nucleus).
             f_tot: Total angular momentum quantum number of the atom (rydberg electron + core)
-              Optional, only needed if the species supports hyperfine structure (i.e. species.i_c is not None or 0).
+              Optional, only needed if the species supports hyperfine structure
+              (i.e. species.i_c is not None and species.i_c != 0).
             m: Total magnetic quantum number.
               Optional, only needed for concrete angular matrix elements.
             nu: Effective principal quantum number of the rydberg electron.
