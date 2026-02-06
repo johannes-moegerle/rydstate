@@ -76,7 +76,7 @@ class AngularKetBase(ABC):
     """Total atom angular quantum number (including nuclear, core electron and rydberg electron contributions)."""
     m: float | None
     """Magnetic quantum number, which is the projection of `f_tot` onto the quantization axis.
-    If None, only reduced matrix elements can be calculated
+    If None, only reduced matrix elements can be calculated.
     """
 
     def __init__(
@@ -733,13 +733,13 @@ def quantum_numbers_to_angular_ket(
         l_c: Orbital angular momentum quantum number of the core electron.
         j_c: Total angular momentum quantum number of the core electron.
         f_c: Total angular momentum quantum number of the core (core electron + nucleus).
-        s_r: Spin quantum number of the rydberg electron always 0.5)
+        s_r: Spin quantum number of the rydberg electron (always 0.5).
         l_r: Orbital angular momentum quantum number of the rydberg electron.
         j_r: Total angular momentum quantum number of the rydberg electron.
         s_tot: Total spin quantum number of all electrons.
         l_tot: Total orbital angular momentum quantum number of all electrons.
         j_tot: Total angular momentum quantum number of all electrons.
-        f_tot: Total angular momentum quantum number of the atom (rydberg electron + core)
+        f_tot: Total angular momentum quantum number of the atom (rydberg electron + core).
         m: Total magnetic quantum number.
           Optional, only needed for concrete angular matrix elements.
 
