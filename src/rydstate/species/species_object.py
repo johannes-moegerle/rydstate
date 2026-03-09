@@ -10,12 +10,14 @@ from typing import TYPE_CHECKING, ClassVar, overload
 
 import numpy as np
 
+from rydstate.angular.angular_ket import AngularKetLS
 from rydstate.species.utils import calc_nu_from_energy, convert_electron_configuration
 from rydstate.units import rydberg_constant, ureg
 
 if TYPE_CHECKING:
     from pathlib import Path
 
+    from rydstate.angular.angular_ket import AngularKetBase
     from rydstate.radial.model import PotentialType
     from rydstate.units import PintFloat
 
@@ -329,9 +331,7 @@ class SpeciesObject(ABC):
     def calc_nu(
         self,
         n: int,
-        l: int,
-        j_tot: float,
-        s_tot: float | None = None,
+        angular_ket: AngularKetBase,
         *,
         use_nist_data: bool = True,
         nist_n_max: int = 15,
@@ -357,23 +357,17 @@ class SpeciesObject(ABC):
 
         Args:
             n: The principal quantum number of the Rydberg state.
-            l: The orbital angular momentum quantum number of the Rydberg state.
-            j_tot: The total angular momentum quantum number of the Rydberg state.
-            s_tot: The total spin quantum number of the Rydberg state.
+            angular_ket: The angular ket specifying l, j_tot, and s_tot of the Rydberg state.
             use_nist_data: Whether to use NIST energy data.
                 Default is True.
             nist_n_max: Maximum principal quantum number for which to use the NIST energy data.
                 Default is 15.
 
         """
-        if s_tot is None:
-            if self.number_valence_electrons != 1:
-                raise ValueError("s_tot must be specified for species with more than one valence electron.")
-            s_tot = 0.5
-        if (s_tot % 1) != ((self.number_valence_electrons / 2) % 1):
-            raise ValueError(f"Invalid spin {s_tot=} for {self.name}.")
-        if j_tot % 1 != (l + s_tot) % 1:
-            raise ValueError(f"Invalid quantum numbers: ({l=}, {j_tot=}, {s_tot=})")
+        if not isinstance(angular_ket, AngularKetLS):
+            raise NotImplementedError("calc_nu is only implemented for AngularKetLS.")
+
+        l, j_tot, s_tot = angular_ket.l_r, angular_ket.j_tot, angular_ket.s_r
 
         if n <= nist_n_max and use_nist_data:  # try to use NIST data
             if (n, l, j_tot, s_tot) in self._nist_energy_levels:
@@ -387,6 +381,10 @@ class SpeciesObject(ABC):
 
         if self._quantum_defects is None:
             raise ValueError(f"No quantum defect data available for species {self.name}.")
-        d0, d2, d4, d6, d8 = self._quantum_defects.get((l, j_tot, s_tot), (0, 0, 0, 0, 0))
+        quantum_defects = list(self._quantum_defects.get((l, j_tot, s_tot), []))
+        if len(quantum_defects) > 5:
+            raise ValueError(f"Quantum defects for {self.name} must be a list with up to 5 elements.")
+
+        d0, d2, d4, d6, d8 = quantum_defects + [0] * (5 - len(quantum_defects))
         delta_nlj = d0 + d2 / (n - d0) ** 2 + d4 / (n - d0) ** 4 + d6 / (n - d0) ** 6 + d8 / (n - d0) ** 8
         return n - delta_nlj

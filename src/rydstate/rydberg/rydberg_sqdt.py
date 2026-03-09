@@ -161,12 +161,7 @@ class RydbergStateSQDT(RydbergStateBase):
             return self._nu
         assert isinstance(self.species, SpeciesObject), "nu must be given if not sqdt"
         assert self.n is not None, "either nu or n must be given"
-
-        if "j_tot" not in self.angular.quantum_number_names or "s_tot" not in self.angular.quantum_number_names:
-            raise RuntimeError("j_tot and s_tot must be defined in the angular ket to calculate nu from n.")
-        return self.species.calc_nu(
-            self.n, self.angular.l_r, self.angular.get_qn("j_tot"), s_tot=self.angular.get_qn("s_tot")
-        )
+        return self.species.calc_nu(self.n, self.angular)
 
     @property
     def nu_ref(self) -> float:
