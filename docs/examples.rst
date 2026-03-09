@@ -26,6 +26,7 @@ Some examples demonstrating the usage of the RydbergState class.
 
 .. nbgallery::
    examples/dipole_matrix_elements
+   examples/lifetimes
 
 
 Comparisons
