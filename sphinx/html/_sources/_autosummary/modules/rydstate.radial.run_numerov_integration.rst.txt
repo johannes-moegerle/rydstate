@@ -1,0 +1,6 @@
+run\_numerov\_integration
+=========================
+
+.. currentmodule:: rydstate.radial
+
+.. autofunction:: run_numerov_integration

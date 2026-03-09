@@ -1,0 +1,35 @@
+RydbergStateAlkalineLS
+======================
+
+.. currentmodule:: rydstate
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~RydbergStateAlkalineLS.__init__
+      ~RydbergStateAlkalineLS.calc_matrix_element
+      ~RydbergStateAlkalineLS.calc_reduced_matrix_element
+      ~RydbergStateAlkalineLS.calc_reduced_overlap
+      ~RydbergStateAlkalineLS.get_energy
+      ~RydbergStateAlkalineLS.get_nu
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~RydbergStateAlkalineLS.angular
+   ~RydbergStateAlkalineLS.radial
+   ~RydbergStateAlkalineLS.species
+
+
+
+.. autoclass:: rydstate.RydbergStateAlkalineLS
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

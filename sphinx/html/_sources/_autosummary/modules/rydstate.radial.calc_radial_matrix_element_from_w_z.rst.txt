@@ -1,0 +1,6 @@
+calc\_radial\_matrix\_element\_from\_w\_z
+=========================================
+
+.. currentmodule:: rydstate.radial
+
+.. autofunction:: calc_radial_matrix_element_from_w_z

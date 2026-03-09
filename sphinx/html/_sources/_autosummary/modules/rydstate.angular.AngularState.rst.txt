@@ -1,0 +1,35 @@
+AngularState
+============
+
+.. currentmodule:: rydstate.angular
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~AngularState.__init__
+      ~AngularState.calc_exp_qn
+      ~AngularState.calc_matrix_element
+      ~AngularState.calc_reduced_matrix_element
+      ~AngularState.calc_reduced_overlap
+      ~AngularState.calc_std_qn
+      ~AngularState.to
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~AngularState.coupling_scheme
+   ~AngularState.norm
+
+
+
+.. autoclass:: rydstate.angular.AngularState
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

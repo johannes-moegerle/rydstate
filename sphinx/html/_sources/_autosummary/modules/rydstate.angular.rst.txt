@@ -1,0 +1,49 @@
+angular
+=======
+Full module path: rydstate.angular
+
+.. workaround to ignore generic classes like AtomSQDT[int]
+
+
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+
+
+.. currentmodule:: rydstate.angular
+
+
+
+
+
+
+.. rubric:: Classes
+
+.. .. inheritance-diagram:: rydstate.angular
+..     :parts: 1
+
+.. autosummary::
+   :toctree: .
+   
+      AngularKetFJ
+      AngularKetJJ
+      AngularKetLS
+      AngularState
+
+
+
+
+
+
+.. rubric:: Module description
+
+.. automodule:: rydstate.angular

@@ -1,0 +1,45 @@
+SpeciesObject
+=============
+
+.. currentmodule:: rydstate.species
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~SpeciesObject.__init__
+      ~SpeciesObject.calc_nu
+      ~SpeciesObject.from_name
+      ~SpeciesObject.get_available_species
+      ~SpeciesObject.get_corrected_rydberg_constant
+      ~SpeciesObject.get_ionization_energy
+      ~SpeciesObject.is_allowed_shell
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~SpeciesObject.i_c
+   ~SpeciesObject.ionization_energy_au
+   ~SpeciesObject.potential_type_default
+   ~SpeciesObject.reduced_mass_au
+   ~SpeciesObject.name
+   ~SpeciesObject.Z
+   ~SpeciesObject.number_valence_electrons
+   ~SpeciesObject.ground_state_shell
+   ~SpeciesObject.alpha_c_marinescu_1993
+   ~SpeciesObject.r_c_dict_marinescu_1993
+   ~SpeciesObject.model_potential_parameter_marinescu_1993
+   ~SpeciesObject.model_potential_parameter_fei_2009
+
+
+
+.. autoclass:: rydstate.species.SpeciesObject
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

@@ -1,0 +1,45 @@
+Cesium
+======
+
+.. currentmodule:: rydstate.species
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~Cesium.__init__
+      ~Cesium.calc_nu
+      ~Cesium.from_name
+      ~Cesium.get_available_species
+      ~Cesium.get_corrected_rydberg_constant
+      ~Cesium.get_ionization_energy
+      ~Cesium.is_allowed_shell
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~Cesium.Z
+   ~Cesium.alpha_c_marinescu_1993
+   ~Cesium.ground_state_shell
+   ~Cesium.i_c
+   ~Cesium.ionization_energy_au
+   ~Cesium.model_potential_parameter_fei_2009
+   ~Cesium.model_potential_parameter_marinescu_1993
+   ~Cesium.name
+   ~Cesium.number_valence_electrons
+   ~Cesium.potential_type_default
+   ~Cesium.r_c_dict_marinescu_1993
+   ~Cesium.reduced_mass_au
+
+
+
+.. autoclass:: rydstate.species.Cesium
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

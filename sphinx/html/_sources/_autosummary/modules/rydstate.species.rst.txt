@@ -1,0 +1,85 @@
+species
+=======
+Full module path: rydstate.species
+
+.. workaround to ignore generic classes like AtomSQDT[int]
+
+
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+
+
+.. currentmodule:: rydstate.species
+
+
+
+
+
+
+.. rubric:: Classes
+
+.. .. inheritance-diagram:: rydstate.species
+..     :parts: 1
+
+.. autosummary::
+   :toctree: .
+   
+      Cesium
+      Hydrogen
+      HydrogenTextBook
+      Lithium
+      Potassium
+      Rubidium
+      Sodium
+      SpeciesObject
+      Strontium87
+      Strontium88
+      Ytterbium171
+      Ytterbium173
+      Ytterbium174
+
+
+
+
+
+
+.. rubric:: Module description
+
+.. automodule:: rydstate.species

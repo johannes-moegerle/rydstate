@@ -1,0 +1,45 @@
+Lithium
+=======
+
+.. currentmodule:: rydstate.species
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~Lithium.__init__
+      ~Lithium.calc_nu
+      ~Lithium.from_name
+      ~Lithium.get_available_species
+      ~Lithium.get_corrected_rydberg_constant
+      ~Lithium.get_ionization_energy
+      ~Lithium.is_allowed_shell
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~Lithium.Z
+   ~Lithium.alpha_c_marinescu_1993
+   ~Lithium.ground_state_shell
+   ~Lithium.i_c
+   ~Lithium.ionization_energy_au
+   ~Lithium.model_potential_parameter_fei_2009
+   ~Lithium.model_potential_parameter_marinescu_1993
+   ~Lithium.name
+   ~Lithium.number_valence_electrons
+   ~Lithium.potential_type_default
+   ~Lithium.r_c_dict_marinescu_1993
+   ~Lithium.reduced_mass_au
+
+
+
+.. autoclass:: rydstate.species.Lithium
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

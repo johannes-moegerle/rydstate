@@ -1,0 +1,859 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rydstate.angular.angular_ket &mdash; RydState 0.9.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=aa3b121e"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            RydState
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">API Reference</a></li>
+</ul>
+
+<style>
+a.gitbutton {
+  display: block;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #fff;
+  padding-top: 10px;
+  padding-left: 85px;
+  padding-right: 0px;
+  margin: 22px;
+  width: 240px;
+  height: 60px;
+  background: transparent url("../../../_static/buttons/github.svg") 0 0 no-repeat;
+}
+a.gitbutton small {
+  display: block;
+  font-size: 11px;
+}
+button.toctree-expand {
+  display: none;
+}
+</style>
+<a href="https://github.com/pairinteraction/rydstate" class="gitbutton">Explore<small>the GitHub repository</small></a>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">RydState</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">rydstate.angular.angular_ket</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for rydstate.angular.angular_ket</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">ClassVar</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">get_args</span><span class="p">,</span> <span class="n">overload</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.angular.angular_matrix_element</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AngularMomentumQuantumNumbers</span><span class="p">,</span>
+    <span class="n">AngularOperatorType</span><span class="p">,</span>
+    <span class="n">calc_prefactor_of_operator_in_coupled_scheme</span><span class="p">,</span>
+    <span class="n">calc_reduced_identity_matrix_element</span><span class="p">,</span>
+    <span class="n">calc_reduced_spherical_matrix_element</span><span class="p">,</span>
+    <span class="n">calc_reduced_spin_matrix_element</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.angular.utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">calc_wigner_3j</span><span class="p">,</span>
+    <span class="n">check_spin_addition_rule</span><span class="p">,</span>
+    <span class="n">clebsch_gordan_6j</span><span class="p">,</span>
+    <span class="n">clebsch_gordan_9j</span><span class="p">,</span>
+    <span class="n">get_possible_quantum_number_values</span><span class="p">,</span>
+    <span class="n">minus_one_pow</span><span class="p">,</span>
+    <span class="n">try_trivial_spin_addition</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.species</span><span class="w"> </span><span class="kn">import</span> <span class="n">SpeciesObject</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">Self</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.angular.angular_state</span><span class="w"> </span><span class="kn">import</span> <span class="n">AngularState</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">CouplingScheme</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;LS&quot;</span><span class="p">,</span> <span class="s2">&quot;JJ&quot;</span><span class="p">,</span> <span class="s2">&quot;FJ&quot;</span><span class="p">]</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">InvalidQuantumNumbersError</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ket</span><span class="p">:</span> <span class="n">AngularKetBase</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Invalid quantum numbers for </span><span class="si">{</span><span class="n">ket</span><span class="si">!r}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">_msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">_msg</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">AngularKetBase</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for a angular ket (i.e. a simple canonical spin ketstate).&quot;&quot;&quot;</span>
+
+    <span class="c1"># We use __slots__ to prevent dynamic attributes and make the objects immutable after initialization</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;i_c&quot;</span><span class="p">,</span> <span class="s2">&quot;s_c&quot;</span><span class="p">,</span> <span class="s2">&quot;l_c&quot;</span><span class="p">,</span> <span class="s2">&quot;s_r&quot;</span><span class="p">,</span> <span class="s2">&quot;l_r&quot;</span><span class="p">,</span> <span class="s2">&quot;f_tot&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;quantum_numbers&quot;</span><span class="p">,</span> <span class="s2">&quot;_initialized&quot;</span><span class="p">)</span>
+
+    <span class="n">quantum_number_names</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">AngularMomentumQuantumNumbers</span><span class="p">,</span> <span class="o">...</span><span class="p">]]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Names of all well defined spin quantum numbers (without the magnetic quantum number m) in this class.&quot;&quot;&quot;</span>
+
+    <span class="n">quantum_numbers</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The quantum numbers corresponding to the quantum_number_names (without the magnetic quantum number m).&quot;&quot;&quot;</span>
+
+    <span class="n">coupled_quantum_numbers</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span>
+        <span class="nb">dict</span><span class="p">[</span><span class="n">AngularMomentumQuantumNumbers</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">AngularMomentumQuantumNumbers</span><span class="p">,</span> <span class="n">AngularMomentumQuantumNumbers</span><span class="p">]]</span>
+    <span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mapping of coupled quantum numbers to their constituent quantum numbers.&quot;&quot;&quot;</span>
+
+    <span class="n">coupling_scheme</span><span class="p">:</span> <span class="n">CouplingScheme</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Name of the coupling scheme, e.g. &#39;LS&#39;, &#39;JJ&#39;, or &#39;FJ&#39;.&quot;&quot;&quot;</span>
+
+    <span class="n">i_c</span><span class="p">:</span> <span class="nb">float</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Nuclear spin quantum number.&quot;&quot;&quot;</span>
+    <span class="n">s_c</span><span class="p">:</span> <span class="nb">float</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Core electron spin quantum number (0 for alkali atoms, 0.5 for alkaline earth atoms).&quot;&quot;&quot;</span>
+    <span class="n">l_c</span><span class="p">:</span> <span class="nb">int</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Core electron orbital quantum number (usually 0).&quot;&quot;&quot;</span>
+    <span class="n">s_r</span><span class="p">:</span> <span class="nb">float</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Rydberg electron spin quantum number (always 0.5).&quot;&quot;&quot;</span>
+    <span class="n">l_r</span><span class="p">:</span> <span class="nb">int</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Rydberg electron orbital quantum number.&quot;&quot;&quot;</span>
+
+    <span class="n">f_tot</span><span class="p">:</span> <span class="nb">float</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Total atom angular quantum number (including nuclear, core electron and rydberg electron contributions).&quot;&quot;&quot;</span>
+    <span class="n">m</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Magnetic quantum number, which is the projection of `f_tot` onto the quantization axis.</span>
+<span class="sd">    If None, only reduced matrix elements can be calculated</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">i_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">s_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">l_c</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">s_r</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">l_r</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">f_tot</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: ARG002</span>
+        <span class="n">m</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">species</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">SpeciesObject</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the Spin ket.</span>
+
+<span class="sd">        species:</span>
+<span class="sd">        Atomic species, e.g. &#39;Rb87&#39;.</span>
+<span class="sd">        Not used for calculation, only for convenience to infer the core electron spin and nuclear spin quantum numbers.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">species</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">species</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">species</span> <span class="o">=</span> <span class="n">SpeciesObject</span><span class="o">.</span><span class="n">from_name</span><span class="p">(</span><span class="n">species</span><span class="p">)</span>
+            <span class="c1"># use i_c = 0 for species without defined nuclear spin (-&gt; ignore hyperfine)</span>
+            <span class="n">species_i_c</span> <span class="o">=</span> <span class="n">species</span><span class="o">.</span><span class="n">i_c</span> <span class="k">if</span> <span class="n">species</span><span class="o">.</span><span class="n">i_c</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">i_c</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">i_c</span> <span class="o">!=</span> <span class="n">species_i_c</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Nuclear spin i_c=</span><span class="si">{</span><span class="n">i_c</span><span class="si">}</span><span class="s2"> does not match the species </span><span class="si">{</span><span class="n">species</span><span class="si">}</span><span class="s2"> with i_c=</span><span class="si">{</span><span class="n">species</span><span class="o">.</span><span class="n">i_c</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="n">i_c</span> <span class="o">=</span> <span class="n">species_i_c</span>
+            <span class="n">s_c</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">species</span><span class="o">.</span><span class="n">number_valence_electrons</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">i_c</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Nuclear spin i_c must be set or a species must be given.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">i_c</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">i_c</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">s_c</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Core spin s_c must be set or a species must be given.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s_c</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">s_c</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">l_c</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">l_c</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s_r</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">s_r</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">l_r</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Rydberg electron orbital angular momentum l_r must be set.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">l_r</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">l_r</span><span class="p">)</span>
+
+        <span class="c1"># f_tot will be set in the subclasses</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">m</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_post_init</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quantum_numbers</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qn</span><span class="p">)</span> <span class="k">for</span> <span class="n">qn</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantum_number_names</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_initialized</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sanity_check</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">sanity_check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msgs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check that the quantum numbers are valid.&quot;&quot;&quot;</span>
+        <span class="n">msgs</span> <span class="o">=</span> <span class="n">msgs</span> <span class="k">if</span> <span class="n">msgs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]:</span>
+            <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Core spin s_c must be 0 or 1/2, but </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">s_c</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_r</span> <span class="o">!=</span> <span class="mf">0.5</span><span class="p">:</span>
+            <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Rydberg electron spin s_r must be 1/2, but </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">s_r</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">f_tot</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_tot</span><span class="p">:</span>
+            <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;m must be between -f_tot and f_tot, but </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f_tot</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">msgs</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">msgs</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">InvalidQuantumNumbersError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># We use this custom __setattr__ to make the objects immutable after initialization</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_initialized&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Cannot modify attributes of immutable </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> objects after initialization.&quot;</span>
+            <span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">qn</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">qn</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">quantum_number_names</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantum_numbers</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;, m=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;AngularKet&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">AngularKetBase</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot compare </span><span class="si">{</span><span class="bp">self</span><span class="si">!r}</span><span class="s2"> with </span><span class="si">{</span><span class="n">other</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">m</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantum_numbers</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">quantum_numbers</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">quantum_number_names</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">quantum_numbers</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_qn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qn</span><span class="p">:</span> <span class="n">AngularMomentumQuantumNumbers</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the value of a quantum number by name.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">qn</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantum_number_names</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Quantum number </span><span class="si">{</span><span class="n">qn</span><span class="si">}</span><span class="s2"> not found in </span><span class="si">{</span><span class="bp">self</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qn</span><span class="p">)</span>  <span class="c1"># type: ignore [no-any-return]</span>
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coupling_scheme</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;LS&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">AngularState</span><span class="p">[</span><span class="n">AngularKetLS</span><span class="p">]:</span> <span class="o">...</span>
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coupling_scheme</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;JJ&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">AngularState</span><span class="p">[</span><span class="n">AngularKetJJ</span><span class="p">]:</span> <span class="o">...</span>
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coupling_scheme</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;FJ&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">AngularState</span><span class="p">[</span><span class="n">AngularKetFJ</span><span class="p">]:</span> <span class="o">...</span>
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_state</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">Self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AngularState</span><span class="p">[</span><span class="n">Self</span><span class="p">]:</span> <span class="o">...</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coupling_scheme</span><span class="p">:</span> <span class="n">CouplingScheme</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AngularState</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert to state in the specified coupling scheme.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            coupling_scheme: The coupling scheme to convert to (e.g. &quot;LS&quot;, &quot;JJ&quot;, &quot;FJ&quot;).</span>
+<span class="sd">                If None, the state will be a trivial state (one component) in the current coupling scheme.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The angular state in the specified coupling scheme.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.angular.angular_state</span><span class="w"> </span><span class="kn">import</span> <span class="n">AngularState</span>  <span class="c1"># noqa: PLC0415</span>
+
+        <span class="k">if</span> <span class="n">coupling_scheme</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">coupling_scheme</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">coupling_scheme</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">AngularState</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="bp">self</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">coupling_scheme</span> <span class="o">==</span> <span class="s2">&quot;LS&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_state_ls</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">coupling_scheme</span> <span class="o">==</span> <span class="s2">&quot;JJ&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_state_jj</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">coupling_scheme</span> <span class="o">==</span> <span class="s2">&quot;FJ&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_state_fj</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown coupling scheme </span><span class="si">{</span><span class="n">coupling_scheme</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_to_state_ls</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AngularState</span><span class="p">[</span><span class="n">AngularKetLS</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a single ket to state in LS coupling.&quot;&quot;&quot;</span>
+        <span class="n">kets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">AngularKetLS</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">coefficients</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">s_tot_list</span> <span class="o">=</span> <span class="n">get_possible_quantum_number_values</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_r</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;s_tot&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="n">l_tot_list</span> <span class="o">=</span> <span class="n">get_possible_quantum_number_values</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">l_r</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;l_tot&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">s_tot</span> <span class="ow">in</span> <span class="n">s_tot_list</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">l_tot</span> <span class="ow">in</span> <span class="n">l_tot_list</span><span class="p">:</span>
+                <span class="n">j_tot_list</span> <span class="o">=</span> <span class="n">get_possible_quantum_number_values</span><span class="p">(</span><span class="n">s_tot</span><span class="p">,</span> <span class="n">l_tot</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;j_tot&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">j_tot</span> <span class="ow">in</span> <span class="n">j_tot_list</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">ls_ket</span> <span class="o">=</span> <span class="n">AngularKetLS</span><span class="p">(</span>
+                            <span class="n">i_c</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">i_c</span><span class="p">,</span>
+                            <span class="n">s_c</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">s_c</span><span class="p">,</span>
+                            <span class="n">l_c</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">l_c</span><span class="p">,</span>
+                            <span class="n">s_r</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">s_r</span><span class="p">,</span>
+                            <span class="n">l_r</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">l_r</span><span class="p">,</span>
+                            <span class="n">s_tot</span><span class="o">=</span><span class="n">s_tot</span><span class="p">,</span>
+                            <span class="n">l_tot</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">l_tot</span><span class="p">),</span>
+                            <span class="n">j_tot</span><span class="o">=</span><span class="n">j_tot</span><span class="p">,</span>
+                            <span class="n">f_tot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">f_tot</span><span class="p">,</span>
+                            <span class="n">m</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="k">except</span> <span class="n">InvalidQuantumNumbersError</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="n">coeff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calc_reduced_overlap</span><span class="p">(</span><span class="n">ls_ket</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">coeff</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">kets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ls_ket</span><span class="p">)</span>
+                        <span class="n">coefficients</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coeff</span><span class="p">)</span>
+
+        <span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.angular.angular_state</span><span class="w"> </span><span class="kn">import</span> <span class="n">AngularState</span>  <span class="c1"># noqa: PLC0415</span>
+
+        <span class="k">return</span> <span class="n">AngularState</span><span class="p">(</span><span class="n">coefficients</span><span class="p">,</span> <span class="n">kets</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_to_state_jj</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AngularState</span><span class="p">[</span><span class="n">AngularKetJJ</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a single ket to state in JJ coupling.&quot;&quot;&quot;</span>
+        <span class="n">kets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">AngularKetJJ</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">coefficients</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">j_c_list</span> <span class="o">=</span> <span class="n">get_possible_quantum_number_values</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">l_c</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;j_c&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="n">j_r_list</span> <span class="o">=</span> <span class="n">get_possible_quantum_number_values</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s_r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">l_r</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;j_r&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">j_c</span> <span class="ow">in</span> <span class="n">j_c_list</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">j_r</span> <span class="ow">in</span> <span class="n">j_r_list</span><span class="p">:</span>
+                <span class="n">j_tot_list</span> <span class="o">=</span> <span class="n">get_possible_quantum_number_values</span><span class="p">(</span><span class="n">j_c</span><span class="p">,</span> <span class="n">j_r</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;j_tot&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">j_tot</span> <span class="ow">in</span> <span class="n">j_tot_list</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">jj_ket</span> <span class="o">=</span> <span class="n">AngularKetJJ</span><span class="p">(</span>
+                            <span class="n">i_c</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">i_c</span><span class="p">,</span>
+                            <span class="n">s_c</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">s_c</span><span class="p">,</span>
+                            <span class="n">l_c</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">l_c</span><span class="p">,</span>
+                            <span class="n">s_r</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">s_r</span><span class="p">,</span>
+                            <span class="n">l_r</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">l_r</span><span class="p">,</span>
+                            <span class="n">j_c</span><span class="o">=</span><span class="n">j_c</span><span class="p">,</span>
+                            <span class="n">j_r</span><span class="o">=</span><span class="n">j_r</span><span class="p">,</span>
+                            <span class="n">j_tot</span><span class="o">=</span><span class="n">j_tot</span><span class="p">,</span>
+                            <span class="n">f_tot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">f_tot</span><span class="p">,</span>
+                            <span class="n">m</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="k">except</span> <span class="n">InvalidQuantumNumbersError</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="n">coeff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calc_reduced_overlap</span><span class="p">(</span><span class="n">jj_ket</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">coeff</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">kets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">jj_ket</span><span class="p">)</span>
+                        <span class="n">coefficients</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coeff</span><span class="p">)</span>
+
+        <span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.angular.angular_state</span><span class="w"> </span><span class="kn">import</span> <span class="n">AngularState</span>  <span class="c1"># noqa: PLC0415</span>
+
+        <span class="k">return</span> <span class="n">AngularState</span><span class="p">(</span><span class="n">coefficients</span><span class="p">,</span> <span class="n">kets</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_to_state_fj</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AngularState</span><span class="p">[</span><span class="n">AngularKetFJ</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a single ket to state in FJ coupling.&quot;&quot;&quot;</span>
+        <span class="n">kets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">AngularKetFJ</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">coefficients</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">j_c_list</span> <span class="o">=</span> <span class="n">get_possible_quantum_number_values</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">l_c</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;j_c&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="n">j_r_list</span> <span class="o">=</span> <span class="n">get_possible_quantum_number_values</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s_r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">l_r</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;j_r&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">j_c</span> <span class="ow">in</span> <span class="n">j_c_list</span><span class="p">:</span>
+            <span class="n">f_c_list</span> <span class="o">=</span> <span class="n">get_possible_quantum_number_values</span><span class="p">(</span><span class="n">j_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">i_c</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;f_c&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">f_c</span> <span class="ow">in</span> <span class="n">f_c_list</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">j_r</span> <span class="ow">in</span> <span class="n">j_r_list</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">fj_ket</span> <span class="o">=</span> <span class="n">AngularKetFJ</span><span class="p">(</span>
+                            <span class="n">i_c</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">i_c</span><span class="p">,</span>
+                            <span class="n">s_c</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">s_c</span><span class="p">,</span>
+                            <span class="n">l_c</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">l_c</span><span class="p">,</span>
+                            <span class="n">s_r</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">s_r</span><span class="p">,</span>
+                            <span class="n">l_r</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">l_r</span><span class="p">,</span>
+                            <span class="n">j_c</span><span class="o">=</span><span class="n">j_c</span><span class="p">,</span>
+                            <span class="n">f_c</span><span class="o">=</span><span class="n">f_c</span><span class="p">,</span>
+                            <span class="n">j_r</span><span class="o">=</span><span class="n">j_r</span><span class="p">,</span>
+                            <span class="n">f_tot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">f_tot</span><span class="p">,</span>
+                            <span class="n">m</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="k">except</span> <span class="n">InvalidQuantumNumbersError</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="n">coeff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calc_reduced_overlap</span><span class="p">(</span><span class="n">fj_ket</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">coeff</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">kets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fj_ket</span><span class="p">)</span>
+                        <span class="n">coefficients</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coeff</span><span class="p">)</span>
+
+        <span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.angular.angular_state</span><span class="w"> </span><span class="kn">import</span> <span class="n">AngularState</span>  <span class="c1"># noqa: PLC0415</span>
+
+        <span class="k">return</span> <span class="n">AngularState</span><span class="p">(</span><span class="n">coefficients</span><span class="p">,</span> <span class="n">kets</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_reduced_overlap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">AngularKetBase</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the reduced overlap &lt;self||other&gt; (ignoring the magnetic quantum number m).</span>
+
+<span class="sd">        If both kets are of the same type (=same coupling scheme), this is just a delta function</span>
+<span class="sd">        of all spin quantum numbers.</span>
+<span class="sd">        If the kets are of different types, the overlap is calculated using the corresponding</span>
+<span class="sd">        Clebsch-Gordan coefficients (/ Wigner-j symbols).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">quantum_number_names</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">quantum_number_names</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_qn</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">get_qn</span><span class="p">(</span><span class="n">q</span><span class="p">):</span>
+                <span class="k">return</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mi">1</span>
+
+        <span class="n">kets</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">]</span>
+
+        <span class="c1"># JJ - FJ overlaps</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">AngularKetJJ</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">kets</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">AngularKetFJ</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">kets</span><span class="p">):</span>
+            <span class="n">jj</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">kets</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">AngularKetJJ</span><span class="p">))</span>
+            <span class="n">fj</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">kets</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">AngularKetFJ</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">clebsch_gordan_6j</span><span class="p">(</span><span class="n">fj</span><span class="o">.</span><span class="n">j_r</span><span class="p">,</span> <span class="n">fj</span><span class="o">.</span><span class="n">j_c</span><span class="p">,</span> <span class="n">fj</span><span class="o">.</span><span class="n">i_c</span><span class="p">,</span> <span class="n">jj</span><span class="o">.</span><span class="n">j_tot</span><span class="p">,</span> <span class="n">fj</span><span class="o">.</span><span class="n">f_c</span><span class="p">,</span> <span class="n">fj</span><span class="o">.</span><span class="n">f_tot</span><span class="p">)</span>
+
+        <span class="c1"># JJ - LS overlaps</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">AngularKetJJ</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">kets</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">AngularKetLS</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">kets</span><span class="p">):</span>
+            <span class="n">jj</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">kets</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">AngularKetJJ</span><span class="p">))</span>
+            <span class="n">ls</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">kets</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">AngularKetLS</span><span class="p">))</span>
+            <span class="c1"># NOTE: it matters, whether you first put all 3 l&#39;s and then all 3 s&#39;s or the other way round</span>
+            <span class="c1"># (see symmetry properties of 9j symbol)</span>
+            <span class="c1"># this convention is used, such that all matrix elements work out correctly, no matter in which</span>
+            <span class="c1"># coupling scheme they are calculated</span>
+            <span class="k">return</span> <span class="n">clebsch_gordan_9j</span><span class="p">(</span><span class="n">ls</span><span class="o">.</span><span class="n">l_r</span><span class="p">,</span> <span class="n">ls</span><span class="o">.</span><span class="n">l_c</span><span class="p">,</span> <span class="n">ls</span><span class="o">.</span><span class="n">l_tot</span><span class="p">,</span> <span class="n">ls</span><span class="o">.</span><span class="n">s_r</span><span class="p">,</span> <span class="n">ls</span><span class="o">.</span><span class="n">s_c</span><span class="p">,</span> <span class="n">ls</span><span class="o">.</span><span class="n">s_tot</span><span class="p">,</span> <span class="n">jj</span><span class="o">.</span><span class="n">j_r</span><span class="p">,</span> <span class="n">jj</span><span class="o">.</span><span class="n">j_c</span><span class="p">,</span> <span class="n">jj</span><span class="o">.</span><span class="n">j_tot</span><span class="p">)</span>
+
+        <span class="c1"># FJ - LS overlaps</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">AngularKetFJ</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">kets</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">AngularKetLS</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">kets</span><span class="p">):</span>
+            <span class="n">fj</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">kets</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">AngularKetFJ</span><span class="p">))</span>
+            <span class="n">ls</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">kets</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">AngularKetLS</span><span class="p">))</span>
+            <span class="n">ov</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">coeff</span><span class="p">,</span> <span class="n">jj_ket</span> <span class="ow">in</span> <span class="n">fj</span><span class="o">.</span><span class="n">to_state</span><span class="p">(</span><span class="s2">&quot;JJ&quot;</span><span class="p">):</span>
+                <span class="n">ov</span> <span class="o">+=</span> <span class="n">coeff</span> <span class="o">*</span> <span class="n">ls</span><span class="o">.</span><span class="n">calc_reduced_overlap</span><span class="p">(</span><span class="n">jj_ket</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">ov</span><span class="p">)</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;This method is not yet implemented for </span><span class="si">{</span><span class="bp">self</span><span class="si">!r}</span><span class="s2"> and </span><span class="si">{</span><span class="n">other</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_reduced_matrix_element</span><span class="p">(</span>  <span class="c1"># noqa: C901</span>
+        <span class="bp">self</span><span class="p">:</span> <span class="n">Self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">AngularKetBase</span><span class="p">,</span> <span class="n">operator</span><span class="p">:</span> <span class="n">AngularOperatorType</span><span class="p">,</span> <span class="n">kappa</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the reduced angular matrix element.</span>
+
+<span class="sd">        We follow equation (7.1.7) from Edmonds 1985 &quot;Angular Momentum in Quantum Mechanics&quot;.</span>
+<span class="sd">        This means, calculate the following matrix element:</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \left\langle self || \hat{O}^{(\kappa)} || other \right\rangle</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">operator</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">get_args</span><span class="p">(</span><span class="n">AngularOperatorType</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;calc_reduced_matrix_element is not implemented for operator </span><span class="si">{</span><span class="n">operator</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_state</span><span class="p">()</span><span class="o">.</span><span class="n">calc_reduced_matrix_element</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">to_state</span><span class="p">(),</span> <span class="n">operator</span><span class="p">,</span> <span class="n">kappa</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">operator</span> <span class="ow">in</span> <span class="n">get_args</span><span class="p">(</span><span class="n">AngularMomentumQuantumNumbers</span><span class="p">)</span> <span class="ow">and</span> <span class="n">operator</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantum_number_names</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_state</span><span class="p">()</span><span class="o">.</span><span class="n">calc_reduced_matrix_element</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">to_state</span><span class="p">(),</span> <span class="n">operator</span><span class="p">,</span> <span class="n">kappa</span><span class="p">)</span>
+
+        <span class="n">qn_name</span><span class="p">:</span> <span class="n">AngularMomentumQuantumNumbers</span>
+        <span class="k">if</span> <span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;spherical&quot;</span><span class="p">:</span>
+            <span class="n">qn_name</span> <span class="o">=</span> <span class="s2">&quot;l_r&quot;</span>
+            <span class="n">complete_reduced_matrix_element</span> <span class="o">=</span> <span class="n">calc_reduced_spherical_matrix_element</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l_r</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">l_r</span><span class="p">,</span> <span class="n">kappa</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">operator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantum_number_names</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">kappa</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Only kappa=1 is supported for spin operators.&quot;</span><span class="p">)</span>
+            <span class="n">qn_name</span> <span class="o">=</span> <span class="n">operator</span>  <span class="c1"># type: ignore [assignment]</span>
+            <span class="n">complete_reduced_matrix_element</span> <span class="o">=</span> <span class="n">calc_reduced_spin_matrix_element</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_qn</span><span class="p">(</span><span class="n">qn_name</span><span class="p">),</span> <span class="n">other</span><span class="o">.</span><span class="n">get_qn</span><span class="p">(</span><span class="n">qn_name</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">operator</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;identity_&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">kappa</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Only kappa=0 is supported for identity operator.&quot;</span><span class="p">)</span>
+            <span class="n">qn_name</span> <span class="o">=</span> <span class="n">operator</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;identity_&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore [assignment]</span>
+            <span class="n">complete_reduced_matrix_element</span> <span class="o">=</span> <span class="n">calc_reduced_identity_matrix_element</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_qn</span><span class="p">(</span><span class="n">qn_name</span><span class="p">),</span> <span class="n">other</span><span class="o">.</span><span class="n">get_qn</span><span class="p">(</span><span class="n">qn_name</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;calc_reduced_matrix_element is not implemented for operator </span><span class="si">{</span><span class="n">operator</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">complete_reduced_matrix_element</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_kronecker_delta_non_involved_spins</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">qn_name</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="n">prefactor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_prefactor_of_operator_in_coupled_scheme</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">qn_name</span><span class="p">,</span> <span class="n">kappa</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">prefactor</span> <span class="o">*</span> <span class="n">complete_reduced_matrix_element</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_matrix_element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">AngularKetBase</span><span class="p">,</span> <span class="n">operator</span><span class="p">:</span> <span class="n">AngularOperatorType</span><span class="p">,</span> <span class="n">kappa</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">q</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the dimensionless angular matrix element.</span>
+
+<span class="sd">        Use the Wigner-Eckart theorem to calculate the angular matrix element from the reduced matrix element.</span>
+<span class="sd">        We stick to the convention from Edmonds 1985 &quot;Angular Momentum in Quantum Mechanics&quot;, see equation (5.4.1).</span>
+<span class="sd">        This means, calculate the following matrix element:</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \left\langle self | \hat{O}^{(\kappa)}_q | other \right\rangle</span>
+<span class="sd">            = &lt;\alpha&#39;,f_{tot}&#39;,m&#39;| \hat{O}^{(\kappa)}_q |\alpha,f_{tot},m&gt;</span>
+<span class="sd">            = (-1)^{(f_{tot} - m)} \cdot \mathrm{Wigner3j}(f_{tot}&#39;, \kappa, f_{tot}, -m&#39;, q, m)</span>
+<span class="sd">                \cdot &lt;\alpha&#39;,f_{tot}&#39; || \hat{O}^{(\kappa)} || \alpha,f_{tot}&gt;</span>
+
+<span class="sd">        where alpha denotes all other quantum numbers</span>
+<span class="sd">        and :math:`&lt;\alpha&#39;,f_{tot}&#39; || \hat{O}^{(\kappa)} || \alpha,f_{tot}&gt;` is the reduced matrix element</span>
+<span class="sd">        (see `calc_reduced_matrix_element`).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            other: The other AngularKet :math:`|other&gt;`.</span>
+<span class="sd">            operator: The operator type :math:`\hat{O}_{kq}` for which to calculate the matrix element.</span>
+<span class="sd">                E.g. &#39;spherical&#39;, &#39;s_tot&#39;, &#39;l_r&#39;, etc.</span>
+<span class="sd">            kappa: The rank :math:`\kappa` of the angular momentum operator.</span>
+<span class="sd">            q: The component :math:`q` of the angular momentum operator.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The dimensionless angular matrix element.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">other</span><span class="o">.</span><span class="n">m</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;m must be set to calculate the matrix element.&quot;</span><span class="p">)</span>
+
+        <span class="n">prefactor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_wigner_eckart_prefactor</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+        <span class="n">reduced_matrix_element</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calc_reduced_matrix_element</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">operator</span><span class="p">,</span> <span class="n">kappa</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">prefactor</span> <span class="o">*</span> <span class="n">reduced_matrix_element</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_calc_wigner_eckart_prefactor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">AngularKetBase</span><span class="p">,</span> <span class="n">kappa</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">q</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">m</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;m must be set to calculate the Wigner-Eckart prefactor.&quot;</span>  <span class="c1"># noqa: PT018</span>
+        <span class="k">return</span> <span class="n">minus_one_pow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f_tot</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="n">calc_wigner_3j</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f_tot</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">f_tot</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_kronecker_delta_non_involved_spins</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">AngularKetBase</span><span class="p">,</span> <span class="n">qn</span><span class="p">:</span> <span class="n">AngularMomentumQuantumNumbers</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the Kronecker delta for non involved angular momentum quantum numbers.</span>
+
+<span class="sd">        This means return 0 if any of the quantum numbers,</span>
+<span class="sd">        that are not qn or a coupled quantum number resulting from qn differ between self and other.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">qn</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantum_number_names</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Quantum number </span><span class="si">{</span><span class="n">qn</span><span class="si">}</span><span class="s2"> is not a valid angular momentum quantum number for </span><span class="si">{</span><span class="bp">self</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+        <span class="n">resulting_qns</span> <span class="o">=</span> <span class="p">{</span><span class="n">qn</span><span class="p">}</span>
+        <span class="n">last_qn</span> <span class="o">=</span> <span class="n">qn</span>
+        <span class="k">while</span> <span class="n">last_qn</span> <span class="o">!=</span> <span class="s2">&quot;f_tot&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">qs</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">coupled_quantum_numbers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">last_qn</span> <span class="ow">in</span> <span class="n">qs</span><span class="p">:</span>
+                    <span class="n">resulting_qns</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                    <span class="n">last_qn</span> <span class="o">=</span> <span class="n">key</span>
+                    <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;_kronecker_delta_non_involved_spins: </span><span class="si">{</span><span class="n">last_qn</span><span class="si">}</span><span class="s2"> not found in coupled_quantum_numbers.&quot;</span>
+                <span class="p">)</span>
+
+        <span class="n">non_involved_qns</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">quantum_number_names</span><span class="p">)</span> <span class="o">-</span> <span class="n">resulting_qns</span>
+        <span class="k">for</span> <span class="n">_qn</span> <span class="ow">in</span> <span class="n">non_involved_qns</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_qn</span><span class="p">(</span><span class="n">_qn</span><span class="p">)</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">get_qn</span><span class="p">(</span><span class="n">_qn</span><span class="p">):</span>
+                <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="mi">1</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_calc_prefactor_of_operator_in_coupled_scheme</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">AngularKetBase</span><span class="p">,</span> <span class="n">qn</span><span class="p">:</span> <span class="n">AngularMomentumQuantumNumbers</span><span class="p">,</span> <span class="n">kappa</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the prefactor for the complete reduced matrix element.</span>
+
+<span class="sd">        This approach is only valid if the operator acts only on one of the well defined quantum numbers.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Both kets must be of the same type to calculate the prefactor of the operator in the coupled scheme.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">qn</span> <span class="o">==</span> <span class="s2">&quot;f_tot&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">qs</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">coupled_quantum_numbers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">qn</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">qs</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">qn_combined</span> <span class="o">=</span> <span class="n">key</span>
+            <span class="c1"># NOTE: the order does actually matter for the sign of some matrix elements</span>
+            <span class="c1"># we use this to convention to stay consistent with the old pairinteraction database signs</span>
+            <span class="n">qn2</span><span class="p">,</span> <span class="n">qn1</span> <span class="o">=</span> <span class="n">qs</span>
+            <span class="n">operator_acts_on</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;first&quot;</span><span class="p">,</span> <span class="s2">&quot;second&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;first&quot;</span> <span class="k">if</span> <span class="n">qn</span> <span class="o">==</span> <span class="n">qn1</span> <span class="k">else</span> <span class="s2">&quot;second&quot;</span>
+            <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># no break</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Quantum number </span><span class="si">{</span><span class="n">qn</span><span class="si">}</span><span class="s2"> not found in coupled_quantum_numbers.&quot;</span><span class="p">)</span>
+
+        <span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">,</span> <span class="n">f_tot</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_qn</span><span class="p">(</span><span class="n">qn1</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_qn</span><span class="p">(</span><span class="n">qn2</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_qn</span><span class="p">(</span><span class="n">qn_combined</span><span class="p">))</span>
+        <span class="n">i1</span><span class="p">,</span> <span class="n">i2</span><span class="p">,</span> <span class="n">i_tot</span> <span class="o">=</span> <span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">get_qn</span><span class="p">(</span><span class="n">qn1</span><span class="p">),</span> <span class="n">other</span><span class="o">.</span><span class="n">get_qn</span><span class="p">(</span><span class="n">qn2</span><span class="p">),</span> <span class="n">other</span><span class="o">.</span><span class="n">get_qn</span><span class="p">(</span><span class="n">qn_combined</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">operator_acts_on</span> <span class="o">==</span> <span class="s2">&quot;first&quot;</span> <span class="ow">and</span> <span class="n">f2</span> <span class="o">!=</span> <span class="n">i2</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">operator_acts_on</span> <span class="o">==</span> <span class="s2">&quot;second&quot;</span> <span class="ow">and</span> <span class="n">f1</span> <span class="o">!=</span> <span class="n">i1</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="n">prefactor</span> <span class="o">=</span> <span class="n">calc_prefactor_of_operator_in_coupled_scheme</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">,</span> <span class="n">f_tot</span><span class="p">,</span> <span class="n">i1</span><span class="p">,</span> <span class="n">i2</span><span class="p">,</span> <span class="n">i_tot</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">operator_acts_on</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">prefactor</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_prefactor_of_operator_in_coupled_scheme</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">qn_combined</span><span class="p">,</span> <span class="n">kappa</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="AngularKetLS">
+<a class="viewcode-back" href="../../../_autosummary/modules/rydstate.angular.AngularKetLS.html#rydstate.angular.AngularKetLS">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">AngularKetLS</span><span class="p">(</span><span class="n">AngularKetBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Spin ket in LS coupling.&quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;s_tot&quot;</span><span class="p">,</span> <span class="s2">&quot;l_tot&quot;</span><span class="p">,</span> <span class="s2">&quot;j_tot&quot;</span><span class="p">)</span>
+    <span class="n">quantum_number_names</span><span class="p">:</span> <span class="n">ClassVar</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;i_c&quot;</span><span class="p">,</span> <span class="s2">&quot;s_c&quot;</span><span class="p">,</span> <span class="s2">&quot;l_c&quot;</span><span class="p">,</span> <span class="s2">&quot;s_r&quot;</span><span class="p">,</span> <span class="s2">&quot;l_r&quot;</span><span class="p">,</span> <span class="s2">&quot;s_tot&quot;</span><span class="p">,</span> <span class="s2">&quot;l_tot&quot;</span><span class="p">,</span> <span class="s2">&quot;j_tot&quot;</span><span class="p">,</span> <span class="s2">&quot;f_tot&quot;</span><span class="p">)</span>
+    <span class="n">coupled_quantum_numbers</span><span class="p">:</span> <span class="n">ClassVar</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;s_tot&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;s_c&quot;</span><span class="p">,</span> <span class="s2">&quot;s_r&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;l_tot&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;l_c&quot;</span><span class="p">,</span> <span class="s2">&quot;l_r&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;j_tot&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;s_tot&quot;</span><span class="p">,</span> <span class="s2">&quot;l_tot&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;f_tot&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;i_c&quot;</span><span class="p">,</span> <span class="s2">&quot;j_tot&quot;</span><span class="p">),</span>
+    <span class="p">}</span>
+    <span class="n">coupling_scheme</span> <span class="o">=</span> <span class="s2">&quot;LS&quot;</span>
+
+    <span class="n">s_tot</span><span class="p">:</span> <span class="nb">float</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Total electron spin quantum number (s_c + s_r).&quot;&quot;&quot;</span>
+    <span class="n">l_tot</span><span class="p">:</span> <span class="nb">int</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Total electron orbital quantum number (l_c + l_r).&quot;&quot;&quot;</span>
+    <span class="n">j_tot</span><span class="p">:</span> <span class="nb">float</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Total electron angular momentum quantum number (s_tot + l_tot).&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">i_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">s_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">l_c</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">s_r</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">l_r</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">s_tot</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">l_tot</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">j_tot</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">f_tot</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">m</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">species</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">SpeciesObject</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the Spin ket.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">i_c</span><span class="p">,</span> <span class="n">s_c</span><span class="p">,</span> <span class="n">l_c</span><span class="p">,</span> <span class="n">s_r</span><span class="p">,</span> <span class="n">l_r</span><span class="p">,</span> <span class="n">f_tot</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">species</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">s_tot</span> <span class="o">=</span> <span class="n">try_trivial_spin_addition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_r</span><span class="p">,</span> <span class="n">s_tot</span><span class="p">,</span> <span class="s2">&quot;s_tot&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">l_tot</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">try_trivial_spin_addition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">l_r</span><span class="p">,</span> <span class="n">l_tot</span><span class="p">,</span> <span class="s2">&quot;l_tot&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">j_tot</span> <span class="o">=</span> <span class="n">try_trivial_spin_addition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l_tot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_tot</span><span class="p">,</span> <span class="n">j_tot</span><span class="p">,</span> <span class="s2">&quot;j_tot&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f_tot</span> <span class="o">=</span> <span class="n">try_trivial_spin_addition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">j_tot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">i_c</span><span class="p">,</span> <span class="n">f_tot</span><span class="p">,</span> <span class="s2">&quot;f_tot&quot;</span><span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_post_init</span><span class="p">()</span>
+
+<div class="viewcode-block" id="AngularKetLS.sanity_check">
+<a class="viewcode-back" href="../../../_autosummary/modules/rydstate.angular.AngularKetLS.html#rydstate.angular.AngularKetLS.sanity_check">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sanity_check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msgs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check that the quantum numbers are valid.&quot;&quot;&quot;</span>
+        <span class="n">msgs</span> <span class="o">=</span> <span class="n">msgs</span> <span class="k">if</span> <span class="n">msgs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">check_spin_addition_rule</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l_r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">l_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">l_tot</span><span class="p">):</span>
+            <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">l_r</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">l_c</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">l_tot</span><span class="si">=}</span><span class="s2"> don&#39;t satisfy spin addition rule.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">check_spin_addition_rule</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s_r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_tot</span><span class="p">):</span>
+            <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">s_r</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">s_c</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">s_tot</span><span class="si">=}</span><span class="s2"> don&#39;t satisfy spin addition rule.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">check_spin_addition_rule</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l_tot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_tot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">j_tot</span><span class="p">):</span>
+            <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">l_tot</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">s_tot</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">j_tot</span><span class="si">=}</span><span class="s2"> don&#39;t satisfy spin addition rule.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">check_spin_addition_rule</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">j_tot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">i_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_tot</span><span class="p">):</span>
+            <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">j_tot</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">i_c</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f_tot</span><span class="si">=}</span><span class="s2"> don&#39;t satisfy spin addition rule.&quot;</span><span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">sanity_check</span><span class="p">(</span><span class="n">msgs</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="AngularKetJJ">
+<a class="viewcode-back" href="../../../_autosummary/modules/rydstate.angular.AngularKetJJ.html#rydstate.angular.AngularKetJJ">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">AngularKetJJ</span><span class="p">(</span><span class="n">AngularKetBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Spin ket in JJ coupling.&quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;j_c&quot;</span><span class="p">,</span> <span class="s2">&quot;j_r&quot;</span><span class="p">,</span> <span class="s2">&quot;j_tot&quot;</span><span class="p">)</span>
+    <span class="n">quantum_number_names</span><span class="p">:</span> <span class="n">ClassVar</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;i_c&quot;</span><span class="p">,</span> <span class="s2">&quot;s_c&quot;</span><span class="p">,</span> <span class="s2">&quot;l_c&quot;</span><span class="p">,</span> <span class="s2">&quot;s_r&quot;</span><span class="p">,</span> <span class="s2">&quot;l_r&quot;</span><span class="p">,</span> <span class="s2">&quot;j_c&quot;</span><span class="p">,</span> <span class="s2">&quot;j_r&quot;</span><span class="p">,</span> <span class="s2">&quot;j_tot&quot;</span><span class="p">,</span> <span class="s2">&quot;f_tot&quot;</span><span class="p">)</span>
+    <span class="n">coupled_quantum_numbers</span><span class="p">:</span> <span class="n">ClassVar</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;j_c&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;s_c&quot;</span><span class="p">,</span> <span class="s2">&quot;l_c&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;j_r&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;s_r&quot;</span><span class="p">,</span> <span class="s2">&quot;l_r&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;j_tot&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;j_c&quot;</span><span class="p">,</span> <span class="s2">&quot;j_r&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;f_tot&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;i_c&quot;</span><span class="p">,</span> <span class="s2">&quot;j_tot&quot;</span><span class="p">),</span>
+    <span class="p">}</span>
+    <span class="n">coupling_scheme</span> <span class="o">=</span> <span class="s2">&quot;JJ&quot;</span>
+
+    <span class="n">j_c</span><span class="p">:</span> <span class="nb">float</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Total core electron angular quantum number (s_c + l_c).&quot;&quot;&quot;</span>
+    <span class="n">j_r</span><span class="p">:</span> <span class="nb">float</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Total rydberg electron angular quantum number (s_r + l_r).&quot;&quot;&quot;</span>
+    <span class="n">j_tot</span><span class="p">:</span> <span class="nb">float</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Total electron angular momentum quantum number (j_c + j_r).&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">i_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">s_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">l_c</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">s_r</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">l_r</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">j_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">j_r</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">j_tot</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">f_tot</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">m</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">species</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">SpeciesObject</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the Spin ket.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">i_c</span><span class="p">,</span> <span class="n">s_c</span><span class="p">,</span> <span class="n">l_c</span><span class="p">,</span> <span class="n">s_r</span><span class="p">,</span> <span class="n">l_r</span><span class="p">,</span> <span class="n">f_tot</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">species</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">j_c</span> <span class="o">=</span> <span class="n">try_trivial_spin_addition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_c</span><span class="p">,</span> <span class="n">j_c</span><span class="p">,</span> <span class="s2">&quot;j_c&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">j_r</span> <span class="o">=</span> <span class="n">try_trivial_spin_addition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l_r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_r</span><span class="p">,</span> <span class="n">j_r</span><span class="p">,</span> <span class="s2">&quot;j_r&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">j_tot</span> <span class="o">=</span> <span class="n">try_trivial_spin_addition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">j_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">j_r</span><span class="p">,</span> <span class="n">j_tot</span><span class="p">,</span> <span class="s2">&quot;j_tot&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f_tot</span> <span class="o">=</span> <span class="n">try_trivial_spin_addition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">j_tot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">i_c</span><span class="p">,</span> <span class="n">f_tot</span><span class="p">,</span> <span class="s2">&quot;f_tot&quot;</span><span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_post_init</span><span class="p">()</span>
+
+<div class="viewcode-block" id="AngularKetJJ.sanity_check">
+<a class="viewcode-back" href="../../../_autosummary/modules/rydstate.angular.AngularKetJJ.html#rydstate.angular.AngularKetJJ.sanity_check">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sanity_check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msgs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check that the quantum numbers are valid.&quot;&quot;&quot;</span>
+        <span class="n">msgs</span> <span class="o">=</span> <span class="n">msgs</span> <span class="k">if</span> <span class="n">msgs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">check_spin_addition_rule</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">j_c</span><span class="p">):</span>
+            <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">l_c</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">s_c</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">j_c</span><span class="si">=}</span><span class="s2"> don&#39;t satisfy spin addition rule.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">check_spin_addition_rule</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l_r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">j_r</span><span class="p">):</span>
+            <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">l_r</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">s_r</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">j_r</span><span class="si">=}</span><span class="s2"> don&#39;t satisfy spin addition rule.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">check_spin_addition_rule</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">j_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">j_r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">j_tot</span><span class="p">):</span>
+            <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">j_c</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">j_r</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">j_tot</span><span class="si">=}</span><span class="s2"> don&#39;t satisfy spin addition rule.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">check_spin_addition_rule</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">j_tot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">i_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_tot</span><span class="p">):</span>
+            <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">j_tot</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">i_c</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f_tot</span><span class="si">=}</span><span class="s2"> don&#39;t satisfy spin addition rule.&quot;</span><span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">sanity_check</span><span class="p">(</span><span class="n">msgs</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="AngularKetFJ">
+<a class="viewcode-back" href="../../../_autosummary/modules/rydstate.angular.AngularKetFJ.html#rydstate.angular.AngularKetFJ">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">AngularKetFJ</span><span class="p">(</span><span class="n">AngularKetBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Spin ket in FJ coupling.&quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;j_c&quot;</span><span class="p">,</span> <span class="s2">&quot;f_c&quot;</span><span class="p">,</span> <span class="s2">&quot;j_r&quot;</span><span class="p">)</span>
+    <span class="n">quantum_number_names</span><span class="p">:</span> <span class="n">ClassVar</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;i_c&quot;</span><span class="p">,</span> <span class="s2">&quot;s_c&quot;</span><span class="p">,</span> <span class="s2">&quot;l_c&quot;</span><span class="p">,</span> <span class="s2">&quot;s_r&quot;</span><span class="p">,</span> <span class="s2">&quot;l_r&quot;</span><span class="p">,</span> <span class="s2">&quot;j_c&quot;</span><span class="p">,</span> <span class="s2">&quot;f_c&quot;</span><span class="p">,</span> <span class="s2">&quot;j_r&quot;</span><span class="p">,</span> <span class="s2">&quot;f_tot&quot;</span><span class="p">)</span>
+    <span class="n">coupled_quantum_numbers</span><span class="p">:</span> <span class="n">ClassVar</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;j_c&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;s_c&quot;</span><span class="p">,</span> <span class="s2">&quot;l_c&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;f_c&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;i_c&quot;</span><span class="p">,</span> <span class="s2">&quot;j_c&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;j_r&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;s_r&quot;</span><span class="p">,</span> <span class="s2">&quot;l_r&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;f_tot&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;f_c&quot;</span><span class="p">,</span> <span class="s2">&quot;j_r&quot;</span><span class="p">),</span>
+    <span class="p">}</span>
+    <span class="n">coupling_scheme</span> <span class="o">=</span> <span class="s2">&quot;FJ&quot;</span>
+
+    <span class="n">j_c</span><span class="p">:</span> <span class="nb">float</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Total core electron angular quantum number (s_c + l_c).&quot;&quot;&quot;</span>
+    <span class="n">f_c</span><span class="p">:</span> <span class="nb">float</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Total core angular quantum number (j_c + i_c).&quot;&quot;&quot;</span>
+    <span class="n">j_r</span><span class="p">:</span> <span class="nb">float</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Total rydberg electron angular quantum number (s_r + l_r).&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">i_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">s_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">l_c</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">s_r</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">l_r</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">j_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">f_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">j_r</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">f_tot</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">m</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">species</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">SpeciesObject</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the Spin ket.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">i_c</span><span class="p">,</span> <span class="n">s_c</span><span class="p">,</span> <span class="n">l_c</span><span class="p">,</span> <span class="n">s_r</span><span class="p">,</span> <span class="n">l_r</span><span class="p">,</span> <span class="n">f_tot</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">species</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">j_c</span> <span class="o">=</span> <span class="n">try_trivial_spin_addition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_c</span><span class="p">,</span> <span class="n">j_c</span><span class="p">,</span> <span class="s2">&quot;j_c&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">j_r</span> <span class="o">=</span> <span class="n">try_trivial_spin_addition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l_r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_r</span><span class="p">,</span> <span class="n">j_r</span><span class="p">,</span> <span class="s2">&quot;j_r&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f_c</span> <span class="o">=</span> <span class="n">try_trivial_spin_addition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">j_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">i_c</span><span class="p">,</span> <span class="n">f_c</span><span class="p">,</span> <span class="s2">&quot;f_c&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f_tot</span> <span class="o">=</span> <span class="n">try_trivial_spin_addition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">j_r</span><span class="p">,</span> <span class="n">f_tot</span><span class="p">,</span> <span class="s2">&quot;f_tot&quot;</span><span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_post_init</span><span class="p">()</span>
+
+<div class="viewcode-block" id="AngularKetFJ.sanity_check">
+<a class="viewcode-back" href="../../../_autosummary/modules/rydstate.angular.AngularKetFJ.html#rydstate.angular.AngularKetFJ.sanity_check">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sanity_check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msgs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check that the quantum numbers are valid.&quot;&quot;&quot;</span>
+        <span class="n">msgs</span> <span class="o">=</span> <span class="n">msgs</span> <span class="k">if</span> <span class="n">msgs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">check_spin_addition_rule</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">j_c</span><span class="p">):</span>
+            <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">l_c</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">s_c</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">j_c</span><span class="si">=}</span><span class="s2"> don&#39;t satisfy spin addition rule.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">check_spin_addition_rule</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l_r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">j_r</span><span class="p">):</span>
+            <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">l_r</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">s_r</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">j_r</span><span class="si">=}</span><span class="s2"> don&#39;t satisfy spin addition rule.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">check_spin_addition_rule</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">j_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">i_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_c</span><span class="p">):</span>
+            <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">j_c</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">i_c</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f_c</span><span class="si">=}</span><span class="s2"> don&#39;t satisfy spin addition rule.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">check_spin_addition_rule</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">j_r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_tot</span><span class="p">):</span>
+            <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f_c</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">j_r</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f_tot</span><span class="si">=}</span><span class="s2"> don&#39;t satisfy spin addition rule.&quot;</span><span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">sanity_check</span><span class="p">(</span><span class="n">msgs</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, RydState Developers.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

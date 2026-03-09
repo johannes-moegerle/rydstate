@@ -1,0 +1,36 @@
+RadialState
+===========
+
+.. currentmodule:: rydstate.radial
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~RadialState.__init__
+      ~RadialState.calc_matrix_element
+      ~RadialState.calc_overlap
+      ~RadialState.create_grid
+      ~RadialState.create_model
+      ~RadialState.create_wavefunction
+      ~RadialState.set_n_for_sanity_check
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~RadialState.grid
+   ~RadialState.model
+   ~RadialState.wavefunction
+
+
+
+.. autoclass:: rydstate.radial.RadialState
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

@@ -1,0 +1,55 @@
+﻿rydstate
+========
+Full module path: rydstate
+
+.. workaround to ignore generic classes like AtomSQDT[int]
+
+
+   
+      
+   
+   
+      
+   
+   
+      
+   
+
+
+.. currentmodule:: rydstate
+
+
+
+
+
+
+.. rubric:: Classes
+
+.. .. inheritance-diagram:: rydstate
+..     :parts: 1
+
+.. autosummary::
+   :toctree: .
+   
+      RydbergStateAlkali
+      RydbergStateAlkalineJJ
+      RydbergStateAlkalineLS
+
+
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree: .
+   :recursive:
+   
+      angular
+      radial
+      species
+
+
+.. rubric:: Module description
+
+.. automodule:: rydstate

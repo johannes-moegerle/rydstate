@@ -1,0 +1,45 @@
+Rubidium
+========
+
+.. currentmodule:: rydstate.species
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~Rubidium.__init__
+      ~Rubidium.calc_nu
+      ~Rubidium.from_name
+      ~Rubidium.get_available_species
+      ~Rubidium.get_corrected_rydberg_constant
+      ~Rubidium.get_ionization_energy
+      ~Rubidium.is_allowed_shell
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~Rubidium.Z
+   ~Rubidium.alpha_c_marinescu_1993
+   ~Rubidium.ground_state_shell
+   ~Rubidium.i_c
+   ~Rubidium.ionization_energy_au
+   ~Rubidium.model_potential_parameter_fei_2009
+   ~Rubidium.model_potential_parameter_marinescu_1993
+   ~Rubidium.name
+   ~Rubidium.number_valence_electrons
+   ~Rubidium.potential_type_default
+   ~Rubidium.r_c_dict_marinescu_1993
+   ~Rubidium.reduced_mass_au
+
+
+
+.. autoclass:: rydstate.species.Rubidium
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

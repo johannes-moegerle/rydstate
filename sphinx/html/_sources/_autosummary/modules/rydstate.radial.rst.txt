@@ -1,0 +1,65 @@
+radial
+======
+Full module path: rydstate.radial
+
+.. workaround to ignore generic classes like AtomSQDT[int]
+
+
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+
+
+.. currentmodule:: rydstate.radial
+
+
+
+
+.. rubric:: Functions
+
+.. autosummary::
+   :toctree: .
+   
+      calc_radial_matrix_element_from_w_z
+      run_numerov_integration
+
+
+
+.. rubric:: Classes
+
+.. .. inheritance-diagram:: rydstate.radial
+..     :parts: 1
+
+.. autosummary::
+   :toctree: .
+   
+      Grid
+      Model
+      RadialState
+      Wavefunction
+      WavefunctionNumerov
+      WavefunctionWhittaker
+
+
+
+
+
+
+.. rubric:: Module description
+
+.. automodule:: rydstate.radial

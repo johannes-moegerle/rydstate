@@ -1,0 +1,47 @@
+AngularKetJJ
+============
+
+.. currentmodule:: rydstate.angular
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~AngularKetJJ.__init__
+      ~AngularKetJJ.calc_matrix_element
+      ~AngularKetJJ.calc_reduced_matrix_element
+      ~AngularKetJJ.calc_reduced_overlap
+      ~AngularKetJJ.get_qn
+      ~AngularKetJJ.sanity_check
+      ~AngularKetJJ.to_state
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~AngularKetJJ.j_c
+   ~AngularKetJJ.j_r
+   ~AngularKetJJ.j_tot
+   ~AngularKetJJ.coupled_quantum_numbers
+   ~AngularKetJJ.coupling_scheme
+   ~AngularKetJJ.f_tot
+   ~AngularKetJJ.i_c
+   ~AngularKetJJ.l_c
+   ~AngularKetJJ.l_r
+   ~AngularKetJJ.m
+   ~AngularKetJJ.quantum_number_names
+   ~AngularKetJJ.quantum_numbers
+   ~AngularKetJJ.s_c
+   ~AngularKetJJ.s_r
+
+
+
+.. autoclass:: rydstate.angular.AngularKetJJ
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

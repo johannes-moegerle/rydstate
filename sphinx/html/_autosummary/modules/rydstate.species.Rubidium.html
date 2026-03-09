@@ -1,0 +1,504 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rubidium &mdash; RydState 0.9.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=aa3b121e"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Sodium" href="rydstate.species.Sodium.html" />
+    <link rel="prev" title="Potassium" href="rydstate.species.Potassium.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            RydState
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../modules.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="rydstate.html">rydstate</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="rydstate.RydbergStateAlkali.html">RydbergStateAlkali</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.RydbergStateAlkalineJJ.html">RydbergStateAlkalineJJ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.RydbergStateAlkalineLS.html">RydbergStateAlkalineLS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.html">angular</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.radial.html">radial</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="rydstate.species.html">species</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="rydstate.species.Cesium.html">Cesium</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rydstate.species.Hydrogen.html">Hydrogen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rydstate.species.HydrogenTextBook.html">HydrogenTextBook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rydstate.species.Lithium.html">Lithium</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rydstate.species.Potassium.html">Potassium</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Rubidium</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rydstate.species.Sodium.html">Sodium</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rydstate.species.SpeciesObject.html">SpeciesObject</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rydstate.species.Strontium87.html">Strontium87</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rydstate.species.Strontium88.html">Strontium88</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rydstate.species.Ytterbium171.html">Ytterbium171</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rydstate.species.Ytterbium173.html">Ytterbium173</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rydstate.species.Ytterbium174.html">Ytterbium174</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<style>
+a.gitbutton {
+  display: block;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #fff;
+  padding-top: 10px;
+  padding-left: 85px;
+  padding-right: 0px;
+  margin: 22px;
+  width: 240px;
+  height: 60px;
+  background: transparent url("../../_static/buttons/github.svg") 0 0 no-repeat;
+}
+a.gitbutton small {
+  display: block;
+  font-size: 11px;
+}
+button.toctree-expand {
+  display: none;
+}
+</style>
+<a href="https://github.com/pairinteraction/rydstate" class="gitbutton">Explore<small>the GitHub repository</small></a>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RydState</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../modules.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="rydstate.html">rydstate</a></li>
+          <li class="breadcrumb-item"><a href="rydstate.species.html">species</a></li>
+      <li class="breadcrumb-item active">Rubidium</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/_autosummary/modules/rydstate.species.Rubidium.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rubidium">
+<h1>Rubidium<a class="headerlink" href="#rubidium" title="Link to this heading"></a></h1>
+<p class="rubric">Class Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>()</p></td>
+<td><p>Initialize an species instance.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.species.Rubidium.calc_nu" title="rydstate.species.Rubidium.calc_nu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_nu</span></code></a>(n, l, j_tot[, s_tot, use_nist_data, ...])</p></td>
+<td><p>Calculate the effective principal quantum number nu of a Rydberg state with the given n, l, j_tot and s_tot.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.species.Rubidium.from_name" title="rydstate.species.Rubidium.from_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_name</span></code></a>(cls, name)</p></td>
+<td><p>Create an instance of the species class from the species name.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.species.Rubidium.get_available_species" title="rydstate.species.Rubidium.get_available_species"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_available_species</span></code></a>()</p></td>
+<td><p>Get a list of all available species names in the library.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.species.Rubidium.get_corrected_rydberg_constant" title="rydstate.species.Rubidium.get_corrected_rydberg_constant"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_corrected_rydberg_constant</span></code></a>([unit])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.species.Rubidium.get_ionization_energy" title="rydstate.species.Rubidium.get_ionization_energy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_ionization_energy</span></code></a>([unit])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.species.Rubidium.is_allowed_shell" title="rydstate.species.Rubidium.is_allowed_shell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_allowed_shell</span></code></a>(n, l[, s_tot])</p></td>
+<td><p>Check if the quantum numbers describe an allowed shell.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Class Attributes and Properties</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.species.Rubidium.Z" title="rydstate.species.Rubidium.Z"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Z</span></code></a></p></td>
+<td><p>Atomic number of the species.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.species.Rubidium.alpha_c_marinescu_1993" title="rydstate.species.Rubidium.alpha_c_marinescu_1993"><code class="xref py py-obj docutils literal notranslate"><span class="pre">alpha_c_marinescu_1993</span></code></a></p></td>
+<td><p>Static dipole polarizability in atomic units (a.u.), used for the parametric model potential.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.species.Rubidium.ground_state_shell" title="rydstate.species.Rubidium.ground_state_shell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ground_state_shell</span></code></a></p></td>
+<td><p>Shell (n, l) describing the electronic ground state configuration.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.species.Rubidium.i_c" title="rydstate.species.Rubidium.i_c"><code class="xref py py-obj docutils literal notranslate"><span class="pre">i_c</span></code></a></p></td>
+<td><p>Nuclear spin, (default None to ignore hyperfine structure, will be treated like i_c = 0).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.species.Rubidium.ionization_energy_au" title="rydstate.species.Rubidium.ionization_energy_au"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ionization_energy_au</span></code></a></p></td>
+<td><p>Ionization energy in atomic units (Hartree).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.species.Rubidium.model_potential_parameter_fei_2009" title="rydstate.species.Rubidium.model_potential_parameter_fei_2009"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_potential_parameter_fei_2009</span></code></a></p></td>
+<td><p>Parameters (delta, alpha, beta, gamma) for the new four-parameter potential, used in the model potential defined in: Y.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.species.Rubidium.model_potential_parameter_marinescu_1993" title="rydstate.species.Rubidium.model_potential_parameter_marinescu_1993"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_potential_parameter_marinescu_1993</span></code></a></p></td>
+<td><p>(a_1, a_2, a_3, a_4)} for the parametric model potential.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.species.Rubidium.name" title="rydstate.species.Rubidium.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>The name of the atomic species.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.species.Rubidium.number_valence_electrons" title="rydstate.species.Rubidium.number_valence_electrons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_valence_electrons</span></code></a></p></td>
+<td><p>Number of valence electrons (i.e. 1 for alkali atoms and 2 for alkaline earth atoms).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.species.Rubidium.potential_type_default" title="rydstate.species.Rubidium.potential_type_default"><code class="xref py py-obj docutils literal notranslate"><span class="pre">potential_type_default</span></code></a></p></td>
+<td><p>Default potential type to use for this species.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.species.Rubidium.r_c_dict_marinescu_1993" title="rydstate.species.Rubidium.r_c_dict_marinescu_1993"><code class="xref py py-obj docutils literal notranslate"><span class="pre">r_c_dict_marinescu_1993</span></code></a></p></td>
+<td><p>r_c} to truncate the unphysical short-range contribution of the polarization potential.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.species.Rubidium.reduced_mass_au" title="rydstate.species.Rubidium.reduced_mass_au"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduced_mass_au</span></code></a></p></td>
+<td><p>The reduced mass mu in atomic units.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="rydstate.species.Rubidium">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">rydstate.species.</span></span><span class="sig-name descname"><span class="pre">Rubidium</span></span><a class="reference internal" href="../../_modules/rydstate/species/rubidium.html#Rubidium"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rydstate.species.Rubidium" title="Link to this definition"></a></dt>
+<dd><p>Initialize an species instance.</p>
+<p>Use this init method to set up additional properties and data for the species,
+like loading NIST energy levels from a file.</p>
+<dl class="field-list simple">
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.Rubidium.name">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Rb'</span></span><a class="headerlink" href="#rydstate.species.Rubidium.name" title="Link to this definition"></a></dt>
+<dd><p>The name of the atomic species.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.Rubidium.Z">
+<span class="sig-name descname"><span class="pre">Z</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">37</span></span><a class="headerlink" href="#rydstate.species.Rubidium.Z" title="Link to this definition"></a></dt>
+<dd><p>Atomic number of the species.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.Rubidium.alpha_c_marinescu_1993">
+<span class="sig-name descname"><span class="pre">alpha_c_marinescu_1993</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">9.076</span></span><a class="headerlink" href="#rydstate.species.Rubidium.alpha_c_marinescu_1993" title="Link to this definition"></a></dt>
+<dd><p>Static dipole polarizability in atomic units (a.u.), used for the parametric model potential.
+See also: Phys. Rev. A 49, 982 (1994)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.species.Rubidium.calc_nu">
+<span class="sig-name descname"><span class="pre">calc_nu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j_tot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_tot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_nist_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nist_n_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.species.Rubidium.calc_nu" title="Link to this definition"></a></dt>
+<dd><p>Calculate the effective principal quantum number nu of a Rydberg state with the given n, l, j_tot and s_tot.</p>
+<p>I.e. either look up the energy for low lying states in the nist data (if use_nist_data is True),
+and calculate nu from the energy via (see also <cite>calc_nu_from_energy</cite>):</p>
+<div class="math notranslate nohighlight">
+\[\nu = \sqrt{\frac{1}{2} \frac{\mu/m_e}{-E/E_H}}\]</div>
+<p>Or calculate nu via the quantum defect theory,
+where nu is defined as series expansion <span class="math notranslate nohighlight">\(\nu = n^* = n - \delta_{lj}(n)\)</span>
+with the quantum defect</p>
+<div class="math notranslate nohighlight">
+\[\delta_{lj}(n) = d0_{lj} + d2_{lj} / [n - d0_{lj}(n)]^2 + d4_{lj} / [n - \delta_{lj}(n)]^4 + ...\]</div>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><p>On a New Law of Series Spectra, Ritz; DOI: 10.1086/141591, <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/1908ApJ....28..237R/abstract">https://ui.adsabs.harvard.edu/abs/1908ApJ….28..237R/abstract</a></p></li>
+<li><p>Rydberg atoms, Gallagher; DOI: 10.1088/0034-4885/51/2/001, (Eq. 16.19)</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – The principal quantum number of the Rydberg state.</p></li>
+<li><p><strong>l</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – The orbital angular momentum quantum number of the Rydberg state.</p></li>
+<li><p><strong>j_tot</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – The total angular momentum quantum number of the Rydberg state.</p></li>
+<li><p><strong>s_tot</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span>) – The total spin quantum number of the Rydberg state.</p></li>
+<li><p><strong>use_nist_data</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – Whether to use NIST energy data.
+Default is True.</p></li>
+<li><p><strong>nist_n_max</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Maximum principal quantum number for which to use the NIST energy data.
+Default is 15.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.species.Rubidium.from_name">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.species.Rubidium.from_name" title="Link to this definition"></a></dt>
+<dd><p>Create an instance of the species class from the species name.</p>
+<p>This method searches through all subclasses of SpeciesObject until it finds one with a matching species name.
+This approach allows for easy extension of the library with new species.
+A user can even subclass SpeciesObject in his code (without modifying the rydstate library),
+e.g. <cite>class CustomRubidium(SpeciesObject): name = “Custom_Rb” …</cite>
+and then use the new species by calling RydbergStateAlkali(“Custom_Rb”, …)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – The species name (e.g. “Rb”).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="rydstate.species.SpeciesObject.html#rydstate.species.SpeciesObject" title="rydstate.species.species_object.SpeciesObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpeciesObject</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An instance of the corresponding species class.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.species.Rubidium.get_available_species">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">get_available_species</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.species.Rubidium.get_available_species" title="Link to this definition"></a></dt>
+<dd><p>Get a list of all available species names in the library.</p>
+<p>This method returns a list of species names for all concrete subclasses of SpeciesObject.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of species names.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.species.Rubidium.get_corrected_rydberg_constant">
+<span class="sig-name descname"><span class="pre">get_corrected_rydberg_constant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hartree'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.species.Rubidium.get_corrected_rydberg_constant" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Overloads<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong>, <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">None</span>) → <span class="sphinx_autodoc_typehints-type">PintFloat</span></p></li>
+<li><p><strong>self</strong>, <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">str</span>) → <span class="sphinx_autodoc_typehints-type">float</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>unit</strong> (<em>str</em><em> | </em><em>None</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>PlainQuantity</em>[float] | float</p>
+</dd>
+</dl>
+<p>Return the corrected Rydberg constant in the desired unit.</p>
+<p>The corrected Rydberg constant is defined as</p>
+<div class="math notranslate nohighlight">
+\[R_M = R_\infty \frac{m_{Core}}{m_{Core} + m_e}\]</div>
+<p>where <span class="math notranslate nohighlight">\(R_\infty\)</span> is the Rydberg constant for infinite nuclear mass,
+<span class="math notranslate nohighlight">\(m_{Core}\)</span> is the mass of the core,
+and <span class="math notranslate nohighlight">\(m_e\)</span> is the mass of the electron.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>unit</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span>) – Desired unit for the corrected Rydberg constant. Default is atomic units “hartree”.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Corrected Rydberg constant in the desired unit.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>PlainQuantity</em>[float] | float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.species.Rubidium.get_ionization_energy">
+<span class="sig-name descname"><span class="pre">get_ionization_energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hartree'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.species.Rubidium.get_ionization_energy" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Overloads<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong>, <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">None</span>) → <span class="sphinx_autodoc_typehints-type">PintFloat</span></p></li>
+<li><p><strong>self</strong>, <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">str</span>) → <span class="sphinx_autodoc_typehints-type">float</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>unit</strong> (<em>str</em><em> | </em><em>None</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>PlainQuantity</em>[float] | float</p>
+</dd>
+</dl>
+<p>Return the ionization energy in the desired unit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>unit</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span>) – Desired unit for the ionization energy. Default is atomic units “hartree”.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Ionization energy in the desired unit.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>PlainQuantity</em>[float] | float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.Rubidium.ground_state_shell">
+<span class="sig-name descname"><span class="pre">ground_state_shell</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(5,</span> <span class="pre">0)</span></span><a class="headerlink" href="#rydstate.species.Rubidium.ground_state_shell" title="Link to this definition"></a></dt>
+<dd><p>Shell (n, l) describing the electronic ground state configuration.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.Rubidium.i_c">
+<span class="sig-name descname"><span class="pre">i_c</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#rydstate.species.Rubidium.i_c" title="Link to this definition"></a></dt>
+<dd><p>Nuclear spin, (default None to ignore hyperfine structure, will be treated like i_c = 0).</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rydstate.species.Rubidium.ionization_energy_au">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">ionization_energy_au</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#rydstate.species.Rubidium.ionization_energy_au" title="Link to this definition"></a></dt>
+<dd><p>Ionization energy in atomic units (Hartree).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.species.Rubidium.is_allowed_shell">
+<span class="sig-name descname"><span class="pre">is_allowed_shell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_tot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.species.Rubidium.is_allowed_shell" title="Link to this definition"></a></dt>
+<dd><p>Check if the quantum numbers describe an allowed shell.</p>
+<p>I.e. whether the shell is above the ground state shell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Principal quantum number</p></li>
+<li><p><strong>l</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Orbital angular momentum quantum number</p></li>
+<li><p><strong>s_tot</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span>) – Total spin quantum number</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the quantum numbers specify a shell equal to or above the ground state shell, False otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.Rubidium.model_potential_parameter_fei_2009">
+<span class="sig-name descname"><span class="pre">model_potential_parameter_fei_2009</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(0.9708,</span> <span class="pre">13.9706,</span> <span class="pre">0.2909,</span> <span class="pre">0.2215)</span></span><a class="headerlink" href="#rydstate.species.Rubidium.model_potential_parameter_fei_2009" title="Link to this definition"></a></dt>
+<dd><p>Parameters (delta, alpha, beta, gamma) for the new four-parameter potential, used in the model potential
+defined in: Y. Fei et al., Chin. Phys. B 18, 4349 (2009), <a class="reference external" href="https://iopscience.iop.org/article/10.1088/1674-1056/18/10/025">https://iopscience.iop.org/article/10.1088/1674-1056/18/10/025</a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.Rubidium.model_potential_parameter_marinescu_1993">
+<span class="sig-name descname"><span class="pre">model_potential_parameter_marinescu_1993</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{0:</span> <span class="pre">(3.69628474,</span> <span class="pre">1.64915255,</span> <span class="pre">-9.86069196,</span> <span class="pre">0.19579987),</span> <span class="pre">1:</span> <span class="pre">(4.44088978,</span> <span class="pre">1.92828831,</span> <span class="pre">-16.7959777,</span> <span class="pre">-0.81633314),</span> <span class="pre">2:</span> <span class="pre">(3.78717363,</span> <span class="pre">1.57027864,</span> <span class="pre">-11.6558897,</span> <span class="pre">0.52942835),</span> <span class="pre">3:</span> <span class="pre">(2.39848933,</span> <span class="pre">1.76810544,</span> <span class="pre">-12.0710678,</span> <span class="pre">0.77256589)}</span></span><a class="headerlink" href="#rydstate.species.Rubidium.model_potential_parameter_marinescu_1993" title="Link to this definition"></a></dt>
+<dd><p>(a_1, a_2, a_3, a_4)} for the parametric model potential.
+See also: M. Marinescu, Phys. Rev. A 49, 982 (1994), <a class="reference external" href="https://journals.aps.org/pra/abstract/10.1103/PhysRevA.49.982">https://journals.aps.org/pra/abstract/10.1103/PhysRevA.49.982</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Parameters {l</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.Rubidium.number_valence_electrons">
+<span class="sig-name descname"><span class="pre">number_valence_electrons</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></span><a class="headerlink" href="#rydstate.species.Rubidium.number_valence_electrons" title="Link to this definition"></a></dt>
+<dd><p>Number of valence electrons (i.e. 1 for alkali atoms and 2 for alkaline earth atoms).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.Rubidium.potential_type_default">
+<span class="sig-name descname"><span class="pre">potential_type_default</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'coulomb'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'model_potential_marinescu_1993'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'model_potential_fei_2009'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'model_potential_marinescu_1993'</span></span><a class="headerlink" href="#rydstate.species.Rubidium.potential_type_default" title="Link to this definition"></a></dt>
+<dd><p>Default potential type to use for this species. If None, the potential type must be specified explicitly.
+In general, it looks like marinescu_1993 is better for alkali atoms, and fei_2009 is better for alkaline earth atoms</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.Rubidium.r_c_dict_marinescu_1993">
+<span class="sig-name descname"><span class="pre">r_c_dict_marinescu_1993</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{0:</span> <span class="pre">1.66242117,</span> <span class="pre">1:</span> <span class="pre">1.50195124,</span> <span class="pre">2:</span> <span class="pre">4.86851938,</span> <span class="pre">3:</span> <span class="pre">4.79831327}</span></span><a class="headerlink" href="#rydstate.species.Rubidium.r_c_dict_marinescu_1993" title="Link to this definition"></a></dt>
+<dd><p>r_c} to truncate the unphysical short-range contribution of the polarization potential.
+See also: Phys. Rev. A 49, 982 (1994)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Cutoff radius {l</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rydstate.species.Rubidium.reduced_mass_au">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">reduced_mass_au</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#rydstate.species.Rubidium.reduced_mass_au" title="Link to this definition"></a></dt>
+<dd><p>The reduced mass mu in atomic units.</p>
+<p>The reduced mass in atomic units <span class="math notranslate nohighlight">\(\mu / m_e\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[\frac{\mu}{m_e} = \frac{m_{Core}}{m_{Core} + m_e}\]</div>
+<p>We calculate the reduced mass via the corrected Rydberg constant</p>
+<div class="math notranslate nohighlight">
+\[\frac{\mu}{m_e} = \frac{R_M}{R_\infty}\]</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rydstate.species.Potassium.html" class="btn btn-neutral float-left" title="Potassium" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rydstate.species.Sodium.html" class="btn btn-neutral float-right" title="Sodium" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, RydState Developers.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
