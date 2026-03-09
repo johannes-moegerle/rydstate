@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import contextlib
+import typing as t
 from typing import TYPE_CHECKING, Literal
 
 import numpy as np
@@ -10,6 +11,19 @@ if TYPE_CHECKING:
     from rydstate.species.species_object import SpeciesObject
 
 CouplingScheme = Literal["LS", "JJ", "FJ"]
+
+
+@t.runtime_checkable
+class NotSet(t.Protocol):
+    """Singleton for a not set value and type at the same time.
+
+    See Also:
+    https://stackoverflow.com/questions/77571796/how-to-create-singleton-object-which-could-be-used-both-as-type-and-value-simi
+
+    """
+
+    @staticmethod
+    def __not_set() -> None: ...
 
 
 class InvalidQuantumNumbersError(ValueError):
@@ -74,7 +88,7 @@ def quantum_numbers_to_angular_ket(
     l_tot: int | None = None,
     j_tot: float | None = None,
     f_tot: float | None = None,
-    m: float | None = None,
+    m: float | NotSet = NotSet,
 ) -> AngularKetBase:
     r"""Return an AngularKet object in the corresponding coupling scheme from the given quantum numbers.
 

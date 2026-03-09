@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, overload
 
 import numpy as np
 
+from rydstate.angular import NotSet
 from rydstate.angular.utils import quantum_numbers_to_angular_ket
 from rydstate.radial import RadialKet
 from rydstate.rydberg.rydberg_base import RydbergStateBase
@@ -47,7 +48,7 @@ class RydbergStateSQDT(RydbergStateBase):
         l_tot: int | None = None,
         j_tot: float | None = None,
         f_tot: float | None = None,
-        m: float | None = None,
+        m: float | NotSet = NotSet,
     ) -> None:
         r"""Initialize the Rydberg state.
 
@@ -331,7 +332,7 @@ class RydbergStateSQDTAlkali(RydbergStateSQDT):
         l: int,
         j: float | None = None,
         f: float | None = None,
-        m: float | None = None,
+        m: float | NotSet = NotSet,
         nu: float | None = None,
     ) -> None:
         r"""Initialize the Rydberg state.
@@ -379,7 +380,7 @@ class RydbergStateSQDTAlkalineLS(RydbergStateSQDT):
         s_tot: int,
         j_tot: int | None = None,
         f_tot: float | None = None,
-        m: float | None = None,
+        m: float | NotSet = NotSet,
         nu: float | None = None,
     ) -> None:
         r"""Initialize the Rydberg state.
@@ -428,7 +429,7 @@ class RydbergStateSQDTAlkalineJJ(RydbergStateSQDT):
         j_r: float,
         j_tot: int | None = None,
         f_tot: float | None = None,
-        m: float | None = None,
+        m: float | NotSet = NotSet,
         nu: float | None = None,
     ) -> None:
         r"""Initialize the Rydberg state.
@@ -477,7 +478,7 @@ class RydbergStateSQDTAlkalineFJ(RydbergStateSQDT):
         j_r: float,
         f_c: float | None = None,
         f_tot: float | None = None,
-        m: float | None = None,
+        m: float | NotSet = NotSet,
         nu: float | None = None,
     ) -> None:
         r"""Initialize the Rydberg state.

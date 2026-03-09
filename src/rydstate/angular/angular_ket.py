@@ -14,6 +14,7 @@ from rydstate.angular.angular_matrix_element import (
 )
 from rydstate.angular.utils import (
     InvalidQuantumNumbersError,
+    NotSet,
     check_spin_addition_rule,
     get_possible_quantum_number_values,
     minus_one_pow,
@@ -67,9 +68,9 @@ class AngularKetBase(ABC):
 
     f_tot: float
     """Total atom angular quantum number (including nuclear, core electron and rydberg electron contributions)."""
-    m: float | None
+    m: float | NotSet
     """Magnetic quantum number, which is the projection of `f_tot` onto the quantization axis.
-    If None, only reduced matrix elements can be calculated.
+    If NotSet, only reduced matrix elements can be calculated.
     """
 
     def __init__(
@@ -80,7 +81,7 @@ class AngularKetBase(ABC):
         s_r: float = 0.5,
         l_r: int | None = None,
         f_tot: float | None = None,  # noqa: ARG002
-        m: float | None = None,
+        m: float | NotSet = NotSet,
         species: str | SpeciesObject | None = None,
     ) -> None:
         """Initialize the Spin ket.
@@ -114,7 +115,7 @@ class AngularKetBase(ABC):
         self.l_r = int(l_r)
 
         # f_tot will be set in the subclasses
-        self.m = None if m is None else float(m)
+        self.m = NotSet if isinstance(m, NotSet) else float(m)
 
     def _post_init(self) -> None:
         self.quantum_numbers = tuple(getattr(self, qn) for qn in self.quantum_number_names)
@@ -132,7 +133,7 @@ class AngularKetBase(ABC):
         if self.s_r != 0.5:
             msgs.append(f"Rydberg electron spin s_r must be 1/2, but {self.s_r=}")
 
-        if self.m is not None and not -self.f_tot <= self.m <= self.f_tot:
+        if not isinstance(self.m, NotSet) and not -self.f_tot <= self.m <= self.f_tot:
             msgs.append(f"m must be between -f_tot and f_tot, but {self.f_tot=}, {self.m=}")
 
         if msgs:
@@ -149,7 +150,7 @@ class AngularKetBase(ABC):
 
     def __repr__(self) -> str:
         args = ", ".join(f"{qn}={val}" for qn, val in zip(self.quantum_number_names, self.quantum_numbers, strict=True))
-        if self.m is not None:
+        if not isinstance(self.m, NotSet):
             args += f", m={self.m}"
         return f"{self.__class__.__name__}({args})"
 
@@ -466,15 +467,16 @@ class AngularKetBase(ABC):
             The dimensionless angular matrix element.
 
         """
-        if self.m is None or other.m is None:
-            raise ValueError("m must be set to calculate the matrix element.")
+        if isinstance(self.m, NotSet) or isinstance(other.m, NotSet):
+            raise RuntimeError("m must be set to calculate the matrix element.")  # noqa: TRY004
 
         prefactor = self._calc_wigner_eckart_prefactor(other, kappa, q)
         reduced_matrix_element = self.calc_reduced_matrix_element(other, operator, kappa)
         return prefactor * reduced_matrix_element
 
     def _calc_wigner_eckart_prefactor(self, other: AngularKetBase, kappa: int, q: int) -> float:
-        assert self.m is not None and other.m is not None, "m must be set to calculate the Wigner-Eckart prefactor."  # noqa: PT018
+        if isinstance(self.m, NotSet) or isinstance(other.m, NotSet):
+            raise RuntimeError("m must be set to calculate the Wigner-Eckart prefactor.")  # noqa: TRY004
         return minus_one_pow(self.f_tot - self.m) * calc_wigner_3j(self.f_tot, kappa, other.f_tot, -self.m, q, other.m)
 
     def _kronecker_delta_non_involved_spins(self, other: AngularKetBase, qn: AngularMomentumQuantumNumbers) -> int:
@@ -572,7 +574,7 @@ class AngularKetLS(AngularKetBase):
         l_tot: int | None = None,
         j_tot: float | None = None,
         f_tot: float | None = None,
-        m: float | None = None,
+        m: float | NotSet = NotSet,
         species: str | SpeciesObject | None = None,
     ) -> None:
         """Initialize the Spin ket."""
@@ -635,7 +637,7 @@ class AngularKetJJ(AngularKetBase):
         j_r: float | None = None,
         j_tot: float | None = None,
         f_tot: float | None = None,
-        m: float | None = None,
+        m: float | NotSet = NotSet,
         species: str | SpeciesObject | None = None,
     ) -> None:
         """Initialize the Spin ket."""
@@ -698,7 +700,7 @@ class AngularKetFJ(AngularKetBase):
         f_c: float | None = None,
         j_r: float | None = None,
         f_tot: float | None = None,
-        m: float | None = None,
+        m: float | NotSet = NotSet,
         species: str | SpeciesObject | None = None,
     ) -> None:
         """Initialize the Spin ket."""

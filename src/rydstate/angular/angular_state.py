@@ -13,6 +13,7 @@ from rydstate.angular.angular_ket import (
     AngularKetLS,
 )
 from rydstate.angular.angular_matrix_element import is_angular_momentum_quantum_number
+from rydstate.angular.utils import NotSet
 
 if TYPE_CHECKING:
     from collections.abc import Iterator, Sequence
@@ -209,8 +210,8 @@ class AngularState(Generic[_AngularKet]):
                     "Different m values are not supported yet for AngularState.calc_matrix_element."
                 )
 
-        if self.kets[0].m is None or other.kets[0].m is None:
-            raise ValueError("m must be set for all kets to calculate the matrix element.")
+        if isinstance(self.kets[0].m, NotSet) or isinstance(other.kets[0].m, NotSet):
+            raise RuntimeError("m must be set for all kets to calculate the matrix element.")  # noqa: TRY004
 
         prefactor = self.kets[0]._calc_wigner_eckart_prefactor(other.kets[0], kappa, q)  # noqa: SLF001
         reduced_matrix_element = self.calc_reduced_matrix_element(other, operator, kappa)
