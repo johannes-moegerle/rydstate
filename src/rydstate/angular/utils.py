@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import contextlib
 import typing as t
+from functools import lru_cache
 from typing import TYPE_CHECKING, Any, Literal
 
 import numpy as np
@@ -82,6 +83,7 @@ def get_possible_quantum_number_values(s_1: float, s_2: float, s_tot: float | No
     return [float(s) for s in np.arange(abs(s_1 - s_2), s_1 + s_2 + 1, 1)]
 
 
+@lru_cache(maxsize=1_000)
 def quantum_numbers_to_angular_ket(
     species: str | SpeciesObject,
     s_c: float | None = None,

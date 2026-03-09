@@ -90,7 +90,7 @@ class RydbergStateSQDT(RydbergStateBase):
             l_tot=l_tot,
             j_tot=j_tot,
             f_tot=f_tot,
-            m=m,
+            m=m,  # type: ignore [arg-type]
         )
 
         self.n = n
@@ -468,6 +468,10 @@ class RydbergStateSQDT(RydbergStateBase):
         mask = transition_rates_au != 0
         relevant_states_masked = [ket for ket, is_relevant in zip(relevant_states, mask, strict=True) if is_relevant]
         transition_rates_au = transition_rates_au[mask]
+
+        if np.any(transition_rates_au < 0):
+            raise RuntimeError("Got negative transition rates, which should not happen.")
+
         return relevant_states_masked, transition_rates_au
 
     @overload
