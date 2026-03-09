@@ -61,7 +61,7 @@ All the available classes, methods and functions are documented below:
 .. autosummary::
     :toctree: _autosummary/
 
-       species.SpeciesObject
+       species.SpeciesObjectSQDT
        species.HydrogenTextBook
        species.Hydrogen
        species.Lithium

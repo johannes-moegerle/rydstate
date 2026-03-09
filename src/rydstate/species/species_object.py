@@ -72,8 +72,8 @@ class SpeciesObject(ABC):
 
         This method searches through all subclasses of SpeciesObject until it finds one with a matching species name.
         This approach allows for easy extension of the library with new species.
-        A user can even subclass SpeciesObject in his code (without modifying the rydstate library),
-        e.g. `class CustomRubidium(SpeciesObject): name = "Custom_Rb" ...`
+        A user can even subclass SpeciesObjectSQDT in his code (without modifying the rydstate library),
+        e.g. `class CustomRubidium(SpeciesObjectSQDT): name = "Custom_Rb" ...`
         and then use the new species by calling RydbergStateSQDTAlkali("Custom_Rb", ...)
 
         Args:

@@ -10,7 +10,7 @@ import numpy as np
 from rydstate.angular.utils import quantum_numbers_to_angular_ket
 from rydstate.radial import RadialKet
 from rydstate.rydberg.rydberg_base import RydbergStateBase
-from rydstate.species import SpeciesObject
+from rydstate.species import SpeciesObjectSQDT
 from rydstate.species.utils import calc_energy_from_nu
 from rydstate.units import BaseQuantities, MatrixElementOperatorRanks, ureg
 
@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 
 class RydbergStateSQDT(RydbergStateBase):
-    species: SpeciesObject
+    species: SpeciesObjectSQDT
     """The atomic species of the Rydberg state."""
 
     angular: AngularKetBase
@@ -33,7 +33,7 @@ class RydbergStateSQDT(RydbergStateBase):
 
     def __init__(
         self,
-        species: str | SpeciesObject,
+        species: str | SpeciesObjectSQDT,
         n: int | None = None,
         nu: float | None = None,
         s_c: float | None = None,
@@ -72,7 +72,7 @@ class RydbergStateSQDT(RydbergStateBase):
 
         """
         if isinstance(species, str):
-            species = SpeciesObject.from_name(species)
+            species = SpeciesObjectSQDT.from_name(species)
         self.species = species
 
         self.angular = quantum_numbers_to_angular_ket(
@@ -104,7 +104,7 @@ class RydbergStateSQDT(RydbergStateBase):
     @classmethod
     def from_angular_ket(
         cls: type[Self],
-        species: str | SpeciesObject,
+        species: str | SpeciesObjectSQDT,
         angular_ket: AngularKetBase,
         n: int | None = None,
         nu: float | None = None,
@@ -113,7 +113,7 @@ class RydbergStateSQDT(RydbergStateBase):
         obj = cls.__new__(cls)
 
         if isinstance(species, str):
-            species = SpeciesObject.from_name(species)
+            species = SpeciesObjectSQDT.from_name(species)
         obj.species = species
 
         obj.n = n
@@ -145,13 +145,14 @@ class RydbergStateSQDT(RydbergStateBase):
         radial_ket = RadialKet(self.species, nu=self.nu, l_r=self.angular.l_r)
         if self.n is not None:
             radial_ket.set_n_for_sanity_check(self.n)
-            s_tot_list = [self.angular.get_qn("s_tot")] if "s_tot" in self.angular.quantum_number_names else [0, 1]
-            for s_tot in s_tot_list:
-                if not self.species.is_allowed_shell(self.n, self.angular.l_r, s_tot=s_tot):
-                    raise ValueError(
-                        f"The shell (n={self.n}, l_r={self.angular.l_r}, s_tot={s_tot}) "
-                        f"is not allowed for the species {self.species}."
-                    )
+            if isinstance(self.species, SpeciesObjectSQDT):
+                s_tot_list = [self.angular.get_qn("s_tot")] if "s_tot" in self.angular.quantum_number_names else [0, 1]
+                for s_tot in s_tot_list:
+                    if not self.species.is_allowed_shell(self.n, self.angular.l_r, s_tot=s_tot):
+                        raise ValueError(
+                            f"The shell (n={self.n}, l_r={self.angular.l_r}, s_tot={s_tot}) "
+                            f"is not allowed for the species {self.species}."
+                        )
         return radial_ket
 
     @cached_property
@@ -159,7 +160,7 @@ class RydbergStateSQDT(RydbergStateBase):
         """The effective principal quantum number nu (for alkali atoms also known as n*) for the Rydberg state."""
         if self._nu is not None:
             return self._nu
-        assert isinstance(self.species, SpeciesObject), "nu must be given if not sqdt"
+        assert isinstance(self.species, SpeciesObjectSQDT), "nu must be given if not sqdt"
         assert self.n is not None, "either nu or n must be given"
         return self.species.calc_nu(self.n, self.angular)
 
@@ -325,7 +326,7 @@ class RydbergStateSQDTAlkali(RydbergStateSQDT):
 
     def __init__(
         self,
-        species: str | SpeciesObject,
+        species: str | SpeciesObjectSQDT,
         n: int,
         l: int,
         j: float | None = None,
@@ -372,7 +373,7 @@ class RydbergStateSQDTAlkalineLS(RydbergStateSQDT):
 
     def __init__(
         self,
-        species: str | SpeciesObject,
+        species: str | SpeciesObjectSQDT,
         n: int,
         l: int,
         s_tot: int,
@@ -421,7 +422,7 @@ class RydbergStateSQDTAlkalineJJ(RydbergStateSQDT):
 
     def __init__(
         self,
-        species: str | SpeciesObject,
+        species: str | SpeciesObjectSQDT,
         n: int,
         l: int,
         j_r: float,
@@ -470,7 +471,7 @@ class RydbergStateSQDTAlkalineFJ(RydbergStateSQDT):
 
     def __init__(
         self,
-        species: str | SpeciesObject,
+        species: str | SpeciesObjectSQDT,
         n: int,
         l: int,
         j_r: float,

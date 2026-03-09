@@ -3,7 +3,7 @@ import pytest
 from rydstate import RydbergStateSQDTAlkali
 from rydstate.angular import AngularKetLS
 from rydstate.radial import RadialKet
-from rydstate.species import SpeciesObject
+from rydstate.species import SpeciesObjectSQDT
 
 
 @pytest.mark.parametrize(
@@ -59,7 +59,7 @@ def test_circular_expectation_value(species_name: str, n: int, l: int, j_tot: fl
         <r>_{nl} = 1/2 (3 n^2 - l(l+1))
         <r^2>_{nl} = n^2/2 (5 n^2 - 3 l(l+1) + 1)
     """
-    species = SpeciesObject.from_name(species_name)
+    species = SpeciesObjectSQDT.from_name(species_name)
     angular_ket = AngularKetLS(l_r=l, j_tot=j_tot, species=species)
     nu = species.calc_nu(n, angular_ket)
 

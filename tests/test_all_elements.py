@@ -2,16 +2,15 @@ from typing import TYPE_CHECKING
 
 import pytest
 from rydstate import RydbergStateSQDTAlkali, RydbergStateSQDTAlkalineLS
-from rydstate.species import SpeciesObject
+from rydstate.species import SpeciesObjectSQDT
 
 if TYPE_CHECKING:
     from rydstate import RydbergStateSQDT
 
 
-@pytest.mark.parametrize("species_name", SpeciesObject.get_available_species())
-def test_magnetic(species_name: str) -> None:
-    """Test magnetic units."""
-    species = SpeciesObject.from_name(species_name)
+@pytest.mark.parametrize("species_name", SpeciesObjectSQDT.get_available_species())
+def test_sqdt_species(species_name: str) -> None:
+    species = SpeciesObjectSQDT.from_name(species_name)
     i_c = species.i_c if species.i_c is not None else 0
 
     state: RydbergStateSQDT
