@@ -5,7 +5,8 @@ from typing import TypeVar
 
 import numpy as np
 
-from rydstate.angular.utils import NotSet
+from rydstate.angular import NotSet
+from rydstate.angular.utils import is_not_set
 from rydstate.basis.basis_base import BasisBase
 from rydstate.rydberg import (
     RydbergStateSQDT,
@@ -23,7 +24,7 @@ _RydbergStateSQDT = TypeVar("_RydbergStateSQDT", bound=RydbergStateSQDT)
 
 class BasisSQDT(BasisBase[_RydbergStateSQDT]):
     def _get_m_range(self, m: tuple[float, float] | None | NotSet, f_tot: float | np.floating) -> list[NotSet | float]:
-        if isinstance(m, NotSet):
+        if is_not_set(m):
             return [NotSet]
         if m is None:
             m = (-np.inf, np.inf)

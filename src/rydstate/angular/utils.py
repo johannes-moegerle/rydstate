@@ -2,11 +2,13 @@ from __future__ import annotations
 
 import contextlib
 import typing as t
-from typing import TYPE_CHECKING, Literal
+from typing import TYPE_CHECKING, Any, Literal
 
 import numpy as np
 
 if TYPE_CHECKING:
+    from typing_extensions import TypeIs
+
     from rydstate.angular.angular_ket import AngularKetBase
     from rydstate.species.species_object import SpeciesObject
 
@@ -24,6 +26,11 @@ class NotSet(t.Protocol):
 
     @staticmethod
     def __not_set() -> None: ...
+
+
+def is_not_set(obj: Any) -> TypeIs[NotSet]:  # noqa: ANN401
+    """Check if the obj is the NotSet singleton."""
+    return obj is NotSet
 
 
 class InvalidQuantumNumbersError(ValueError):

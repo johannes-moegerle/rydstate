@@ -9,7 +9,7 @@ import numpy as np
 from scipy.special import exprel
 
 from rydstate.angular import NotSet
-from rydstate.angular.utils import quantum_numbers_to_angular_ket
+from rydstate.angular.utils import is_not_set, quantum_numbers_to_angular_ket
 from rydstate.radial import RadialKet
 from rydstate.rydberg.rydberg_base import RydbergStateBase
 from rydstate.species import SpeciesObjectSQDT
@@ -428,8 +428,8 @@ class RydbergStateSQDT(RydbergStateBase):
         basis_class = BasisSQDTAlkali if self.species.number_valence_electrons == 1 else BasisSQDTAlkalineLS
 
         m = self.angular.m
-        if isinstance(m, NotSet):
-            raise RuntimeError("m quantum number must be defined to calculate transition rates.")  # noqa: TRY004
+        if is_not_set(m):
+            raise RuntimeError("m quantum number must be defined to calculate transition rates.")
 
         basis = basis_class(self.species, n=(1, int(self.nu + 35)), m=(m - 1, m + 1))
         basis.filter_states("l_r", (self.angular.l_r - 1, self.angular.l_r + 1))

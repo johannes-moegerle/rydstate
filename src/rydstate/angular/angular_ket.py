@@ -17,6 +17,7 @@ from rydstate.angular.utils import (
     NotSet,
     check_spin_addition_rule,
     get_possible_quantum_number_values,
+    is_not_set,
     minus_one_pow,
     try_trivial_spin_addition,
 )
@@ -115,7 +116,7 @@ class AngularKetBase(ABC):
         self.l_r = int(l_r)
 
         # f_tot will be set in the subclasses
-        self.m = NotSet if isinstance(m, NotSet) else float(m)
+        self.m = NotSet if is_not_set(m) else float(m)
 
     def _post_init(self) -> None:
         self.quantum_numbers = tuple(getattr(self, qn) for qn in self.quantum_number_names)
@@ -133,7 +134,7 @@ class AngularKetBase(ABC):
         if self.s_r != 0.5:
             msgs.append(f"Rydberg electron spin s_r must be 1/2, but {self.s_r=}")
 
-        if not isinstance(self.m, NotSet) and not -self.f_tot <= self.m <= self.f_tot:
+        if not is_not_set(self.m) and not -self.f_tot <= self.m <= self.f_tot:
             msgs.append(f"m must be between -f_tot and f_tot, but {self.f_tot=}, {self.m=}")
 
         if msgs:
@@ -150,7 +151,7 @@ class AngularKetBase(ABC):
 
     def __repr__(self) -> str:
         args = ", ".join(f"{qn}={val}" for qn, val in zip(self.quantum_number_names, self.quantum_numbers, strict=True))
-        if not isinstance(self.m, NotSet):
+        if not is_not_set(self.m):
             args += f", m={self.m}"
         return f"{self.__class__.__name__}({args})"
 
@@ -467,16 +468,16 @@ class AngularKetBase(ABC):
             The dimensionless angular matrix element.
 
         """
-        if isinstance(self.m, NotSet) or isinstance(other.m, NotSet):
-            raise RuntimeError("m must be set to calculate the matrix element.")  # noqa: TRY004
+        if is_not_set(self.m) or is_not_set(other.m):
+            raise RuntimeError("m must be set to calculate the matrix element.")
 
         prefactor = self._calc_wigner_eckart_prefactor(other, kappa, q)
         reduced_matrix_element = self.calc_reduced_matrix_element(other, operator, kappa)
         return prefactor * reduced_matrix_element
 
     def _calc_wigner_eckart_prefactor(self, other: AngularKetBase, kappa: int, q: int) -> float:
-        if isinstance(self.m, NotSet) or isinstance(other.m, NotSet):
-            raise RuntimeError("m must be set to calculate the Wigner-Eckart prefactor.")  # noqa: TRY004
+        if is_not_set(self.m) or is_not_set(other.m):
+            raise RuntimeError("m must be set to calculate the Wigner-Eckart prefactor.")
         return minus_one_pow(self.f_tot - self.m) * calc_wigner_3j(self.f_tot, kappa, other.f_tot, -self.m, q, other.m)
 
     def _kronecker_delta_non_involved_spins(self, other: AngularKetBase, qn: AngularMomentumQuantumNumbers) -> int:
