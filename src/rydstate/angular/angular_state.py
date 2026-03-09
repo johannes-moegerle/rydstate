@@ -21,6 +21,7 @@ if TYPE_CHECKING:
 
     from rydstate.angular.angular_matrix_element import AngularMomentumQuantumNumbers, AngularOperatorType
     from rydstate.angular.utils import CouplingScheme
+    from rydstate.units import NDArray
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +31,11 @@ _AngularKet = TypeVar("_AngularKet", bound=AngularKetBase)
 
 class AngularState(Generic[_AngularKet]):
     def __init__(
-        self, coefficients: Sequence[float], kets: Sequence[_AngularKet], *, warn_if_not_normalized: bool = True
+        self,
+        coefficients: Sequence[float] | NDArray,
+        kets: Sequence[_AngularKet],
+        *,
+        warn_if_not_normalized: bool = True,
     ) -> None:
         self.coefficients = np.array(coefficients)
         self.kets = kets

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+from typing import TYPE_CHECKING
 
 import numpy as np
 
@@ -12,11 +13,14 @@ from rydstate.rydberg import (
     RydbergStateSQDTAlkalineLS,
 )
 
+if TYPE_CHECKING:
+    from rydstate.species.species_object import SpeciesObject
+
 logger = logging.getLogger(__name__)
 
 
 class BasisSQDTAlkali(BasisBase[RydbergStateSQDTAlkali]):
-    def __init__(self, species: str, n_min: int = 1, n_max: int | None = None) -> None:
+    def __init__(self, species: str | SpeciesObject, n_min: int = 1, n_max: int | None = None) -> None:
         super().__init__(species)
 
         if n_max is None:
@@ -37,7 +41,7 @@ class BasisSQDTAlkali(BasisBase[RydbergStateSQDTAlkali]):
 
 
 class BasisSQDTAlkalineLS(BasisBase[RydbergStateSQDTAlkalineLS]):
-    def __init__(self, species: str, n_min: int = 1, n_max: int | None = None) -> None:
+    def __init__(self, species: str | SpeciesObject, n_min: int = 1, n_max: int | None = None) -> None:
         super().__init__(species)
 
         if n_max is None:
@@ -60,7 +64,7 @@ class BasisSQDTAlkalineLS(BasisBase[RydbergStateSQDTAlkalineLS]):
 
 
 class BasisSQDTAlkalineJJ(BasisBase[RydbergStateSQDTAlkalineJJ]):
-    def __init__(self, species: str, n_min: int = 0, n_max: int | None = None) -> None:
+    def __init__(self, species: str | SpeciesObject, n_min: int = 0, n_max: int | None = None) -> None:
         super().__init__(species)
 
         if n_max is None:
@@ -90,7 +94,7 @@ class BasisSQDTAlkalineJJ(BasisBase[RydbergStateSQDTAlkalineJJ]):
 
 
 class BasisSQDTAlkalineFJ(BasisBase[RydbergStateSQDTAlkalineFJ]):
-    def __init__(self, species: str, n_min: int = 0, n_max: int | None = None) -> None:
+    def __init__(self, species: str | SpeciesObject, n_min: int = 0, n_max: int | None = None) -> None:
         super().__init__(species)
 
         if n_max is None:

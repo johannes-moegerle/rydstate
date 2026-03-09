@@ -20,14 +20,16 @@ from rydstate.angular.utils import (
     try_trivial_spin_addition,
 )
 from rydstate.angular.wigner_symbols import calc_wigner_3j, clebsch_gordan_6j, clebsch_gordan_9j
-from rydstate.species import SpeciesObject
 
 if TYPE_CHECKING:
+    from collections.abc import Sequence
+
     from typing_extensions import Self
 
     from rydstate.angular.angular_matrix_element import AngularMomentumQuantumNumbers, AngularOperatorType
     from rydstate.angular.angular_state import AngularState
     from rydstate.angular.utils import CouplingScheme
+    from rydstate.species import SpeciesObject
 
 logger = logging.getLogger(__name__)
 
@@ -83,12 +85,13 @@ class AngularKetBase(ABC):
     ) -> None:
         """Initialize the Spin ket.
 
-        species:
-        Atomic species, e.g. 'Rb87'.
-        Not used for calculation, only for convenience to infer the core electron spin and nuclear spin quantum numbers.
+        Atomic species, e.g. 'Rb87', will not be used for calculation,
+        only for convenience to infer the core electron spin and nuclear spin quantum numbers.
         """
         if species is not None:
             if isinstance(species, str):
+                from rydstate.species import SpeciesObject  # noqa: PLC0415
+
                 species = SpeciesObject.from_name(species)
             # use i_c = 0 for species without defined nuclear spin (-> ignore hyperfine)
             species_i_c = species.i_c if species.i_c is not None else 0
@@ -228,10 +231,8 @@ class AngularKetBase(ABC):
             The angular state in the specified coupling scheme.
 
         """
-        from rydstate.angular.angular_state import AngularState  # noqa: PLC0415
-
         if coupling_scheme is None or coupling_scheme == self.coupling_scheme:
-            return AngularState([1], [self])
+            return self._create_angular_state([1], [self])
         if coupling_scheme == "LS":
             return self._to_state_ls()
         if coupling_scheme == "JJ":
@@ -271,9 +272,7 @@ class AngularKetBase(ABC):
                         kets.append(ls_ket)
                         coefficients.append(coeff)
 
-        from rydstate.angular.angular_state import AngularState  # noqa: PLC0415
-
-        return AngularState(coefficients, kets)
+        return self._create_angular_state(coefficients, kets)
 
     def _to_state_jj(self) -> AngularState[AngularKetJJ]:
         """Convert a single ket to state in JJ coupling."""
@@ -306,9 +305,7 @@ class AngularKetBase(ABC):
                         kets.append(jj_ket)
                         coefficients.append(coeff)
 
-        from rydstate.angular.angular_state import AngularState  # noqa: PLC0415
-
-        return AngularState(coefficients, kets)
+        return self._create_angular_state(coefficients, kets)
 
     def _to_state_fj(self) -> AngularState[AngularKetFJ]:
         """Convert a single ket to state in FJ coupling."""
@@ -341,6 +338,10 @@ class AngularKetBase(ABC):
                         kets.append(fj_ket)
                         coefficients.append(coeff)
 
+        return self._create_angular_state(coefficients, kets)
+
+    def _create_angular_state(self, coefficients: Sequence[float], kets: Sequence[AngularKetBase]) -> AngularState[Any]:
+        """Create an AngularState from coefficients and kets."""
         from rydstate.angular.angular_state import AngularState  # noqa: PLC0415
 
         return AngularState(coefficients, kets)

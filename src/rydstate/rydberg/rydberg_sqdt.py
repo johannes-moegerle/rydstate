@@ -15,6 +15,8 @@ from rydstate.species.utils import calc_energy_from_nu
 from rydstate.units import BaseQuantities, MatrixElementOperatorRanks, ureg
 
 if TYPE_CHECKING:
+    from typing_extensions import Self
+
     from rydstate.angular.angular_ket import AngularKetBase, AngularKetFJ, AngularKetJJ, AngularKetLS
     from rydstate.units import MatrixElementOperator, PintFloat
 
@@ -94,14 +96,19 @@ class RydbergStateSQDT(RydbergStateBase):
         if nu is None and n is None:
             raise ValueError("Either n or nu must be given to initialize the Rydberg state.")
 
+        self._set_qn_as_attributes()
+
+    def _set_qn_as_attributes(self) -> None:
+        pass
+
     @classmethod
     def from_angular_ket(
-        cls,
+        cls: type[Self],
         species: str | SpeciesObject,
         angular_ket: AngularKetBase,
         n: int | None = None,
         nu: float | None = None,
-    ) -> RydbergStateSQDT:
+    ) -> Self:
         """Initialize the Rydberg state from an angular ket."""
         obj = cls.__new__(cls)
 
@@ -115,13 +122,14 @@ class RydbergStateSQDT(RydbergStateBase):
             raise ValueError("Either n or nu must be given to initialize the Rydberg state.")
 
         obj.angular = angular_ket
+        obj._set_qn_as_attributes()  # noqa: SLF001
 
         return obj
 
     def __repr__(self) -> str:
         species, n, nu = self.species.name, self.n, self.nu
         n_str = f", {n=}" if n is not None else ""
-        return f"{self.__class__.__name__}({species=}{n_str}, {nu=}, {self.angular})"
+        return f"{self.__class__.__name__}({species}{n_str}, {nu=}, {self.angular})"
 
     def __str__(self) -> str:
         return self.__repr__()
@@ -151,12 +159,18 @@ class RydbergStateSQDT(RydbergStateBase):
         """The effective principal quantum number nu (for alkali atoms also known as n*) for the Rydberg state."""
         if self._nu is not None:
             return self._nu
-        assert self.n is not None
-        if any(qn not in self.angular.quantum_number_names for qn in ["j_tot", "s_tot"]):
-            raise ValueError("j_tot and s_tot must be defined to calculate nu from n.")
+        assert isinstance(self.species, SpeciesObject), "nu must be given if not sqdt"
+        assert self.n is not None, "either nu or n must be given"
+
+        if "j_tot" not in self.angular.quantum_number_names or "s_tot" not in self.angular.quantum_number_names:
+            raise RuntimeError("j_tot and s_tot must be defined in the angular ket to calculate nu from n.")
         return self.species.calc_nu(
             self.n, self.angular.l_r, self.angular.get_qn("j_tot"), s_tot=self.angular.get_qn("s_tot")
         )
+
+    @property
+    def nu_ref(self) -> float:
+        return self.nu
 
     @overload
     def get_energy(self, unit: None = None) -> PintFloat: ...
@@ -342,15 +356,18 @@ class RydbergStateSQDTAlkali(RydbergStateSQDT):
         """
         super().__init__(species=species, n=n, nu=nu, l_r=l, j_tot=j, f_tot=f, m=m)
 
-        self.l = l
+    def _set_qn_as_attributes(self) -> None:
+        self.l = self.angular.l_r
         self.j = self.angular.j_tot
         self.f = self.angular.f_tot
-        self.m = m
+        self.m = self.angular.m
 
     def __repr__(self) -> str:
-        species, n, l, j, f, m = self.species, self.n, self.l, self.j, self.f, self.m
+        species, n, nu = self.species.name, self.n, self.nu
+        l, j, f, m = self.l, self.j, self.f, self.m
+        n_str = f", {n=}" if n is not None else ""
         f_string = f", {f=}" if self.species.i_c not in (None, 0) else ""
-        return f"{self.__class__.__name__}({species.name}, {n=}, {l=}, {j=}{f_string}, {m=})"
+        return f"{self.__class__.__name__}({species}{n_str}, {nu=}, {l=}, {j=}{f_string}, {m=})"
 
 
 class RydbergStateSQDTAlkalineLS(RydbergStateSQDT):
@@ -388,15 +405,18 @@ class RydbergStateSQDTAlkalineLS(RydbergStateSQDT):
         """
         super().__init__(species=species, n=n, nu=nu, l_r=l, s_tot=s_tot, j_tot=j_tot, f_tot=f_tot, m=m)
 
-        self.l = l
+    def _set_qn_as_attributes(self) -> None:
+        self.l = self.angular.l_r
         self.s_tot = self.angular.s_tot
         self.j_tot = self.angular.j_tot
         self.f_tot = self.angular.f_tot
-        self.m = m
+        self.m = self.angular.m
 
     def __repr__(self) -> str:
-        species, n, l, s_tot, j_tot, f_tot, m = self.species, self.n, self.l, self.s_tot, self.j_tot, self.f_tot, self.m
-        return f"{self.__class__.__name__}({species.name}, {n=}, {l=}, {s_tot=}, {j_tot=}, {f_tot=}, {m=})"
+        species, n, nu = self.species.name, self.n, self.nu
+        l, s_tot, j_tot, f_tot, m = self.l, self.s_tot, self.j_tot, self.f_tot, self.m
+        n_str = f", {n=}" if n is not None else ""
+        return f"{self.__class__.__name__}({species}{n_str}, {nu=}, {l=}, {s_tot=}, {j_tot=}, {f_tot=}, {m=})"
 
 
 class RydbergStateSQDTAlkalineJJ(RydbergStateSQDT):
@@ -434,6 +454,7 @@ class RydbergStateSQDTAlkalineJJ(RydbergStateSQDT):
         """
         super().__init__(species=species, n=n, nu=nu, l_r=l, j_r=j_r, j_tot=j_tot, f_tot=f_tot, m=m)
 
+    def _set_qn_as_attributes(self) -> None:
         self.l = self.angular.l_r
         self.j_r = self.angular.j_r
         self.j_tot = self.angular.j_tot
@@ -441,22 +462,10 @@ class RydbergStateSQDTAlkalineJJ(RydbergStateSQDT):
         self.m = self.angular.m
 
     def __repr__(self) -> str:
-        species, n, l, j_r, j_tot, f_tot, m = self.species, self.n, self.l, self.j_r, self.j_tot, self.f_tot, self.m
-        return f"{self.__class__.__name__}({species.name}, {n=}, {l=}, {j_r=}, {j_tot=}, {f_tot=}, {m=})"
-
-    @cached_property
-    def nu(self) -> float:
-        if self._nu is not None:
-            return self._nu
-        assert self.n is not None
-        nus = [self.species.calc_nu(self.n, self.l, self.j_tot, s_tot=s_tot) for s_tot in [0, 1]]
-
-        if any(abs(nu - nus[0]) > 1e-10 for nu in nus[1:]):
-            raise ValueError(
-                "RydbergStateSQDTAlkalineJJ is intended for high-l states only, "
-                "where the quantum defects are the same for singlet and triplet states."
-            )
-        return nus[0]
+        species, n, nu = self.species.name, self.n, self.nu
+        l, j_r, j_tot, f_tot, m = self.l, self.j_r, self.j_tot, self.f_tot, self.m
+        n_str = f", {n=}" if n is not None else ""
+        return f"{self.__class__.__name__}({species}{n_str}, {nu=}, {l=}, {j_r=}, {j_tot=}, {f_tot=}, {m=})"
 
 
 class RydbergStateSQDTAlkalineFJ(RydbergStateSQDT):
@@ -494,6 +503,7 @@ class RydbergStateSQDTAlkalineFJ(RydbergStateSQDT):
         """
         super().__init__(species=species, n=n, nu=nu, l_r=l, j_r=j_r, f_c=f_c, f_tot=f_tot, m=m)
 
+    def _set_qn_as_attributes(self) -> None:
         self.l = self.angular.l_r
         self.j_r = self.angular.j_r
         self.f_c = self.angular.f_c
@@ -501,23 +511,9 @@ class RydbergStateSQDTAlkalineFJ(RydbergStateSQDT):
         self.m = self.angular.m
 
     def __repr__(self) -> str:
-        species, n, l, j_r, f_c, f_tot, m = self.species, self.n, self.l, self.j_r, self.f_c, self.f_tot, self.m
-        return f"{self.__class__.__name__}({species.name}, {n=}, {l=}, {j_r=}, {f_c=}, {f_tot=}, {m=})"
-
-    @cached_property
-    def nu(self) -> float:
-        if self._nu is not None:
-            return self._nu
-        assert self.n is not None
-        nus = [
-            self.species.calc_nu(self.n, self.l, float(j_tot), s_tot=s_tot)
-            for s_tot in [0, 1]
-            for j_tot in np.arange(abs(self.j_r - 1 / 2), self.j_r + 1 / 2 + 1)
-        ]
-
-        if any(abs(nu - nus[0]) > 1e-10 for nu in nus[1:]):
-            raise ValueError(
-                "RydbergStateSQDTAlkalineFJ is intended for high-l states only, "
-                "where the quantum defects are the same for singlet and triplet states."
-            )
-        return nus[0]
+        species, n, nu = self.species.name, self.n, self.nu
+        l, j_r, f_c, f_tot, m = self.l, self.j_r, self.f_c, self.f_tot, self.m
+        l_c, j_c = self.angular.l_c, self.angular.j_c
+        core_string = f", {l_c=}, {j_c=}" if l_c != 0 else ""
+        n_str = f", {n=}" if n is not None else ""
+        return f"{self.__class__.__name__}({species}{n_str}, {nu=}{core_string}, {l=}, {j_r=}, {f_c=}, {f_tot=}, {m=})"

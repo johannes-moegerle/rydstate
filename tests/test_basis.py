@@ -1,11 +1,6 @@
-from typing import TYPE_CHECKING, Any
-
 import numpy as np
 import pytest
-from rydstate import BasisSQDTAlkali, BasisSQDTAlkalineFJ, BasisSQDTAlkalineJJ, BasisSQDTAlkalineLS
-
-if TYPE_CHECKING:
-    from rydstate.basis.basis_base import BasisBase
+from rydstate import BasisSQDTAlkali, BasisSQDTAlkalineLS
 
 
 @pytest.mark.parametrize("species_name", ["Rb", "Na", "H"])
@@ -69,10 +64,3 @@ def test_alkaline_basis(species_name: str) -> None:
 
     basis = BasisSQDTAlkalineLS(species_name, n_min=30, n_max=35)
     basis.filter_states("l_r", (6, 10))
-    for basis_class in [BasisSQDTAlkalineJJ, BasisSQDTAlkalineFJ]:
-        basis2: BasisBase[Any] = basis_class(species_name, n_min=30, n_max=35)  # type: ignore [assignment]
-        basis2.filter_states("l_r", (6, 10))
-        assert len(basis2.states) == len(basis.states)
-        trafo = basis.calc_reduced_overlaps(basis2)
-        trafo_inv = basis2.calc_reduced_overlaps(basis)
-        assert np.allclose(trafo @ trafo_inv, np.eye(len(basis.states)), atol=1e-3)

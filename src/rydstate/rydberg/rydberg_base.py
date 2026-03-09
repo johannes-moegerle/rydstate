@@ -22,3 +22,8 @@ class RydbergStateBase(ABC):
     def calc_reduced_matrix_element(
         self, other: RydbergStateBase, operator: MatrixElementOperator, unit: str | None = None
     ) -> PintFloat | float: ...
+
+    @property
+    @abstractmethod
+    def nu_ref(self) -> float:
+        """The reference effective principal quantum number nu_ref."""
