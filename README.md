@@ -16,7 +16,7 @@
 
 The *RydState* software calculates properties of Rydberg states.
 We especially focus on the calculation of the radial wavefunction of Rydberg states via the Numerov method.
-The software can be installed via pip (requires Python >= 3.9):
+The software can be installed via pip (requires Python >= 3.10):
 
 ```bash
 pip install rydstate

@@ -1,13 +1,14 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Literal, Union
+from typing import TYPE_CHECKING, Any, Literal
 
 from pint import UnitRegistry
 
 if TYPE_CHECKING:
+    from typing import TypeAlias
+
     import numpy.typing as npt
     from pint.facets.plain import PlainQuantity, PlainUnit
-    from typing_extensions import TypeAlias
 
     NDArray: TypeAlias = npt.NDArray[Any]
     PintFloat: TypeAlias = PlainQuantity[float]
@@ -48,7 +49,7 @@ Dimension = Literal[
     "arbitrary",
     "zero",
 ]
-DimensionLike = Union[Dimension, tuple[Dimension, Dimension]]
+DimensionLike = Dimension | tuple[Dimension, Dimension]
 
 # some abbreviations: au_time: atomic_unit_of_time; au_current: atomic_unit_of_current; m_e: electron_mass
 _CommonUnits: dict[Dimension, str] = {

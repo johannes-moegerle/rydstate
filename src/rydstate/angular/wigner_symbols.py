@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import math
 from functools import lru_cache, wraps
-from typing import TYPE_CHECKING, Callable, TypeVar
+from typing import TYPE_CHECKING, TypeVar
 
 from sympy import Integer
 from sympy.physics.wigner import (
@@ -14,6 +14,8 @@ from sympy.physics.wigner import (
 from rydstate.angular.utils import minus_one_pow
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
     from typing_extensions import ParamSpec
 
     P = ParamSpec("P")

@@ -49,7 +49,7 @@ class AngularState(Generic[_AngularKet]):
             self.coefficients /= self.norm
 
     def __iter__(self) -> Iterator[tuple[float, _AngularKet]]:
-        return zip(self.coefficients, self.kets).__iter__()
+        return zip(self.coefficients, self.kets, strict=True).__iter__()
 
     def __repr__(self) -> str:
         terms = [f"{coeff}*{ket!r}" for coeff, ket in self]

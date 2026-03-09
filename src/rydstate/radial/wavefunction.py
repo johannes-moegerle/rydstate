@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 import math
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, Literal, Optional
+from typing import TYPE_CHECKING, Literal
 
 import numpy as np
 from mpmath import whitw
@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
-WavefunctionSignConvention = Optional[Literal["positive_at_outer_bound", "n_l_1"]]
+WavefunctionSignConvention = Literal["positive_at_outer_bound", "n_l_1"] | None
 
 
 class Wavefunction(ABC):

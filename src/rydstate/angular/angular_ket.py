@@ -145,7 +145,7 @@ class AngularKetBase(ABC):
         super().__setattr__(key, value)
 
     def __repr__(self) -> str:
-        args = ", ".join(f"{qn}={val}" for qn, val in zip(self.quantum_number_names, self.quantum_numbers))
+        args = ", ".join(f"{qn}={val}" for qn, val in zip(self.quantum_number_names, self.quantum_numbers, strict=True))
         if self.m is not None:
             args += f", m={self.m}"
         return f"{self.__class__.__name__}({args})"
