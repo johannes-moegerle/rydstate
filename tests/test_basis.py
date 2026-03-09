@@ -6,7 +6,7 @@ from rydstate import BasisSQDTAlkali, BasisSQDTAlkalineLS
 @pytest.mark.parametrize("species_name", ["Rb", "Na", "H"])
 def test_alkali_basis(species_name: str) -> None:
     """Test alkali basis creation."""
-    basis = BasisSQDTAlkali(species_name, n_min=1, n_max=20)
+    basis = BasisSQDTAlkali(species_name, n=(1, 20))
     basis.sort_states("n", "l_r")
     lowest_n_state = {"Rb": (4, 2), "Na": (3, 0), "H": (1, 0)}[species_name]
     assert (basis.states[0].n, basis.states[0].l) == lowest_n_state
@@ -35,7 +35,7 @@ def test_alkali_basis(species_name: str) -> None:
 @pytest.mark.parametrize("species_name", ["Sr88", "Sr87", "Yb174", "Yb171"])
 def test_alkaline_basis(species_name: str) -> None:
     """Test alkaline basis creation."""
-    basis = BasisSQDTAlkalineLS(species_name, n_min=30, n_max=35)
+    basis = BasisSQDTAlkalineLS(species_name, n=(30, 35))
     basis.sort_states("n", "l_r")
     assert (basis.states[0].n, basis.states[0].l) == (30, 0)
     assert (basis.states[-1].n, basis.states[-1].l) == (35, 34)
@@ -62,5 +62,5 @@ def test_alkaline_basis(species_name: str) -> None:
     assert np.shape(me_matrix) == (len(basis.states), len(basis.states))
     assert np.count_nonzero(me_matrix) > 0
 
-    basis = BasisSQDTAlkalineLS(species_name, n_min=30, n_max=35)
+    basis = BasisSQDTAlkalineLS(species_name, n=(30, 35))
     basis.filter_states("l_r", (6, 10))
