@@ -1,10 +1,10 @@
 from pathlib import Path
 from typing import ClassVar
 
-from rydstate.species.species_object import SpeciesObject
+from rydstate.species.sqdt.species_object_sqdt import SpeciesObjectSQDT
 
 
-class Sodium(SpeciesObject):
+class Sodium(SpeciesObjectSQDT):
     name = "Na"
     Z = 11
     number_valence_electrons = 1

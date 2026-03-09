@@ -1,10 +1,10 @@
 from typing import ClassVar
 
-from rydstate.species.species_object import SpeciesObject
+from rydstate.species.sqdt.species_object_sqdt import SpeciesObjectSQDT
 from rydstate.units import rydberg_constant
 
 
-class Hydrogen(SpeciesObject):
+class Hydrogen(SpeciesObjectSQDT):
     name = "H"
     Z = 1
     number_valence_electrons = 1
@@ -20,7 +20,7 @@ class Hydrogen(SpeciesObject):
     _corrected_rydberg_constant = (109677.58340280356, None, "1/cm")
 
 
-class HydrogenTextBook(SpeciesObject):
+class HydrogenTextBook(SpeciesObjectSQDT):
     """Hydrogen from QM textbook with infinite nucleus mass and no spin orbit coupling."""
 
     name = "H_textbook"

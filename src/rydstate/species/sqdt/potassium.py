@@ -1,10 +1,10 @@
 from pathlib import Path
 from typing import ClassVar
 
-from rydstate.species.species_object import SpeciesObject
+from rydstate.species.sqdt.species_object_sqdt import SpeciesObjectSQDT
 
 
-class Potassium(SpeciesObject):
+class Potassium(SpeciesObjectSQDT):
     name = "K"
     Z = 19
     number_valence_electrons = 1

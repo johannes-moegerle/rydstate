@@ -3,11 +3,11 @@ from __future__ import annotations
 from pathlib import Path
 from typing import ClassVar
 
-from rydstate.species.species_object import SpeciesObject
+from rydstate.species.sqdt.species_object_sqdt import SpeciesObjectSQDT
 from rydstate.units import electron_mass, rydberg_constant
 
 
-class _YtterbiumAbstract(SpeciesObject):
+class _YtterbiumAbstract(SpeciesObjectSQDT):
     Z = 70
     number_valence_electrons = 2
     ground_state_shell = (6, 0)

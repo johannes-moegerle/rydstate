@@ -85,7 +85,7 @@ version = {attr = "rydstate.__version__"}
 where = ["src"]
 
 [tool.setuptools.package-data]
-rydstate = ["species/nist_energy_levels/*.txt"]
+rydstate = ["species/sqdt/nist_energy_levels/*.txt"]
 
 [tool.check-wheel-contents]
 toplevel = ["rydstate"]
