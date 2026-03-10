@@ -230,7 +230,7 @@ class SpeciesObjectSQDT(SpeciesObject):
         if not isinstance(angular_ket, AngularKetLS):
             raise NotImplementedError("calc_nu is only implemented for AngularKetLS.")
 
-        l, j_tot, s_tot = angular_ket.l_r, angular_ket.j_tot, angular_ket.s_r
+        l, j_tot, s_tot = angular_ket.l_r, angular_ket.j_tot, angular_ket.s_tot
 
         if n <= nist_n_max and use_nist_data:  # try to use NIST data
             if (n, l, j_tot, s_tot) in self._nist_energy_levels:
