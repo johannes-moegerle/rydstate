@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+from typing import TYPE_CHECKING
 
 import numpy as np
 
@@ -9,6 +10,9 @@ from rydstate.basis.basis_base import BasisBase
 from rydstate.rydberg import RydbergStateMQDT
 from rydstate.rydberg.rydberg_mqdt import get_mqdt_states_from_fmodel
 from rydstate.species import FModelSQDT, SpeciesObjectMQDT
+
+if TYPE_CHECKING:
+    from rydstate.species.mqdt.fmodel import FModel
 
 logger = logging.getLogger(__name__)
 
@@ -19,10 +23,9 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
     def __init__(  # noqa: C901, PLR0912
         self,
         species: str | SpeciesObjectMQDT,
-        nu_min: float = 0,
-        nu_max: int | None = None,
-        *,
+        nu: tuple[float, float],
         f_tot: float | tuple[float, float] | None = None,
+        *,
         skip_high_l: bool = True,
         n_min_high_l: int = 0,
     ) -> None:
@@ -30,12 +33,9 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
             species = SpeciesObjectMQDT.from_name(species)
         self.species = species
 
-        if nu_max is None:
-            raise ValueError("nu_max must be given")
-
-        self.models = []
+        self.models: list[FModel] = []
         i_c, j_c, s_r = self.species.i_c, 0.5, 0.5
-        for l_r in range(int(nu_max) + 1):
+        for l_r in range(int(nu[1]) + 1):
             for j_r in np.arange(abs(l_r - s_r), l_r + s_r + 1):
                 for f_c in np.arange(abs(j_c - i_c), j_c + i_c + 1):
                     for _f_tot in np.arange(abs(f_c - j_r), f_c + j_r + 1):
@@ -54,13 +54,13 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
         logger.debug("Calculating MQDT states...")
         self.states: list[RydbergStateMQDT] = []
         for model in self.models:
-            _nu_min = nu_min
+            _nu_min = nu[0]
             if isinstance(model, FModelSQDT):
                 if skip_high_l:
                     continue
                 _nu_min = n_min_high_l
-            logger.debug("  calculating states for model %s with nu_min=%s, nu_max=%s", model.name, _nu_min, nu_max)
-            _states = get_mqdt_states_from_fmodel(model, _nu_min, nu_max)
+            logger.debug("  calculating states for model %s with nu_min=%s, nu_max=%s", model.name, _nu_min, nu[1])
+            _states = get_mqdt_states_from_fmodel(model, _nu_min, nu[1])
             if len(_states) == 0:
                 logger.debug("  no states found for model %s", model.name)
             else:
