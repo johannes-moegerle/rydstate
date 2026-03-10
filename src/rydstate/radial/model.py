@@ -14,7 +14,9 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
-PotentialType = Literal["coulomb", "model_potential_marinescu_1993", "model_potential_fei_2009"]
+PotentialType = Literal[
+    "coulomb", "model_potential_marinescu_1993", "model_potential_fei_2009", "potential_kostelecky_1985"
+]
 
 XType = TypeVar("XType", "NDArray", float)
 
@@ -142,7 +144,30 @@ class Model:
         delta, alpha, beta, gamma = self.species.model_potential_parameter_fei_2009
         with np.errstate(over="ignore"):
             denom: XType = 1 - alpha + alpha * np.exp(beta * x**delta + gamma * x ** (2.0 * delta))
-            return -1 / x - (self.species.Z - 1) / (x * denom)
+            return - (self.species.Z - 1) / (x * denom)
+
+    def calc_potential_kostelecky_1985(self, x: XType) -> XType:
+        r"""Calculate the model potential by Kostelecky et al. (1985) in atomic units.
+
+        The potential from
+        V. Alan Kostelecký and Michael Martin Nieto, Phys. Rev. A 32, 3243 (1985), https://journals.aps.org/pra/abstract/10.1103/PhysRevA.32.3243
+        is given by
+
+        .. math::
+            V_{kostelecky}(x) = \frac{l*(l*+1)}{2x^2} - \frac{l(l+1)}{2x^2}
+
+        where l* is given by :math:`l* = l - \delta_l + I(l)`,
+        with the quantum defect :math:`\delta_l` and the integer I(l).
+
+        Args:
+            x: The dimensionless radial coordinate x = r / a_0, for which to calculate potential.
+
+        """
+        i_l = self.species.i_l_dict_kostelecky_1985.get(self.l, 0)
+        l_star = self.l - (self.state.n - self.state.nu) + i_l
+        x2 = x * x
+        return (l_star * (l_star + 1) - self.l * (self.l + 1)) * (1 / self.species.reduced_mass_au) / (2 * x2)
+
 
     def calc_effective_potential_centrifugal(self, x: XType) -> XType:
         r"""Calculate the effective centrifugal potential V_l(x) in atomic units.
@@ -222,7 +247,11 @@ class Model:
         elif self.potential_type == "model_potential_marinescu_1993":
             v = self.calc_model_potential_marinescu_1993(x)
         elif self.potential_type == "model_potential_fei_2009":
-            v = self.calc_model_potential_fei_2009(x)
+            v = self.calc_potential_coulomb(x)
+            v += self.calc_model_potential_fei_2009(x)
+        elif self.potential_type == "potential_kostelecky_1985":
+            v = self.calc_potential_coulomb(x)
+            v += self.calc_potential_kostelecky_1985(x)
         else:
             raise ValueError(f"Invalid potential type {self.potential_type}.")
 

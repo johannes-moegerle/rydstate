@@ -34,6 +34,12 @@ class _StrontiumAbstract(SpeciesObjectSQDT):
     # https://iopscience.iop.org/article/10.1088/1674-1056/18/10/025
     model_potential_parameter_fei_2009 = (0.9959, 16.9567, 0.2648, 0.1439)
 
+    # https://journals.aps.org/pra/abstract/10.1103/PhysRevA.32.3243
+    i_l_dict_kostelecky_1985: ClassVar = {
+        0: 4,  # s
+        1: 2,  # p
+    }
+
 
 class Strontium87(_StrontiumAbstract):
     name = "Sr87"

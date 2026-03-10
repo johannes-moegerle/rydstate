@@ -96,6 +96,7 @@ class RadialKet:
             raise RuntimeError("The model was already created, you should not create it again.")
 
         self._model = Model(self.species, self.l_r, potential_type)
+        self._model.state = self
 
     @property
     def grid(self) -> Grid:
