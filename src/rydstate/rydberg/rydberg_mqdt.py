@@ -33,8 +33,6 @@ class RydbergStateMQDT(RydbergStateBase):
         coefficients: Sequence[float] | NDArray,
         sqdt_states: Sequence[RydbergStateSQDTAlkalineFJ | RydbergStateSQDTDummy],
         nu_ref: float,
-        *,
-        warn_if_not_normalized: bool = True,
     ) -> None:
         self.coefficients = np.array(coefficients)
         self.sqdt_states = sqdt_states
@@ -54,14 +52,11 @@ class RydbergStateMQDT(RydbergStateBase):
         if len(set(sqdt_states)) != len(sqdt_states):
             raise ValueError("RydbergStateMQDT initialized with duplicate sqdt_states.")
         if abs(self.norm - 1) > 1e-10:
-            if warn_if_not_normalized:
-                logger.warning(
-                    "RydbergStateMQDT initialized with non-normalized coefficients "
-                    "(norm=%s, coefficients=%s, sqdt_states=%s)",
-                    self.norm,
-                    coefficients,
-                    sqdt_states,
-                )
+            logger.warning(
+                "RydbergStateMQDT initialized with non-normalized coefficients "
+                "(norm=%s, coefficients=%s, sqdt_states=%s). Normalizing them now!",
+                *(self.norm, coefficients, sqdt_states),
+            )
             self.coefficients /= self.norm
 
     def __iter__(self) -> Iterator[tuple[float, RydbergStateSQDTAlkalineFJ | RydbergStateSQDTDummy]]:
