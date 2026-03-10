@@ -13,6 +13,7 @@ from rydstate.angular.utils import is_not_set, quantum_numbers_to_angular_ket
 from rydstate.radial import RadialKet
 from rydstate.rydberg.rydberg_base import RydbergStateBase
 from rydstate.species import SpeciesObjectSQDT
+from rydstate.species.species_object import SpeciesObject
 from rydstate.species.utils import calc_energy_from_nu
 from rydstate.units import BaseQuantities, MatrixElementOperatorRanks, ureg
 
@@ -27,7 +28,7 @@ logger = logging.getLogger(__name__)
 
 
 class RydbergStateSQDT(RydbergStateBase):
-    species: SpeciesObjectSQDT
+    species: SpeciesObject
     """The atomic species of the Rydberg state."""
 
     angular: AngularKetBase
@@ -35,7 +36,7 @@ class RydbergStateSQDT(RydbergStateBase):
 
     def __init__(
         self,
-        species: str | SpeciesObjectSQDT,
+        species: str | SpeciesObject,
         n: int | None = None,
         nu: float | None = None,
         s_c: float | None = None,
@@ -74,7 +75,7 @@ class RydbergStateSQDT(RydbergStateBase):
 
         """
         if isinstance(species, str):
-            species = SpeciesObjectSQDT.from_name(species)
+            species = SpeciesObject.from_name(species)
         self.species = species
 
         self.angular = quantum_numbers_to_angular_ket(
@@ -106,7 +107,7 @@ class RydbergStateSQDT(RydbergStateBase):
     @classmethod
     def from_angular_ket(
         cls: type[Self],
-        species: str | SpeciesObjectSQDT,
+        species: str | SpeciesObject,
         angular_ket: AngularKetBase,
         n: int | None = None,
         nu: float | None = None,
@@ -115,7 +116,7 @@ class RydbergStateSQDT(RydbergStateBase):
         obj = cls.__new__(cls)
 
         if isinstance(species, str):
-            species = SpeciesObjectSQDT.from_name(species)
+            species = SpeciesObject.from_name(species)
         obj.species = species
 
         obj.n = n
@@ -425,6 +426,9 @@ class RydbergStateSQDT(RydbergStateBase):
             raise NotImplementedError(
                 "For alkaline earth atoms transition rates are only implemented for LS coupling scheme."
             )
+        if not isinstance(self.species, SpeciesObjectSQDT):
+            raise NotImplementedError("transition rates are currently only implemented for SQDT species.")
+
         from rydstate.basis import BasisSQDTAlkali, BasisSQDTAlkalineLS  # noqa: PLC0415
 
         basis_class = BasisSQDTAlkali if self.species.number_valence_electrons == 1 else BasisSQDTAlkalineLS
@@ -533,6 +537,7 @@ class RydbergStateSQDTAlkali(RydbergStateSQDT):
     """Create an Alkali Rydberg state, including the radial and angular states."""
 
     angular: AngularKetLS
+    species: SpeciesObjectSQDT
 
     def __init__(
         self,
@@ -580,6 +585,7 @@ class RydbergStateSQDTAlkalineLS(RydbergStateSQDT):
     """Create an Alkaline Rydberg state, including the radial and angular states."""
 
     angular: AngularKetLS
+    species: SpeciesObjectSQDT
 
     def __init__(
         self,
@@ -629,6 +635,7 @@ class RydbergStateSQDTAlkalineJJ(RydbergStateSQDT):
     """Create an Alkaline Rydberg state, including the radial and angular states."""
 
     angular: AngularKetJJ
+    species: SpeciesObjectSQDT
 
     def __init__(
         self,
@@ -678,6 +685,7 @@ class RydbergStateSQDTAlkalineFJ(RydbergStateSQDT):
     """Create an Alkaline Rydberg state, including the radial and angular states."""
 
     angular: AngularKetFJ
+    species: SpeciesObjectSQDT
 
     def __init__(
         self,
