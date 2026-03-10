@@ -57,8 +57,8 @@ class SpeciesObjectMQDT(SpeciesObject):
             core_ket = CoreKet(i_c=self.i_c, s_c=core_ket.s_c, l_c=core_ket.l_c, j_c=core_ket.j_c, f_c=Unknown)
             if core_ket not in self._ionization_threshold_dict:
                 core_ket = CoreKet(i_c=self.i_c, s_c=core_ket.s_c, l_c=core_ket.l_c, j_c=Unknown, f_c=Unknown)
-        if core_ket not in self._ionization_threshold_dict:
-            raise ValueError(f"Ionization energy for core ket {core_ket} is not defined.")
+            if core_ket not in self._ionization_threshold_dict:  # all fallbacks exhausted
+                raise ValueError(f"Ionization energy for core ket {core_ket} is not defined.")
 
         ionization_energy_tuple = self._ionization_threshold_dict[core_ket]
         ionization_energy: PintFloat = ureg.Quantity(ionization_energy_tuple[0], ionization_energy_tuple[2])

@@ -35,7 +35,16 @@ class AngularKetDummy(AngularKetBase):
         f_tot: float,
         m: float | NotSet = NotSet,
     ) -> None:
-        """Initialize the Spin ket."""
+        """Initialize a dummy angular ket for MQDT perturber channels with unknown quantum numbers.
+
+        Args:
+            name: Identifier for this dummy channel.  By convention the name follows
+                ``"<core_config>nl <label>"``, e.g. ``"4f13 5d 6s nl a"``, so that
+                :meth:`get_core_ket` can extract the core configuration.
+            f_tot: Total angular momentum quantum number.
+            m: Magnetic quantum number.  Defaults to NotSet.
+
+        """
         self.name = name
 
         self.f_tot = f_tot
@@ -86,7 +95,12 @@ class AngularKetDummy(AngularKetBase):
         return 0
 
     def get_core_ket(self) -> CoreKetDummy:
-        """Get the dummy core ket corresponding to this Dummy ket."""
+        """Get the dummy core ket corresponding to this Dummy ket.
+
+        Dummy ket names follow the convention ``"<core_config>nl <label>"``,
+        e.g. ``"4f13 5d 6s nl a"``.  Everything before the literal token ``"nl"``
+        identifies the core configuration and is used as the CoreKetDummy name.
+        """
         core_name = self.name.split("nl")[0]
         return CoreKetDummy(name=core_name)
 

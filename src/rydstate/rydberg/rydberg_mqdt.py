@@ -10,7 +10,6 @@ from rydstate.angular.utils import is_dummy_ket
 from rydstate.rydberg.rydberg_base import RydbergStateBase
 from rydstate.rydberg.rydberg_dummy import RydbergStateSQDTDummy, is_dummy_rydberg_state
 from rydstate.rydberg.rydberg_sqdt import RydbergStateSQDT, RydbergStateSQDTAlkalineFJ
-from rydstate.species import FModel
 from rydstate.utils.linalg import calc_nullvector
 
 if TYPE_CHECKING:
@@ -54,15 +53,15 @@ class RydbergStateMQDT(RydbergStateBase):
             raise ValueError("All sqdt_states must be of the same species.")
         if len(set(sqdt_states)) != len(sqdt_states):
             raise ValueError("RydbergStateMQDT initialized with duplicate sqdt_states.")
-        if abs(self.norm - 1) > 1e-10 and warn_if_not_normalized:
-            logger.warning(
-                "RydbergStateMQDT initialized with non-normalized coefficients "
-                "(norm=%s, coefficients=%s, sqdt_states=%s)",
-                self.norm,
-                coefficients,
-                sqdt_states,
-            )
-        if self.norm > 1:
+        if abs(self.norm - 1) > 1e-10:
+            if warn_if_not_normalized:
+                logger.warning(
+                    "RydbergStateMQDT initialized with non-normalized coefficients "
+                    "(norm=%s, coefficients=%s, sqdt_states=%s)",
+                    self.norm,
+                    coefficients,
+                    sqdt_states,
+                )
             self.coefficients /= self.norm
 
     def __iter__(self) -> Iterator[tuple[float, RydbergStateSQDTAlkalineFJ | RydbergStateSQDTDummy]]:
@@ -95,7 +94,7 @@ class RydbergStateMQDT(RydbergStateBase):
         else:
             raise NotImplementedError(f"calc_reduced_overlap not implemented for {type(self)=}, {type(other)=}")
 
-        ov = 0
+        ov: float = 0.0
         for coeff1, sqdt1 in self:
             for coeff2, sqdt2 in other_iter:
                 ov += np.conjugate(coeff1) * coeff2 * sqdt1.calc_reduced_overlap(sqdt2)
@@ -130,7 +129,7 @@ class RydbergStateMQDT(RydbergStateBase):
         else:
             raise NotImplementedError(f"calc_reduced_matrix_element not implemented for {type(self)=}, {type(other)=}")
 
-        value = 0
+        value: float = 0.0
         for coeff1, sqdt1 in self:
             for coeff2, sqdt2 in other_iter:
                 value += np.conjugate(coeff1) * coeff2 * sqdt1.calc_reduced_matrix_element(sqdt2, operator, unit=unit)
@@ -144,6 +143,19 @@ def get_mqdt_states_from_fmodel(
     *,
     overwrite_model_limits: bool = False,
 ) -> list[RydbergStateMQDT]:
+    """Calculate MQDT states from an FModel by finding zeros of det(M-matrix).
+
+    Args:
+        model: The MQDT model to compute states for.
+        nu_min: Lower bound of the search range.  Defaults to ``model.nu_min``.
+        nu_max: Upper bound of the search range.  Defaults to ``model.nu_max``.
+        overwrite_model_limits: If True, use nu_min/nu_max directly without clamping to
+            the model's validity range.  Both nu_min and nu_max must be provided.
+
+    Returns:
+        List of :class:`RydbergStateMQDT` objects, one per root of det(M).
+
+    """
     if overwrite_model_limits:
         if nu_min is None or nu_max is None:
             raise ValueError("nu_min and nu_max must be given if overwrite_model_limits is True.")

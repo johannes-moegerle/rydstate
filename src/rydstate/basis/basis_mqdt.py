@@ -14,10 +14,12 @@ logger = logging.getLogger(__name__)
 
 
 class BasisMQDT(BasisBase[RydbergStateMQDT]):
+    """Basis set of MQDT Rydberg states for a given species over a range of effective principal quantum numbers."""
+
     def __init__(  # noqa: C901, PLR0912
         self,
         species: str | SpeciesObjectMQDT,
-        nu_min: int = 0,
+        nu_min: float = 0,
         nu_max: int | None = None,
         *,
         f_tot: float | tuple[float, float] | None = None,
@@ -33,7 +35,6 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
 
         self.models = []
         i_c, j_c, s_r = self.species.i_c, 0.5, 0.5
-        self.states = []
         for l_r in range(int(nu_max) + 1):
             for j_r in np.arange(abs(l_r - s_r), l_r + s_r + 1):
                 for f_c in np.arange(abs(j_c - i_c), j_c + i_c + 1):

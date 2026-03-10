@@ -9,12 +9,15 @@ if TYPE_CHECKING:
 
 
 class RydbergStateSQDTDummy(RydbergStateSQDT):
-    """Create an Alkaline Rydberg state, including the radial and angular states."""
+    """Dummy Rydberg state for MQDT perturber channels with unknown quantum numbers.
+
+    Only constructible via :meth:`from_angular_ket`.
+    """
 
     angular: AngularKetDummy
 
     def __init__(self) -> None:
-        raise RuntimeError("RydbergStateSQDTDummy ican only be created via the from_angular_ket method.")
+        raise RuntimeError("RydbergStateSQDTDummy can only be created via the from_angular_ket method.")
 
     def __repr__(self) -> str:
         species, nu = self.species, self.nu

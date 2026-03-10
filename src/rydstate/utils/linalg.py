@@ -36,7 +36,7 @@ def find_roots(
         func: 1D scalar function to find roots of.
         x_min: Left endpoint of search interval.
         x_max: Right endpoint of search interval (must be > x_min).
-        n_grid: Number of grid points. Defaults to 100 * ceil(x_max - x_min), minimum 1000.
+        n_grid: Number of grid points. Defaults to 50 * ceil(x_max - x_min), minimum 500.
         atol: Absolute tolerance for root validation.
 
     Returns:
@@ -95,7 +95,7 @@ def calc_nullvector(
     """
     if matrix.shape == (1, 1):
         if abs(matrix[0, 0]) > atol:
-            raise RuntimeError("Matrix is 1x1 but not close to zero (value=%e), this should not happen.", matrix[0, 0])
+            raise RuntimeError(f"Matrix is 1x1 but not close to zero (value={matrix[0, 0]!r}), this should not happen.")
         return np.array([1.0])
 
     if method == "numpy_svd":

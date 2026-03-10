@@ -154,7 +154,7 @@ class FModel:
                     is_unknown(qn) for qn in inner.quantum_numbers
                 ):
                     raise ValueError(
-                        "Cannot compute frame transformation for channels with unknown quantum numbers."
+                        "Cannot compute frame transformation for channels with unknown quantum numbers. "
                         f"Please provide a manual frame transformation matrix for {self.name}."
                     )
                 u[i, j] = outer.calc_reduced_overlap(inner)
@@ -225,6 +225,7 @@ class FModel:
             K = tan(\pi \mu) = U tan(\pi \mu_{\alpha}) U^T
 
         where U is the frame transformation matrix and \mu_{\alpha} are the eigen quantum defects.
+        The transpose :math:`U^T = U^{-1}` holds because U is real and orthogonal.
 
         Args:
             nu_ref: Reference effective principal quantum number.
@@ -293,21 +294,21 @@ class FModelSQDT(FModel):
         self.mixing_angles = []  # type: ignore [misc]
 
 
-def calc_energy_dependent_quantity(nui: float, qantity: RydbergRitzParameters) -> float:
+def calc_energy_dependent_quantity(nui: float, quantity: RydbergRitzParameters) -> float:
     """Evaluate a quantity at channel nu using polynomial convention: q₀ + q₁/ν² + q₂/ν⁴ + ...
 
     Args:
         nui: Channel-dependent effective principal quantum number.
-        qantity: Quantity parameters. A single float is a constant value; a list gives
+        quantity: Quantity parameters. A single float is a constant value; a list gives
             polynomial coefficients [q₀, q₁, q₂, ...].
 
     Returns:
         Quantity value at the given nu.
 
     """
-    if isinstance(qantity, (int, float)):
-        return float(qantity)
+    if isinstance(quantity, (int, float)):
+        return float(quantity)
     result = 0.0
-    for i, coeff in enumerate(qantity):
+    for i, coeff in enumerate(quantity):
         result += float(coeff) * (1.0 / nui**2) ** i
     return result

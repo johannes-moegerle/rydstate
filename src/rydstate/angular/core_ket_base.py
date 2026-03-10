@@ -43,7 +43,7 @@ class CoreKet:
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, CoreKet):
-            raise NotImplementedError(f"Cannot compare {self!r} with {other!r}.")
+            return NotImplemented
         return (
             is_equal(self.i_c, other.i_c)
             and is_equal(self.s_c, other.s_c)
@@ -56,6 +56,8 @@ class CoreKet:
 class CoreKetDummy(CoreKet):
     """Dummy core spin ket for unknown quantum numbers."""
 
+    __slots__ = ("name",)
+
     def __init__(self, name: str) -> None:
         self.name = name
 
@@ -67,5 +69,5 @@ class CoreKetDummy(CoreKet):
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, CoreKetDummy):
-            raise NotImplementedError(f"Cannot compare {self!r} with {other!r}.")
+            return NotImplemented
         return self.name == other.name
