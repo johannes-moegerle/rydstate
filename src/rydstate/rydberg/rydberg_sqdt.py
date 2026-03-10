@@ -413,6 +413,8 @@ class RydbergStateSQDT(RydbergStateBase):
             \Gamma^{spontaneous}_{self \to other} = \frac{4}{3} \frac{\alpha}{c^2} \omega^3
                 |\langle self || r^k_radial \hat{O}_{k_angular} || other \rangle|^2
 
+        where :math:`\alpha = 1/c` in atomic units.
+
         and
 
         .. math::
@@ -443,27 +445,25 @@ class RydbergStateSQDT(RydbergStateBase):
         )
         electric_dipole_moments_au = np.zeros(len(relevant_states))
         for q in [-1, 0, 1]:
-            # the different entries are only at most once nonzero -> we can just add the arrays
             el_di_m = np.array(
                 [s.calc_matrix_element(self, "electric_dipole", q, unit="a.u.") for s in relevant_states]
             )
-            electric_dipole_moments_au += el_di_m
+            electric_dipole_moments_au += np.abs(el_di_m) ** 2
 
         transition_rates_au = (
-            (4 / 3)
-            * np.abs(electric_dipole_moments_au) ** 2
-            * energy_differences_au**2
-            / ureg.Quantity(1, "speed_of_light").to_base_units().magnitude ** 3
+            (4 / 3) * electric_dipole_moments_au / ureg.Quantity(1, "speed_of_light").to_base_units().magnitude ** 3
         )
 
         if only_spontaneous:
-            transition_rates_au *= energy_differences_au
+            transition_rates_au *= energy_differences_au**3
         else:
             assert temperature_au is not None, "Temperature must be given for black body transitions."
             if temperature_au == 0:
                 transition_rates_au *= 0
             else:  # for numerical stability we use 1 / exprel(x) = x / (exp(x) - 1)
-                transition_rates_au *= temperature_au / exprel(energy_differences_au / temperature_au)
+                transition_rates_au *= (
+                    energy_differences_au**2 * temperature_au / exprel(energy_differences_au / temperature_au)
+                )
 
         mask = transition_rates_au != 0
         relevant_states_masked = [ket for ket, is_relevant in zip(relevant_states, mask, strict=True) if is_relevant]

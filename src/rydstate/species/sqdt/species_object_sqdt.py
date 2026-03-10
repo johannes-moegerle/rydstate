@@ -164,11 +164,11 @@ class SpeciesObjectSQDT(SpeciesObject):
     @overload
     def get_ionization_energy(self, unit: str) -> float: ...
 
-    def get_ionization_energy(self, unit: str | None = "hartree") -> PintFloat | float:
+    def get_ionization_energy(self, unit: str | None = None) -> PintFloat | float:
         """Return the ionization energy in the desired unit.
 
         Args:
-            unit: Desired unit for the ionization energy. Default is atomic units "hartree".
+            unit: Desired unit for the ionization energy. Default is None (returns a Pint quantity).
 
         Returns:
             Ionization energy in the desired unit.

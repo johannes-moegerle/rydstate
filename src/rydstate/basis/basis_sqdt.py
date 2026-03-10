@@ -97,13 +97,14 @@ class BasisSQDTAlkalineJJ(BasisSQDT[RydbergStateSQDTAlkalineJJ]):
         _s_r = 0.5
         for _n in range(n[0], n[1] + 1):
             for _l_r in range(_n):
-                if self.species.is_allowed_shell(_n, _l_r, 0) != self.species.is_allowed_shell(_n, _l_r, 1):
-                    logger.warning(
-                        "For l=%d, n=%d one of the singlet/triplet states is not allowed. "
-                        "In JJ coupling the state does not exist, thus skipping this shell",
-                        *(_l_r, _n),
-                    )
-                if not all(self.species.is_allowed_shell(_n, _l_r, s_tot) for s_tot in [0, 1]):
+                allowed = [self.species.is_allowed_shell(_n, _l_r, s) for s in [0, 1]]
+                if not all(allowed):
+                    if any(allowed):
+                        logger.warning(
+                            "For l=%d, n=%d one of the singlet/triplet states is not allowed. "
+                            "In JJ coupling the state does not exist, thus skipping this shell",
+                            *(_l_r, _n),
+                        )
                     continue
                 for _j_r in np.arange(abs(_l_r - _s_r), _l_r + _s_r + 1):
                     for _j_tot in range(int(abs(_j_r - _j_c)), int(_j_r + _j_c + 1)):
@@ -130,13 +131,14 @@ class BasisSQDTAlkalineFJ(BasisSQDT[RydbergStateSQDTAlkalineFJ]):
         _s_r = 0.5
         for _n in range(n[0], n[1] + 1):
             for _l_r in range(_n):
-                if self.species.is_allowed_shell(_n, _l_r, 0) != self.species.is_allowed_shell(_n, _l_r, 1):
-                    logger.warning(
-                        "For l=%d, n=%d one of the singlet/triplet states is not allowed. "
-                        "In FJ coupling the state does not exist, thus skipping this shell",
-                        *(_l_r, _n),
-                    )
-                if not all(self.species.is_allowed_shell(_n, _l_r, s_tot) for s_tot in [0, 1]):
+                allowed = [self.species.is_allowed_shell(_n, _l_r, s) for s in [0, 1]]
+                if not all(allowed):
+                    if any(allowed):
+                        logger.warning(
+                            "For l=%d, n=%d one of the singlet/triplet states is not allowed. "
+                            "In FJ coupling the state does not exist, thus skipping this shell",
+                            *(_l_r, _n),
+                        )
                     continue
                 for _j_r in np.arange(abs(_l_r - _s_r), _l_r + _s_r + 1):
                     for _f_c in np.arange(abs(_j_c - i_c), _j_c + i_c + 1):

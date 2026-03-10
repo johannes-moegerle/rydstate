@@ -159,7 +159,7 @@ class AngularKetBase(ABC):
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, AngularKetBase):
-            raise NotImplementedError(f"Cannot compare {self!r} with {other!r}.")
+            return NotImplemented
         if type(self) is not type(other):
             return False
         if self.m != other.m:

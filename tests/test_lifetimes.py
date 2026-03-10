@@ -1,9 +1,8 @@
 import numpy as np
 import pytest
-from rydstate import RydbergStateSQDTAlkali
-from rydstate.angular.angular_ket import AngularKetLS
-from rydstate.rydberg.rydberg_sqdt import RydbergStateSQDT
-from rydstate.species.sqdt.species_object_sqdt import SpeciesObjectSQDT
+from rydstate import RydbergStateSQDT, RydbergStateSQDTAlkali
+from rydstate.angular import AngularKetLS
+from rydstate.species import SpeciesObjectSQDT
 
 
 # Reference values from NIST Atomic Spectra Database (ASD), Einstein A coefficients:
