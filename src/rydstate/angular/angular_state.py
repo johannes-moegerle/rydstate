@@ -13,13 +13,14 @@ from rydstate.angular.angular_ket import (
     AngularKetLS,
 )
 from rydstate.angular.angular_matrix_element import is_angular_momentum_quantum_number
-from rydstate.angular.utils import is_not_set
+from rydstate.angular.utils import is_dummy_ket, is_not_set, is_unknown
 
 if TYPE_CHECKING:
     from collections.abc import Iterator, Sequence
 
     from typing_extensions import Self
 
+    from rydstate.angular.angular_ket_dummy import AngularKetDummy
     from rydstate.angular.angular_matrix_element import AngularMomentumQuantumNumbers, AngularOperatorType
     from rydstate.angular.utils import CouplingScheme
     from rydstate.units import NDArray
@@ -34,7 +35,7 @@ class AngularState(Generic[_AngularKet]):
     def __init__(
         self,
         coefficients: Sequence[float] | NDArray,
-        kets: Sequence[_AngularKet],
+        kets: Sequence[_AngularKet | AngularKetDummy],
         *,
         warn_if_not_normalized: bool = True,
     ) -> None:
@@ -45,7 +46,7 @@ class AngularState(Generic[_AngularKet]):
             raise ValueError("Length of coefficients and kets must be the same.")
         if len(kets) == 0:
             raise ValueError("At least one ket must be provided.")
-        if not all(type(ket) is type(kets[0]) for ket in kets):
+        if not all((type(ket) is type(kets[0])) or is_dummy_ket(ket) for ket in kets):
             raise ValueError("All kets must be of the same type.")
         if len(set(kets)) != len(kets):
             raise ValueError("AngularState initialized with duplicate kets.")
@@ -54,7 +55,7 @@ class AngularState(Generic[_AngularKet]):
         if self.norm > 1:
             self.coefficients /= self.norm
 
-    def __iter__(self) -> Iterator[tuple[float, _AngularKet]]:
+    def __iter__(self) -> Iterator[tuple[float, _AngularKet | AngularKetDummy]]:
         return zip(self.coefficients, self.kets, strict=True).__iter__()
 
     def __repr__(self) -> str:
@@ -68,7 +69,7 @@ class AngularState(Generic[_AngularKet]):
     @property
     def coupling_scheme(self) -> CouplingScheme:
         """Return the coupling scheme of the state."""
-        return self.kets[0].coupling_scheme
+        return next(ket.coupling_scheme for ket in self.kets if not is_dummy_ket(ket))
 
     @property
     def norm(self) -> float:
@@ -121,6 +122,7 @@ class AngularState(Generic[_AngularKet]):
         qs = np.array([ket.get_qn(q) for ket in self.kets])
         if all(q_val == qs[0] for q_val in qs):
             return qs[0]  # type: ignore [no-any-return]
+        qs = np.array([q if not is_unknown(q) else 0 for q in qs])
 
         return np.sum(np.conjugate(self.coefficients) * self.coefficients * qs)  # type: ignore [no-any-return]
 
@@ -139,6 +141,7 @@ class AngularState(Generic[_AngularKet]):
         qs = np.array([ket.get_qn(q) for ket in self.kets])
         if all(q_val == qs[0] for q_val in qs):
             return 0
+        qs = np.array([q if not is_unknown(q) else 0 for q in qs])
 
         coefficients2 = np.conjugate(self.coefficients) * self.coefficients
         exp_q = np.sum(coefficients2 * qs)

@@ -17,7 +17,9 @@ from rydstate.angular.utils import (
     NotSet,
     check_spin_addition_rule,
     get_possible_quantum_number_values,
+    is_dummy_ket,
     is_not_set,
+    is_unknown,
     minus_one_pow,
     try_trivial_spin_addition,
 )
@@ -232,6 +234,11 @@ class AngularKetBase(ABC):
             The angular state in the specified coupling scheme.
 
         """
+        if any(is_unknown(qn) for qn in self.quantum_numbers):
+            from rydstate.angular.angular_ket_dummy import AngularKetDummy  # noqa: PLC0415
+
+            return AngularKetDummy(str(self), f_tot=self.f_tot, m=self.m).to_state(coupling_scheme)
+
         if coupling_scheme is None or coupling_scheme == self.coupling_scheme:
             return self._create_angular_state([1], [self])
         if coupling_scheme == "LS":
@@ -355,6 +362,9 @@ class AngularKetBase(ABC):
         If the kets are of different types, the overlap is calculated using the corresponding
         Clebsch-Gordan coefficients (/ Wigner-j symbols).
         """
+        if any(is_dummy_ket(s) for s in [self, other]):
+            return 1.0 if self == other else 0.0
+
         for q in set(self.quantum_number_names) & set(other.quantum_number_names):
             if self.get_qn(q) != other.get_qn(q):
                 return 0
