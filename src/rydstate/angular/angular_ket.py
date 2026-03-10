@@ -12,6 +12,7 @@ from rydstate.angular.angular_matrix_element import (
     is_angular_momentum_quantum_number,
     is_angular_operator_type,
 )
+from rydstate.angular.core_ket_base import CoreKet
 from rydstate.angular.utils import (
     InvalidQuantumNumbersError,
     NotSet,
@@ -740,3 +741,7 @@ class AngularKetFJ(AngularKetBase):
             msgs.append(f"{self.f_c=}, {self.j_r=}, {self.f_tot=} don't satisfy spin addition rule.")
 
         super().sanity_check(msgs)
+
+    def get_core_ket(self) -> CoreKet:
+        """Get the core ket corresponding to this FJ ket."""
+        return CoreKet(i_c=self.i_c, s_c=self.s_c, l_c=self.l_c, j_c=self.j_c, f_c=self.f_c)
