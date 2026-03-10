@@ -1,5 +1,10 @@
+from __future__ import annotations
+
 import math
 import re
+from typing import TypeAlias
+
+RydbergRitzParameters: TypeAlias = tuple[float, float, float, float, float] | list[float] | float
 
 
 def calc_nu_from_energy(reduced_mass_au: float, energy_au: float) -> float:

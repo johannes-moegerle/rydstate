@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import inspect
 import logging
-from abc import ABC
+from abc import ABC, abstractmethod
 from functools import cache, cached_property
 from typing import TYPE_CHECKING, ClassVar, TypeVar, overload
 
@@ -124,6 +124,10 @@ class SpeciesObject(ABC):
 
         """
         return sorted([subclass.name for subclass in cls._get_concrete_subclasses()])
+
+    @property
+    @abstractmethod
+    def reference_ionization_energy_au(self) -> float: ...
 
     @overload
     def get_corrected_rydberg_constant(self, unit: None = None) -> PintFloat: ...

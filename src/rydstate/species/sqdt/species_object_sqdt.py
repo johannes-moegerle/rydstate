@@ -17,13 +17,14 @@ if TYPE_CHECKING:
     from pathlib import Path
 
     from rydstate.angular.angular_ket import AngularKetBase
+    from rydstate.species.utils import RydbergRitzParameters
     from rydstate.units import PintFloat
 
 logger = logging.getLogger(__name__)
 
 
 class SpeciesObjectSQDT(SpeciesObject):
-    """Abstract base class for all species objects.
+    """Abstract base class for all sqdt species objects.
 
     For the electronic ground state configurations and sorted shells,
     see e.g. https://www.webelements.com/atoms.html
@@ -41,7 +42,7 @@ class SpeciesObjectSQDT(SpeciesObject):
     """Ionization energy with uncertainty and unit: (value, uncertainty, unit)."""
 
     # Parameters for the extended Rydberg Ritz formula, see calc_nu
-    _quantum_defects: ClassVar[dict[tuple[int, float, float], tuple[float, float, float, float, float]] | None] = None
+    _quantum_defects: ClassVar[dict[tuple[int, float, float], RydbergRitzParameters] | None] = None
     """Dictionary containing the quantum defects for each (l, j_tot, s_tot) combination, i.e.
     _quantum_defects[(l,j_tot,s_tot)] = (d0, d2, d4, d6, d8)
     """
@@ -126,9 +127,6 @@ class SpeciesObjectSQDT(SpeciesObject):
         if len(self._nist_energy_levels) == 0:
             raise ValueError(f"No NIST energy levels found for species {self.name} in file {file}.")
 
-    def __repr__(self) -> str:
-        return f"{self.__class__.__name__}()"
-
     def is_allowed_shell(self, n: int, l: int, s_tot: float | None = None) -> bool:
         """Check if the quantum numbers describe an allowed shell.
 
@@ -183,7 +181,7 @@ class SpeciesObjectSQDT(SpeciesObject):
         return ionization_energy.to(unit, "spectroscopy").magnitude
 
     @cached_property
-    def ionization_energy_au(self) -> float:
+    def reference_ionization_energy_au(self) -> float:
         """Ionization energy in atomic units (Hartree)."""
         return self.get_ionization_energy("hartree")
 
@@ -231,7 +229,9 @@ class SpeciesObjectSQDT(SpeciesObject):
         if n <= nist_n_max and use_nist_data:  # try to use NIST data
             if (n, l, j_tot, s_tot) in self._nist_energy_levels:
                 energy_au = self._nist_energy_levels[(n, l, j_tot, s_tot)]
-                energy_au -= self.ionization_energy_au  # use the cached ionization energy for better performance
+                energy_au -= (
+                    self.reference_ionization_energy_au
+                )  # use the cached ionization energy for better performance
                 return calc_nu_from_energy(self.reduced_mass_au, energy_au)
             logger.debug(
                 "NIST energy levels for (n=%d, l=%d, j_tot=%s, s_tot=%s) not found, using quantum defect theory.",
@@ -240,10 +240,10 @@ class SpeciesObjectSQDT(SpeciesObject):
 
         if self._quantum_defects is None:
             raise ValueError(f"No quantum defect data available for species {self.name}.")
-        quantum_defects = list(self._quantum_defects.get((l, j_tot, s_tot), []))
-        if len(quantum_defects) > 5:
+        quantum_defects = self._quantum_defects.get((l, j_tot, s_tot), [])
+        if isinstance(quantum_defects, float) or np.isscalar(quantum_defects) or len(quantum_defects) > 5:
             raise ValueError(f"Quantum defects for {self.name} must be a list with up to 5 elements.")
 
-        d0, d2, d4, d6, d8 = quantum_defects + [0] * (5 - len(quantum_defects))
+        d0, d2, d4, d6, d8 = list(quantum_defects) + [0] * (5 - len(quantum_defects))
         delta_nlj = d0 + d2 / (n - d0) ** 2 + d4 / (n - d0) ** 4 + d6 / (n - d0) ** 6 + d8 / (n - d0) ** 8
         return n - delta_nlj
