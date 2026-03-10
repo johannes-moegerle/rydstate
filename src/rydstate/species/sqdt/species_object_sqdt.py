@@ -71,10 +71,6 @@ class SpeciesObjectSQDT(SpeciesObject):
 
         Args:
             file: Path to the NIST energy levels file.
-            n_max: Maximum principal quantum number for which to load the NIST energy levels.
-                For large quantum numbers, the NIST data is not accurate enough
-                (it does not even show fine structure splitting),
-                so we limit the maximum principal quantum number to 15 by default.
 
         """
         if not file.exists():

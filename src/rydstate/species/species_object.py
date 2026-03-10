@@ -4,15 +4,23 @@ import inspect
 import logging
 from abc import ABC
 from functools import cache, cached_property
-from typing import TYPE_CHECKING, ClassVar, overload
+from typing import TYPE_CHECKING, ClassVar, TypeVar, overload
 
 from rydstate.units import rydberg_constant, ureg
 
 if TYPE_CHECKING:
-    from typing_extensions import Self
+    from collections.abc import Callable
+
+    from typing_extensions import ParamSpec, Self
 
     from rydstate.radial.model import PotentialType
     from rydstate.units import PintFloat
+
+    P = ParamSpec("P")
+    R = TypeVar("R")
+
+    def cache(func: Callable[P, R]) -> Callable[P, R]: ...  # type: ignore [misc]
+
 
 logger = logging.getLogger(__name__)
 
