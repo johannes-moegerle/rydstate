@@ -42,7 +42,7 @@ class BasisSQDTAlkali(BasisSQDT[RydbergStateSQDTAlkali]):
             species = SpeciesObjectSQDT.from_name(species)
         self.species = species
 
-        i_c = self.species.i_c if self.species.i_c is not None else 0
+        i_c = self.species.i_c_number
         self.states = []
 
         _s = 1 / 2
@@ -65,7 +65,7 @@ class BasisSQDTAlkalineLS(BasisSQDT[RydbergStateSQDTAlkalineLS]):
             species = SpeciesObjectSQDT.from_name(species)
         self.species = species
 
-        i_c = self.species.i_c if self.species.i_c is not None else 0
+        i_c = self.species.i_c_number
         self.states = []
 
         for _n in range(n[0], n[1] + 1):
@@ -90,7 +90,7 @@ class BasisSQDTAlkalineJJ(BasisSQDT[RydbergStateSQDTAlkalineJJ]):
             species = SpeciesObjectSQDT.from_name(species)
         self.species = species
 
-        i_c = self.species.i_c if self.species.i_c is not None else 0
+        i_c = self.species.i_c_number
         self.states = []
 
         _j_c = 0.5
@@ -123,7 +123,7 @@ class BasisSQDTAlkalineFJ(BasisSQDT[RydbergStateSQDTAlkalineFJ]):
             species = SpeciesObjectSQDT.from_name(species)
         self.species = species
 
-        i_c = self.species.i_c if self.species.i_c is not None else 0
+        i_c = self.species.i_c_number
         self.states = []
 
         _j_c = 0.5

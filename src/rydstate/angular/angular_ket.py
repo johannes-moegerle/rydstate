@@ -96,10 +96,9 @@ class AngularKetBase(ABC):
 
                 species = SpeciesObjectSQDT.from_name(species)
             # use i_c = 0 for species without defined nuclear spin (-> ignore hyperfine)
-            species_i_c = species.i_c if species.i_c is not None else 0
-            if i_c is not None and i_c != species_i_c:
+            if i_c is not None and i_c != species.i_c_number:
                 raise ValueError(f"Nuclear spin i_c={i_c} does not match the species {species} with i_c={species.i_c}.")
-            i_c = species_i_c
+            i_c = species.i_c_number
             s_c = 0.5 * (species.number_valence_electrons - 1)
         if i_c is None:
             raise ValueError("Nuclear spin i_c must be set or a species must be given.")

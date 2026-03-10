@@ -572,7 +572,7 @@ class RydbergStateSQDTAlkali(RydbergStateSQDT):
         species, n, nu = self.species.name, self.n, self.nu
         l, j, f, m = self.l, self.j, self.f, self.m
         n_str = f", {n=}" if n is not None else ""
-        f_string = f", {f=}" if self.species.i_c not in (None, 0) else ""
+        f_string = f", {f=}" if self.species.i_c_number != 0 else ""
         return f"{self.__class__.__name__}({species}{n_str}, {nu=}, {l=}, {j=}{f_string}, {m=})"
 
 

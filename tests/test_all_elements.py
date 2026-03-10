@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 @pytest.mark.parametrize("species_name", SpeciesObjectSQDT.get_available_species())
 def test_sqdt_species(species_name: str) -> None:
     species = SpeciesObjectSQDT.from_name(species_name)
-    i_c = species.i_c if species.i_c is not None else 0
+    i_c = species.i_c_number
 
     state: RydbergStateSQDT
     if species.number_valence_electrons == 1:

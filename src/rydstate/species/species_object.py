@@ -62,6 +62,11 @@ class SpeciesObject(ABC):
     defined in: Y. Fei et al., Chin. Phys. B 18, 4349 (2009), https://iopscience.iop.org/article/10.1088/1674-1056/18/10/025
     """
 
+    @property
+    def i_c_number(self) -> float:
+        """Return a numerical value for i_c, i.e. either i_c or 0 if i_c is None."""
+        return self.i_c if self.i_c is not None else 0
+
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}()"
 
