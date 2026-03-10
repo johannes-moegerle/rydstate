@@ -95,9 +95,9 @@ class AngularKetBase(ABC):
         """
         if species is not None:
             if isinstance(species, str):
-                from rydstate.species import SpeciesObjectSQDT  # noqa: PLC0415
+                from rydstate.species.sqdt import SpeciesObjectSQDT  # noqa: PLC0415
 
-                species = SpeciesObjectSQDT.from_name(species)
+                species = SpeciesObjectSQDT.from_name(species.replace("_mqdt", ""))
             # use i_c = 0 for species without defined nuclear spin (-> ignore hyperfine)
             if i_c is not None and i_c != species.i_c_number:
                 raise ValueError(f"Nuclear spin i_c={i_c} does not match the species {species} with i_c={species.i_c}.")
