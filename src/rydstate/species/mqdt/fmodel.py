@@ -21,14 +21,14 @@ if TYPE_CHECKING:
 class FModel:
     """Class to store the parameters of a MQDT model for a given species."""
 
+    name: ClassVar[str | None]
+    """The name of the FModel."""
+
     reference: ClassVar[str | None] = None
     """Reference for the MQDT model, e.g., a publication doi where the model is described."""
 
     species_name: ClassVar[str]
     """The species for which the MQDT model is defined."""
-
-    name: ClassVar[str | None]
-    """The name of the atomic species."""
 
     f_tot: ClassVar[float]
     """Total angular momentum f_tot of the Rydberg state."""
@@ -38,11 +38,18 @@ class FModel:
 
     inner_channels: ClassVar[list[AngularKetBase]]
     """List of inner channels in the MQDT model."""
+
     outer_channels: ClassVar[list[AngularKetFJ | AngularKetDummy]]
     """List of outer channels in the MQDT model."""
 
     eigen_quantum_defects: ClassVar[list[RydbergRitzParameters]]
+    """List of eigen quantum defects for the close-coupling channels.
+    Each entry can be a constant or a list of polynomial coefficients."""
+
     mixing_angles: ClassVar[list[tuple[int, int, RydbergRitzParameters]]]
+    """List of mixing angles between close-coupling channels.
+    Each entry is a tuple (i_idx, j_idx, params) where i_idx and j_idx are the indices of the involved channels
+    and params are the parameters for the energy dependence of the angle (constant or polynomial coefficients)."""
 
     manual_frame_transformation_outer_inner: ClassVar[NDArray | None] = None
     """Optional manually specified frame transformation matrix Q mapping inner to outer channels.
