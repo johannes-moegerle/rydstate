@@ -4,11 +4,6 @@ import re
 
 import numpy as np
 import pytest
-import rydstate.species.mqdt.sr87
-import rydstate.species.mqdt.sr88
-import rydstate.species.mqdt.yb171
-import rydstate.species.mqdt.yb173
-import rydstate.species.mqdt.yb174  # noqa: F401
 from rydstate.angular.utils import is_dummy_ket
 from rydstate.species.mqdt.fmodel import FModel
 

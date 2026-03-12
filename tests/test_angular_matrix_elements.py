@@ -42,8 +42,8 @@ TEST_KETS = [
 
 @pytest.mark.parametrize("ket", TEST_KETS)
 def test_exp_q_different_coupling_schemes(ket: AngularKetBase) -> None:
-    all_qns: tuple[AngularMomentumQuantumNumbers, ...] = get_args(AngularMomentumQuantumNumbers)
-    for q in all_qns:
+    all_qs: tuple[AngularMomentumQuantumNumbers, ...] = get_args(AngularMomentumQuantumNumbers)
+    for q in all_qs:
         exp_q = ket.to_state("LS").calc_exp_qn(q)
         assert np.isclose(exp_q, ket.to_state("JJ").calc_exp_qn(q))
         assert np.isclose(exp_q, ket.to_state("FJ").calc_exp_qn(q))

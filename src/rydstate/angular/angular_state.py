@@ -119,12 +119,12 @@ class AngularState(Generic[_AngularKet]):
                 if q in ket_class.quantum_number_names:
                     return self.to(ket_class.coupling_scheme).calc_exp_qn(q)
 
-        qs = np.array([ket.get_qn(q) for ket in self.kets])
-        if all(q_val == qs[0] for q_val in qs):
-            return qs[0]  # type: ignore [no-any-return]
-        qs = np.array([q if not is_unknown(q) else 0 for q in qs])
+        qns = np.array([ket.get_qn(q) for ket in self.kets])
+        if all(q_val == qns[0] for q_val in qns):
+            return qns[0]  # type: ignore [no-any-return]
+        qns = np.array([qn if not is_unknown(qn) else 0 for qn in qns])
 
-        return np.sum(np.conjugate(self.coefficients) * self.coefficients * qs)  # type: ignore [no-any-return]
+        return np.sum(np.conjugate(self.coefficients) * self.coefficients * qns)  # type: ignore [no-any-return]
 
     def calc_std_qn(self, q: AngularMomentumQuantumNumbers) -> float:
         """Calculate the standard deviation of a quantum number q.
@@ -138,14 +138,14 @@ class AngularState(Generic[_AngularKet]):
                 if q in ket_class.quantum_number_names:
                     return self.to(ket_class.coupling_scheme).calc_std_qn(q)
 
-        qs = np.array([ket.get_qn(q) for ket in self.kets])
-        if all(q_val == qs[0] for q_val in qs):
+        qns = np.array([ket.get_qn(q) for ket in self.kets])
+        if all(qn == qns[0] for qn in qns):
             return 0
-        qs = np.array([q if not is_unknown(q) else 0 for q in qs])
+        qns = np.array([qn if not is_unknown(qn) else 0 for qn in qns])
 
         coefficients2 = np.conjugate(self.coefficients) * self.coefficients
-        exp_q = np.sum(coefficients2 * qs)
-        exp_q2 = np.sum(coefficients2 * qs * qs)
+        exp_q = np.sum(coefficients2 * qns)
+        exp_q2 = np.sum(coefficients2 * qns * qns)
 
         if abs(exp_q2 - exp_q**2) < 1e-10:
             return 0
