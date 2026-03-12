@@ -86,6 +86,22 @@ Then, similarly to `rydstate.species.sqdt.rubidium.py` you can define the quantu
 Finally, you can use the custom species by simply calling `rydstate.RydbergStateSQDTAlkali("Custom_Rb", n=50, l=0, j=1/2, m=1/2)` (the code will look for all subclasses of `SpeciesObjectSQDT` until it finds one with the species name "Custom_Rb").
 
 
+## Contributors
+
+The software is currently maintained by:
+* [Johannes Mögerle]
+
+In addition, the following people contributed significantly to this software:
+* [Frederic Hummel] - Author of the MQDT.jl julia package, which the python implementation of the MQDT calculations in this package are based on, and from where the FModel parameters where taken.
+* [Sebastian Weber] - Input about the code structure and the Numerov implementation.
+
+We warmly welcome new contributions!
+
+[Johannes Mögerle]: https://github.com/johannes-moegerle
+[Frederic Hummel]: https://github.com/frederic-atom
+[Sebastian Weber]: https://github.com/seweber
+
+
 ## License
 
 The rydstate software is licensed under [LGPL v3][license-lgpl-link]. For more information, see [LICENSE.txt](https://github.com/pairinteraction/rydstate/blob/main/LICENSE.txt).
