@@ -69,7 +69,10 @@ class AngularState(Generic[_AngularKet]):
     @property
     def coupling_scheme(self) -> CouplingScheme:
         """Return the coupling scheme of the state."""
-        return next(ket.coupling_scheme for ket in self.kets if not is_dummy_ket(ket))
+        coupling_scheme = next((ket.coupling_scheme for ket in self.kets if not is_dummy_ket(ket)), None)
+        if coupling_scheme is None:
+            raise ValueError("Cannot determine coupling scheme of AngularState with only dummy kets.")
+        return coupling_scheme
 
     @property
     def norm(self) -> float:
