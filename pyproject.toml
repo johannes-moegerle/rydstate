@@ -42,6 +42,7 @@ dependencies = [
     "mpmath >= 1.3",
     "scipy-stubs >= 1.15",
     "typing_extensions >= 4.10",
+    "pandas[pyarrow]",
 ]
 
 [project.optional-dependencies]
