@@ -533,6 +533,7 @@ class RydbergStateSQDTAlkali(RydbergStateSQDT):
     """Create an Alkali Rydberg state, including the radial and angular states."""
 
     angular: AngularKetLS
+    n: int
 
     def __init__(
         self,

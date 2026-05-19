@@ -418,7 +418,7 @@ class AngularKetBase(ABC):
         elif operator in self.quantum_number_names:
             if not kappa == 1:
                 raise ValueError("Only kappa=1 is supported for spin operators.")
-            qn_name = operator  # type: ignore [assignment]
+            qn_name = operator
             complete_reduced_matrix_element = calc_reduced_spin_matrix_element(
                 self.get_qn(qn_name), other.get_qn(qn_name)
             )
