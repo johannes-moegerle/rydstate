@@ -1,0 +1,570 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RydbergStateSQDTAlkalineJJ &mdash; RydState 0.10.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=82662543"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="RydbergStateSQDTAlkalineFJ" href="rydstate.RydbergStateSQDTAlkalineFJ.html" />
+    <link rel="prev" title="RydbergStateSQDTAlkalineLS" href="rydstate.RydbergStateSQDTAlkalineLS.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            RydState
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api_reference.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="rydstate.RydbergStateSQDT.html">RydbergStateSQDT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.RydbergStateSQDTAlkali.html">RydbergStateSQDTAlkali</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.RydbergStateSQDTAlkalineLS.html">RydbergStateSQDTAlkalineLS</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">RydbergStateSQDTAlkalineJJ</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rydstate.RydbergStateSQDTAlkalineJJ"><code class="docutils literal notranslate"><span class="pre">RydbergStateSQDTAlkalineJJ</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rydstate.RydbergStateSQDTAlkalineJJ.calc_matrix_element"><code class="docutils literal notranslate"><span class="pre">RydbergStateSQDTAlkalineJJ.calc_matrix_element()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rydstate.RydbergStateSQDTAlkalineJJ.calc_reduced_matrix_element"><code class="docutils literal notranslate"><span class="pre">RydbergStateSQDTAlkalineJJ.calc_reduced_matrix_element()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rydstate.RydbergStateSQDTAlkalineJJ.calc_reduced_overlap"><code class="docutils literal notranslate"><span class="pre">RydbergStateSQDTAlkalineJJ.calc_reduced_overlap()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rydstate.RydbergStateSQDTAlkalineJJ.from_angular_ket"><code class="docutils literal notranslate"><span class="pre">RydbergStateSQDTAlkalineJJ.from_angular_ket()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rydstate.RydbergStateSQDTAlkalineJJ.get_black_body_transition_rates"><code class="docutils literal notranslate"><span class="pre">RydbergStateSQDTAlkalineJJ.get_black_body_transition_rates()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rydstate.RydbergStateSQDTAlkalineJJ.get_energy"><code class="docutils literal notranslate"><span class="pre">RydbergStateSQDTAlkalineJJ.get_energy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rydstate.RydbergStateSQDTAlkalineJJ.get_lifetime"><code class="docutils literal notranslate"><span class="pre">RydbergStateSQDTAlkalineJJ.get_lifetime()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rydstate.RydbergStateSQDTAlkalineJJ.get_spontaneous_transition_rates"><code class="docutils literal notranslate"><span class="pre">RydbergStateSQDTAlkalineJJ.get_spontaneous_transition_rates()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rydstate.RydbergStateSQDTAlkalineJJ.nu"><code class="docutils literal notranslate"><span class="pre">RydbergStateSQDTAlkalineJJ.nu</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rydstate.RydbergStateSQDTAlkalineJJ.nu_ref"><code class="docutils literal notranslate"><span class="pre">RydbergStateSQDTAlkalineJJ.nu_ref</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rydstate.RydbergStateSQDTAlkalineJJ.radial"><code class="docutils literal notranslate"><span class="pre">RydbergStateSQDTAlkalineJJ.radial</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rydstate.RydbergStateSQDTAlkalineJJ.species"><code class="docutils literal notranslate"><span class="pre">RydbergStateSQDTAlkalineJJ.species</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rydstate.RydbergStateSQDTAlkalineJJ.angular"><code class="docutils literal notranslate"><span class="pre">RydbergStateSQDTAlkalineJJ.angular</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.RydbergStateSQDTAlkalineFJ.html">RydbergStateSQDTAlkalineFJ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.BasisSQDTAlkali.html">BasisSQDTAlkali</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.BasisSQDTAlkalineLS.html">BasisSQDTAlkalineLS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.BasisSQDTAlkalineJJ.html">BasisSQDTAlkalineJJ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.BasisSQDTAlkalineFJ.html">BasisSQDTAlkalineFJ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.angular.AngularKetLS.html">AngularKetLS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.angular.AngularKetJJ.html">AngularKetJJ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.angular.AngularKetFJ.html">AngularKetFJ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.angular.AngularState.html">AngularState</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.angular.utils.html">utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.radial.RadialKet.html">RadialKet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.radial.Wavefunction.html">Wavefunction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.radial.Model.html">Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.radial.numerov.html">numerov</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.species.SpeciesObjectSQDT.html">SpeciesObjectSQDT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.species.HydrogenTextBook.html">HydrogenTextBook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.species.Hydrogen.html">Hydrogen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.species.Lithium.html">Lithium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.species.Sodium.html">Sodium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.species.Potassium.html">Potassium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.species.Rubidium.html">Rubidium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.species.Cesium.html">Cesium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.species.Strontium87.html">Strontium87</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.species.Strontium88.html">Strontium88</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.species.Ytterbium171.html">Ytterbium171</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.species.Ytterbium173.html">Ytterbium173</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.species.Ytterbium174.html">Ytterbium174</a></li>
+</ul>
+</li>
+</ul>
+
+<style>
+a.gitbutton {
+  display: block;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #fff;
+  padding-top: 10px;
+  padding-left: 85px;
+  padding-right: 0px;
+  margin: 22px;
+  width: 240px;
+  height: 60px;
+  background: transparent url("../_static/buttons/github.svg") 0 0 no-repeat;
+}
+a.gitbutton small {
+  display: block;
+  font-size: 11px;
+}
+button.toctree-expand {
+  display: none;
+}
+</style>
+<a href="https://github.com/pairinteraction/rydstate" class="gitbutton">Explore<small>the GitHub repository</small></a>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RydState</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api_reference.html">API Reference</a></li>
+      <li class="breadcrumb-item active">RydbergStateSQDTAlkalineJJ</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_autosummary/rydstate.RydbergStateSQDTAlkalineJJ.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rydbergstatesqdtalkalinejj">
+<h1>RydbergStateSQDTAlkalineJJ<a class="headerlink" href="#rydbergstatesqdtalkalinejj" title="Link to this heading"></a></h1>
+<p class="rubric">Class Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(species, n, l, j_r[, j_tot, f_tot, ...])</p></td>
+<td><p>Initialize the Rydberg state.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.RydbergStateSQDTAlkalineJJ.calc_matrix_element" title="rydstate.RydbergStateSQDTAlkalineJJ.calc_matrix_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_matrix_element</span></code></a>(other, operator, q[, unit])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.RydbergStateSQDTAlkalineJJ.calc_reduced_matrix_element" title="rydstate.RydbergStateSQDTAlkalineJJ.calc_reduced_matrix_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_reduced_matrix_element</span></code></a>(other, operator)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.RydbergStateSQDTAlkalineJJ.calc_reduced_overlap" title="rydstate.RydbergStateSQDTAlkalineJJ.calc_reduced_overlap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_reduced_overlap</span></code></a>(other)</p></td>
+<td><p>Calculate the reduced overlap &lt;self|other&gt; (ignoring the magnetic quantum number m).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.RydbergStateSQDTAlkalineJJ.from_angular_ket" title="rydstate.RydbergStateSQDTAlkalineJJ.from_angular_ket"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_angular_ket</span></code></a>(species, angular_ket[, n, nu])</p></td>
+<td><p>Initialize the Rydberg state from an angular ket.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.RydbergStateSQDTAlkalineJJ.get_black_body_transition_rates" title="rydstate.RydbergStateSQDTAlkalineJJ.get_black_body_transition_rates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_black_body_transition_rates</span></code></a>(temperature)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.RydbergStateSQDTAlkalineJJ.get_energy" title="rydstate.RydbergStateSQDTAlkalineJJ.get_energy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_energy</span></code></a>([unit])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.RydbergStateSQDTAlkalineJJ.get_lifetime" title="rydstate.RydbergStateSQDTAlkalineJJ.get_lifetime"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_lifetime</span></code></a>([temperature, ...])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.RydbergStateSQDTAlkalineJJ.get_spontaneous_transition_rates" title="rydstate.RydbergStateSQDTAlkalineJJ.get_spontaneous_transition_rates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_spontaneous_transition_rates</span></code></a>([unit])</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Class Attributes and Properties</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.RydbergStateSQDTAlkalineJJ.nu" title="rydstate.RydbergStateSQDTAlkalineJJ.nu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nu</span></code></a></p></td>
+<td><p>The effective principal quantum number nu (for alkali atoms also known as n*) for the Rydberg state.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.RydbergStateSQDTAlkalineJJ.nu_ref" title="rydstate.RydbergStateSQDTAlkalineJJ.nu_ref"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nu_ref</span></code></a></p></td>
+<td><p>The reference effective principal quantum number nu_ref.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.RydbergStateSQDTAlkalineJJ.radial" title="rydstate.RydbergStateSQDTAlkalineJJ.radial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">radial</span></code></a></p></td>
+<td><p>The radial part of the Rydberg electron.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.RydbergStateSQDTAlkalineJJ.angular" title="rydstate.RydbergStateSQDTAlkalineJJ.angular"><code class="xref py py-obj docutils literal notranslate"><span class="pre">angular</span></code></a></p></td>
+<td><p>The angular/spin part of the Rydberg electron.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.RydbergStateSQDTAlkalineJJ.species" title="rydstate.RydbergStateSQDTAlkalineJJ.species"><code class="xref py py-obj docutils literal notranslate"><span class="pre">species</span></code></a></p></td>
+<td><p>The atomic species of the Rydberg state.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="rydstate.RydbergStateSQDTAlkalineJJ">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">rydstate.</span></span><span class="sig-name descname"><span class="pre">RydbergStateSQDTAlkalineJJ</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">species</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j_r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j_tot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f_tot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;class</span> <span class="pre">'rydstate.angular.utils.NotSet'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rydstate/rydberg/rydberg_sqdt.html#RydbergStateSQDTAlkalineJJ"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rydstate.RydbergStateSQDTAlkalineJJ" title="Link to this definition"></a></dt>
+<dd><p>Initialize the Rydberg state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>species</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> | <a class="reference internal" href="rydstate.species.SpeciesObjectSQDT.html#rydstate.species.SpeciesObjectSQDT" title="rydstate.species.sqdt.species_object_sqdt.SpeciesObjectSQDT"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpeciesObjectSQDT</span></code></a></span>) – Atomic species.</p></li>
+<li><p><strong>n</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Principal quantum number of the rydberg electron.</p></li>
+<li><p><strong>l</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Orbital angular momentum quantum number of the rydberg electron.</p></li>
+<li><p><strong>j_r</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – Total angular momentum quantum number of the Rydberg electron.</p></li>
+<li><p><strong>j_tot</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span>) – Total angular momentum quantum number of all electrons.</p></li>
+<li><p><strong>f_tot</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span>) – Total angular momentum quantum number of the atom (rydberg electron + core)
+Optional, only needed if the species supports hyperfine structure
+(i.e. species.i_c is not None and species.i_c != 0).</p></li>
+<li><p><strong>m</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> | <a class="reference internal" href="rydstate.angular.utils.NotSet.html#rydstate.angular.utils.NotSet" title="rydstate.angular.utils.NotSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">NotSet</span></code></a></span>) – Total magnetic quantum number.
+Optional, only needed for concrete angular matrix elements.</p></li>
+<li><p><strong>nu</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span>) – Effective principal quantum number of the rydberg electron.
+Optional, if not given it will be calculated from n, l, j_tot.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.RydbergStateSQDTAlkalineJJ.calc_matrix_element">
+<span class="sig-name descname"><span class="pre">calc_matrix_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.RydbergStateSQDTAlkalineJJ.calc_matrix_element" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Overloads<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong>, <strong>other</strong> (<span class="sphinx_autodoc_typehints-type">RydbergStateSQDT</span>), <strong>operator</strong> (<span class="sphinx_autodoc_typehints-type">MatrixElementOperator</span>), <strong>q</strong> (<span class="sphinx_autodoc_typehints-type">int</span>) → <span class="sphinx_autodoc_typehints-type">PintFloat</span></p></li>
+<li><p><strong>self</strong>, <strong>other</strong> (<span class="sphinx_autodoc_typehints-type">RydbergStateSQDT</span>), <strong>operator</strong> (<span class="sphinx_autodoc_typehints-type">MatrixElementOperator</span>), <strong>q</strong> (<span class="sphinx_autodoc_typehints-type">int</span>), <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">str</span>) → <span class="sphinx_autodoc_typehints-type">float</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>other</strong> (<a class="reference internal" href="rydstate.RydbergStateSQDT.html#rydstate.RydbergStateSQDT" title="rydstate.rydberg.rydberg_sqdt.RydbergStateSQDT"><em>RydbergStateSQDT</em></a>)</p></li>
+<li><p><strong>operator</strong> (<em>Literal</em><em>[</em><em>'magnetic_dipole'</em><em>, </em><em>'electric_dipole'</em><em>, </em><em>'electric_quadrupole'</em><em>, </em><em>'electric_octupole'</em><em>, </em><em>'electric_quadrupole_zero'</em><em>]</em>)</p></li>
+<li><p><strong>q</strong> (<em>int</em>)</p></li>
+<li><p><strong>unit</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>PlainQuantity</em>[float] | float</p>
+</dd>
+</dl>
+<p>Calculate the matrix element.</p>
+<p>Calculate the full matrix element between self and other,
+also considering the magnetic quantum numbers m of self and other.</p>
+<div class="math notranslate nohighlight">
+\[\left\langle self || r^k_radial \hat{O}_{k_angular} || other \right\rangle\]</div>
+<p>where hat{O}_{k_angular} is the operator of rank k_angular for which to calculate the matrix element.
+k_radial and k_angular are determined from the operator automatically.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>other</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="rydstate.RydbergStateSQDT.html#rydstate.RydbergStateSQDT" title="rydstate.rydberg.rydberg_sqdt.RydbergStateSQDT"><code class="xref py py-class docutils literal notranslate"><span class="pre">RydbergStateSQDT</span></code></a></span>) – The other Rydberg state for which to calculate the matrix element.</p></li>
+<li><p><strong>operator</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Literal</span></code>[<code class="docutils literal notranslate"><span class="pre">'magnetic_dipole'</span></code>, <code class="docutils literal notranslate"><span class="pre">'electric_dipole'</span></code>, <code class="docutils literal notranslate"><span class="pre">'electric_quadrupole'</span></code>, <code class="docutils literal notranslate"><span class="pre">'electric_octupole'</span></code>, <code class="docutils literal notranslate"><span class="pre">'electric_quadrupole_zero'</span></code>]</span>) – The operator for which to calculate the matrix element.</p></li>
+<li><p><strong>q</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – The component of the operator.</p></li>
+<li><p><strong>unit</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span>) – The unit to which to convert the radial matrix element.
+Can be “a.u.” for atomic units (so no conversion is done), or a specific unit.
+Default None will return a pint quantity.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The matrix element for the given operator.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>PlainQuantity</em>[float] | float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.RydbergStateSQDTAlkalineJJ.calc_reduced_matrix_element">
+<span class="sig-name descname"><span class="pre">calc_reduced_matrix_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.RydbergStateSQDTAlkalineJJ.calc_reduced_matrix_element" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Overloads<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong>, <strong>other</strong> (<span class="sphinx_autodoc_typehints-type">RydbergStateBase</span>), <strong>operator</strong> (<span class="sphinx_autodoc_typehints-type">MatrixElementOperator</span>), <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">None</span>) → <span class="sphinx_autodoc_typehints-type">PintFloat</span></p></li>
+<li><p><strong>self</strong>, <strong>other</strong> (<span class="sphinx_autodoc_typehints-type">RydbergStateBase</span>), <strong>operator</strong> (<span class="sphinx_autodoc_typehints-type">MatrixElementOperator</span>), <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">str</span>) → <span class="sphinx_autodoc_typehints-type">float</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>other</strong> (<em>RydbergStateBase</em>)</p></li>
+<li><p><strong>operator</strong> (<em>Literal</em><em>[</em><em>'magnetic_dipole'</em><em>, </em><em>'electric_dipole'</em><em>, </em><em>'electric_quadrupole'</em><em>, </em><em>'electric_octupole'</em><em>, </em><em>'electric_quadrupole_zero'</em><em>]</em>)</p></li>
+<li><p><strong>unit</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>PlainQuantity</em>[float] | float</p>
+</dd>
+</dl>
+<p>Calculate the reduced matrix element.</p>
+<p>Calculate the reduced matrix element between self and other (ignoring m quantum numbers)</p>
+<div class="math notranslate nohighlight">
+\[\left\langle self || r^k_radial \hat{O}_{k_angular} || other \right\rangle\]</div>
+<p>where hat{O}_{k_angular} is the operator of rank k_angular for which to calculate the matrix element.
+k_radial and k_angular are determined from the operator automatically.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>other</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">RydbergStateBase</span></code></span>) – The other Rydberg state for which to calculate the matrix element.</p></li>
+<li><p><strong>operator</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Literal</span></code>[<code class="docutils literal notranslate"><span class="pre">'magnetic_dipole'</span></code>, <code class="docutils literal notranslate"><span class="pre">'electric_dipole'</span></code>, <code class="docutils literal notranslate"><span class="pre">'electric_quadrupole'</span></code>, <code class="docutils literal notranslate"><span class="pre">'electric_octupole'</span></code>, <code class="docutils literal notranslate"><span class="pre">'electric_quadrupole_zero'</span></code>]</span>) – The operator for which to calculate the matrix element.</p></li>
+<li><p><strong>unit</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span>) – The unit to which to convert the radial matrix element.
+Can be “a.u.” for atomic units (so no conversion is done), or a specific unit.
+Default None will return a pint quantity.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The reduced matrix element for the given operator.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>PlainQuantity</em>[float] | float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.RydbergStateSQDTAlkalineJJ.calc_reduced_overlap">
+<span class="sig-name descname"><span class="pre">calc_reduced_overlap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.RydbergStateSQDTAlkalineJJ.calc_reduced_overlap" title="Link to this definition"></a></dt>
+<dd><p>Calculate the reduced overlap &lt;self|other&gt; (ignoring the magnetic quantum number m).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>other</strong> (<em>RydbergStateBase</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.RydbergStateSQDTAlkalineJJ.from_angular_ket">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_angular_ket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">species</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angular_ket</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.RydbergStateSQDTAlkalineJJ.from_angular_ket" title="Link to this definition"></a></dt>
+<dd><p>Initialize the Rydberg state from an angular ket.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Self</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>species</strong> (<em>str</em><em> | </em><a class="reference internal" href="rydstate.species.SpeciesObjectSQDT.html#rydstate.species.SpeciesObjectSQDT" title="rydstate.species.sqdt.species_object_sqdt.SpeciesObjectSQDT"><em>SpeciesObjectSQDT</em></a>)</p></li>
+<li><p><strong>angular_ket</strong> (<em>AngularKetBase</em>)</p></li>
+<li><p><strong>n</strong> (<em>int</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>nu</strong> (<em>float</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.RydbergStateSQDTAlkalineJJ.get_black_body_transition_rates">
+<span class="sig-name descname"><span class="pre">get_black_body_transition_rates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.RydbergStateSQDTAlkalineJJ.get_black_body_transition_rates" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Overloads<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong>, <strong>temperature</strong> (<span class="sphinx_autodoc_typehints-type">float | PintFloat</span>), <strong>temperature_unit</strong> (<span class="sphinx_autodoc_typehints-type">str | None</span>), <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">None</span>) → <span class="sphinx_autodoc_typehints-type">tuple[list[RydbergStateSQDT], PintArray]</span></p></li>
+<li><p><strong>self</strong>, <strong>temperature</strong> (<span class="sphinx_autodoc_typehints-type">PintFloat</span>), <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">str</span>) → <span class="sphinx_autodoc_typehints-type">tuple[list[RydbergStateSQDT], NDArray]</span></p></li>
+<li><p><strong>self</strong>, <strong>temperature</strong> (<span class="sphinx_autodoc_typehints-type">float</span>), <strong>temperature_unit</strong> (<span class="sphinx_autodoc_typehints-type">str</span>), <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">str</span>) → <span class="sphinx_autodoc_typehints-type">tuple[list[RydbergStateSQDT], NDArray]</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>temperature</strong> (<em>float</em><em> | </em><em>PlainQuantity</em><em>[</em><em>float</em><em>]</em>)</p></li>
+<li><p><strong>temperature_unit</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>unit</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[list[<a class="reference internal" href="rydstate.RydbergStateSQDT.html#rydstate.RydbergStateSQDT" title="rydstate.rydberg.rydberg_sqdt.RydbergStateSQDT"><em>RydbergStateSQDT</em></a>], <em>ndarray</em>[tuple[<em>Any</em>, …], <em>dtype</em>[<em>Any</em>]] | <em>PlainQuantity</em>[<em>ndarray</em>[tuple[<em>Any</em>, …], <em>dtype</em>[<em>Any</em>]]]]</p>
+</dd>
+</dl>
+<p>Calculate the black body transition rates of the Rydberg state.</p>
+<p>The black body transition rates are given by the Einstein B coefficients,
+with a weight factor given by Planck’s law.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>temperature</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PlainQuantity</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]]</span>) – The temperature, for which to calculate the black body transition rates.</p></li>
+<li><p><strong>temperature_unit</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span>) – The unit of the temperature.
+Default None will assume the temperature is given as <cite>pint.Quantity</cite>.</p></li>
+<li><p><strong>unit</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span>) – The unit to which to convert the result.
+Default None will return a <cite>pint.Quantity</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The relevant states and the transition rates.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[list[<a class="reference internal" href="rydstate.RydbergStateSQDT.html#rydstate.RydbergStateSQDT" title="rydstate.rydberg.rydberg_sqdt.RydbergStateSQDT"><em>RydbergStateSQDT</em></a>], <em>ndarray</em>[tuple[<em>Any</em>, …], <em>dtype</em>[<em>Any</em>]] | <em>PlainQuantity</em>[<em>ndarray</em>[tuple[<em>Any</em>, …], <em>dtype</em>[<em>Any</em>]]]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.RydbergStateSQDTAlkalineJJ.get_energy">
+<span class="sig-name descname"><span class="pre">get_energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.RydbergStateSQDTAlkalineJJ.get_energy" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Overloads<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong>, <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">None</span>) → <span class="sphinx_autodoc_typehints-type">PintFloat</span></p></li>
+<li><p><strong>self</strong>, <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">str</span>) → <span class="sphinx_autodoc_typehints-type">float</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>unit</strong> (<em>str</em><em> | </em><em>None</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>PlainQuantity</em>[float] | float</p>
+</dd>
+</dl>
+<p>Get the energy of the Rydberg state.</p>
+<p>The energy is defined as</p>
+<div class="math notranslate nohighlight">
+\[E = - \frac{1}{2} \frac{\mu}{\nu^2}\]</div>
+<p>where <cite>mu = R_M/R_infty</cite> is the reduced mass and <cite>nu</cite> the effective principal quantum number.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.RydbergStateSQDTAlkalineJJ.get_lifetime">
+<span class="sig-name descname"><span class="pre">get_lifetime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.RydbergStateSQDTAlkalineJJ.get_lifetime" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Overloads<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong>, <strong>temperature</strong> (<span class="sphinx_autodoc_typehints-type">float | PintFloat | None</span>), <strong>temperature_unit</strong> (<span class="sphinx_autodoc_typehints-type">str | None</span>), <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">None</span>) → <span class="sphinx_autodoc_typehints-type">PintFloat</span></p></li>
+<li><p><strong>self</strong>, <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">str</span>) → <span class="sphinx_autodoc_typehints-type">float</span></p></li>
+<li><p><strong>self</strong>, <strong>temperature</strong> (<span class="sphinx_autodoc_typehints-type">PintFloat</span>), <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">str</span>) → <span class="sphinx_autodoc_typehints-type">float</span></p></li>
+<li><p><strong>self</strong>, <strong>temperature</strong> (<span class="sphinx_autodoc_typehints-type">float</span>), <strong>temperature_unit</strong> (<span class="sphinx_autodoc_typehints-type">str</span>), <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">str</span>) → <span class="sphinx_autodoc_typehints-type">float</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>temperature</strong> (<em>float</em><em> | </em><em>PlainQuantity</em><em>[</em><em>float</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>temperature_unit</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>unit</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float | <em>PlainQuantity</em>[float]</p>
+</dd>
+</dl>
+<p>Calculate the lifetime of the Rydberg state.</p>
+<p>The lifetime is the inverse of the sum of all transition rates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>temperature</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PlainQuantity</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>], <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]</span>) – The temperature, for which to calculate the black body transition rates.
+Default None will not include black body transitions.</p></li>
+<li><p><strong>temperature_unit</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span>) – The unit of the temperature.
+Default None will assume the temperature is given as <cite>pint.Quantity</cite>.</p></li>
+<li><p><strong>unit</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span>) – The unit to which to convert the result.
+Default None will return a <cite>pint.Quantity</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The lifetime of the state.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float | <em>PlainQuantity</em>[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.RydbergStateSQDTAlkalineJJ.get_spontaneous_transition_rates">
+<span class="sig-name descname"><span class="pre">get_spontaneous_transition_rates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.RydbergStateSQDTAlkalineJJ.get_spontaneous_transition_rates" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Overloads<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong>, <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">None</span>) → <span class="sphinx_autodoc_typehints-type">tuple[list[RydbergStateSQDT], PintArray]</span></p></li>
+<li><p><strong>self</strong>, <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">str</span>) → <span class="sphinx_autodoc_typehints-type">tuple[list[RydbergStateSQDT], NDArray]</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>unit</strong> (<em>str</em><em> | </em><em>None</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[list[<a class="reference internal" href="rydstate.RydbergStateSQDT.html#rydstate.RydbergStateSQDT" title="rydstate.rydberg.rydberg_sqdt.RydbergStateSQDT"><em>RydbergStateSQDT</em></a>], <em>ndarray</em>[tuple[<em>Any</em>, …], <em>dtype</em>[<em>Any</em>]] | <em>PlainQuantity</em>[<em>ndarray</em>[tuple[<em>Any</em>, …], <em>dtype</em>[<em>Any</em>]]]]</p>
+</dd>
+</dl>
+<p>Calculate the spontaneous transition rates for the Rydberg state.</p>
+<p>The spontaneous transition rates are given by the Einstein A coefficients.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>unit</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span>) – The unit to which to convert the result.
+Default None will return a <cite>pint.Quantity</cite>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The relevant states and the transition rates.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[list[<a class="reference internal" href="rydstate.RydbergStateSQDT.html#rydstate.RydbergStateSQDT" title="rydstate.rydberg.rydberg_sqdt.RydbergStateSQDT"><em>RydbergStateSQDT</em></a>], <em>ndarray</em>[tuple[<em>Any</em>, …], <em>dtype</em>[<em>Any</em>]] | <em>PlainQuantity</em>[<em>ndarray</em>[tuple[<em>Any</em>, …], <em>dtype</em>[<em>Any</em>]]]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rydstate.RydbergStateSQDTAlkalineJJ.nu">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">nu</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#rydstate.RydbergStateSQDTAlkalineJJ.nu" title="Link to this definition"></a></dt>
+<dd><p>The effective principal quantum number nu (for alkali atoms also known as n*) for the Rydberg state.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rydstate.RydbergStateSQDTAlkalineJJ.nu_ref">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">nu_ref</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#rydstate.RydbergStateSQDTAlkalineJJ.nu_ref" title="Link to this definition"></a></dt>
+<dd><p>The reference effective principal quantum number nu_ref.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rydstate.RydbergStateSQDTAlkalineJJ.radial">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">radial</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="rydstate.radial.RadialKet.html#rydstate.radial.RadialKet" title="rydstate.radial.radial_ket.RadialKet"><span class="pre">RadialKet</span></a></span><a class="headerlink" href="#rydstate.RydbergStateSQDTAlkalineJJ.radial" title="Link to this definition"></a></dt>
+<dd><p>The radial part of the Rydberg electron.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.RydbergStateSQDTAlkalineJJ.species">
+<span class="sig-name descname"><span class="pre">species</span></span><a class="headerlink" href="#rydstate.RydbergStateSQDTAlkalineJJ.species" title="Link to this definition"></a></dt>
+<dd><p>The atomic species of the Rydberg state.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.RydbergStateSQDTAlkalineJJ.angular">
+<span class="sig-name descname"><span class="pre">angular</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="rydstate.angular.AngularKetJJ.html#rydstate.angular.AngularKetJJ" title="rydstate.angular.AngularKetJJ"><span class="pre">AngularKetJJ</span></a></span><a class="headerlink" href="#rydstate.RydbergStateSQDTAlkalineJJ.angular" title="Link to this definition"></a></dt>
+<dd><p>The angular/spin part of the Rydberg electron.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rydstate.RydbergStateSQDTAlkalineLS.html" class="btn btn-neutral float-left" title="RydbergStateSQDTAlkalineLS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rydstate.RydbergStateSQDTAlkalineFJ.html" class="btn btn-neutral float-right" title="RydbergStateSQDTAlkalineFJ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, RydState Developers.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

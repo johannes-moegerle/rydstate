@@ -1,0 +1,58 @@
+﻿utils
+=====
+Full module path: rydstate.angular.utils
+
+.. workaround to ignore generic classes like AtomSQDT[int]
+
+
+   
+      
+   
+
+
+.. currentmodule:: rydstate.angular.utils
+
+
+
+
+.. rubric:: Functions
+
+.. autosummary::
+   :toctree: .
+   
+      check_spin_addition_rule
+      get_possible_quantum_number_values
+      is_angular_momentum_quantum_number
+      is_angular_operator_type
+      is_not_set
+      minus_one_pow
+      quantum_numbers_to_angular_ket
+      try_trivial_spin_addition
+
+
+
+.. rubric:: Classes
+
+.. .. inheritance-diagram:: rydstate.angular.utils
+..     :parts: 1
+
+.. autosummary::
+   :toctree: .
+   
+      NotSet
+
+
+
+.. rubric:: Exceptions
+
+.. autosummary::
+   :toctree: .
+   
+      InvalidQuantumNumbersError
+
+
+
+
+.. rubric:: Module description
+
+.. automodule:: rydstate.angular.utils

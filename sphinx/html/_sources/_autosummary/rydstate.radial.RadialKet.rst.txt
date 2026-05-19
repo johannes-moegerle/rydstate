@@ -1,0 +1,36 @@
+﻿RadialKet
+=========
+
+.. currentmodule:: rydstate.radial
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~RadialKet.__init__
+      ~RadialKet.calc_matrix_element
+      ~RadialKet.calc_overlap
+      ~RadialKet.create_grid
+      ~RadialKet.create_model
+      ~RadialKet.create_wavefunction
+      ~RadialKet.set_n_for_sanity_check
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~RadialKet.grid
+   ~RadialKet.model
+   ~RadialKet.wavefunction
+
+
+
+.. autoclass:: rydstate.radial.RadialKet
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

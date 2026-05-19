@@ -1,0 +1,400 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BasisSQDTAlkalineJJ &mdash; RydState 0.10.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=82662543"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="BasisSQDTAlkalineFJ" href="rydstate.BasisSQDTAlkalineFJ.html" />
+    <link rel="prev" title="BasisSQDTAlkalineLS" href="rydstate.BasisSQDTAlkalineLS.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            RydState
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api_reference.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="rydstate.RydbergStateSQDT.html">RydbergStateSQDT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.RydbergStateSQDTAlkali.html">RydbergStateSQDTAlkali</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.RydbergStateSQDTAlkalineLS.html">RydbergStateSQDTAlkalineLS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.RydbergStateSQDTAlkalineJJ.html">RydbergStateSQDTAlkalineJJ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.RydbergStateSQDTAlkalineFJ.html">RydbergStateSQDTAlkalineFJ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.BasisSQDTAlkali.html">BasisSQDTAlkali</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.BasisSQDTAlkalineLS.html">BasisSQDTAlkalineLS</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">BasisSQDTAlkalineJJ</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rydstate.BasisSQDTAlkalineJJ"><code class="docutils literal notranslate"><span class="pre">BasisSQDTAlkalineJJ</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rydstate.BasisSQDTAlkalineJJ.states"><code class="docutils literal notranslate"><span class="pre">BasisSQDTAlkalineJJ.states</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rydstate.BasisSQDTAlkalineJJ.calc_exp_qn"><code class="docutils literal notranslate"><span class="pre">BasisSQDTAlkalineJJ.calc_exp_qn()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rydstate.BasisSQDTAlkalineJJ.calc_reduced_matrix_element"><code class="docutils literal notranslate"><span class="pre">BasisSQDTAlkalineJJ.calc_reduced_matrix_element()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rydstate.BasisSQDTAlkalineJJ.calc_reduced_matrix_elements"><code class="docutils literal notranslate"><span class="pre">BasisSQDTAlkalineJJ.calc_reduced_matrix_elements()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rydstate.BasisSQDTAlkalineJJ.calc_reduced_overlap"><code class="docutils literal notranslate"><span class="pre">BasisSQDTAlkalineJJ.calc_reduced_overlap()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rydstate.BasisSQDTAlkalineJJ.calc_reduced_overlaps"><code class="docutils literal notranslate"><span class="pre">BasisSQDTAlkalineJJ.calc_reduced_overlaps()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rydstate.BasisSQDTAlkalineJJ.calc_std_qn"><code class="docutils literal notranslate"><span class="pre">BasisSQDTAlkalineJJ.calc_std_qn()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rydstate.BasisSQDTAlkalineJJ.copy"><code class="docutils literal notranslate"><span class="pre">BasisSQDTAlkalineJJ.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rydstate.BasisSQDTAlkalineJJ.filter_states"><code class="docutils literal notranslate"><span class="pre">BasisSQDTAlkalineJJ.filter_states()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rydstate.BasisSQDTAlkalineJJ.sort_states"><code class="docutils literal notranslate"><span class="pre">BasisSQDTAlkalineJJ.sort_states()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.BasisSQDTAlkalineFJ.html">BasisSQDTAlkalineFJ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.angular.AngularKetLS.html">AngularKetLS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.angular.AngularKetJJ.html">AngularKetJJ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.angular.AngularKetFJ.html">AngularKetFJ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.angular.AngularState.html">AngularState</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.angular.utils.html">utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.radial.RadialKet.html">RadialKet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.radial.Wavefunction.html">Wavefunction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.radial.Model.html">Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.radial.numerov.html">numerov</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.species.SpeciesObjectSQDT.html">SpeciesObjectSQDT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.species.HydrogenTextBook.html">HydrogenTextBook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.species.Hydrogen.html">Hydrogen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.species.Lithium.html">Lithium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.species.Sodium.html">Sodium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.species.Potassium.html">Potassium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.species.Rubidium.html">Rubidium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.species.Cesium.html">Cesium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.species.Strontium87.html">Strontium87</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.species.Strontium88.html">Strontium88</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.species.Ytterbium171.html">Ytterbium171</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.species.Ytterbium173.html">Ytterbium173</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rydstate.species.Ytterbium174.html">Ytterbium174</a></li>
+</ul>
+</li>
+</ul>
+
+<style>
+a.gitbutton {
+  display: block;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #fff;
+  padding-top: 10px;
+  padding-left: 85px;
+  padding-right: 0px;
+  margin: 22px;
+  width: 240px;
+  height: 60px;
+  background: transparent url("../_static/buttons/github.svg") 0 0 no-repeat;
+}
+a.gitbutton small {
+  display: block;
+  font-size: 11px;
+}
+button.toctree-expand {
+  display: none;
+}
+</style>
+<a href="https://github.com/pairinteraction/rydstate" class="gitbutton">Explore<small>the GitHub repository</small></a>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RydState</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api_reference.html">API Reference</a></li>
+      <li class="breadcrumb-item active">BasisSQDTAlkalineJJ</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_autosummary/rydstate.BasisSQDTAlkalineJJ.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="basissqdtalkalinejj">
+<h1>BasisSQDTAlkalineJJ<a class="headerlink" href="#basissqdtalkalinejj" title="Link to this heading"></a></h1>
+<p class="rubric">Class Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(species, n[, m])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.BasisSQDTAlkalineJJ.calc_exp_qn" title="rydstate.BasisSQDTAlkalineJJ.calc_exp_qn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_exp_qn</span></code></a>(qn)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.BasisSQDTAlkalineJJ.calc_reduced_matrix_element" title="rydstate.BasisSQDTAlkalineJJ.calc_reduced_matrix_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_reduced_matrix_element</span></code></a>(other, operator)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.BasisSQDTAlkalineJJ.calc_reduced_matrix_elements" title="rydstate.BasisSQDTAlkalineJJ.calc_reduced_matrix_elements"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_reduced_matrix_elements</span></code></a>(other, operator)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.BasisSQDTAlkalineJJ.calc_reduced_overlap" title="rydstate.BasisSQDTAlkalineJJ.calc_reduced_overlap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_reduced_overlap</span></code></a>(other)</p></td>
+<td><p>Calculate the reduced overlap &lt;self|other&gt; (ignoring the magnetic quantum number m).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.BasisSQDTAlkalineJJ.calc_reduced_overlaps" title="rydstate.BasisSQDTAlkalineJJ.calc_reduced_overlaps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_reduced_overlaps</span></code></a>(other)</p></td>
+<td><p>Calculate the reduced overlap &lt;bra|ket&gt; for all states in the bases self and other.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.BasisSQDTAlkalineJJ.calc_std_qn" title="rydstate.BasisSQDTAlkalineJJ.calc_std_qn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_std_qn</span></code></a>(qn)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.BasisSQDTAlkalineJJ.copy" title="rydstate.BasisSQDTAlkalineJJ.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.BasisSQDTAlkalineJJ.filter_states" title="rydstate.BasisSQDTAlkalineJJ.filter_states"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter_states</span></code></a>(qn, value, *[, delta])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.BasisSQDTAlkalineJJ.sort_states" title="rydstate.BasisSQDTAlkalineJJ.sort_states"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort_states</span></code></a>(*qns)</p></td>
+<td><p>Sort the basis states according to the given quantum numbers.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Class Attributes and Properties</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.BasisSQDTAlkalineJJ.states" title="rydstate.BasisSQDTAlkalineJJ.states"><code class="xref py py-obj docutils literal notranslate"><span class="pre">states</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="rydstate.BasisSQDTAlkalineJJ">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">rydstate.</span></span><span class="sig-name descname"><span class="pre">BasisSQDTAlkalineJJ</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">species</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;class</span> <span class="pre">'rydstate.angular.utils.NotSet'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rydstate/basis/basis_sqdt.html#BasisSQDTAlkalineJJ"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rydstate.BasisSQDTAlkalineJJ" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>species</strong> (<em>str</em><em> | </em><a class="reference internal" href="rydstate.species.SpeciesObjectSQDT.html#rydstate.species.SpeciesObjectSQDT" title="rydstate.species.SpeciesObjectSQDT"><em>SpeciesObjectSQDT</em></a>)</p></li>
+<li><p><strong>n</strong> (<em>tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>)</p></li>
+<li><p><strong>m</strong> (<em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>] </em><em>| </em><em>None</em><em> | </em><a class="reference internal" href="rydstate.angular.utils.NotSet.html#rydstate.angular.utils.NotSet" title="rydstate.angular.utils.NotSet"><em>NotSet</em></a>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.BasisSQDTAlkalineJJ.states">
+<span class="sig-name descname"><span class="pre">states</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">_RydbergState</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#rydstate.BasisSQDTAlkalineJJ.states" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.BasisSQDTAlkalineJJ.calc_exp_qn">
+<span class="sig-name descname"><span class="pre">calc_exp_qn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.BasisSQDTAlkalineJJ.calc_exp_qn" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">dtype</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>qn</strong> (<em>str</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.BasisSQDTAlkalineJJ.calc_reduced_matrix_element">
+<span class="sig-name descname"><span class="pre">calc_reduced_matrix_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.BasisSQDTAlkalineJJ.calc_reduced_matrix_element" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Overloads<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong>, <strong>other</strong> (<span class="sphinx_autodoc_typehints-type">RydbergStateBase</span>), <strong>operator</strong> (<span class="sphinx_autodoc_typehints-type">MatrixElementOperator</span>), <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">None</span>) → <span class="sphinx_autodoc_typehints-type">PintArray</span></p></li>
+<li><p><strong>self</strong>, <strong>other</strong> (<span class="sphinx_autodoc_typehints-type">RydbergStateBase</span>), <strong>operator</strong> (<span class="sphinx_autodoc_typehints-type">MatrixElementOperator</span>), <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">str</span>) → <span class="sphinx_autodoc_typehints-type">NDArray</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>other</strong> (<em>RydbergStateBase</em>)</p></li>
+<li><p><strong>operator</strong> (<em>Literal</em><em>[</em><em>'magnetic_dipole'</em><em>, </em><em>'electric_dipole'</em><em>, </em><em>'electric_quadrupole'</em><em>, </em><em>'electric_octupole'</em><em>, </em><em>'electric_quadrupole_zero'</em><em>]</em>)</p></li>
+<li><p><strong>unit</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>PlainQuantity</em>[<em>ndarray</em>[tuple[<em>Any</em>, …], <em>dtype</em>[<em>Any</em>]]] | <em>ndarray</em>[tuple[<em>Any</em>, …], <em>dtype</em>[<em>Any</em>]]</p>
+</dd>
+</dl>
+<p>Calculate the reduced matrix element.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.BasisSQDTAlkalineJJ.calc_reduced_matrix_elements">
+<span class="sig-name descname"><span class="pre">calc_reduced_matrix_elements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.BasisSQDTAlkalineJJ.calc_reduced_matrix_elements" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Overloads<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong>, <strong>other</strong> (<span class="sphinx_autodoc_typehints-type">BasisBase[Any]</span>), <strong>operator</strong> (<span class="sphinx_autodoc_typehints-type">MatrixElementOperator</span>), <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">None</span>) → <span class="sphinx_autodoc_typehints-type">PintArray</span></p></li>
+<li><p><strong>self</strong>, <strong>other</strong> (<span class="sphinx_autodoc_typehints-type">BasisBase[Any]</span>), <strong>operator</strong> (<span class="sphinx_autodoc_typehints-type">MatrixElementOperator</span>), <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">str</span>) → <span class="sphinx_autodoc_typehints-type">NDArray</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>other</strong> (<em>BasisBase</em><em>[</em><em>Any</em><em>]</em>)</p></li>
+<li><p><strong>operator</strong> (<em>Literal</em><em>[</em><em>'magnetic_dipole'</em><em>, </em><em>'electric_dipole'</em><em>, </em><em>'electric_quadrupole'</em><em>, </em><em>'electric_octupole'</em><em>, </em><em>'electric_quadrupole_zero'</em><em>]</em>)</p></li>
+<li><p><strong>unit</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>PlainQuantity</em>[<em>ndarray</em>[tuple[<em>Any</em>, …], <em>dtype</em>[<em>Any</em>]]] | <em>ndarray</em>[tuple[<em>Any</em>, …], <em>dtype</em>[<em>Any</em>]]</p>
+</dd>
+</dl>
+<p>Calculate the reduced matrix element.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.BasisSQDTAlkalineJJ.calc_reduced_overlap">
+<span class="sig-name descname"><span class="pre">calc_reduced_overlap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.BasisSQDTAlkalineJJ.calc_reduced_overlap" title="Link to this definition"></a></dt>
+<dd><p>Calculate the reduced overlap &lt;self|other&gt; (ignoring the magnetic quantum number m).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">dtype</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>other</strong> (<em>RydbergStateBase</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.BasisSQDTAlkalineJJ.calc_reduced_overlaps">
+<span class="sig-name descname"><span class="pre">calc_reduced_overlaps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.BasisSQDTAlkalineJJ.calc_reduced_overlaps" title="Link to this definition"></a></dt>
+<dd><p>Calculate the reduced overlap &lt;bra|ket&gt; for all states in the bases self and other.</p>
+<p>Returns a numpy array overlaps, where overlaps[i,j] corresponds to the overlap of the
+i-th state of self and the j-th state of other.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">dtype</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>other</strong> (<em>BasisBase</em><em>[</em><em>Any</em><em>]</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.BasisSQDTAlkalineJJ.calc_std_qn">
+<span class="sig-name descname"><span class="pre">calc_std_qn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.BasisSQDTAlkalineJJ.calc_std_qn" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">dtype</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>qn</strong> (<em>str</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.BasisSQDTAlkalineJJ.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.BasisSQDTAlkalineJJ.copy" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Self</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.BasisSQDTAlkalineJJ.filter_states">
+<span class="sig-name descname"><span class="pre">filter_states</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.BasisSQDTAlkalineJJ.filter_states" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Overloads<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong>, <strong>qn</strong> (<span class="sphinx_autodoc_typehints-type">str</span>), <strong>value</strong> (<span class="sphinx_autodoc_typehints-type">tuple[float, float]</span>), <strong>delta</strong> (<span class="sphinx_autodoc_typehints-type">float</span>) → <span class="sphinx_autodoc_typehints-type">Self</span></p></li>
+<li><p><strong>self</strong>, <strong>qn</strong> (<span class="sphinx_autodoc_typehints-type">str</span>), <strong>value</strong> (<span class="sphinx_autodoc_typehints-type">float</span>), <strong>delta</strong> (<span class="sphinx_autodoc_typehints-type">float</span>) → <span class="sphinx_autodoc_typehints-type">Self</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>qn</strong> (<em>str</em>)</p></li>
+<li><p><strong>value</strong> (<em>float</em><em> | </em><em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>)</p></li>
+<li><p><strong>delta</strong> (<em>float</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Self</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.BasisSQDTAlkalineJJ.sort_states">
+<span class="sig-name descname"><span class="pre">sort_states</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">qns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.BasisSQDTAlkalineJJ.sort_states" title="Link to this definition"></a></dt>
+<dd><p>Sort the basis states according to the given quantum numbers.</p>
+<p>The first quantum number given is the primary sorting key, the second quantum number
+is the secondary sorting key, and so on.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Self</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>qns</strong> (<em>str</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rydstate.BasisSQDTAlkalineLS.html" class="btn btn-neutral float-left" title="BasisSQDTAlkalineLS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rydstate.BasisSQDTAlkalineFJ.html" class="btn btn-neutral float-right" title="BasisSQDTAlkalineFJ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, RydState Developers.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,340 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rydstate.angular.utils &mdash; RydState 0.10.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=82662543"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            RydState
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_reference.html">API Reference</a></li>
+</ul>
+
+<style>
+a.gitbutton {
+  display: block;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #fff;
+  padding-top: 10px;
+  padding-left: 85px;
+  padding-right: 0px;
+  margin: 22px;
+  width: 240px;
+  height: 60px;
+  background: transparent url("../../../_static/buttons/github.svg") 0 0 no-repeat;
+}
+a.gitbutton small {
+  display: block;
+  font-size: 11px;
+}
+button.toctree-expand {
+  display: none;
+}
+</style>
+<a href="https://github.com/pairinteraction/rydstate" class="gitbutton">Explore<small>the GitHub repository</small></a>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">RydState</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">rydstate.angular.utils</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for rydstate.angular.utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">contextlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">t</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">TypeGuard</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">get_args</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ParamSpec</span><span class="p">,</span> <span class="n">TypeIs</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.angular.angular_ket</span><span class="w"> </span><span class="kn">import</span> <span class="n">AngularKetBase</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.species.species_object</span><span class="w"> </span><span class="kn">import</span> <span class="n">SpeciesObject</span>
+
+    <span class="n">P</span> <span class="o">=</span> <span class="n">ParamSpec</span><span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;R&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Callable</span><span class="p">[</span><span class="n">P</span><span class="p">,</span> <span class="n">R</span><span class="p">]],</span> <span class="n">Callable</span><span class="p">[</span><span class="n">P</span><span class="p">,</span> <span class="n">R</span><span class="p">]]:</span> <span class="o">...</span>  <span class="c1"># type: ignore [no-redef]</span>
+
+
+<span class="n">CouplingScheme</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;LS&quot;</span><span class="p">,</span> <span class="s2">&quot;JJ&quot;</span><span class="p">,</span> <span class="s2">&quot;FJ&quot;</span><span class="p">]</span>
+
+
+<span class="n">AngularMomentumQuantumNumbers</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span>
+    <span class="s2">&quot;i_c&quot;</span><span class="p">,</span> <span class="s2">&quot;s_c&quot;</span><span class="p">,</span> <span class="s2">&quot;l_c&quot;</span><span class="p">,</span> <span class="s2">&quot;s_r&quot;</span><span class="p">,</span> <span class="s2">&quot;l_r&quot;</span><span class="p">,</span> <span class="s2">&quot;s_tot&quot;</span><span class="p">,</span> <span class="s2">&quot;l_tot&quot;</span><span class="p">,</span> <span class="s2">&quot;j_c&quot;</span><span class="p">,</span> <span class="s2">&quot;j_r&quot;</span><span class="p">,</span> <span class="s2">&quot;j_tot&quot;</span><span class="p">,</span> <span class="s2">&quot;f_c&quot;</span><span class="p">,</span> <span class="s2">&quot;f_tot&quot;</span>
+<span class="p">]</span>
+
+<span class="n">IdentityOperators</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span>
+    <span class="s2">&quot;identity_i_c&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;identity_s_c&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;identity_l_c&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;identity_s_r&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;identity_l_r&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;identity_s_tot&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;identity_l_tot&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;identity_j_c&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;identity_j_r&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;identity_j_tot&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;identity_f_c&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;identity_f_tot&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">AngularOperatorType</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span>
+    <span class="s2">&quot;spherical&quot;</span><span class="p">,</span>
+    <span class="n">AngularMomentumQuantumNumbers</span><span class="p">,</span>
+    <span class="n">IdentityOperators</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="NotSet">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.angular.utils.NotSet.html#rydstate.angular.utils.NotSet">[docs]</a>
+<span class="nd">@t</span><span class="o">.</span><span class="n">runtime_checkable</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">NotSet</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">Protocol</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Singleton for a not set value and type at the same time.</span>
+
+<span class="sd">    See Also:</span>
+<span class="sd">    https://stackoverflow.com/questions/77571796/how-to-create-singleton-object-which-could-be-used-both-as-type-and-value-simi</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__not_set</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span> <span class="o">...</span></div>
+
+
+
+<div class="viewcode-block" id="InvalidQuantumNumbersError">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.angular.utils.InvalidQuantumNumbersError.html#rydstate.angular.utils.InvalidQuantumNumbersError">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">InvalidQuantumNumbersError</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ket</span><span class="p">:</span> <span class="n">AngularKetBase</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Invalid quantum numbers for </span><span class="si">{</span><span class="n">ket</span><span class="si">!r}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">_msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">_msg</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="is_angular_momentum_quantum_number">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.angular.utils.is_angular_momentum_quantum_number.html#rydstate.angular.utils.is_angular_momentum_quantum_number">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_angular_momentum_quantum_number</span><span class="p">(</span><span class="n">qn</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TypeGuard</span><span class="p">[</span><span class="n">AngularMomentumQuantumNumbers</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if the given string is an AngularMomentumQuantumNumbers.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">qn</span> <span class="ow">in</span> <span class="n">get_args</span><span class="p">(</span><span class="n">AngularMomentumQuantumNumbers</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="is_angular_operator_type">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.angular.utils.is_angular_operator_type.html#rydstate.angular.utils.is_angular_operator_type">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_angular_operator_type</span><span class="p">(</span><span class="n">qn</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TypeGuard</span><span class="p">[</span><span class="n">AngularOperatorType</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if the given string is an AngularOperatorType.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">qn</span> <span class="ow">in</span> <span class="n">get_args</span><span class="p">(</span><span class="n">AngularOperatorType</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="is_not_set">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.angular.utils.is_not_set.html#rydstate.angular.utils.is_not_set">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_not_set</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TypeIs</span><span class="p">[</span><span class="n">NotSet</span><span class="p">]:</span>  <span class="c1"># noqa: ANN401</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if the obj is the NotSet singleton.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">obj</span> <span class="ow">is</span> <span class="n">NotSet</span></div>
+
+
+
+<div class="viewcode-block" id="minus_one_pow">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.angular.utils.minus_one_pow.html#rydstate.angular.utils.minus_one_pow">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">minus_one_pow</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate (-1)^n for an integer n and raise an error if n is not an integer.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;minus_one_pow: Invalid input </span><span class="si">{</span><span class="n">n</span><span class="si">=}</span><span class="s2"> is not an integer.&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="try_trivial_spin_addition">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.angular.utils.try_trivial_spin_addition.html#rydstate.angular.utils.try_trivial_spin_addition">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">try_trivial_spin_addition</span><span class="p">(</span><span class="n">s_1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">s_2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">s_tot</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Try to determine s_tot from s_1 and s_2 if it is not given.</span>
+
+<span class="sd">    If s_tot is None and cannot be uniquely determined from s_1 and s_2, raise an error.</span>
+<span class="sd">    Otherwise return s_tot or the trivial sum s_1 + s_2.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">s_tot</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">s_1</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">s_2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must be set if both parts (</span><span class="si">{</span><span class="n">s_1</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">s_2</span><span class="si">}</span><span class="s2">) are non-zero.&quot;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">s_tot</span> <span class="o">=</span> <span class="n">s_1</span> <span class="o">+</span> <span class="n">s_2</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">s_tot</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="check_spin_addition_rule">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.angular.utils.check_spin_addition_rule.html#rydstate.angular.utils.check_spin_addition_rule">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_spin_addition_rule</span><span class="p">(</span><span class="n">s_1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">s_2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">s_tot</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Check if the spin addition rule is satisfied.</span>
+
+<span class="sd">    This means check the following conditions:</span>
+<span class="sd">    :math:`|s_1 - s_2| \leq s_{tot} \leq s_1 + s_2`</span>
+<span class="sd">    and</span>
+<span class="sd">    :math:`s_1 + s_2 + s_{tot}` is an integer</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">s_1</span> <span class="o">-</span> <span class="n">s_2</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">s_tot</span> <span class="o">&lt;=</span> <span class="n">s_1</span> <span class="o">+</span> <span class="n">s_2</span> <span class="ow">and</span> <span class="p">(</span><span class="n">s_1</span> <span class="o">+</span> <span class="n">s_2</span> <span class="o">+</span> <span class="n">s_tot</span><span class="p">)</span> <span class="o">%</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">0</span></div>
+
+
+
+<div class="viewcode-block" id="get_possible_quantum_number_values">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.angular.utils.get_possible_quantum_number_values.html#rydstate.angular.utils.get_possible_quantum_number_values">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_possible_quantum_number_values</span><span class="p">(</span><span class="n">s_1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">s_2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">s_tot</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Determine a list of possible s_tot values from s_1 and s_2 if s_tot is not given, else return [s_tot].&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">s_tot</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">s_tot</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">s_1</span> <span class="o">-</span> <span class="n">s_2</span><span class="p">),</span> <span class="n">s_1</span> <span class="o">+</span> <span class="n">s_2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span></div>
+
+
+
+<div class="viewcode-block" id="quantum_numbers_to_angular_ket">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.angular.utils.quantum_numbers_to_angular_ket.html#rydstate.angular.utils.quantum_numbers_to_angular_ket">[docs]</a>
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1_000</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">quantum_numbers_to_angular_ket</span><span class="p">(</span>
+    <span class="n">species</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">SpeciesObject</span><span class="p">,</span>
+    <span class="n">s_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">l_c</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">j_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">f_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">s_r</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">l_r</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">j_r</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">s_tot</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">l_tot</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">j_tot</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">f_tot</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">m</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">NotSet</span> <span class="o">=</span> <span class="n">NotSet</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AngularKetBase</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Return an AngularKet object in the corresponding coupling scheme from the given quantum numbers.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        species: Atomic species.</span>
+<span class="sd">        s_c: Spin quantum number of the core electron (0 for Alkali, 0.5 for divalent atoms).</span>
+<span class="sd">        l_c: Orbital angular momentum quantum number of the core electron.</span>
+<span class="sd">        j_c: Total angular momentum quantum number of the core electron.</span>
+<span class="sd">        f_c: Total angular momentum quantum number of the core (core electron + nucleus).</span>
+<span class="sd">        s_r: Spin quantum number of the rydberg electron (always 0.5).</span>
+<span class="sd">        l_r: Orbital angular momentum quantum number of the rydberg electron.</span>
+<span class="sd">        j_r: Total angular momentum quantum number of the rydberg electron.</span>
+<span class="sd">        s_tot: Total spin quantum number of all electrons.</span>
+<span class="sd">        l_tot: Total orbital angular momentum quantum number of all electrons.</span>
+<span class="sd">        j_tot: Total angular momentum quantum number of all electrons.</span>
+<span class="sd">        f_tot: Total angular momentum quantum number of the atom (rydberg electron + core).</span>
+<span class="sd">        m: Total magnetic quantum number.</span>
+<span class="sd">          Optional, only needed for concrete angular matrix elements.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.angular.angular_ket</span><span class="w"> </span><span class="kn">import</span> <span class="n">AngularKetFJ</span><span class="p">,</span> <span class="n">AngularKetJJ</span><span class="p">,</span> <span class="n">AngularKetLS</span>  <span class="c1"># noqa: PLC0415</span>
+
+    <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">suppress</span><span class="p">(</span><span class="n">InvalidQuantumNumbersError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">AngularKetLS</span><span class="p">(</span>
+            <span class="n">s_c</span><span class="o">=</span><span class="n">s_c</span><span class="p">,</span> <span class="n">l_c</span><span class="o">=</span><span class="n">l_c</span><span class="p">,</span> <span class="n">s_r</span><span class="o">=</span><span class="n">s_r</span><span class="p">,</span> <span class="n">l_r</span><span class="o">=</span><span class="n">l_r</span><span class="p">,</span> <span class="n">s_tot</span><span class="o">=</span><span class="n">s_tot</span><span class="p">,</span> <span class="n">l_tot</span><span class="o">=</span><span class="n">l_tot</span><span class="p">,</span> <span class="n">j_tot</span><span class="o">=</span><span class="n">j_tot</span><span class="p">,</span> <span class="n">f_tot</span><span class="o">=</span><span class="n">f_tot</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">species</span><span class="o">=</span><span class="n">species</span>
+        <span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">suppress</span><span class="p">(</span><span class="n">InvalidQuantumNumbersError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">AngularKetJJ</span><span class="p">(</span>
+            <span class="n">s_c</span><span class="o">=</span><span class="n">s_c</span><span class="p">,</span> <span class="n">l_c</span><span class="o">=</span><span class="n">l_c</span><span class="p">,</span> <span class="n">j_c</span><span class="o">=</span><span class="n">j_c</span><span class="p">,</span> <span class="n">s_r</span><span class="o">=</span><span class="n">s_r</span><span class="p">,</span> <span class="n">l_r</span><span class="o">=</span><span class="n">l_r</span><span class="p">,</span> <span class="n">j_r</span><span class="o">=</span><span class="n">j_r</span><span class="p">,</span> <span class="n">j_tot</span><span class="o">=</span><span class="n">j_tot</span><span class="p">,</span> <span class="n">f_tot</span><span class="o">=</span><span class="n">f_tot</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">species</span><span class="o">=</span><span class="n">species</span>
+        <span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">suppress</span><span class="p">(</span><span class="n">InvalidQuantumNumbersError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">AngularKetFJ</span><span class="p">(</span>
+            <span class="n">s_c</span><span class="o">=</span><span class="n">s_c</span><span class="p">,</span> <span class="n">l_c</span><span class="o">=</span><span class="n">l_c</span><span class="p">,</span> <span class="n">j_c</span><span class="o">=</span><span class="n">j_c</span><span class="p">,</span> <span class="n">f_c</span><span class="o">=</span><span class="n">f_c</span><span class="p">,</span> <span class="n">s_r</span><span class="o">=</span><span class="n">s_r</span><span class="p">,</span> <span class="n">l_r</span><span class="o">=</span><span class="n">l_r</span><span class="p">,</span> <span class="n">j_r</span><span class="o">=</span><span class="n">j_r</span><span class="p">,</span> <span class="n">f_tot</span><span class="o">=</span><span class="n">f_tot</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">species</span><span class="o">=</span><span class="n">species</span>
+        <span class="p">)</span>
+
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid combination of angular quantum numbers provided.&quot;</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, RydState Developers.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

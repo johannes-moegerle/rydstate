@@ -1,0 +1,6 @@
+try\_trivial\_spin\_addition
+============================
+
+.. currentmodule:: rydstate.angular.utils
+
+.. autofunction:: try_trivial_spin_addition

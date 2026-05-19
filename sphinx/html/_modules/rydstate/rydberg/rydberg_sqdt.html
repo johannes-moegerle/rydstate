@@ -1,0 +1,893 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rydstate.rydberg.rydberg_sqdt &mdash; RydState 0.10.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=82662543"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            RydState
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_reference.html">API Reference</a></li>
+</ul>
+
+<style>
+a.gitbutton {
+  display: block;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #fff;
+  padding-top: 10px;
+  padding-left: 85px;
+  padding-right: 0px;
+  margin: 22px;
+  width: 240px;
+  height: 60px;
+  background: transparent url("../../../_static/buttons/github.svg") 0 0 no-repeat;
+}
+a.gitbutton small {
+  display: block;
+  font-size: 11px;
+}
+button.toctree-expand {
+  display: none;
+}
+</style>
+<a href="https://github.com/pairinteraction/rydstate" class="gitbutton">Explore<small>the GitHub repository</small></a>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">RydState</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">rydstate.rydberg.rydberg_sqdt</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for rydstate.rydberg.rydberg_sqdt</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cached_property</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">overload</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="kn">import</span> <span class="n">exprel</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.angular</span><span class="w"> </span><span class="kn">import</span> <span class="n">NotSet</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.angular.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_not_set</span><span class="p">,</span> <span class="n">quantum_numbers_to_angular_ket</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.radial</span><span class="w"> </span><span class="kn">import</span> <span class="n">RadialKet</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.rydberg.rydberg_base</span><span class="w"> </span><span class="kn">import</span> <span class="n">RydbergStateBase</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.species</span><span class="w"> </span><span class="kn">import</span> <span class="n">SpeciesObjectSQDT</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.species.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">calc_energy_from_nu</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseQuantities</span><span class="p">,</span> <span class="n">MatrixElementOperatorRanks</span><span class="p">,</span> <span class="n">ureg</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">Self</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.angular.angular_ket</span><span class="w"> </span><span class="kn">import</span> <span class="n">AngularKetBase</span><span class="p">,</span> <span class="n">AngularKetFJ</span><span class="p">,</span> <span class="n">AngularKetJJ</span><span class="p">,</span> <span class="n">AngularKetLS</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">MatrixElementOperator</span><span class="p">,</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">PintArray</span><span class="p">,</span> <span class="n">PintFloat</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="RydbergStateSQDT">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.RydbergStateSQDT.html#rydstate.RydbergStateSQDT">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RydbergStateSQDT</span><span class="p">(</span><span class="n">RydbergStateBase</span><span class="p">):</span>
+    <span class="n">species</span><span class="p">:</span> <span class="n">SpeciesObjectSQDT</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The atomic species of the Rydberg state.&quot;&quot;&quot;</span>
+
+    <span class="n">angular</span><span class="p">:</span> <span class="n">AngularKetBase</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The angular/spin part of the Rydberg electron.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">species</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">SpeciesObjectSQDT</span><span class="p">,</span>
+        <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">nu</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">s_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">l_c</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">j_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">f_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">s_r</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">l_r</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">j_r</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">s_tot</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">l_tot</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">j_tot</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">f_tot</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">m</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">NotSet</span> <span class="o">=</span> <span class="n">NotSet</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Initialize the Rydberg state.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            species: Atomic species.</span>
+<span class="sd">            n: Principal quantum number of the rydberg electron.</span>
+<span class="sd">            nu: Effective principal quantum number of the rydberg electron.</span>
+<span class="sd">              Optional, if not given it will be calculated from n, l, j_tot, s_tot.</span>
+<span class="sd">            s_c: Spin quantum number of the core electron (0 for Alkali, 0.5 for divalent atoms).</span>
+<span class="sd">            l_c: Orbital angular momentum quantum number of the core electron.</span>
+<span class="sd">            j_c: Total angular momentum quantum number of the core electron.</span>
+<span class="sd">            f_c: Total angular momentum quantum number of the core (core electron + nucleus).</span>
+<span class="sd">            s_r: Spin quantum number of the rydberg electron always 0.5)</span>
+<span class="sd">            l_r: Orbital angular momentum quantum number of the rydberg electron.</span>
+<span class="sd">            j_r: Total angular momentum quantum number of the rydberg electron.</span>
+<span class="sd">            s_tot: Total spin quantum number of all electrons.</span>
+<span class="sd">            l_tot: Total orbital angular momentum quantum number of all electrons.</span>
+<span class="sd">            j_tot: Total angular momentum quantum number of all electrons.</span>
+<span class="sd">            f_tot: Total angular momentum quantum number of the atom (rydberg electron + core)</span>
+<span class="sd">            m: Total magnetic quantum number.</span>
+<span class="sd">                Optional, only needed for concrete angular matrix elements.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">species</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">species</span> <span class="o">=</span> <span class="n">SpeciesObjectSQDT</span><span class="o">.</span><span class="n">from_name</span><span class="p">(</span><span class="n">species</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">species</span> <span class="o">=</span> <span class="n">species</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">angular</span> <span class="o">=</span> <span class="n">quantum_numbers_to_angular_ket</span><span class="p">(</span>
+            <span class="n">species</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="p">,</span>
+            <span class="n">s_c</span><span class="o">=</span><span class="n">s_c</span><span class="p">,</span>
+            <span class="n">l_c</span><span class="o">=</span><span class="n">l_c</span><span class="p">,</span>
+            <span class="n">j_c</span><span class="o">=</span><span class="n">j_c</span><span class="p">,</span>
+            <span class="n">f_c</span><span class="o">=</span><span class="n">f_c</span><span class="p">,</span>
+            <span class="n">s_r</span><span class="o">=</span><span class="n">s_r</span><span class="p">,</span>
+            <span class="n">l_r</span><span class="o">=</span><span class="n">l_r</span><span class="p">,</span>
+            <span class="n">j_r</span><span class="o">=</span><span class="n">j_r</span><span class="p">,</span>
+            <span class="n">s_tot</span><span class="o">=</span><span class="n">s_tot</span><span class="p">,</span>
+            <span class="n">l_tot</span><span class="o">=</span><span class="n">l_tot</span><span class="p">,</span>
+            <span class="n">j_tot</span><span class="o">=</span><span class="n">j_tot</span><span class="p">,</span>
+            <span class="n">f_tot</span><span class="o">=</span><span class="n">f_tot</span><span class="p">,</span>
+            <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span>  <span class="c1"># type: ignore [arg-type]</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nu</span> <span class="o">=</span> <span class="n">nu</span>
+        <span class="k">if</span> <span class="n">nu</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">n</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Either n or nu must be given to initialize the Rydberg state.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_qn_as_attributes</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_qn_as_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="RydbergStateSQDT.from_angular_ket">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.RydbergStateSQDT.html#rydstate.RydbergStateSQDT.from_angular_ket">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_angular_ket</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Self</span><span class="p">],</span>
+        <span class="n">species</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">SpeciesObjectSQDT</span><span class="p">,</span>
+        <span class="n">angular_ket</span><span class="p">:</span> <span class="n">AngularKetBase</span><span class="p">,</span>
+        <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">nu</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the Rydberg state from an angular ket.&quot;&quot;&quot;</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">species</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">species</span> <span class="o">=</span> <span class="n">SpeciesObjectSQDT</span><span class="o">.</span><span class="n">from_name</span><span class="p">(</span><span class="n">species</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">species</span> <span class="o">=</span> <span class="n">species</span>
+
+        <span class="n">obj</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">_nu</span> <span class="o">=</span> <span class="n">nu</span>  <span class="c1"># noqa: SLF001</span>
+        <span class="k">if</span> <span class="n">nu</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">n</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Either n or nu must be given to initialize the Rydberg state.&quot;</span><span class="p">)</span>
+
+        <span class="n">obj</span><span class="o">.</span><span class="n">angular</span> <span class="o">=</span> <span class="n">angular_ket</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">_set_qn_as_attributes</span><span class="p">()</span>  <span class="c1"># noqa: SLF001</span>
+
+        <span class="k">return</span> <span class="n">obj</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">species</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">nu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu</span>
+        <span class="n">n_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;, </span><span class="si">{</span><span class="n">n</span><span class="si">=}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">species</span><span class="si">}{</span><span class="n">n_str</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">nu</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">radial</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RadialKet</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The radial part of the Rydberg electron.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;l_r&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">quantum_number_names</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;l_r must be defined in the angular ket to access the radial ket, but angular=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">radial_ket</span> <span class="o">=</span> <span class="n">RadialKet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">nu</span><span class="p">,</span> <span class="n">l_r</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">l_r</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">radial_ket</span><span class="o">.</span><span class="n">set_n_for_sanity_check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="p">,</span> <span class="n">SpeciesObjectSQDT</span><span class="p">):</span>
+                <span class="n">s_tot_list</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">get_qn</span><span class="p">(</span><span class="s2">&quot;s_tot&quot;</span><span class="p">)]</span> <span class="k">if</span> <span class="s2">&quot;s_tot&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">quantum_number_names</span> <span class="k">else</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">s_tot</span> <span class="ow">in</span> <span class="n">s_tot_list</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="o">.</span><span class="n">is_allowed_shell</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">l_r</span><span class="p">,</span> <span class="n">s_tot</span><span class="o">=</span><span class="n">s_tot</span><span class="p">):</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;The shell (n=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="si">}</span><span class="s2">, l_r=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">l_r</span><span class="si">}</span><span class="s2">, s_tot=</span><span class="si">{</span><span class="n">s_tot</span><span class="si">}</span><span class="s2">) &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;is not allowed for the species </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="si">}</span><span class="s2">.&quot;</span>
+                        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">radial_ket</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">nu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The effective principal quantum number nu (for alkali atoms also known as n*) for the Rydberg state.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nu</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nu</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="p">,</span> <span class="n">SpeciesObjectSQDT</span><span class="p">),</span> <span class="s2">&quot;nu must be given if not sqdt&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;either nu or n must be given&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="o">.</span><span class="n">calc_nu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">nu_ref</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu</span>
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PintFloat</span><span class="p">:</span> <span class="o">...</span>
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span> <span class="o">...</span>
+
+<div class="viewcode-block" id="RydbergStateSQDT.get_energy">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.RydbergStateSQDT.html#rydstate.RydbergStateSQDT.get_energy">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PintFloat</span> <span class="o">|</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Get the energy of the Rydberg state.</span>
+
+<span class="sd">        The energy is defined as</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            E = - \frac{1}{2} \frac{\mu}{\nu^2}</span>
+
+<span class="sd">        where `\mu = R_M/R_\infty` is the reduced mass and `\nu` the effective principal quantum number.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">energy_au</span> <span class="o">=</span> <span class="n">calc_energy_from_nu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="o">.</span><span class="n">reduced_mass_au</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s2">&quot;a.u.&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">energy_au</span>
+        <span class="n">energy</span><span class="p">:</span> <span class="n">PintFloat</span> <span class="o">=</span> <span class="n">energy_au</span> <span class="o">*</span> <span class="n">BaseQuantities</span><span class="p">[</span><span class="s2">&quot;energy&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">unit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">energy</span>
+        <span class="k">return</span> <span class="n">energy</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit</span><span class="p">,</span> <span class="s2">&quot;spectroscopy&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span></div>
+
+
+<div class="viewcode-block" id="RydbergStateSQDT.calc_reduced_overlap">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.RydbergStateSQDT.html#rydstate.RydbergStateSQDT.calc_reduced_overlap">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_reduced_overlap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">RydbergStateBase</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the reduced overlap &lt;self|other&gt; (ignoring the magnetic quantum number m).&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">RydbergStateSQDT</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Reduced overlap only implemented between RydbergStateSQDT states.&quot;</span><span class="p">)</span>
+
+        <span class="n">radial_overlap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">radial</span><span class="o">.</span><span class="n">calc_overlap</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">radial</span><span class="p">)</span>
+        <span class="n">angular_overlap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">calc_reduced_overlap</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">angular</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">radial_overlap</span> <span class="o">*</span> <span class="n">angular_overlap</span></div>
+
+
+    <span class="nd">@overload</span>  <span class="c1"># type: ignore [override]</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_reduced_matrix_element</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">RydbergStateBase</span><span class="p">,</span> <span class="n">operator</span><span class="p">:</span> <span class="n">MatrixElementOperator</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PintFloat</span><span class="p">:</span> <span class="o">...</span>
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_reduced_matrix_element</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">RydbergStateBase</span><span class="p">,</span> <span class="n">operator</span><span class="p">:</span> <span class="n">MatrixElementOperator</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span> <span class="o">...</span>
+
+<div class="viewcode-block" id="RydbergStateSQDT.calc_reduced_matrix_element">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.RydbergStateSQDT.html#rydstate.RydbergStateSQDT.calc_reduced_matrix_element">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_reduced_matrix_element</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">RydbergStateBase</span><span class="p">,</span> <span class="n">operator</span><span class="p">:</span> <span class="n">MatrixElementOperator</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PintFloat</span> <span class="o">|</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the reduced matrix element.</span>
+
+<span class="sd">        Calculate the reduced matrix element between self and other (ignoring m quantum numbers)</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \left\langle self || r^k_radial \hat{O}_{k_angular} || other \right\rangle</span>
+
+<span class="sd">        where \hat{O}_{k_angular} is the operator of rank k_angular for which to calculate the matrix element.</span>
+<span class="sd">        k_radial and k_angular are determined from the operator automatically.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            other: The other Rydberg state for which to calculate the matrix element.</span>
+<span class="sd">            operator: The operator for which to calculate the matrix element.</span>
+<span class="sd">            unit: The unit to which to convert the radial matrix element.</span>
+<span class="sd">                Can be &quot;a.u.&quot; for atomic units (so no conversion is done), or a specific unit.</span>
+<span class="sd">                Default None will return a pint quantity.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The reduced matrix element for the given operator.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">RydbergStateSQDT</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Reduced matrix element only implemented between RydbergStateSQDT states.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">operator</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">MatrixElementOperatorRanks</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Operator </span><span class="si">{</span><span class="n">operator</span><span class="si">}</span><span class="s2"> not supported, must be one of </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">MatrixElementOperatorRanks</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">k_radial</span><span class="p">,</span> <span class="n">k_angular</span> <span class="o">=</span> <span class="n">MatrixElementOperatorRanks</span><span class="p">[</span><span class="n">operator</span><span class="p">]</span>
+        <span class="n">radial_matrix_element</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">radial</span><span class="o">.</span><span class="n">calc_matrix_element</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">radial</span><span class="p">,</span> <span class="n">k_radial</span><span class="p">)</span>
+
+        <span class="n">matrix_element</span><span class="p">:</span> <span class="n">PintFloat</span>
+        <span class="k">if</span> <span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;magnetic_dipole&quot;</span><span class="p">:</span>
+            <span class="c1"># Magnetic dipole operator: mu = - mu_B (g_l &lt;l_tot&gt; + g_s &lt;s_tot&gt;)</span>
+            <span class="n">g_s</span> <span class="o">=</span> <span class="mf">2.0023192</span>
+            <span class="n">value_s_tot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">calc_reduced_matrix_element</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">angular</span><span class="p">,</span> <span class="s2">&quot;s_tot&quot;</span><span class="p">,</span> <span class="n">k_angular</span><span class="p">)</span>
+            <span class="n">g_l</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">value_l_tot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">calc_reduced_matrix_element</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">angular</span><span class="p">,</span> <span class="s2">&quot;l_tot&quot;</span><span class="p">,</span> <span class="n">k_angular</span><span class="p">)</span>
+            <span class="n">angular_matrix_element</span> <span class="o">=</span> <span class="n">g_s</span> <span class="o">*</span> <span class="n">value_s_tot</span> <span class="o">+</span> <span class="n">g_l</span> <span class="o">*</span> <span class="n">value_l_tot</span>
+
+            <span class="n">matrix_element</span> <span class="o">=</span> <span class="o">-</span><span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;bohr_magneton&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">radial_matrix_element</span> <span class="o">*</span> <span class="n">angular_matrix_element</span>
+            <span class="c1"># Note: we use the convention, that the magnetic dipole moments are given</span>
+            <span class="c1"># as the same dimensionality as the Bohr magneton (mu = - mu_B (g_l l + g_s s_tot))</span>
+            <span class="c1"># such that - mu * B (where the magnetic field B is given in dimension Tesla) is an energy</span>
+
+        <span class="k">elif</span> <span class="n">operator</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;electric_dipole&quot;</span><span class="p">,</span> <span class="s2">&quot;electric_quadrupole&quot;</span><span class="p">,</span> <span class="s2">&quot;electric_octupole&quot;</span><span class="p">,</span> <span class="s2">&quot;electric_quadrupole_zero&quot;</span><span class="p">]:</span>
+            <span class="c1"># Electric multipole operator: p_{k,q} = e r^k_radial * sqrt(4pi / (2k+1)) * Y_{k_angular,q}(\theta, phi)</span>
+            <span class="n">angular_matrix_element</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">calc_reduced_matrix_element</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">angular</span><span class="p">,</span> <span class="s2">&quot;spherical&quot;</span><span class="p">,</span> <span class="n">k_angular</span><span class="p">)</span>
+            <span class="n">matrix_element</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;e&quot;</span><span class="p">)</span>
+                <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">k_angular</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+                <span class="o">*</span> <span class="n">radial_matrix_element</span>
+                <span class="o">*</span> <span class="n">angular_matrix_element</span>
+            <span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Operator </span><span class="si">{</span><span class="n">operator</span><span class="si">}</span><span class="s2"> not implemented.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s2">&quot;a.u.&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">matrix_element</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span>
+        <span class="k">if</span> <span class="n">unit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">matrix_element</span>
+        <span class="k">return</span> <span class="n">matrix_element</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span></div>
+
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_matrix_element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">RydbergStateSQDT</span><span class="p">,</span> <span class="n">operator</span><span class="p">:</span> <span class="n">MatrixElementOperator</span><span class="p">,</span> <span class="n">q</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PintFloat</span><span class="p">:</span> <span class="o">...</span>
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_matrix_element</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">RydbergStateSQDT</span><span class="p">,</span> <span class="n">operator</span><span class="p">:</span> <span class="n">MatrixElementOperator</span><span class="p">,</span> <span class="n">q</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span> <span class="o">...</span>
+
+<div class="viewcode-block" id="RydbergStateSQDT.calc_matrix_element">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.RydbergStateSQDT.html#rydstate.RydbergStateSQDT.calc_matrix_element">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_matrix_element</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">RydbergStateSQDT</span><span class="p">,</span> <span class="n">operator</span><span class="p">:</span> <span class="n">MatrixElementOperator</span><span class="p">,</span> <span class="n">q</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PintFloat</span> <span class="o">|</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the matrix element.</span>
+
+<span class="sd">        Calculate the full matrix element between self and other,</span>
+<span class="sd">        also considering the magnetic quantum numbers m of self and other.</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \left\langle self || r^k_radial \hat{O}_{k_angular} || other \right\rangle</span>
+
+<span class="sd">        where \hat{O}_{k_angular} is the operator of rank k_angular for which to calculate the matrix element.</span>
+<span class="sd">        k_radial and k_angular are determined from the operator automatically.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            other: The other Rydberg state for which to calculate the matrix element.</span>
+<span class="sd">            operator: The operator for which to calculate the matrix element.</span>
+<span class="sd">            q: The component of the operator.</span>
+<span class="sd">            unit: The unit to which to convert the radial matrix element.</span>
+<span class="sd">                Can be &quot;a.u.&quot; for atomic units (so no conversion is done), or a specific unit.</span>
+<span class="sd">                Default None will return a pint quantity.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The matrix element for the given operator.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_k_radial</span><span class="p">,</span> <span class="n">k_angular</span> <span class="o">=</span> <span class="n">MatrixElementOperatorRanks</span><span class="p">[</span><span class="n">operator</span><span class="p">]</span>
+        <span class="n">prefactor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">_calc_wigner_eckart_prefactor</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">angular</span><span class="p">,</span> <span class="n">k_angular</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>  <span class="c1"># noqa: SLF001</span>
+        <span class="n">reduced_matrix_element</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calc_reduced_matrix_element</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">operator</span><span class="p">,</span> <span class="n">unit</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">prefactor</span> <span class="o">*</span> <span class="n">reduced_matrix_element</span></div>
+
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_spontaneous_transition_rates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">RydbergStateSQDT</span><span class="p">],</span> <span class="n">PintArray</span><span class="p">]:</span> <span class="o">...</span>
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_spontaneous_transition_rates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">RydbergStateSQDT</span><span class="p">],</span> <span class="n">NDArray</span><span class="p">]:</span> <span class="o">...</span>
+
+<div class="viewcode-block" id="RydbergStateSQDT.get_spontaneous_transition_rates">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.RydbergStateSQDT.html#rydstate.RydbergStateSQDT.get_spontaneous_transition_rates">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_spontaneous_transition_rates</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">RydbergStateSQDT</span><span class="p">],</span> <span class="n">NDArray</span> <span class="o">|</span> <span class="n">PintArray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the spontaneous transition rates for the Rydberg state.</span>
+
+<span class="sd">        The spontaneous transition rates are given by the Einstein A coefficients.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            unit: The unit to which to convert the result.</span>
+<span class="sd">                Default None will return a `pint.Quantity`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The relevant states and the transition rates.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">relevant_states_masked</span><span class="p">,</span> <span class="n">transition_rates_au</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_transition_rates_au</span><span class="p">(</span><span class="n">only_spontaneous</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s2">&quot;a.u.&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">relevant_states_masked</span><span class="p">,</span> <span class="n">transition_rates_au</span>
+        <span class="n">transition_rates</span> <span class="o">=</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">transition_rates_au</span><span class="p">,</span> <span class="s2">&quot;1/atomic_unit_of_time&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">unit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">relevant_states_masked</span><span class="p">,</span> <span class="n">transition_rates</span>
+        <span class="k">return</span> <span class="n">relevant_states_masked</span><span class="p">,</span> <span class="n">transition_rates</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span></div>
+
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_black_body_transition_rates</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">PintFloat</span><span class="p">,</span> <span class="n">temperature_unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">RydbergStateSQDT</span><span class="p">],</span> <span class="n">PintArray</span><span class="p">]:</span> <span class="o">...</span>
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_black_body_transition_rates</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">temperature</span><span class="p">:</span> <span class="n">PintFloat</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">RydbergStateSQDT</span><span class="p">],</span> <span class="n">NDArray</span><span class="p">]:</span> <span class="o">...</span>
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_black_body_transition_rates</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">temperature_unit</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">RydbergStateSQDT</span><span class="p">],</span> <span class="n">NDArray</span><span class="p">]:</span> <span class="o">...</span>
+
+<div class="viewcode-block" id="RydbergStateSQDT.get_black_body_transition_rates">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.RydbergStateSQDT.html#rydstate.RydbergStateSQDT.get_black_body_transition_rates">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_black_body_transition_rates</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">PintFloat</span><span class="p">,</span> <span class="n">temperature_unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">RydbergStateSQDT</span><span class="p">],</span> <span class="n">NDArray</span> <span class="o">|</span> <span class="n">PintArray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the black body transition rates of the Rydberg state.</span>
+
+<span class="sd">        The black body transition rates are given by the Einstein B coefficients,</span>
+<span class="sd">        with a weight factor given by Planck&#39;s law.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            temperature: The temperature, for which to calculate the black body transition rates.</span>
+<span class="sd">            temperature_unit: The unit of the temperature.</span>
+<span class="sd">                Default None will assume the temperature is given as `pint.Quantity`.</span>
+<span class="sd">            unit: The unit to which to convert the result.</span>
+<span class="sd">                Default None will return a `pint.Quantity`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The relevant states and the transition rates.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">temperature_au</span> <span class="o">=</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">temperature_unit</span><span class="p">)</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span>
+        <span class="n">relevant_states_masked</span><span class="p">,</span> <span class="n">transition_rates_au</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_transition_rates_au</span><span class="p">(</span>
+            <span class="n">temperature_au</span><span class="p">,</span> <span class="n">only_spontaneous</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s2">&quot;a.u.&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">relevant_states_masked</span><span class="p">,</span> <span class="n">transition_rates_au</span>
+        <span class="n">transition_rates</span> <span class="o">=</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">transition_rates_au</span><span class="p">,</span> <span class="s2">&quot;1/atomic_unit_of_time&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">unit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">relevant_states_masked</span><span class="p">,</span> <span class="n">transition_rates</span>
+        <span class="k">return</span> <span class="n">relevant_states_masked</span><span class="p">,</span> <span class="n">transition_rates</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_transition_rates_au</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">temperature_au</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">only_spontaneous</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">RydbergStateSQDT</span><span class="p">],</span> <span class="n">NDArray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the transition rates in atomic units.</span>
+
+<span class="sd">        The transition rates are given by the Einstein A coefficients for spontaneous transitions,</span>
+<span class="sd">        and by the Einstein B coefficients with a weight factor given by Planck&#39;s law for black body transitions.</span>
+
+<span class="sd">        Concretely the transition rates are calculated as</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \Gamma^{spontaneous}_{self \to other} = \frac{4}{3} \frac{\alpha}{c^2} \omega^3</span>
+<span class="sd">                |\langle self || r^k_radial \hat{O}_{k_angular} || other \rangle|^2</span>
+
+<span class="sd">        where :math:`\alpha = 1/c` in atomic units.</span>
+
+<span class="sd">        and</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \Gamma^{blackbody}_{self \to other} = \Gamma^{spontaneous}_{self \to other} \frac{1}{\exp(\omega / T) - 1}</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="o">.</span><span class="n">number_valence_electrons</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">coupling_scheme</span> <span class="o">!=</span> <span class="s2">&quot;LS&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="s2">&quot;For alkaline earth atoms transition rates are only implemented for LS coupling scheme.&quot;</span>
+            <span class="p">)</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.basis</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasisSQDTAlkali</span><span class="p">,</span> <span class="n">BasisSQDTAlkalineLS</span>  <span class="c1"># noqa: PLC0415</span>
+
+        <span class="n">basis_class</span> <span class="o">=</span> <span class="n">BasisSQDTAlkali</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="o">.</span><span class="n">number_valence_electrons</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">BasisSQDTAlkalineLS</span>
+
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">m</span>
+        <span class="k">if</span> <span class="n">is_not_set</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;m quantum number must be defined to calculate transition rates.&quot;</span><span class="p">)</span>
+
+        <span class="n">basis</span> <span class="o">=</span> <span class="n">basis_class</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nu</span> <span class="o">+</span> <span class="mi">35</span><span class="p">)),</span> <span class="n">m</span><span class="o">=</span><span class="p">(</span><span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">basis</span><span class="o">.</span><span class="n">filter_states</span><span class="p">(</span><span class="s2">&quot;l_r&quot;</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">l_r</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">l_r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">only_spontaneous</span><span class="p">:</span>
+            <span class="n">basis</span><span class="o">.</span><span class="n">filter_states</span><span class="p">(</span><span class="s2">&quot;nu&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu</span><span class="p">))</span>
+
+        <span class="n">relevant_states</span> <span class="o">=</span> <span class="n">basis</span><span class="o">.</span><span class="n">states</span>
+        <span class="n">energy_differences_au</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_energy</span><span class="p">(</span><span class="s2">&quot;hartree&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">get_energy</span><span class="p">(</span><span class="s2">&quot;hartree&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">relevant_states</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">electric_dipole_moments_au</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">relevant_states</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]:</span>
+            <span class="n">el_di_m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">calc_matrix_element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;electric_dipole&quot;</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;a.u.&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">relevant_states</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">electric_dipole_moments_au</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">el_di_m</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+
+        <span class="n">transition_rates_au</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="mi">4</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">electric_dipole_moments_au</span> <span class="o">/</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;speed_of_light&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">**</span> <span class="mi">3</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">only_spontaneous</span><span class="p">:</span>
+            <span class="n">transition_rates_au</span> <span class="o">*=</span> <span class="n">energy_differences_au</span><span class="o">**</span><span class="mi">3</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">temperature_au</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Temperature must be given for black body transitions.&quot;</span>
+            <span class="k">if</span> <span class="n">temperature_au</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">transition_rates_au</span> <span class="o">*=</span> <span class="mi">0</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c1"># for numerical stability we use 1 / exprel(x) = x / (exp(x) - 1)</span>
+                <span class="n">transition_rates_au</span> <span class="o">*=</span> <span class="p">(</span>
+                    <span class="n">energy_differences_au</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">temperature_au</span> <span class="o">/</span> <span class="n">exprel</span><span class="p">(</span><span class="n">energy_differences_au</span> <span class="o">/</span> <span class="n">temperature_au</span><span class="p">)</span>
+                <span class="p">)</span>
+
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">transition_rates_au</span> <span class="o">!=</span> <span class="mi">0</span>
+        <span class="n">relevant_states_masked</span> <span class="o">=</span> <span class="p">[</span><span class="n">ket</span> <span class="k">for</span> <span class="n">ket</span><span class="p">,</span> <span class="n">is_relevant</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">relevant_states</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">if</span> <span class="n">is_relevant</span><span class="p">]</span>
+        <span class="n">transition_rates_au</span> <span class="o">=</span> <span class="n">transition_rates_au</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">transition_rates_au</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Got negative transition rates, which should not happen.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">relevant_states_masked</span><span class="p">,</span> <span class="n">transition_rates_au</span>
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_lifetime</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">PintFloat</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">temperature_unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">unit</span><span class="p">:</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PintFloat</span><span class="p">:</span> <span class="o">...</span>
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_lifetime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span> <span class="o">...</span>
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_lifetime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">temperature</span><span class="p">:</span> <span class="n">PintFloat</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span> <span class="o">...</span>
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_lifetime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">temperature_unit</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span> <span class="o">...</span>
+
+<div class="viewcode-block" id="RydbergStateSQDT.get_lifetime">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.RydbergStateSQDT.html#rydstate.RydbergStateSQDT.get_lifetime">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_lifetime</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">PintFloat</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">temperature_unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">PintFloat</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the lifetime of the Rydberg state.</span>
+
+<span class="sd">        The lifetime is the inverse of the sum of all transition rates.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            temperature: The temperature, for which to calculate the black body transition rates.</span>
+<span class="sd">                Default None will not include black body transitions.</span>
+<span class="sd">            temperature_unit: The unit of the temperature.</span>
+<span class="sd">                Default None will assume the temperature is given as `pint.Quantity`.</span>
+<span class="sd">            unit: The unit to which to convert the result.</span>
+<span class="sd">                Default None will return a `pint.Quantity`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The lifetime of the state.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">transition_rates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_spontaneous_transition_rates</span><span class="p">()</span>
+        <span class="n">transition_rates_au</span> <span class="o">=</span> <span class="n">transition_rates</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span>
+        <span class="k">if</span> <span class="n">temperature</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">black_body_transition_rates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_black_body_transition_rates</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">temperature_unit</span><span class="p">)</span>
+            <span class="n">transition_rates_au</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">transition_rates_au</span><span class="p">,</span> <span class="n">black_body_transition_rates</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
+
+        <span class="n">lifetime_au</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">transition_rates_au</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s2">&quot;a.u.&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">lifetime_au</span>
+        <span class="n">lifetime</span> <span class="o">=</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">lifetime_au</span><span class="p">,</span> <span class="s2">&quot;atomic_unit_of_time&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">unit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">lifetime</span>
+        <span class="k">return</span> <span class="n">lifetime</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="RydbergStateSQDTAlkali">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.RydbergStateSQDTAlkali.html#rydstate.RydbergStateSQDTAlkali">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RydbergStateSQDTAlkali</span><span class="p">(</span><span class="n">RydbergStateSQDT</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an Alkali Rydberg state, including the radial and angular states.&quot;&quot;&quot;</span>
+
+    <span class="n">angular</span><span class="p">:</span> <span class="n">AngularKetLS</span>
+    <span class="n">n</span><span class="p">:</span> <span class="nb">int</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">species</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">SpeciesObjectSQDT</span><span class="p">,</span>
+        <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">l</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">j</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">f</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">m</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">NotSet</span> <span class="o">=</span> <span class="n">NotSet</span><span class="p">,</span>
+        <span class="n">nu</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Initialize the Rydberg state.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            species: Atomic species.</span>
+<span class="sd">            n: Principal quantum number of the rydberg electron.</span>
+<span class="sd">            l: Orbital angular momentum quantum number of the rydberg electron.</span>
+<span class="sd">            j: Angular momentum quantum number of the rydberg electron.</span>
+<span class="sd">            f: Total angular momentum quantum number of the atom (rydberg electron + core)</span>
+<span class="sd">              Optional, only needed if the species supports hyperfine structure</span>
+<span class="sd">              (i.e. species.i_c is not None and species.i_c != 0).</span>
+<span class="sd">            m: Total magnetic quantum number.</span>
+<span class="sd">              Optional, only needed for concrete angular matrix elements.</span>
+<span class="sd">            nu: Effective principal quantum number of the rydberg electron.</span>
+<span class="sd">              Optional, if not given it will be calculated from n, l, j.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">species</span><span class="o">=</span><span class="n">species</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="n">nu</span><span class="p">,</span> <span class="n">l_r</span><span class="o">=</span><span class="n">l</span><span class="p">,</span> <span class="n">j_tot</span><span class="o">=</span><span class="n">j</span><span class="p">,</span> <span class="n">f_tot</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_qn_as_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">l_r</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">j</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">j_tot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">f_tot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">m</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">species</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">nu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu</span>
+        <span class="n">l</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">j</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span>
+        <span class="n">n_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;, </span><span class="si">{</span><span class="n">n</span><span class="si">=}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">f_string</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;, </span><span class="si">{</span><span class="n">f</span><span class="si">=}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="o">.</span><span class="n">i_c_number</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">species</span><span class="si">}{</span><span class="n">n_str</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">nu</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">l</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">j</span><span class="si">=}{</span><span class="n">f_string</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">m</span><span class="si">=}</span><span class="s2">)&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="RydbergStateSQDTAlkalineLS">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.RydbergStateSQDTAlkalineLS.html#rydstate.RydbergStateSQDTAlkalineLS">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RydbergStateSQDTAlkalineLS</span><span class="p">(</span><span class="n">RydbergStateSQDT</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an Alkaline Rydberg state, including the radial and angular states.&quot;&quot;&quot;</span>
+
+    <span class="n">angular</span><span class="p">:</span> <span class="n">AngularKetLS</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">species</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">SpeciesObjectSQDT</span><span class="p">,</span>
+        <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">l</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">s_tot</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">j_tot</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">f_tot</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">m</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">NotSet</span> <span class="o">=</span> <span class="n">NotSet</span><span class="p">,</span>
+        <span class="n">nu</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Initialize the Rydberg state.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            species: Atomic species.</span>
+<span class="sd">            n: Principal quantum number of the rydberg electron.</span>
+<span class="sd">            l: Orbital angular momentum quantum number of the rydberg electron.</span>
+<span class="sd">            s_tot: Total spin quantum number of all electrons.</span>
+<span class="sd">            j_tot: Total angular momentum quantum number of all electrons.</span>
+<span class="sd">            f_tot: Total angular momentum quantum number of the atom (rydberg electron + core)</span>
+<span class="sd">              Optional, only needed if the species supports hyperfine structure</span>
+<span class="sd">              (i.e. species.i_c is not None and species.i_c != 0).</span>
+<span class="sd">            m: Total magnetic quantum number.</span>
+<span class="sd">              Optional, only needed for concrete angular matrix elements.</span>
+<span class="sd">            nu: Effective principal quantum number of the rydberg electron.</span>
+<span class="sd">              Optional, if not given it will be calculated from n, l, j_tot, s_tot.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">species</span><span class="o">=</span><span class="n">species</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="n">nu</span><span class="p">,</span> <span class="n">l_r</span><span class="o">=</span><span class="n">l</span><span class="p">,</span> <span class="n">s_tot</span><span class="o">=</span><span class="n">s_tot</span><span class="p">,</span> <span class="n">j_tot</span><span class="o">=</span><span class="n">j_tot</span><span class="p">,</span> <span class="n">f_tot</span><span class="o">=</span><span class="n">f_tot</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_qn_as_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">l_r</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s_tot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">s_tot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">j_tot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">j_tot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f_tot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">f_tot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">m</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">species</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">nu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu</span>
+        <span class="n">l</span><span class="p">,</span> <span class="n">s_tot</span><span class="p">,</span> <span class="n">j_tot</span><span class="p">,</span> <span class="n">f_tot</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_tot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">j_tot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_tot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span>
+        <span class="n">n_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;, </span><span class="si">{</span><span class="n">n</span><span class="si">=}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">species</span><span class="si">}{</span><span class="n">n_str</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">nu</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">l</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">s_tot</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">j_tot</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">f_tot</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">m</span><span class="si">=}</span><span class="s2">)&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="RydbergStateSQDTAlkalineJJ">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.RydbergStateSQDTAlkalineJJ.html#rydstate.RydbergStateSQDTAlkalineJJ">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RydbergStateSQDTAlkalineJJ</span><span class="p">(</span><span class="n">RydbergStateSQDT</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an Alkaline Rydberg state, including the radial and angular states.&quot;&quot;&quot;</span>
+
+    <span class="n">angular</span><span class="p">:</span> <span class="n">AngularKetJJ</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">species</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">SpeciesObjectSQDT</span><span class="p">,</span>
+        <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">l</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">j_r</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">j_tot</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">f_tot</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">m</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">NotSet</span> <span class="o">=</span> <span class="n">NotSet</span><span class="p">,</span>
+        <span class="n">nu</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Initialize the Rydberg state.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            species: Atomic species.</span>
+<span class="sd">            n: Principal quantum number of the rydberg electron.</span>
+<span class="sd">            l: Orbital angular momentum quantum number of the rydberg electron.</span>
+<span class="sd">            j_r: Total angular momentum quantum number of the Rydberg electron.</span>
+<span class="sd">            j_tot: Total angular momentum quantum number of all electrons.</span>
+<span class="sd">            f_tot: Total angular momentum quantum number of the atom (rydberg electron + core)</span>
+<span class="sd">              Optional, only needed if the species supports hyperfine structure</span>
+<span class="sd">              (i.e. species.i_c is not None and species.i_c != 0).</span>
+<span class="sd">            m: Total magnetic quantum number.</span>
+<span class="sd">              Optional, only needed for concrete angular matrix elements.</span>
+<span class="sd">            nu: Effective principal quantum number of the rydberg electron.</span>
+<span class="sd">              Optional, if not given it will be calculated from n, l, j_tot.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">species</span><span class="o">=</span><span class="n">species</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="n">nu</span><span class="p">,</span> <span class="n">l_r</span><span class="o">=</span><span class="n">l</span><span class="p">,</span> <span class="n">j_r</span><span class="o">=</span><span class="n">j_r</span><span class="p">,</span> <span class="n">j_tot</span><span class="o">=</span><span class="n">j_tot</span><span class="p">,</span> <span class="n">f_tot</span><span class="o">=</span><span class="n">f_tot</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_qn_as_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">l_r</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">j_r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">j_r</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">j_tot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">j_tot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f_tot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">f_tot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">m</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">species</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">nu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu</span>
+        <span class="n">l</span><span class="p">,</span> <span class="n">j_r</span><span class="p">,</span> <span class="n">j_tot</span><span class="p">,</span> <span class="n">f_tot</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">j_r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">j_tot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_tot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span>
+        <span class="n">n_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;, </span><span class="si">{</span><span class="n">n</span><span class="si">=}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">species</span><span class="si">}{</span><span class="n">n_str</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">nu</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">l</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">j_r</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">j_tot</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">f_tot</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">m</span><span class="si">=}</span><span class="s2">)&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="RydbergStateSQDTAlkalineFJ">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.RydbergStateSQDTAlkalineFJ.html#rydstate.RydbergStateSQDTAlkalineFJ">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RydbergStateSQDTAlkalineFJ</span><span class="p">(</span><span class="n">RydbergStateSQDT</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an Alkaline Rydberg state, including the radial and angular states.&quot;&quot;&quot;</span>
+
+    <span class="n">angular</span><span class="p">:</span> <span class="n">AngularKetFJ</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">species</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">SpeciesObjectSQDT</span><span class="p">,</span>
+        <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">l</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">j_r</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">f_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">f_tot</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">m</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">NotSet</span> <span class="o">=</span> <span class="n">NotSet</span><span class="p">,</span>
+        <span class="n">nu</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Initialize the Rydberg state.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            species: Atomic species.</span>
+<span class="sd">            n: Principal quantum number of the rydberg electron.</span>
+<span class="sd">            l: Orbital angular momentum quantum number of the rydberg electron.</span>
+<span class="sd">            j_r: Total angular momentum quantum number of the Rydberg electron.</span>
+<span class="sd">            f_c: Total angular momentum quantum number of the core (core electron + nucleus).</span>
+<span class="sd">            f_tot: Total angular momentum quantum number of the atom (rydberg electron + core)</span>
+<span class="sd">              Optional, only needed if the species supports hyperfine structure</span>
+<span class="sd">              (i.e. species.i_c is not None and species.i_c != 0).</span>
+<span class="sd">            m: Total magnetic quantum number.</span>
+<span class="sd">              Optional, only needed for concrete angular matrix elements.</span>
+<span class="sd">            nu: Effective principal quantum number of the rydberg electron.</span>
+<span class="sd">              Optional, if not given it will be calculated from n, l.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">species</span><span class="o">=</span><span class="n">species</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="n">nu</span><span class="p">,</span> <span class="n">l_r</span><span class="o">=</span><span class="n">l</span><span class="p">,</span> <span class="n">j_r</span><span class="o">=</span><span class="n">j_r</span><span class="p">,</span> <span class="n">f_c</span><span class="o">=</span><span class="n">f_c</span><span class="p">,</span> <span class="n">f_tot</span><span class="o">=</span><span class="n">f_tot</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_qn_as_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">l_r</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">j_r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">j_r</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f_c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">f_c</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f_tot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">f_tot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">m</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">species</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">nu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu</span>
+        <span class="n">l</span><span class="p">,</span> <span class="n">j_r</span><span class="p">,</span> <span class="n">f_c</span><span class="p">,</span> <span class="n">f_tot</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">j_r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_tot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span>
+        <span class="n">l_c</span><span class="p">,</span> <span class="n">j_c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">l_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">j_c</span>
+        <span class="n">core_string</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;, </span><span class="si">{</span><span class="n">l_c</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">j_c</span><span class="si">=}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">l_c</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">n_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;, </span><span class="si">{</span><span class="n">n</span><span class="si">=}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">species</span><span class="si">}{</span><span class="n">n_str</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">nu</span><span class="si">=}{</span><span class="n">core_string</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">l</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">j_r</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">f_c</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">f_tot</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">m</span><span class="si">=}</span><span class="s2">)&quot;</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, RydState Developers.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

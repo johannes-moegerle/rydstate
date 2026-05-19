@@ -1,0 +1,6 @@
+is\_angular\_momentum\_quantum\_number
+======================================
+
+.. currentmodule:: rydstate.angular.utils
+
+.. autofunction:: is_angular_momentum_quantum_number

@@ -1,0 +1,292 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Reference &mdash; RydState 0.10.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=82662543"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="RydbergStateSQDT" href="_autosummary/rydstate.RydbergStateSQDT.html" />
+    <link rel="prev" title="Benchmark of Numerov integration with and without using numba.njit" href="examples/benchmark/benchmark_njit.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            RydState
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.RydbergStateSQDT.html">RydbergStateSQDT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.RydbergStateSQDTAlkali.html">RydbergStateSQDTAlkali</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.RydbergStateSQDTAlkalineLS.html">RydbergStateSQDTAlkalineLS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.RydbergStateSQDTAlkalineJJ.html">RydbergStateSQDTAlkalineJJ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.RydbergStateSQDTAlkalineFJ.html">RydbergStateSQDTAlkalineFJ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.BasisSQDTAlkali.html">BasisSQDTAlkali</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.BasisSQDTAlkalineLS.html">BasisSQDTAlkalineLS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.BasisSQDTAlkalineJJ.html">BasisSQDTAlkalineJJ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.BasisSQDTAlkalineFJ.html">BasisSQDTAlkalineFJ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.angular.AngularKetLS.html">AngularKetLS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.angular.AngularKetJJ.html">AngularKetJJ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.angular.AngularKetFJ.html">AngularKetFJ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.angular.AngularState.html">AngularState</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.angular.utils.html">utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.radial.RadialKet.html">RadialKet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.radial.Wavefunction.html">Wavefunction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.radial.Model.html">Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.radial.numerov.html">numerov</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.species.SpeciesObjectSQDT.html">SpeciesObjectSQDT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.species.HydrogenTextBook.html">HydrogenTextBook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.species.Hydrogen.html">Hydrogen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.species.Lithium.html">Lithium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.species.Sodium.html">Sodium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.species.Potassium.html">Potassium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.species.Rubidium.html">Rubidium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.species.Cesium.html">Cesium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.species.Strontium87.html">Strontium87</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.species.Strontium88.html">Strontium88</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.species.Ytterbium171.html">Ytterbium171</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.species.Ytterbium173.html">Ytterbium173</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/rydstate.species.Ytterbium174.html">Ytterbium174</a></li>
+</ul>
+</li>
+</ul>
+
+<style>
+a.gitbutton {
+  display: block;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #fff;
+  padding-top: 10px;
+  padding-left: 85px;
+  padding-right: 0px;
+  margin: 22px;
+  width: 240px;
+  height: 60px;
+  background: transparent url("_static/buttons/github.svg") 0 0 no-repeat;
+}
+a.gitbutton small {
+  display: block;
+  font-size: 11px;
+}
+button.toctree-expand {
+  display: none;
+}
+</style>
+<a href="https://github.com/pairinteraction/rydstate" class="gitbutton">Explore<small>the GitHub repository</small></a>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RydState</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">API Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/api_reference.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h1>
+<p>The RydState python API can be accessed via the <code class="docutils literal notranslate"><span class="pre">rydstate</span></code> module by</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">rydstate</span>
+</pre></div>
+</div>
+<p>All the available classes, methods and functions are documented below:</p>
+<p><strong>Rydberg States</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/rydstate.RydbergStateSQDT.html#rydstate.RydbergStateSQDT" title="rydstate.RydbergStateSQDT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RydbergStateSQDT</span></code></a>(species[, n, nu, s_c, l_c, ...])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/rydstate.RydbergStateSQDTAlkali.html#rydstate.RydbergStateSQDTAlkali" title="rydstate.RydbergStateSQDTAlkali"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RydbergStateSQDTAlkali</span></code></a>(species, n, l[, j, ...])</p></td>
+<td><p>Create an Alkali Rydberg state, including the radial and angular states.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/rydstate.RydbergStateSQDTAlkalineLS.html#rydstate.RydbergStateSQDTAlkalineLS" title="rydstate.RydbergStateSQDTAlkalineLS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RydbergStateSQDTAlkalineLS</span></code></a>(species, n, l, s_tot)</p></td>
+<td><p>Create an Alkaline Rydberg state, including the radial and angular states.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/rydstate.RydbergStateSQDTAlkalineJJ.html#rydstate.RydbergStateSQDTAlkalineJJ" title="rydstate.RydbergStateSQDTAlkalineJJ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RydbergStateSQDTAlkalineJJ</span></code></a>(species, n, l, j_r)</p></td>
+<td><p>Create an Alkaline Rydberg state, including the radial and angular states.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/rydstate.RydbergStateSQDTAlkalineFJ.html#rydstate.RydbergStateSQDTAlkalineFJ" title="rydstate.RydbergStateSQDTAlkalineFJ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RydbergStateSQDTAlkalineFJ</span></code></a>(species, n, l, j_r)</p></td>
+<td><p>Create an Alkaline Rydberg state, including the radial and angular states.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rydberg Basis</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/rydstate.BasisSQDTAlkali.html#rydstate.BasisSQDTAlkali" title="rydstate.BasisSQDTAlkali"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BasisSQDTAlkali</span></code></a>(species, n[, m])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/rydstate.BasisSQDTAlkalineLS.html#rydstate.BasisSQDTAlkalineLS" title="rydstate.BasisSQDTAlkalineLS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BasisSQDTAlkalineLS</span></code></a>(species, n[, m])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/rydstate.BasisSQDTAlkalineJJ.html#rydstate.BasisSQDTAlkalineJJ" title="rydstate.BasisSQDTAlkalineJJ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BasisSQDTAlkalineJJ</span></code></a>(species, n[, m])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/rydstate.BasisSQDTAlkalineFJ.html#rydstate.BasisSQDTAlkalineFJ" title="rydstate.BasisSQDTAlkalineFJ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BasisSQDTAlkalineFJ</span></code></a>(species, n[, m])</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Angular module</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/rydstate.angular.AngularKetLS.html#rydstate.angular.AngularKetLS" title="rydstate.angular.AngularKetLS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">angular.AngularKetLS</span></code></a>([i_c, s_c, l_c, s_r, ...])</p></td>
+<td><p>Spin ket in LS coupling.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/rydstate.angular.AngularKetJJ.html#rydstate.angular.AngularKetJJ" title="rydstate.angular.AngularKetJJ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">angular.AngularKetJJ</span></code></a>([i_c, s_c, l_c, s_r, ...])</p></td>
+<td><p>Spin ket in JJ coupling.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/rydstate.angular.AngularKetFJ.html#rydstate.angular.AngularKetFJ" title="rydstate.angular.AngularKetFJ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">angular.AngularKetFJ</span></code></a>([i_c, s_c, l_c, s_r, ...])</p></td>
+<td><p>Spin ket in FJ coupling.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/rydstate.angular.AngularState.html#rydstate.angular.AngularState" title="rydstate.angular.AngularState"><code class="xref py py-obj docutils literal notranslate"><span class="pre">angular.AngularState</span></code></a>(coefficients, kets, *)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/rydstate.angular.utils.html#module-rydstate.angular.utils" title="rydstate.angular.utils"><code class="xref py py-obj docutils literal notranslate"><span class="pre">angular.utils</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Radial module</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/rydstate.radial.RadialKet.html#rydstate.radial.RadialKet" title="rydstate.radial.RadialKet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">radial.RadialKet</span></code></a>(species, nu, l_r)</p></td>
+<td><p>Class representing a radial Rydberg state.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/rydstate.radial.Wavefunction.html#rydstate.radial.Wavefunction" title="rydstate.radial.Wavefunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">radial.Wavefunction</span></code></a>(radial_ket, grid)</p></td>
+<td><p>An object containing all the relevant information about the radial wavefunction.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/rydstate.radial.Model.html#rydstate.radial.Model" title="rydstate.radial.Model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">radial.Model</span></code></a>(species, l[, potential_type])</p></td>
+<td><p>Model to describe the potentials for an atomic state.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/rydstate.radial.numerov.html#module-rydstate.radial.numerov" title="rydstate.radial.numerov"><code class="xref py py-obj docutils literal notranslate"><span class="pre">radial.numerov</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Species module and parameters</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/rydstate.species.SpeciesObjectSQDT.html#rydstate.species.SpeciesObjectSQDT" title="rydstate.species.SpeciesObjectSQDT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">species.SpeciesObjectSQDT</span></code></a>()</p></td>
+<td><p>Abstract base class for all species objects.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/rydstate.species.HydrogenTextBook.html#rydstate.species.HydrogenTextBook" title="rydstate.species.HydrogenTextBook"><code class="xref py py-obj docutils literal notranslate"><span class="pre">species.HydrogenTextBook</span></code></a>()</p></td>
+<td><p>Hydrogen from QM textbook with infinite nucleus mass and no spin orbit coupling.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/rydstate.species.Hydrogen.html#rydstate.species.Hydrogen" title="rydstate.species.Hydrogen"><code class="xref py py-obj docutils literal notranslate"><span class="pre">species.Hydrogen</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/rydstate.species.Lithium.html#rydstate.species.Lithium" title="rydstate.species.Lithium"><code class="xref py py-obj docutils literal notranslate"><span class="pre">species.Lithium</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/rydstate.species.Sodium.html#rydstate.species.Sodium" title="rydstate.species.Sodium"><code class="xref py py-obj docutils literal notranslate"><span class="pre">species.Sodium</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/rydstate.species.Potassium.html#rydstate.species.Potassium" title="rydstate.species.Potassium"><code class="xref py py-obj docutils literal notranslate"><span class="pre">species.Potassium</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/rydstate.species.Rubidium.html#rydstate.species.Rubidium" title="rydstate.species.Rubidium"><code class="xref py py-obj docutils literal notranslate"><span class="pre">species.Rubidium</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/rydstate.species.Cesium.html#rydstate.species.Cesium" title="rydstate.species.Cesium"><code class="xref py py-obj docutils literal notranslate"><span class="pre">species.Cesium</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/rydstate.species.Strontium87.html#rydstate.species.Strontium87" title="rydstate.species.Strontium87"><code class="xref py py-obj docutils literal notranslate"><span class="pre">species.Strontium87</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/rydstate.species.Strontium88.html#rydstate.species.Strontium88" title="rydstate.species.Strontium88"><code class="xref py py-obj docutils literal notranslate"><span class="pre">species.Strontium88</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/rydstate.species.Ytterbium171.html#rydstate.species.Ytterbium171" title="rydstate.species.Ytterbium171"><code class="xref py py-obj docutils literal notranslate"><span class="pre">species.Ytterbium171</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/rydstate.species.Ytterbium173.html#rydstate.species.Ytterbium173" title="rydstate.species.Ytterbium173"><code class="xref py py-obj docutils literal notranslate"><span class="pre">species.Ytterbium173</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/rydstate.species.Ytterbium174.html#rydstate.species.Ytterbium174" title="rydstate.species.Ytterbium174"><code class="xref py py-obj docutils literal notranslate"><span class="pre">species.Ytterbium174</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="examples/benchmark/benchmark_njit.html" class="btn btn-neutral float-left" title="Benchmark of Numerov integration with and without using numba.njit" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="_autosummary/rydstate.RydbergStateSQDT.html" class="btn btn-neutral float-right" title="RydbergStateSQDT" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, RydState Developers.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

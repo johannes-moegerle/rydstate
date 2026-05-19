@@ -1,0 +1,31 @@
+﻿numerov
+=======
+Full module path: rydstate.radial.numerov
+
+.. workaround to ignore generic classes like AtomSQDT[int]
+
+
+
+
+.. currentmodule:: rydstate.radial.numerov
+
+
+
+
+.. rubric:: Functions
+
+.. autosummary::
+   :toctree: .
+   
+      run_numerov_integration
+
+
+
+
+
+
+
+
+.. rubric:: Module description
+
+.. automodule:: rydstate.radial.numerov

@@ -1,0 +1,40 @@
+﻿RydbergStateSQDTAlkalineLS
+==========================
+
+.. currentmodule:: rydstate
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~RydbergStateSQDTAlkalineLS.__init__
+      ~RydbergStateSQDTAlkalineLS.calc_matrix_element
+      ~RydbergStateSQDTAlkalineLS.calc_reduced_matrix_element
+      ~RydbergStateSQDTAlkalineLS.calc_reduced_overlap
+      ~RydbergStateSQDTAlkalineLS.from_angular_ket
+      ~RydbergStateSQDTAlkalineLS.get_black_body_transition_rates
+      ~RydbergStateSQDTAlkalineLS.get_energy
+      ~RydbergStateSQDTAlkalineLS.get_lifetime
+      ~RydbergStateSQDTAlkalineLS.get_spontaneous_transition_rates
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~RydbergStateSQDTAlkalineLS.nu
+   ~RydbergStateSQDTAlkalineLS.nu_ref
+   ~RydbergStateSQDTAlkalineLS.radial
+   ~RydbergStateSQDTAlkalineLS.angular
+   ~RydbergStateSQDTAlkalineLS.species
+
+
+
+.. autoclass:: rydstate.RydbergStateSQDTAlkalineLS
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

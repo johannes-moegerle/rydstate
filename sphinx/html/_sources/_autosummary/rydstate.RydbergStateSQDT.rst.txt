@@ -1,0 +1,40 @@
+﻿RydbergStateSQDT
+================
+
+.. currentmodule:: rydstate
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~RydbergStateSQDT.__init__
+      ~RydbergStateSQDT.calc_matrix_element
+      ~RydbergStateSQDT.calc_reduced_matrix_element
+      ~RydbergStateSQDT.calc_reduced_overlap
+      ~RydbergStateSQDT.from_angular_ket
+      ~RydbergStateSQDT.get_black_body_transition_rates
+      ~RydbergStateSQDT.get_energy
+      ~RydbergStateSQDT.get_lifetime
+      ~RydbergStateSQDT.get_spontaneous_transition_rates
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~RydbergStateSQDT.nu
+   ~RydbergStateSQDT.nu_ref
+   ~RydbergStateSQDT.radial
+   ~RydbergStateSQDT.species
+   ~RydbergStateSQDT.angular
+
+
+
+.. autoclass:: rydstate.RydbergStateSQDT
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

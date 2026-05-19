@@ -1,0 +1,37 @@
+﻿BasisSQDTAlkalineLS
+===================
+
+.. currentmodule:: rydstate
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~BasisSQDTAlkalineLS.__init__
+      ~BasisSQDTAlkalineLS.calc_exp_qn
+      ~BasisSQDTAlkalineLS.calc_reduced_matrix_element
+      ~BasisSQDTAlkalineLS.calc_reduced_matrix_elements
+      ~BasisSQDTAlkalineLS.calc_reduced_overlap
+      ~BasisSQDTAlkalineLS.calc_reduced_overlaps
+      ~BasisSQDTAlkalineLS.calc_std_qn
+      ~BasisSQDTAlkalineLS.copy
+      ~BasisSQDTAlkalineLS.filter_states
+      ~BasisSQDTAlkalineLS.sort_states
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~BasisSQDTAlkalineLS.states
+
+
+
+.. autoclass:: rydstate.BasisSQDTAlkalineLS
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

@@ -1,0 +1,22 @@
+NotSet
+======
+
+.. currentmodule:: rydstate.angular.utils
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~NotSet.__init__
+
+
+
+
+
+.. autoclass:: rydstate.angular.utils.NotSet
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init
