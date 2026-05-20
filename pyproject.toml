@@ -78,6 +78,9 @@ dev = [
 [project.urls]
 Repository = "https://github.com/pairinteraction/rydstate"
 
+[project.scripts]
+generate_database = "rydstate.cli:main"
+
 
 [tool.setuptools.dynamic]
 version = {attr = "rydstate.__version__"}
