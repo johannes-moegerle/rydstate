@@ -129,7 +129,7 @@ class RydbergStateSQDT(RydbergStateBase):
         return obj
 
     def __repr__(self) -> str:
-        species, n, nu = self.species.name, self.n, self.nu
+        species, n, nu = self.species.name, self._n, self.nu
         n_str = f", {n=}" if n is not None else ""
         return f"{self.__class__.__name__}({species}{n_str}, {nu=}, {self.angular})"
 
@@ -146,13 +146,13 @@ class RydbergStateSQDT(RydbergStateBase):
 
         radial_ket = RadialKet(self.species, nu=self.nu, l_r=self.angular.l_r)
         if self._n is not None:
-            radial_ket.set_n_for_sanity_check(self.n)
+            radial_ket.set_n_for_sanity_check(self._n)
             if isinstance(self.species, SpeciesObjectSQDT):
                 s_tot_list = [self.angular.get_qn("s_tot")] if "s_tot" in self.angular.quantum_number_names else [0, 1]
                 for s_tot in s_tot_list:
-                    if not self.species.is_allowed_shell(self.n, self.angular.l_r, s_tot=s_tot):
+                    if not self.species.is_allowed_shell(self._n, self.angular.l_r, s_tot=s_tot):
                         raise ValueError(
-                            f"The shell (n={self.n}, l_r={self.angular.l_r}, s_tot={s_tot}) "
+                            f"The shell (n={self._n}, l_r={self.angular.l_r}, s_tot={s_tot}) "
                             f"is not allowed for the species {self.species}."
                         )
         return radial_ket
@@ -168,7 +168,6 @@ class RydbergStateSQDT(RydbergStateBase):
         if self._nu is not None:
             return self._nu
         assert isinstance(self.species, SpeciesObjectSQDT), "nu must be given if not sqdt"
-        assert self.n is not None, "either nu or n must be given"
         return self.species.calc_nu(self.n, self.angular)
 
     @overload
@@ -568,7 +567,7 @@ class RydbergStateSQDTAlkali(RydbergStateSQDT):
         self.m = self.angular.m
 
     def __repr__(self) -> str:
-        species, n, nu = self.species.name, self.n, self.nu
+        species, n, nu = self.species.name, self._n, self.nu
         l, j, f, m = self.l, self.j, self.f, self.m
         n_str = f", {n=}" if n is not None else ""
         f_string = f", {f=}" if self.species.i_c_number != 0 else ""
@@ -618,7 +617,7 @@ class RydbergStateSQDTAlkalineLS(RydbergStateSQDT):
         self.m = self.angular.m
 
     def __repr__(self) -> str:
-        species, n, nu = self.species.name, self.n, self.nu
+        species, n, nu = self.species.name, self._n, self.nu
         l, s_tot, j_tot, f_tot, m = self.l, self.s_tot, self.j_tot, self.f_tot, self.m
         n_str = f", {n=}" if n is not None else ""
         return f"{self.__class__.__name__}({species}{n_str}, {nu=}, {l=}, {s_tot=}, {j_tot=}, {f_tot=}, {m=})"
@@ -667,7 +666,7 @@ class RydbergStateSQDTAlkalineJJ(RydbergStateSQDT):
         self.m = self.angular.m
 
     def __repr__(self) -> str:
-        species, n, nu = self.species.name, self.n, self.nu
+        species, n, nu = self.species.name, self._n, self.nu
         l, j_r, j_tot, f_tot, m = self.l, self.j_r, self.j_tot, self.f_tot, self.m
         n_str = f", {n=}" if n is not None else ""
         return f"{self.__class__.__name__}({species}{n_str}, {nu=}, {l=}, {j_r=}, {j_tot=}, {f_tot=}, {m=})"
@@ -716,7 +715,7 @@ class RydbergStateSQDTAlkalineFJ(RydbergStateSQDT):
         self.m = self.angular.m
 
     def __repr__(self) -> str:
-        species, n, nu = self.species.name, self.n, self.nu
+        species, n, nu = self.species.name, self._n, self.nu
         l, j_r, f_c, f_tot, m = self.l, self.j_r, self.f_c, self.f_tot, self.m
         l_c, j_c = self.angular.l_c, self.angular.j_c
         core_string = f", {l_c=}, {j_c=}" if l_c != 0 else ""
