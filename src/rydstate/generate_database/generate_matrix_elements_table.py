@@ -15,8 +15,8 @@ if TYPE_CHECKING:
     import sqlite3
 
     from rydstate.angular.utils import AngularOperatorType
-    from rydstate.basis.basis_sqdt import BasisSQDTAlkali
-    from rydstate.rydberg import RydbergStateSQDTAlkali
+    from rydstate.basis.basis_sqdt import BasisSQDT
+    from rydstate.rydberg import RydbergStateSQDT
     from rydstate.units import MatrixElementOperator
 
 logger = logging.getLogger(__name__)
@@ -37,7 +37,7 @@ MATRIX_ELEMENTS_OF_INTEREST: dict[str, MatrixElementOperator] = {
 
 
 def generate_matrix_elements_tables(
-    basis: BasisSQDTAlkali,
+    basis: BasisSQDT,
     conn: sqlite3.Connection | None = None,
     max_delta_n: float = np.inf,
     all_n_up_to: float = np.inf,
@@ -46,11 +46,11 @@ def generate_matrix_elements_tables(
     """Populate matrix element tables for all relevant pairs of states."""
     basis.sort_states("nu")  # sort by nu == sort by energy
     list_of_id_state = list(enumerate(basis.states))
-    list_of_id_state = sorted(list_of_id_state, key=lambda x: (x[1].l, x[1].n, x[0]))
+    list_of_id_state = sorted(list_of_id_state, key=lambda x: (x[1].angular.l_r, x[1].n, x[0]))
 
     matrix_elements: dict[str, list[tuple[int, int, float]]] = {tkey: [] for tkey in MATRIX_ELEMENTS_OF_INTEREST}
     for i, (id1, state1) in enumerate(list_of_id_state):
-        list_filtered = filter(lambda x: x[1].l - state1.l <= k_angular_max, list_of_id_state[i:])
+        list_filtered = filter(lambda x: x[1].angular.l_r - state1.angular.l_r <= k_angular_max, list_of_id_state[i:])
         for id2, state2 in list_filtered:
             if all(n > all_n_up_to for n in [state1.n, state2.n]) and abs(state1.n - state2.n) > max_delta_n:
                 # If delta_n is larger than max_delta_n, we dont calculate the matrix elements anymore,
@@ -86,8 +86,8 @@ def generate_matrix_elements_tables(
 
 
 def calc_matrix_elements_one_pair(
-    state1: RydbergStateSQDTAlkali,
-    state2: RydbergStateSQDTAlkali,
+    state1: RydbergStateSQDT,
+    state2: RydbergStateSQDT,
     matrix_elements_of_interest: dict[str, MatrixElementOperator],
 ) -> dict[str, float]:
     matrix_elements: dict[str, float] = {}

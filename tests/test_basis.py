@@ -1,16 +1,16 @@
 import numpy as np
 import pytest
-from rydstate import BasisSQDTAlkali, BasisSQDTAlkalineLS
+from rydstate import BasisSQDT
 
 
 @pytest.mark.parametrize("species_name", ["Rb", "Na", "H"])
 def test_alkali_basis(species_name: str) -> None:
     """Test alkali basis creation."""
-    basis = BasisSQDTAlkali(species_name, n=(1, 20))
+    basis = BasisSQDT(species_name, n=(1, 20), coupling_scheme="LS")
     basis.sort_states("n", "l_r")
     lowest_n_state = {"Rb": (4, 2), "Na": (3, 0), "H": (1, 0)}[species_name]
-    assert (basis.states[0].n, basis.states[0].l) == lowest_n_state
-    assert (basis.states[-1].n, basis.states[-1].l) == (20, 19)
+    assert (basis.states[0].n, basis.states[0].angular.l_r) == lowest_n_state
+    assert (basis.states[-1].n, basis.states[-1].angular.l_r) == (20, 19)
     assert len(basis.states) == {"Rb": 388, "Na": 396, "H": 400}[species_name]
 
     state0 = basis.states[0]
@@ -35,11 +35,17 @@ def test_alkali_basis(species_name: str) -> None:
 @pytest.mark.parametrize("species_name", ["Sr88", "Sr87", "Yb174", "Yb171"])
 def test_alkaline_basis(species_name: str) -> None:
     """Test alkaline basis creation."""
-    basis = BasisSQDTAlkalineLS(species_name, n=(30, 35))
+    basis = BasisSQDT(species_name, n=(30, 35), coupling_scheme="LS")
     basis.sort_states("n", "l_r")
-    assert (basis.states[0].n, basis.states[0].l) == (30, 0)
-    assert (basis.states[-1].n, basis.states[-1].l) == (35, 34)
+    assert (basis.states[0].n, basis.states[0].angular.l_r) == (30, 0)
+    assert (basis.states[-1].n, basis.states[-1].angular.l_r) == (35, 34)
     assert len(basis.states) == {"Sr88": 768, "Sr87": 7188, "Yb174": 768, "Yb171": 1524}[species_name]
+
+    # also test JJ and FJ coupling
+    basis_jj = BasisSQDT(species_name, n=(30, 35), coupling_scheme="JJ")
+    basis_fj = BasisSQDT(species_name, n=(30, 35), coupling_scheme="FJ")
+    assert len(basis_jj.states) == len(basis.states)
+    assert len(basis_fj.states) == len(basis.states)
 
     if species_name in ["Sr87", "Yb171"]:
         pytest.skip("Quantum defects for Sr87 and Yb171 not implemented yet.")
@@ -61,6 +67,3 @@ def test_alkaline_basis(species_name: str) -> None:
     me_matrix = basis.calc_reduced_matrix_elements(basis, "electric_dipole", unit="e a0")
     assert np.shape(me_matrix) == (len(basis.states), len(basis.states))
     assert np.count_nonzero(me_matrix) > 0
-
-    basis = BasisSQDTAlkalineLS(species_name, n=(30, 35))
-    basis.filter_states("l_r", (6, 10))

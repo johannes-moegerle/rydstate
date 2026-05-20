@@ -93,7 +93,7 @@ class RydbergStateSQDT(RydbergStateBase):
             m=m,  # type: ignore [arg-type]
         )
 
-        self.n = n
+        self._n = n
         self._nu = nu
         if nu is None and n is None:
             raise ValueError("Either n or nu must be given to initialize the Rydberg state.")
@@ -118,7 +118,7 @@ class RydbergStateSQDT(RydbergStateBase):
             species = SpeciesObjectSQDT.from_name(species)
         obj.species = species
 
-        obj.n = n
+        obj._n = n  # noqa: SLF001
         obj._nu = nu  # noqa: SLF001
         if nu is None and n is None:
             raise ValueError("Either n or nu must be given to initialize the Rydberg state.")
@@ -145,7 +145,7 @@ class RydbergStateSQDT(RydbergStateBase):
             )
 
         radial_ket = RadialKet(self.species, nu=self.nu, l_r=self.angular.l_r)
-        if self.n is not None:
+        if self._n is not None:
             radial_ket.set_n_for_sanity_check(self.n)
             if isinstance(self.species, SpeciesObjectSQDT):
                 s_tot_list = [self.angular.get_qn("s_tot")] if "s_tot" in self.angular.quantum_number_names else [0, 1]
@@ -156,6 +156,12 @@ class RydbergStateSQDT(RydbergStateBase):
                             f"is not allowed for the species {self.species}."
                         )
         return radial_ket
+
+    @property
+    def n(self) -> int:
+        if self._n is None:
+            raise ValueError("n was not defined for this state")
+        return self._n
 
     @cached_property
     def nu(self) -> float:
@@ -420,15 +426,13 @@ class RydbergStateSQDT(RydbergStateBase):
             raise NotImplementedError(
                 "For alkaline earth atoms transition rates are only implemented for LS coupling scheme."
             )
-        from rydstate.basis import BasisSQDTAlkali, BasisSQDTAlkalineLS  # noqa: PLC0415
-
-        basis_class = BasisSQDTAlkali if self.species.number_valence_electrons == 1 else BasisSQDTAlkalineLS
+        from rydstate.basis import BasisSQDT  # noqa: PLC0415
 
         m = self.angular.m
         if is_not_set(m):
             raise RuntimeError("m quantum number must be defined to calculate transition rates.")
 
-        basis = basis_class(self.species, n=(1, int(self.nu + 35)), m=(m - 1, m + 1))
+        basis = BasisSQDT(self.species, n=(1, int(self.nu + 35)), m=(m - 1, m + 1), coupling_scheme="LS")
         basis.filter_states("l_r", (self.angular.l_r - 1, self.angular.l_r + 1))
 
         if only_spontaneous:
@@ -528,7 +532,6 @@ class RydbergStateSQDTAlkali(RydbergStateSQDT):
     """Create an Alkali Rydberg state, including the radial and angular states."""
 
     angular: AngularKetLS
-    n: int
 
     def __init__(
         self,

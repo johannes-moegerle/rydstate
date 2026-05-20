@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 import pytest
 from rydstate import RydbergStateSQDTAlkali
-from rydstate.basis.basis_sqdt import BasisSQDTAlkali
+from rydstate.basis.basis_sqdt import BasisSQDT
 from rydstate.generate_database.generate_database import DATABASE_SQL_FILE
 from rydstate.generate_database.generate_matrix_elements_table import generate_matrix_elements_tables
 from rydstate.generate_database.generate_misc_table import generate_wigner_table
@@ -45,7 +45,7 @@ def test_get_state_data_for_sqdt_alkali_state() -> None:
 
 
 def test_generate_states_table_sorts_returns_and_inserts_rows(conn: sqlite3.Connection) -> None:
-    basis = BasisSQDTAlkali("H", n=(1, 2))
+    basis = BasisSQDT("H", n=(1, 2), coupling_scheme="LS")
     basis.filter_states("l_r", 0)
 
     rows = generate_states_table(basis, conn=conn)
@@ -58,10 +58,10 @@ def test_generate_states_table_sorts_returns_and_inserts_rows(conn: sqlite3.Conn
 def test_generate_matrix_elements_tables(
     conn: sqlite3.Connection,
 ) -> None:
-    basis = BasisSQDTAlkali("H", n=(10, 10))
+    basis = BasisSQDT("H", n=(10, 10), coupling_scheme="LS")
     basis.filter_states("l_r", (0, 2))
     # only keep states with j = l + 1/2 for easier testing
-    basis.states = [state for state in basis.states if state.j == state.l + 0.5]
+    basis.states = [state for state in basis.states if state.angular.get_qn("j_tot") == state.angular.l_r + 0.5]
     basis.sort_states("nu")
     states = basis.states
 

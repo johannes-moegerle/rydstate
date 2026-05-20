@@ -3,11 +3,13 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING
 
+from rydstate.angular.angular_ket import AngularKetLS
+
 if TYPE_CHECKING:
     import sqlite3
 
-    from rydstate.basis import BasisSQDTAlkali
-    from rydstate.rydberg.rydberg_sqdt import RydbergStateSQDTAlkali
+    from rydstate.basis import BasisSQDT
+    from rydstate.rydberg.rydberg_sqdt import RydbergStateSQDT
 
 
 logger = logging.getLogger(__name__)
@@ -38,10 +40,10 @@ COLUMNS = [
 
 
 def generate_states_table(
-    basis: BasisSQDTAlkali,
+    basis: BasisSQDT,
     conn: sqlite3.Connection | None = None,
 ) -> list[tuple[float | int | str | bool, ...]]:
-    """Populate the states table for a given species and n-range using BasisSQDTAlkali."""
+    """Populate the states table for a given species and n-range using BasisSQDT."""
     basis.sort_states("nu")  # sort by nu == sort by energy
 
     states_data: list[tuple[float | int | str | bool, ...]] = []
@@ -59,12 +61,15 @@ def generate_states_table(
     return states_data
 
 
-def get_state_data(ids: int, state: RydbergStateSQDTAlkali) -> tuple[float | int | str | bool, ...]:
+def get_state_data(ids: int, state: RydbergStateSQDT) -> tuple[float | int | str | bool, ...]:
     """Get the data for a given state as a tuple."""
     angular_ket = state.angular
-    angular_state = state.angular.to_state()
+    if not isinstance(angular_ket, AngularKetLS):
+        raise TypeError("Only AngularKetLS is supported for now")
 
-    parity: int = (-1) ** state.l
+    angular_state = angular_ket.to_state()
+
+    parity = -1 if angular_ket.l_tot % 2 == 1 else 1
 
     is_j_total_momentum = state.species.i_c == 0 or state.species.i_c is None
     is_calculated_with_mqdt = False
@@ -72,7 +77,7 @@ def get_state_data(ids: int, state: RydbergStateSQDTAlkali) -> tuple[float | int
     return (
         ids,  # id
         state.species.get_ionization_energy("a.u.") + state.get_energy("a.u."),  # energy
-        parity,  # parity = (-1)^l
+        parity,  # parity = (-1)^l_tot
         state.n,  # n: quantum number
         state.nu,  # nu = NStar for sqdt
         angular_ket.f_tot,  # f: quantum number

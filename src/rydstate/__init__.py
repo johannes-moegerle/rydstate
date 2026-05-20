@@ -1,10 +1,5 @@
 from rydstate import angular, basis, radial, rydberg, species
-from rydstate.basis import (
-    BasisSQDTAlkali,
-    BasisSQDTAlkalineFJ,
-    BasisSQDTAlkalineJJ,
-    BasisSQDTAlkalineLS,
-)
+from rydstate.basis import BasisSQDT
 from rydstate.rydberg import (
     RydbergStateSQDT,
     RydbergStateSQDTAlkali,
@@ -15,10 +10,7 @@ from rydstate.rydberg import (
 from rydstate.units import ureg
 
 __all__ = [
-    "BasisSQDTAlkali",
-    "BasisSQDTAlkalineFJ",
-    "BasisSQDTAlkalineJJ",
-    "BasisSQDTAlkalineLS",
+    "BasisSQDT",
     "RydbergStateSQDT",
     "RydbergStateSQDTAlkali",
     "RydbergStateSQDTAlkalineFJ",

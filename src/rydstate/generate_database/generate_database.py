@@ -9,7 +9,7 @@ import pandas as pd
 
 from rydstate import __version__
 from rydstate.angular.wigner_symbols import calc_wigner_3j
-from rydstate.basis.basis_sqdt import BasisSQDTAlkali
+from rydstate.basis.basis_sqdt import BasisSQDT
 from rydstate.generate_database.generate_matrix_elements_table import (
     _calc_radial_matrix_element_cached,
     calc_reduced_angular_matrix_element_cached,
@@ -42,7 +42,7 @@ def create_tables_for_one_species(
     db_file = Path("database.db")
     with sqlite3.connect(db_file) as conn:
         conn.executescript(DATABASE_SQL_FILE.read_text(encoding="utf-8"))
-        basis = BasisSQDTAlkali(species_name, n=(n_min, n_max))
+        basis = BasisSQDT(species_name, n=(n_min, n_max), coupling_scheme="LS")
         generate_states_table(basis, conn)
         generate_matrix_elements_tables(basis, conn, max_delta_n, all_n_up_to)
     logger.info("Size of %s: %.6f megabytes", db_file, db_file.stat().st_size * 1e-6)

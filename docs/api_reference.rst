@@ -29,10 +29,7 @@ All the available classes, methods and functions are documented below:
 .. autosummary::
     :toctree: _autosummary/
 
-       BasisSQDTAlkali
-       BasisSQDTAlkalineLS
-       BasisSQDTAlkalineJJ
-       BasisSQDTAlkalineFJ
+       BasisSQDT
 
 **Angular module**
 
