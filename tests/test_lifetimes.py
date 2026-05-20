@@ -38,7 +38,7 @@ def test_lifetime_n_scaling(species_name: str) -> None:
     """Test that Rydberg state lifetimes scale as nu^3 (effective quantum number)."""
     if species_name in ["Sr87", "Yb171", "Yb173"]:
         pytest.skip("No quantum defect data available")
-    if species_name == "Yb174":
+    if species_name in ["Yb174", "Yb174_sqdt"]:
         pytest.skip("Quantum defects not correct for low n states")
 
     n1, n2 = 30, 60

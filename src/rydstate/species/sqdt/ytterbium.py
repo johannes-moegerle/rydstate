@@ -100,3 +100,8 @@ class Ytterbium174(_YtterbiumAbstract):
         # (4, 4.0, "+"): (0.0262659964, 0.0254568575, 0.0, 0.0, 0.0),  # [3] S8
         # (4, 4.0, "-"): (-0.148808463, -0.134219071, 0.0, 0.0, 0.0),  # [3] S8
     }
+
+
+class Ytterbium174SQDT(Ytterbium174):
+    # alias for ytterbium-174 in SQDT
+    name = "Yb174_sqdt"
