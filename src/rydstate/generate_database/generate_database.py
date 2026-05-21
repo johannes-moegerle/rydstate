@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 import sqlite3
+from importlib.resources import files
 from pathlib import Path
 
 import numpy as np
@@ -22,7 +23,7 @@ from rydstate.generate_database.generate_states_table import generate_states_tab
 logger = logging.getLogger(__name__)
 
 
-DATABASE_SQL_FILE = Path(__file__).parent / "database.sql"
+DATABASE_SQL_FILE = files("rydstate.generate_database").joinpath("database.sql")
 
 
 def create_tables_for_one_species(
