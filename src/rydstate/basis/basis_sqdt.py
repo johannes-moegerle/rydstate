@@ -1,34 +1,67 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Generic, Literal, TypeVar, overload
 
 import numpy as np
 
 from rydstate.angular import NotSet
+from rydstate.angular.angular_ket import AngularKetBase, AngularKetFJ, AngularKetJJ, AngularKetLS
 from rydstate.angular.utils import is_not_set
 from rydstate.basis.basis_base import BasisBase
 from rydstate.rydberg import (
     RydbergStateSQDT,
-    RydbergStateSQDTAlkalineFJ,
-    RydbergStateSQDTAlkalineJJ,
 )
 from rydstate.species import SpeciesObjectSQDT
 
 if TYPE_CHECKING:
     from rydstate.angular.utils import CouplingScheme
 
+T_AngularKet = TypeVar("T_AngularKet", bound=AngularKetBase)
+
 logger = logging.getLogger(__name__)
 
 
-class BasisSQDT(BasisBase[RydbergStateSQDT]):
+class BasisSQDT(BasisBase[RydbergStateSQDT[T_AngularKet]], Generic[T_AngularKet]):
     species: SpeciesObjectSQDT
+    states: list[RydbergStateSQDT[T_AngularKet]]
+
+    @overload
+    def __init__(
+        self: BasisSQDT[AngularKetLS],
+        species: str | SpeciesObjectSQDT,
+        n: tuple[int, int],
+        m: tuple[float, float] | None | NotSet = NotSet,
+        *,
+        coupling_scheme: Literal["LS"] = "LS",
+    ) -> None: ...
+
+    @overload
+    def __init__(
+        self: BasisSQDT[AngularKetJJ],
+        species: str | SpeciesObjectSQDT,
+        n: tuple[int, int],
+        m: tuple[float, float] | None | NotSet = NotSet,
+        *,
+        coupling_scheme: Literal["JJ"],
+    ) -> None: ...
+
+    @overload
+    def __init__(
+        self: BasisSQDT[AngularKetFJ],
+        species: str | SpeciesObjectSQDT,
+        n: tuple[int, int],
+        m: tuple[float, float] | None | NotSet = NotSet,
+        *,
+        coupling_scheme: Literal["FJ"],
+    ) -> None: ...
 
     def __init__(
         self,
         species: str | SpeciesObjectSQDT,
         n: tuple[int, int],
         m: tuple[float, float] | None | NotSet = NotSet,
+        *,
         coupling_scheme: CouplingScheme = "LS",
     ) -> None:
         if isinstance(species, str):
@@ -41,7 +74,7 @@ class BasisSQDT(BasisBase[RydbergStateSQDT]):
         self, n_range: tuple[int, int], m_range: tuple[float, float] | None | NotSet, coupling_scheme: CouplingScheme
     ) -> None:
         self.coupling_scheme = coupling_scheme
-        self.states: list[RydbergStateSQDT] = []
+        self.states = []
 
         if coupling_scheme == "LS":
             add_states = self._add_states_ls
@@ -68,10 +101,11 @@ class BasisSQDT(BasisBase[RydbergStateSQDT]):
             for j_tot in np.arange(abs(l_r - s_tot), l_r + s_tot + 1):
                 for f_tot in np.arange(abs(j_tot - i_c), j_tot + i_c + 1):
                     for m in self._get_m_range(m_range, f_tot):
-                        state = RydbergStateSQDT(
-                            self.species, n=n, l_r=l_r, s_tot=s_tot, j_tot=j_tot, f_tot=float(f_tot), m=m
+                        angular_ket = AngularKetLS(
+                            l_r=l_r, s_tot=s_tot, j_tot=j_tot, f_tot=f_tot, m=m, species=self.species
                         )
-                        self.states.append(state)
+                        state = RydbergStateSQDT.from_angular_ket(self.species, angular_ket, n=n)
+                        self.states.append(state)  # type: ignore [arg-type]
 
     def _add_states_jj(self, n: int, l_r: int, m_range: tuple[float, float] | None | NotSet = NotSet) -> None:
         i_c = self.species.i_c_number
@@ -93,10 +127,11 @@ class BasisSQDT(BasisBase[RydbergStateSQDT]):
             for j_tot in range(int(abs(j_r - j_c)), int(j_r + j_c + 1)):
                 for f_tot in np.arange(abs(j_tot - i_c), j_tot + i_c + 1):
                     for m in self._get_m_range(m_range, f_tot):
-                        state = RydbergStateSQDTAlkalineJJ(
-                            self.species, n=n, l=l_r, j_r=float(j_r), j_tot=j_tot, f_tot=float(f_tot), m=m
+                        angular_ket = AngularKetJJ(
+                            l_r=l_r, j_r=j_r, j_tot=j_tot, f_tot=f_tot, m=m, species=self.species
                         )
-                        self.states.append(state)
+                        state = RydbergStateSQDT.from_angular_ket(self.species, angular_ket, n=n)
+                        self.states.append(state)  # type: ignore [arg-type]
 
     def _add_states_fj(self, n: int, l_r: int, m_range: tuple[float, float] | None | NotSet = NotSet) -> None:
         i_c = self.species.i_c_number
@@ -115,13 +150,12 @@ class BasisSQDT(BasisBase[RydbergStateSQDT]):
             return
 
         for j_r in np.arange(abs(l_r - s_r), l_r + s_r + 1):
-            for _f_c in np.arange(abs(j_c - i_c), j_c + i_c + 1):
-                for f_tot in np.arange(abs(_f_c - j_r), _f_c + j_r + 1):
+            for f_c in np.arange(abs(j_c - i_c), j_c + i_c + 1):
+                for f_tot in np.arange(abs(f_c - j_r), f_c + j_r + 1):
                     for m in self._get_m_range(m_range, f_tot):
-                        state = RydbergStateSQDTAlkalineFJ(
-                            self.species, n=n, l=l_r, j_r=float(j_r), f_c=float(_f_c), f_tot=float(f_tot), m=m
-                        )
-                        self.states.append(state)
+                        angular_ket = AngularKetFJ(l_r=l_r, j_r=j_r, f_c=f_c, f_tot=f_tot, m=m, species=self.species)
+                        state = RydbergStateSQDT.from_angular_ket(self.species, angular_ket, n=n)
+                        self.states.append(state)  # type: ignore [arg-type]
 
     def _get_m_range(self, m_range: tuple[float, float] | None | NotSet, f_tot: float) -> list[NotSet | float]:
         if is_not_set(m_range):

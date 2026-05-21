@@ -3,12 +3,13 @@ from __future__ import annotations
 import logging
 import math
 from functools import cached_property
-from typing import TYPE_CHECKING, overload
+from typing import TYPE_CHECKING, Any, Generic, TypeVar, overload
 
 import numpy as np
 from scipy.special import exprel
 
 from rydstate.angular import NotSet
+from rydstate.angular.angular_ket import AngularKetBase, AngularKetFJ, AngularKetJJ, AngularKetLS
 from rydstate.angular.utils import is_not_set, quantum_numbers_to_angular_ket
 from rydstate.radial import RadialKet
 from rydstate.rydberg.rydberg_base import RydbergStateBase
@@ -19,18 +20,19 @@ from rydstate.units import BaseQuantities, MatrixElementOperatorRanks, ureg
 if TYPE_CHECKING:
     from typing_extensions import Self
 
-    from rydstate.angular.angular_ket import AngularKetBase, AngularKetFJ, AngularKetJJ, AngularKetLS
+    from rydstate.angular.utils import CouplingScheme
     from rydstate.units import MatrixElementOperator, NDArray, PintArray, PintFloat
 
+T_AngularKet = TypeVar("T_AngularKet", bound=AngularKetBase)
 
 logger = logging.getLogger(__name__)
 
 
-class RydbergStateSQDT(RydbergStateBase):
+class RydbergStateSQDT(RydbergStateBase, Generic[T_AngularKet]):
     species: SpeciesObjectSQDT
     """The atomic species of the Rydberg state."""
 
-    angular: AngularKetBase
+    angular: T_AngularKet
     """The angular/spin part of the Rydberg electron."""
 
     def __init__(
@@ -77,7 +79,7 @@ class RydbergStateSQDT(RydbergStateBase):
             species = SpeciesObjectSQDT.from_name(species)
         self.species = species
 
-        self.angular = quantum_numbers_to_angular_ket(
+        self.angular = quantum_numbers_to_angular_ket(  # type: ignore [assignment]
             species=self.species,
             s_c=s_c,
             l_c=l_c,
@@ -103,14 +105,44 @@ class RydbergStateSQDT(RydbergStateBase):
     def _set_qn_as_attributes(self) -> None:
         pass
 
+    @overload
     @classmethod
     def from_angular_ket(
-        cls: type[Self],
+        cls,
+        species: str | SpeciesObjectSQDT,
+        angular_ket: AngularKetLS,
+        n: int | None = None,
+        nu: float | None = None,
+    ) -> RydbergStateSQDT[AngularKetLS]: ...
+
+    @overload
+    @classmethod
+    def from_angular_ket(
+        cls,
+        species: str | SpeciesObjectSQDT,
+        angular_ket: AngularKetJJ,
+        n: int | None = None,
+        nu: float | None = None,
+    ) -> RydbergStateSQDT[AngularKetJJ]: ...
+
+    @overload
+    @classmethod
+    def from_angular_ket(
+        cls,
+        species: str | SpeciesObjectSQDT,
+        angular_ket: AngularKetFJ,
+        n: int | None = None,
+        nu: float | None = None,
+    ) -> RydbergStateSQDT[AngularKetFJ]: ...
+
+    @classmethod
+    def from_angular_ket(
+        cls,
         species: str | SpeciesObjectSQDT,
         angular_ket: AngularKetBase,
         n: int | None = None,
         nu: float | None = None,
-    ) -> Self:
+    ) -> RydbergStateSQDT[Any]:
         """Initialize the Rydberg state from an angular ket."""
         obj = cls.__new__(cls)
 
@@ -123,7 +155,7 @@ class RydbergStateSQDT(RydbergStateBase):
         if nu is None and n is None:
             raise ValueError("Either n or nu must be given to initialize the Rydberg state.")
 
-        obj.angular = angular_ket
+        obj.angular = angular_ket  # type: ignore [assignment]
         obj._set_qn_as_attributes()  # noqa: SLF001
 
         return obj
@@ -131,10 +163,12 @@ class RydbergStateSQDT(RydbergStateBase):
     def __repr__(self) -> str:
         species, n, nu = self.species.name, self._n, self.nu
         n_str = f", {n=}" if n is not None else ""
-        return f"{self.__class__.__name__}({species}{n_str}, {nu=}, {self.angular})"
+        return f"{self.__class__.__name__}({species}{n_str}, {nu=}, {self.angular!r})"
 
     def __str__(self) -> str:
-        return self.__repr__()
+        species, n, nu = self.species.name, self._n, self.nu
+        n_str = f", {n=}" if n is not None else ""
+        return f"{self.__class__.__name__}({species}{n_str}, {nu=}, {self.angular!s})"
 
     @cached_property
     def radial(self) -> RadialKet:
@@ -169,6 +203,10 @@ class RydbergStateSQDT(RydbergStateBase):
             return self._nu
         assert isinstance(self.species, SpeciesObjectSQDT), "nu must be given if not sqdt"
         return self.species.calc_nu(self.n, self.angular)
+
+    @property
+    def coupling_scheme(self) -> CouplingScheme:
+        return self.angular.coupling_scheme
 
     @overload
     def get_energy(self, unit: None = None) -> PintFloat: ...
@@ -282,15 +320,17 @@ class RydbergStateSQDT(RydbergStateBase):
         return matrix_element.to(unit).magnitude
 
     @overload
-    def calc_matrix_element(self, other: RydbergStateSQDT, operator: MatrixElementOperator, q: int) -> PintFloat: ...
+    def calc_matrix_element(
+        self, other: RydbergStateSQDT[Any], operator: MatrixElementOperator, q: int
+    ) -> PintFloat: ...
 
     @overload
     def calc_matrix_element(
-        self, other: RydbergStateSQDT, operator: MatrixElementOperator, q: int, unit: str
+        self, other: RydbergStateSQDT[Any], operator: MatrixElementOperator, q: int, unit: str
     ) -> float: ...
 
     def calc_matrix_element(
-        self, other: RydbergStateSQDT, operator: MatrixElementOperator, q: int, unit: str | None = None
+        self, other: RydbergStateSQDT[Any], operator: MatrixElementOperator, q: int, unit: str | None = None
     ) -> PintFloat | float:
         r"""Calculate the matrix element.
 
@@ -321,14 +361,12 @@ class RydbergStateSQDT(RydbergStateBase):
         return prefactor * reduced_matrix_element
 
     @overload
-    def get_spontaneous_transition_rates(self, unit: None = None) -> tuple[list[RydbergStateSQDT], PintArray]: ...
+    def get_spontaneous_transition_rates(self: Self, unit: None = None) -> tuple[list[Self], PintArray]: ...
 
     @overload
-    def get_spontaneous_transition_rates(self, unit: str) -> tuple[list[RydbergStateSQDT], NDArray]: ...
+    def get_spontaneous_transition_rates(self: Self, unit: str) -> tuple[list[Self], NDArray]: ...
 
-    def get_spontaneous_transition_rates(
-        self, unit: str | None = None
-    ) -> tuple[list[RydbergStateSQDT], NDArray | PintArray]:
+    def get_spontaneous_transition_rates(self: Self, unit: str | None = None) -> tuple[list[Self], NDArray | PintArray]:
         """Calculate the spontaneous transition rates for the Rydberg state.
 
         The spontaneous transition rates are given by the Einstein A coefficients.
@@ -352,22 +390,22 @@ class RydbergStateSQDT(RydbergStateBase):
 
     @overload
     def get_black_body_transition_rates(
-        self, temperature: float | PintFloat, temperature_unit: str | None = None, unit: None = None
-    ) -> tuple[list[RydbergStateSQDT], PintArray]: ...
+        self: Self, temperature: float | PintFloat, temperature_unit: str | None = None, unit: None = None
+    ) -> tuple[list[Self], PintArray]: ...
 
     @overload
     def get_black_body_transition_rates(
-        self, temperature: PintFloat, *, unit: str
-    ) -> tuple[list[RydbergStateSQDT], NDArray]: ...
+        self: Self, temperature: PintFloat, *, unit: str
+    ) -> tuple[list[Self], NDArray]: ...
 
     @overload
     def get_black_body_transition_rates(
-        self, temperature: float, temperature_unit: str, unit: str
-    ) -> tuple[list[RydbergStateSQDT], NDArray]: ...
+        self: Self, temperature: float, temperature_unit: str, unit: str
+    ) -> tuple[list[Self], NDArray]: ...
 
     def get_black_body_transition_rates(
-        self, temperature: float | PintFloat, temperature_unit: str | None = None, unit: str | None = None
-    ) -> tuple[list[RydbergStateSQDT], NDArray | PintArray]:
+        self: Self, temperature: float | PintFloat, temperature_unit: str | None = None, unit: str | None = None
+    ) -> tuple[list[Self], NDArray | PintArray]:
         """Calculate the black body transition rates of the Rydberg state.
 
         The black body transition rates are given by the Einstein B coefficients,
@@ -397,11 +435,11 @@ class RydbergStateSQDT(RydbergStateBase):
         return relevant_states_masked, transition_rates.to(unit).magnitude
 
     def _get_transition_rates_au(
-        self,
+        self: Self,
         temperature_au: float | None = None,
         *,
         only_spontaneous: bool = False,
-    ) -> tuple[list[RydbergStateSQDT], NDArray]:
+    ) -> tuple[list[Self], NDArray]:
         r"""Calculate the transition rates in atomic units.
 
         The transition rates are given by the Einstein A coefficients for spontaneous transitions,
@@ -421,17 +459,17 @@ class RydbergStateSQDT(RydbergStateBase):
             \Gamma^{blackbody}_{self \to other} = \Gamma^{spontaneous}_{self \to other} \frac{1}{\exp(\omega / T) - 1}
 
         """
-        if self.species.number_valence_electrons == 2 and self.angular.coupling_scheme != "LS":
-            raise NotImplementedError(
-                "For alkaline earth atoms transition rates are only implemented for LS coupling scheme."
-            )
+        if self.angular.coupling_scheme != "LS":
+            raise NotImplementedError("Transition rates are currently only implemented for LS coupled states.")
         from rydstate.basis import BasisSQDT  # noqa: PLC0415
 
         m = self.angular.m
         if is_not_set(m):
             raise RuntimeError("m quantum number must be defined to calculate transition rates.")
 
-        basis = BasisSQDT(self.species, n=(1, int(self.nu + 35)), m=(m - 1, m + 1), coupling_scheme="LS")
+        basis = BasisSQDT(
+            self.species, n=(1, int(self.nu + 35)), m=(m - 1, m + 1), coupling_scheme=self.coupling_scheme
+        )
         basis.filter_states("l_r", (self.angular.l_r - 1, self.angular.l_r + 1))
 
         if only_spontaneous:
@@ -470,7 +508,7 @@ class RydbergStateSQDT(RydbergStateBase):
         if np.any(transition_rates_au < 0):
             raise RuntimeError("Got negative transition rates, which should not happen.")
 
-        return relevant_states_masked, transition_rates_au
+        return relevant_states_masked, transition_rates_au  # type: ignore [return-value]
 
     @overload
     def get_lifetime(
@@ -527,10 +565,8 @@ class RydbergStateSQDT(RydbergStateBase):
         return lifetime.to(unit).magnitude
 
 
-class RydbergStateSQDTAlkali(RydbergStateSQDT):
+class RydbergStateSQDTAlkali(RydbergStateSQDT[AngularKetLS]):
     """Create an Alkali Rydberg state, including the radial and angular states."""
-
-    angular: AngularKetLS
 
     def __init__(
         self,
@@ -574,10 +610,8 @@ class RydbergStateSQDTAlkali(RydbergStateSQDT):
         return f"{self.__class__.__name__}({species}{n_str}, {nu=}, {l=}, {j=}{f_string}, {m=})"
 
 
-class RydbergStateSQDTAlkalineLS(RydbergStateSQDT):
+class RydbergStateSQDTAlkalineLS(RydbergStateSQDT[AngularKetLS]):
     """Create an Alkaline Rydberg state, including the radial and angular states."""
-
-    angular: AngularKetLS
 
     def __init__(
         self,
@@ -623,10 +657,8 @@ class RydbergStateSQDTAlkalineLS(RydbergStateSQDT):
         return f"{self.__class__.__name__}({species}{n_str}, {nu=}, {l=}, {s_tot=}, {j_tot=}, {f_tot=}, {m=})"
 
 
-class RydbergStateSQDTAlkalineJJ(RydbergStateSQDT):
+class RydbergStateSQDTAlkalineJJ(RydbergStateSQDT[AngularKetJJ]):
     """Create an Alkaline Rydberg state, including the radial and angular states."""
-
-    angular: AngularKetJJ
 
     def __init__(
         self,
@@ -672,10 +704,8 @@ class RydbergStateSQDTAlkalineJJ(RydbergStateSQDT):
         return f"{self.__class__.__name__}({species}{n_str}, {nu=}, {l=}, {j_r=}, {j_tot=}, {f_tot=}, {m=})"
 
 
-class RydbergStateSQDTAlkalineFJ(RydbergStateSQDT):
+class RydbergStateSQDTAlkalineFJ(RydbergStateSQDT[AngularKetFJ]):
     """Create an Alkaline Rydberg state, including the radial and angular states."""
-
-    angular: AngularKetFJ
 
     def __init__(
         self,

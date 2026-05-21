@@ -6,6 +6,7 @@ from rydstate.species import SpeciesObjectSQDT
 
 if TYPE_CHECKING:
     from rydstate import RydbergStateSQDT
+    from rydstate.angular.angular_ket import AngularKetLS
 
 
 @pytest.mark.parametrize("species_name", SpeciesObjectSQDT.get_available_species())
@@ -13,7 +14,7 @@ def test_sqdt_species(species_name: str) -> None:
     species = SpeciesObjectSQDT.from_name(species_name)
     i_c = species.i_c_number
 
-    state: RydbergStateSQDT
+    state: RydbergStateSQDT[AngularKetLS]
     if species.number_valence_electrons == 1:
         state = RydbergStateSQDTAlkali(species, n=50, l=0, f=i_c + 0.5)
         state.radial.create_wavefunction()

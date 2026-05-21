@@ -40,7 +40,7 @@ COLUMNS = [
 
 
 def generate_states_table(
-    basis: BasisSQDT,
+    basis: BasisSQDT[AngularKetLS],
     conn: sqlite3.Connection | None = None,
 ) -> list[tuple[float | int | str | bool, ...]]:
     """Populate the states table for a given species and n-range using BasisSQDT."""
@@ -63,7 +63,7 @@ def generate_states_table(
     return states_data
 
 
-def get_state_data(ids: int, state: RydbergStateSQDT) -> tuple[float | int | str | bool, ...]:
+def get_state_data(ids: int, state: RydbergStateSQDT[AngularKetLS]) -> tuple[float | int | str | bool, ...]:
     """Get the data for a given state as a tuple."""
     angular_ket = state.angular
     if not isinstance(angular_ket, AngularKetLS):

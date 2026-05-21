@@ -35,7 +35,7 @@ MATRIX_ELEMENTS_OF_INTEREST: dict[str, MatrixElementOperator] = {
 
 
 def generate_matrix_elements_tables(  # noqa: C901
-    basis: BasisSQDT,
+    basis: BasisSQDT[AngularKetLS],
     conn: sqlite3.Connection | None = None,
     max_delta_n: float = float("inf"),
     all_n_up_to: float = float("inf"),
@@ -90,8 +90,8 @@ def generate_matrix_elements_tables(  # noqa: C901
 
 
 def calc_matrix_elements_one_pair(
-    state1: RydbergStateSQDT,
-    state2: RydbergStateSQDT,
+    state1: RydbergStateSQDT[AngularKetLS],
+    state2: RydbergStateSQDT[AngularKetLS],
     matrix_elements_of_interest: dict[str, MatrixElementOperator],
 ) -> dict[str, float]:
     matrix_elements: dict[str, float] = {}

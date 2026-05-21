@@ -25,14 +25,14 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-_AngularKet = TypeVar("_AngularKet", bound=AngularKetBase)
+T_AngularKet = TypeVar("T_AngularKet", bound=AngularKetBase)
 
 
-class AngularState(Generic[_AngularKet]):
+class AngularState(Generic[T_AngularKet]):
     def __init__(
         self,
         coefficients: Sequence[float] | NDArray,
-        kets: Sequence[_AngularKet],
+        kets: Sequence[T_AngularKet],
         *,
         warn_if_not_normalized: bool = True,
         normalize: bool = True,
@@ -56,7 +56,7 @@ class AngularState(Generic[_AngularKet]):
         if normalize:
             self.coefficients /= self.norm
 
-    def __iter__(self) -> Iterator[tuple[float, _AngularKet]]:
+    def __iter__(self) -> Iterator[tuple[float, T_AngularKet]]:
         return zip(self.coefficients, self.kets, strict=True).__iter__()
 
     def __repr__(self) -> str:
