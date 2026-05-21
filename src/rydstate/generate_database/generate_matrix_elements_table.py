@@ -36,7 +36,7 @@ MATRIX_ELEMENTS_OF_INTEREST: dict[str, MatrixElementOperator] = {
 }
 
 
-def generate_matrix_elements_tables(
+def generate_matrix_elements_tables(  # noqa: C901
     basis: BasisSQDT,
     conn: sqlite3.Connection | None = None,
     max_delta_n: float = np.inf,
@@ -44,6 +44,9 @@ def generate_matrix_elements_tables(
     k_angular_max: int = 3,
 ) -> dict[str, list[tuple[int, int, float]]]:
     """Populate matrix element tables for all relevant pairs of states."""
+    if basis.coupling_scheme != "LS":
+        raise ValueError("Only LS coupling scheme is supported for now.")
+
     basis.sort_states("nu")  # sort by nu == sort by energy
     list_of_id_state = list(enumerate(basis.states))
     list_of_id_state = sorted(list_of_id_state, key=lambda x: (x[1].angular.l_r, x[1].n, x[0]))

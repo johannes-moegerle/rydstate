@@ -44,6 +44,8 @@ def generate_states_table(
     conn: sqlite3.Connection | None = None,
 ) -> list[tuple[float | int | str | bool, ...]]:
     """Populate the states table for a given species and n-range using BasisSQDT."""
+    if basis.coupling_scheme != "LS":
+        raise ValueError("Only LS coupling scheme is supported for now.")
     basis.sort_states("nu")  # sort by nu == sort by energy
 
     states_data: list[tuple[float | int | str | bool, ...]] = []
