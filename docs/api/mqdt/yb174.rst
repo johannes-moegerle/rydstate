@@ -1,0 +1,6 @@
+Ytterbium 174
+=============
+
+.. automodule:: rydstate.species.mqdt.yb174
+    :members:
+    :member-order: bysource

@@ -1,0 +1,6 @@
+Strontium 87
+============
+
+.. automodule:: rydstate.species.mqdt.sr87
+    :members:
+    :member-order: bysource
