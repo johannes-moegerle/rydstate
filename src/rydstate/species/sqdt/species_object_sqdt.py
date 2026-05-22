@@ -16,7 +16,7 @@ from rydstate.units import ureg
 if TYPE_CHECKING:
     from pathlib import Path
 
-    from rydstate.angular.angular_ket import AngularKetBase
+    from rydstate.angular.angular_ket import AngularKet
     from rydstate.species.utils import RydbergRitzParameters
     from rydstate.units import PintFloat
 
@@ -188,7 +188,7 @@ class SpeciesObjectSQDT(SpeciesObject):
     def calc_nu(
         self,
         n: int,
-        angular_ket: AngularKetBase,
+        angular_ket: AngularKet,
         *,
         use_nist_data: bool = True,
         nist_n_max: int = 15,
