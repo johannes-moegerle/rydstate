@@ -118,35 +118,45 @@ def minus_one_pow(n: float) -> int:
     raise ValueError(f"minus_one_pow: Invalid input {n=} is not an integer.")
 
 
-def try_trivial_spin_addition(s_1: float, s_2: float, s_tot: float | None, name: str) -> float:
+def try_trivial_spin_addition(
+    s_1: float | Unknown, s_2: float | Unknown, s_tot: float | Unknown | None
+) -> float | Unknown:
     """Try to determine s_tot from s_1 and s_2 if it is not given.
 
     If s_tot is None and cannot be uniquely determined from s_1 and s_2, raise an error.
     Otherwise return s_tot or the trivial sum s_1 + s_2.
     """
-    if s_tot is None:
-        if s_1 != 0 and s_2 != 0:
-            msg = f"{name} must be set if both parts ({s_1} and {s_2}) are non-zero."
-            raise ValueError(msg)
-        s_tot = s_1 + s_2
-    return float(s_tot)
+    if s_tot is not None and not is_unknown(s_tot):
+        return float(s_tot)
+    if s_1 == 0 and not is_unknown(s_2):
+        return float(s_2)
+    if s_2 == 0 and not is_unknown(s_1):
+        return float(s_1)
+    return Unknown
 
 
-def check_spin_addition_rule(s_1: float, s_2: float, s_tot: float) -> bool:
+def check_spin_addition_rule(s_1: float | Unknown, s_2: float | Unknown, s_tot: float | Unknown) -> bool:
     r"""Check if the spin addition rule is satisfied.
 
-    This means check the following conditions:
+    If any of the quantum numbers is Unknown, return True.
+    Else check the following conditions:
     :math:`|s_1 - s_2| \leq s_{tot} \leq s_1 + s_2`
     and
     :math:`s_1 + s_2 + s_{tot}` is an integer
     """
+    if is_unknown(s_1) or is_unknown(s_2) or is_unknown(s_tot):
+        return True
     return abs(s_1 - s_2) <= s_tot <= s_1 + s_2 and (s_1 + s_2 + s_tot) % 1 == 0
 
 
-def get_possible_quantum_number_values(s_1: float, s_2: float, s_tot: float | None) -> list[float]:
+def get_possible_quantum_number_values(
+    s_1: float | Unknown, s_2: float | Unknown, s_tot: float | Unknown | None
+) -> list[float] | list[Unknown]:
     """Determine a list of possible s_tot values from s_1 and s_2 if s_tot is not given, else return [s_tot]."""
-    if s_tot is not None:
+    if s_tot is not None and not is_unknown(s_tot):
         return [s_tot]
+    if is_unknown(s_1) or is_unknown(s_2):
+        return [Unknown]
     return [float(s) for s in np.arange(abs(s_1 - s_2), s_1 + s_2 + 1, 1)]
 
 
