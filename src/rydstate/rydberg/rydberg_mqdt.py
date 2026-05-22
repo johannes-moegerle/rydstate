@@ -7,12 +7,12 @@ import numpy as np
 
 from rydstate.angular import AngularKetFJ, AngularState
 from rydstate.rydberg.rydberg_base import RydbergStateBase
-from rydstate.rydberg.rydberg_sqdt import RydbergStateSQDT
+from rydstate.rydberg.rydberg_sqdt import RydbergStateBaseSQDT
 
 if TYPE_CHECKING:
     from collections.abc import Iterator, Sequence
 
-    from rydstate.angular.angular_ket_dummy import AngularKetDummyFJ
+    from rydstate.angular.angular_ket_base import AngularKetBaseFJ
     from rydstate.units import MatrixElementOperator, NDArray, PintFloat
 
 
@@ -20,13 +20,13 @@ logger = logging.getLogger(__name__)
 
 
 class RydbergStateMQDT(RydbergStateBase):
-    angular: AngularState[AngularKetFJ | AngularKetDummyFJ]
+    angular: AngularState[AngularKetFJ | AngularKetBaseFJ]
     """Return the angular part of the MQDT state as an AngularState."""
 
     def __init__(
         self,
         coefficients: Sequence[float] | NDArray,
-        sqdt_states: Sequence[RydbergStateSQDT[AngularKetFJ | AngularKetDummyFJ]],
+        sqdt_states: Sequence[RydbergStateBaseSQDT[AngularKetFJ | AngularKetBaseFJ]],
         nu: float,
         *,
         warn_if_not_normalized: bool = True,
@@ -54,7 +54,7 @@ class RydbergStateMQDT(RydbergStateBase):
         if normalize:
             self.coefficients /= self.norm
 
-    def __iter__(self) -> Iterator[tuple[float, RydbergStateSQDT[AngularKetFJ | AngularKetDummyFJ]]]:
+    def __iter__(self) -> Iterator[tuple[float, RydbergStateBaseSQDT[AngularKetFJ | AngularKetBaseFJ]]]:
         return zip(self.coefficients, self.sqdt_states, strict=True).__iter__()
 
     def __repr__(self) -> str:
@@ -76,8 +76,8 @@ class RydbergStateMQDT(RydbergStateBase):
 
     def calc_reduced_overlap(self, other: RydbergStateBase) -> float:
         """Calculate the reduced overlap <self|other> (ignoring the magnetic quantum number m)."""
-        other_iter: list[tuple[float, RydbergStateSQDT[Any]]]
-        if isinstance(other, RydbergStateSQDT):
+        other_iter: list[tuple[float, RydbergStateBaseSQDT[Any]]]
+        if isinstance(other, RydbergStateBaseSQDT):
             other_iter = [(1.0, other)]
         elif isinstance(other, RydbergStateMQDT):
             other_iter = [(coeff, sqdt) for coeff, sqdt in other]
@@ -111,8 +111,8 @@ class RydbergStateMQDT(RydbergStateBase):
             \left\langle self || \hat{O}^{(\kappa)} || other \right\rangle
 
         """
-        other_iter: list[tuple[float, RydbergStateSQDT[Any]]]
-        if isinstance(other, RydbergStateSQDT):
+        other_iter: list[tuple[float, RydbergStateBaseSQDT[Any]]]
+        if isinstance(other, RydbergStateBaseSQDT):
             other_iter = [(1.0, other)]
         elif isinstance(other, RydbergStateMQDT):
             other_iter = [(coeff, sqdt) for coeff, sqdt in other]

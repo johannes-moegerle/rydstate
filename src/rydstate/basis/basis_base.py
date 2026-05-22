@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, Any, Generic, TypeVar, overload
 import numpy as np
 from typing_extensions import Self
 
-from rydstate.angular.utils import is_angular_momentum_quantum_number
+from rydstate.angular.utils import is_angular_momentum_quantum_number, is_unknown
 from rydstate.rydberg.rydberg_base import RydbergStateBase
 from rydstate.species.species_object import SpeciesObject
 from rydstate.units import ureg
@@ -35,12 +35,16 @@ class BasisBase(ABC, Generic[_RydbergState]):
         return new_basis
 
     @overload
-    def filter_states(self, qn: str, value: tuple[float, float], *, delta: float = 1e-10) -> Self: ...
+    def filter_states(
+        self, qn: str, value: tuple[float, float], *, delta: float = 1e-10, keep_unknown: bool = False
+    ) -> Self: ...
 
     @overload
-    def filter_states(self, qn: str, value: float, *, delta: float = 1e-10) -> Self: ...
+    def filter_states(self, qn: str, value: float, *, delta: float = 1e-10, keep_unknown: bool = False) -> Self: ...
 
-    def filter_states(self, qn: str, value: float | tuple[float, float], *, delta: float = 1e-10) -> Self:
+    def filter_states(
+        self, qn: str, value: float | tuple[float, float], *, delta: float = 1e-10, keep_unknown: bool = False
+    ) -> Self:
         if isinstance(value, tuple):
             qn_min = value[0] - delta
             qn_max = value[1] + delta
@@ -49,7 +53,15 @@ class BasisBase(ABC, Generic[_RydbergState]):
             qn_max = value + delta
 
         if is_angular_momentum_quantum_number(qn):
-            self.states = [state for state in self.states if qn_min <= state.angular.calc_exp_qn(qn) <= qn_max]
+            new_states: list[_RydbergState] = []
+            for state in self.states:
+                qn_value = state.angular.calc_exp_qn(qn)
+                if is_unknown(qn_value):
+                    if keep_unknown:
+                        new_states.append(state)
+                elif qn_min <= qn_value <= qn_max:
+                    new_states.append(state)
+            self.states = new_states
         elif qn in ["n", "nu"]:
             self.states = [state for state in self.states if qn_min <= getattr(state, qn) <= qn_max]
         else:

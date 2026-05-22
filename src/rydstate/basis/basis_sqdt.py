@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, Generic, Literal, TypeVar, overload
 import numpy as np
 
 from rydstate.angular import NotSet
-from rydstate.angular.angular_ket import AngularKetBase, AngularKetFJ, AngularKetJJ, AngularKetLS
+from rydstate.angular.angular_ket import AngularKet, AngularKetFJ, AngularKetJJ, AngularKetLS
 from rydstate.angular.utils import is_not_set
 from rydstate.basis.basis_base import BasisBase
 from rydstate.rydberg import (
@@ -17,7 +17,7 @@ from rydstate.species import SpeciesObjectSQDT
 if TYPE_CHECKING:
     from rydstate.angular.utils import CouplingScheme
 
-T_AngularKet = TypeVar("T_AngularKet", bound=AngularKetBase)
+T_AngularKet = TypeVar("T_AngularKet", bound=AngularKet)
 
 logger = logging.getLogger(__name__)
 

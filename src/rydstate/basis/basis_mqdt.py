@@ -8,12 +8,12 @@ import numpy as np
 from rydstate.angular import AngularKetFJ
 from rydstate.basis.basis_base import BasisBase
 from rydstate.rydberg import RydbergStateMQDT
-from rydstate.rydberg.rydberg_sqdt import RydbergStateSQDT
+from rydstate.rydberg.rydberg_sqdt import RydbergStateBaseSQDT
 from rydstate.species import FModel, FModelSQDT, SpeciesObjectMQDT
 from rydstate.utils.linalg import calc_nullvector
 
 if TYPE_CHECKING:
-    from rydstate.angular.angular_ket_dummy import AngularKetDummyFJ
+    from rydstate.angular.angular_ket_base import AngularKetBaseFJ
     from rydstate.species import FModel
 
 logger = logging.getLogger(__name__)
@@ -126,10 +126,11 @@ def get_mqdt_states_from_fmodel(
         arg_max = np.argmax(np.abs(coefficients))
         coefficients *= np.sign(coefficients[arg_max])
 
-        sqdt_states: list[RydbergStateSQDT[AngularKetFJ | AngularKetDummyFJ]] = []
+        sqdt_states: list[RydbergStateBaseSQDT[AngularKetFJ | AngularKetBaseFJ]] = []
         for nui, angular_ket in zip(nuis, model.outer_channels, strict=True):
             sqdt_species = model.species_name.replace("_mqdt", "")
-            sqdt_states.append(RydbergStateSQDT.from_angular_ket(sqdt_species, angular_ket, nu=float(nui)))
+            qns = dict(zip(angular_ket.quantum_number_names, angular_ket.quantum_numbers, strict=True))
+            sqdt_states.append(RydbergStateBaseSQDT(sqdt_species, nu=float(nui), **qns))  # type: ignore [arg-type]
 
         states.append(RydbergStateMQDT(coefficients, sqdt_states, nu=nu))
 

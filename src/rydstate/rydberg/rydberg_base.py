@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from rydstate.angular import AngularState
-    from rydstate.angular.angular_ket import AngularKetBase
+    from rydstate.angular.angular_ket_base import AngularKetBase
     from rydstate.units import MatrixElementOperator, PintFloat
 
 logger = logging.getLogger(__name__)
