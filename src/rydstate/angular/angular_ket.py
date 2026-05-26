@@ -194,9 +194,12 @@ class AngularKetBase(ABC, Generic[GenericT_Unknown]):
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, AngularKetBase):
             return NotImplemented
-        if type(self) is not type(other):
+        if not self._equal_up_to_m(other):
             return False
-        if self.m != other.m:
+        return bool(self.m == other.m)
+
+    def _equal_up_to_m(self, other: AngularKetBase[Any]) -> bool:
+        if type(self) is not type(other):
             return False
         if self.name != other.name:
             return False
@@ -495,7 +498,7 @@ class AngularKetBase(ABC, Generic[GenericT_Unknown]):
         Clebsch-Gordan coefficients (/ Wigner-j symbols).
         """
         if self.coupling_scheme == other.coupling_scheme:
-            return 1.0 if self == other else 0.0
+            return 1.0 if self._equal_up_to_m(other) else 0.0
 
         for q in set(self.quantum_number_names) & set(other.quantum_number_names):
             if self.get_qn(q) != other.get_qn(q):
