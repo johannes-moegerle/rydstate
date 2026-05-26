@@ -38,10 +38,11 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
+GenericT_Unknown = TypeVar("GenericT_Unknown", float, AllKnown, Unknown)
 T_Unknown = TypeVar("T_Unknown", float, AllKnown, Unknown)
 
 
-class AngularKetBase(ABC, Generic[T_Unknown]):
+class AngularKetBase(ABC, Generic[GenericT_Unknown]):
     """Base class for a angular ket (i.e. a simple canonical spin ketstate)."""
 
     # We use __slots__ to prevent dynamic attributes and make the objects immutable after initialization
@@ -77,11 +78,11 @@ class AngularKetBase(ABC, Generic[T_Unknown]):
     """Nuclear spin quantum number."""
     s_c: float
     """Core electron spin quantum number (0 for alkali atoms, 0.5 for alkaline earth atoms)."""
-    l_c: int | T_Unknown
+    l_c: int | GenericT_Unknown
     """Core electron orbital quantum number (usually 0)."""
     s_r: float
     """Rydberg electron spin quantum number (always 0.5)."""
-    l_r: int | T_Unknown
+    l_r: int | GenericT_Unknown
     """Rydberg electron orbital quantum number."""
 
     f_tot: float
@@ -216,7 +217,7 @@ class AngularKetBase(ABC, Generic[T_Unknown]):
         """Return True if any of the quantum numbers is Unknown."""
         return any(is_unknown(qn) for qn in self.quantum_numbers)
 
-    def get_qn(self, qn: AngularMomentumQuantumNumbers) -> float | T_Unknown:
+    def get_qn(self, qn: AngularMomentumQuantumNumbers) -> float | GenericT_Unknown:
         """Get the value of a quantum number by name."""
         qn_value: float | Unknown = Unknown
         if qn in self.quantum_number_names:
@@ -243,7 +244,7 @@ class AngularKetBase(ABC, Generic[T_Unknown]):
 
         return qn_value  # type: ignore [return-value]
 
-    def calc_exp_qn(self, qn: AngularMomentumQuantumNumbers) -> float | T_Unknown:
+    def calc_exp_qn(self, qn: AngularMomentumQuantumNumbers) -> float | GenericT_Unknown:
         """Calculate the expectation value of a quantum number qn.
 
         If the quantum number is a good quantum number simply return it,
@@ -257,7 +258,7 @@ class AngularKetBase(ABC, Generic[T_Unknown]):
             return self.get_qn(qn)
         return self.to_state().calc_exp_qn(qn)
 
-    def calc_std_qn(self, qn: AngularMomentumQuantumNumbers) -> float | T_Unknown:
+    def calc_std_qn(self, qn: AngularMomentumQuantumNumbers) -> float | GenericT_Unknown:
         """Calculate the standard deviation of a quantum number qn.
 
         If the quantum number is a good quantum number return 0,
@@ -278,18 +279,18 @@ class AngularKetBase(ABC, Generic[T_Unknown]):
 
     @overload
     def to_state(
-        self: AngularKetBase[AllKnown], coupling_scheme: Literal["LS"]
-    ) -> AngularState[AngularKetLS[AllKnown]]: ...
+        self: AngularKetBase[T_Unknown], coupling_scheme: Literal["LS"]
+    ) -> AngularState[AngularKetLS[T_Unknown]]: ...
 
     @overload
     def to_state(
-        self: AngularKetBase[AllKnown], coupling_scheme: Literal["JJ"]
-    ) -> AngularState[AngularKetJJ[AllKnown]]: ...
+        self: AngularKetBase[T_Unknown], coupling_scheme: Literal["JJ"]
+    ) -> AngularState[AngularKetJJ[T_Unknown]]: ...
 
     @overload
     def to_state(
-        self: AngularKetBase[AllKnown], coupling_scheme: Literal["FJ"]
-    ) -> AngularState[AngularKetFJ[AllKnown]]: ...
+        self: AngularKetBase[T_Unknown], coupling_scheme: Literal["FJ"]
+    ) -> AngularState[AngularKetFJ[T_Unknown]]: ...
 
     def to_state(self, coupling_scheme: CouplingScheme | None = None) -> AngularState[Any]:
         """Convert to state in the specified coupling scheme.
@@ -305,16 +306,16 @@ class AngularKetBase(ABC, Generic[T_Unknown]):
         if coupling_scheme is None or coupling_scheme == self.coupling_scheme:
             return self._create_angular_state([1], [self])
         if coupling_scheme == "LS":
-            return self._to_state_ls()  # type: ignore [misc]
+            return self._to_state_ls()
         if coupling_scheme == "JJ":
-            return self._to_state_jj()  # type: ignore [misc]
+            return self._to_state_jj()
         if coupling_scheme == "FJ":
-            return self._to_state_fj()  # type: ignore [misc]
+            return self._to_state_fj()
         raise ValueError(f"Unknown coupling scheme {coupling_scheme!r}.")
 
-    def _to_state_ls(self: AngularKetBase[AllKnown]) -> AngularState[AngularKetLS[AllKnown]]:
+    def _to_state_ls(self: AngularKetBase[T_Unknown]) -> AngularState[AngularKetLS[T_Unknown]]:
         """Convert a single ket to state in LS coupling."""
-        kets: list[AngularKetLS[AllKnown]] = []
+        kets: list[AngularKetLS[T_Unknown]] = []
         coefficients: list[float] = []
 
         s_tot_list = get_possible_quantum_number_values(self.s_c, self.s_r, getattr(self, "s_tot", None))
@@ -324,7 +325,7 @@ class AngularKetBase(ABC, Generic[T_Unknown]):
                 j_tot_list = get_possible_quantum_number_values(s_tot, l_tot, getattr(self, "j_tot", None))
                 for j_tot in j_tot_list:
                     try:
-                        ls_ket = AngularKetLS(
+                        ls_ket = AngularKetLS(  # type: ignore [call-overload,misc]
                             i_c=self.i_c,
                             s_c=self.s_c,
                             l_c=self.l_c,
@@ -335,6 +336,8 @@ class AngularKetBase(ABC, Generic[T_Unknown]):
                             j_tot=j_tot,
                             f_tot=self.f_tot,
                             m=self.m,
+                            name=self.name,
+                            allow_unknown=self._allow_unknown,
                         )
                     except InvalidQuantumNumbersError:
                         continue
@@ -345,9 +348,9 @@ class AngularKetBase(ABC, Generic[T_Unknown]):
 
         return self._create_angular_state(coefficients, kets)
 
-    def _to_state_jj(self: AngularKetBase[AllKnown]) -> AngularState[AngularKetJJ[AllKnown]]:
+    def _to_state_jj(self: AngularKetBase[T_Unknown]) -> AngularState[AngularKetJJ[T_Unknown]]:
         """Convert a single ket to state in JJ coupling."""
-        kets: list[AngularKetJJ[AllKnown]] = []
+        kets: list[AngularKetJJ[T_Unknown]] = []
         coefficients: list[float] = []
 
         j_c_list = get_possible_quantum_number_values(self.s_c, self.l_c, getattr(self, "j_c", None))
@@ -357,7 +360,7 @@ class AngularKetBase(ABC, Generic[T_Unknown]):
                 j_tot_list = get_possible_quantum_number_values(j_c, j_r, getattr(self, "j_tot", None))
                 for j_tot in j_tot_list:
                     try:
-                        jj_ket = AngularKetJJ(
+                        jj_ket = AngularKetJJ(  # type: ignore [call-overload,misc]
                             i_c=self.i_c,
                             s_c=self.s_c,
                             l_c=self.l_c,
@@ -368,6 +371,8 @@ class AngularKetBase(ABC, Generic[T_Unknown]):
                             j_tot=j_tot,
                             f_tot=self.f_tot,
                             m=self.m,
+                            name=self.name,
+                            allow_unknown=self._allow_unknown,
                         )
                     except InvalidQuantumNumbersError:
                         continue
@@ -378,9 +383,9 @@ class AngularKetBase(ABC, Generic[T_Unknown]):
 
         return self._create_angular_state(coefficients, kets)
 
-    def _to_state_fj(self: AngularKetBase[AllKnown]) -> AngularState[AngularKetFJ[AllKnown]]:
+    def _to_state_fj(self: AngularKetBase[T_Unknown]) -> AngularState[AngularKetFJ[T_Unknown]]:
         """Convert a single ket to state in FJ coupling."""
-        kets: list[AngularKetFJ[AllKnown]] = []
+        kets: list[AngularKetFJ[T_Unknown]] = []
         coefficients: list[float] = []
 
         j_c_list = get_possible_quantum_number_values(self.s_c, self.l_c, getattr(self, "j_c", None))
@@ -390,7 +395,7 @@ class AngularKetBase(ABC, Generic[T_Unknown]):
             for f_c in f_c_list:
                 for j_r in j_r_list:
                     try:
-                        fj_ket = AngularKetFJ(
+                        fj_ket = AngularKetFJ(  # type: ignore [call-overload,misc]
                             i_c=self.i_c,
                             s_c=self.s_c,
                             l_c=self.l_c,
@@ -401,6 +406,8 @@ class AngularKetBase(ABC, Generic[T_Unknown]):
                             j_r=j_r,
                             f_tot=self.f_tot,
                             m=self.m,
+                            name=self.name,
+                            allow_unknown=self._allow_unknown,
                         )
                     except InvalidQuantumNumbersError:
                         continue
@@ -644,7 +651,7 @@ class AngularKetBase(ABC, Generic[T_Unknown]):
         return prefactor * self._calc_prefactor_of_operator_in_coupled_scheme(other, qn_combined, kappa)
 
 
-class AngularKetLS(AngularKetBase[T_Unknown], Generic[T_Unknown]):
+class AngularKetLS(AngularKetBase[GenericT_Unknown], Generic[GenericT_Unknown]):
     """Spin ket in LS coupling."""
 
     __slots__ = ("s_tot", "l_tot", "j_tot")
@@ -657,11 +664,11 @@ class AngularKetLS(AngularKetBase[T_Unknown], Generic[T_Unknown]):
     }
     coupling_scheme = "LS"
 
-    s_tot: float | T_Unknown
+    s_tot: float | GenericT_Unknown
     """Total electron spin quantum number (s_c + s_r)."""
-    l_tot: int | T_Unknown
+    l_tot: int | GenericT_Unknown
     """Total electron orbital quantum number (l_c + l_r)."""
-    j_tot: float | T_Unknown
+    j_tot: float | GenericT_Unknown
     """Total electron angular momentum quantum number (s_tot + l_tot)."""
 
     @overload
@@ -750,7 +757,7 @@ class AngularKetLS(AngularKetBase[T_Unknown], Generic[T_Unknown]):
         super().sanity_check(msgs)
 
 
-class AngularKetJJ(AngularKetBase[T_Unknown], Generic[T_Unknown]):
+class AngularKetJJ(AngularKetBase[GenericT_Unknown], Generic[GenericT_Unknown]):
     """Spin ket in JJ coupling."""
 
     __slots__ = ("j_c", "j_r", "j_tot")
@@ -763,11 +770,11 @@ class AngularKetJJ(AngularKetBase[T_Unknown], Generic[T_Unknown]):
     }
     coupling_scheme = "JJ"
 
-    j_c: float | T_Unknown
+    j_c: float | GenericT_Unknown
     """Total core electron angular quantum number (s_c + l_c)."""
-    j_r: float | T_Unknown
+    j_r: float | GenericT_Unknown
     """Total rydberg electron angular quantum number (s_r + l_r)."""
-    j_tot: float | T_Unknown
+    j_tot: float | GenericT_Unknown
     """Total electron angular momentum quantum number (j_c + j_r)."""
 
     @overload
@@ -854,7 +861,7 @@ class AngularKetJJ(AngularKetBase[T_Unknown], Generic[T_Unknown]):
         super().sanity_check(msgs)
 
 
-class AngularKetFJ(AngularKetBase[T_Unknown], Generic[T_Unknown]):
+class AngularKetFJ(AngularKetBase[GenericT_Unknown], Generic[GenericT_Unknown]):
     """Spin ket in FJ coupling."""
 
     __slots__ = ("j_c", "f_c", "j_r")
@@ -867,11 +874,11 @@ class AngularKetFJ(AngularKetBase[T_Unknown], Generic[T_Unknown]):
     }
     coupling_scheme = "FJ"
 
-    j_c: float | T_Unknown
+    j_c: float | GenericT_Unknown
     """Total core electron angular quantum number (s_c + l_c)."""
-    f_c: float | T_Unknown
+    f_c: float | GenericT_Unknown
     """Total core angular quantum number (j_c + i_c)."""
-    j_r: float | T_Unknown
+    j_r: float | GenericT_Unknown
     """Total rydberg electron angular quantum number (s_r + l_r)."""
 
     @overload
