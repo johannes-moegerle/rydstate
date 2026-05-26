@@ -3,7 +3,7 @@ from __future__ import annotations
 import contextlib
 import typing as t
 from functools import lru_cache
-from typing import TYPE_CHECKING, Any, Literal, TypeAlias, TypeGuard, TypeVar, get_args
+from typing import TYPE_CHECKING, Any, Literal, TypeAlias, TypeVar, get_args
 
 import numpy as np
 from typing_extensions import Never
@@ -93,12 +93,12 @@ class InvalidQuantumNumbersError(ValueError):
         super().__init__(_msg)
 
 
-def is_angular_momentum_quantum_number(qn: str) -> TypeGuard[AngularMomentumQuantumNumbers]:
+def is_angular_momentum_quantum_number(qn: str) -> TypeIs[AngularMomentumQuantumNumbers]:
     """Check if the given string is an AngularMomentumQuantumNumbers."""
     return qn in get_args(AngularMomentumQuantumNumbers)
 
 
-def is_angular_operator_type(qn: str) -> TypeGuard[AngularOperatorType]:
+def is_angular_operator_type(qn: str) -> TypeIs[AngularOperatorType]:
     """Check if the given string is an AngularOperatorType."""
     return qn in get_args(AngularOperatorType)
 
