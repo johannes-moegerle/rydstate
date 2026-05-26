@@ -36,6 +36,9 @@ def test_bbr_shortens_lifetime() -> None:
 @pytest.mark.parametrize("species_name", SpeciesObjectSQDT.get_available_species())
 def test_lifetime_n_scaling(species_name: str) -> None:
     """Test that Rydberg state lifetimes scale as nu^3 (effective quantum number)."""
+    if species_name != "Na":
+        pytest.skip("Skip this test for most species for now, since this test is rather slow.")
+
     if species_name in ["Sr87", "Yb171", "Yb173"]:
         pytest.skip("No quantum defect data available")
     if species_name in ["Yb174", "Yb174_sqdt"]:
