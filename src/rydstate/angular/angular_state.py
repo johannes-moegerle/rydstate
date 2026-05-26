@@ -123,9 +123,12 @@ class AngularState(Generic[GenericT_AngularKet]):
         qns = np.array([ket.get_qn(q) for ket in self.kets])
         if all(q_val == qns[0] for q_val in qns):
             return qns[0]  # type: ignore [no-any-return]
-        qns = np.array([qn if not is_unknown(qn) else 0 for qn in qns])
 
-        coefficients2 = np.conjugate(self.coefficients) * self.coefficients / self.norm**2
+        coeffs = np.array([coeff for coeff, qn in zip(self.coefficients, qns, strict=True) if not is_unknown(qn)])
+        qns = np.array([qn for qn in qns if not is_unknown(qn)])
+        norm = np.linalg.norm(coeffs)
+
+        coefficients2 = np.conjugate(coeffs) * coeffs / norm**2
         return np.sum(coefficients2 * qns)  # type: ignore [no-any-return]
 
     def calc_std_qn(self, q: AngularMomentumQuantumNumbers) -> float:
@@ -143,9 +146,12 @@ class AngularState(Generic[GenericT_AngularKet]):
         qns = np.array([ket.get_qn(q) for ket in self.kets])
         if all(qn == qns[0] for qn in qns):
             return 0
-        qns = np.array([qn if not is_unknown(qn) else 0 for qn in qns])
 
-        coefficients2 = np.conjugate(self.coefficients) * self.coefficients / self.norm**2
+        coeffs = np.array([coeff for coeff, qn in zip(self.coefficients, qns, strict=True) if not is_unknown(qn)])
+        qns = np.array([qn for qn in qns if not is_unknown(qn)])
+        norm = np.linalg.norm(coeffs)
+
+        coefficients2 = np.conjugate(coeffs) * coeffs / norm**2
         exp_q = np.sum(coefficients2 * qns)
         exp_q2 = np.sum(coefficients2 * qns * qns)
 
