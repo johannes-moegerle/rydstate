@@ -111,6 +111,15 @@ def get_mqdt_states_from_fmodel(
 
     states: list[RydbergStateMQDT] = []
     for nu in nu_list:
+        det_mmat = model.calc_det_m_matrix(nu)
+        if abs(det_mmat) > 1e-6:
+            # this can happen, because we use the scaled M-matrix to find roots ...
+            logger.warning(
+                "%s: Found a root of det(M) that is not actually a root (nu=%s, det(M)=%s). "
+                "Keeping this state, but you should treat it with caution.",
+                *(model.full_name, nu, det_mmat),
+            )
+
         nuis = model.calc_channel_nuis(nu)
         coefficients = calc_nullvector(model.calc_m_matrix(nu))
         if coefficients is None:
