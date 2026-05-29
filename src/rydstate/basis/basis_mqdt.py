@@ -10,7 +10,7 @@ from rydstate.basis.basis_base import BasisBase
 from rydstate.rydberg import RydbergStateMQDT
 from rydstate.rydberg.rydberg_sqdt import RydbergStateSQDT
 from rydstate.species import FModel, FModelSQDT, SpeciesObjectMQDT
-from rydstate.utils.linalg import calc_nullvector
+from rydstate.utils.linalg import calc_nullvector, find_roots
 
 if TYPE_CHECKING:
     from rydstate.species import FModel
@@ -102,7 +102,7 @@ def get_mqdt_states_from_fmodel(
     if np.isinf(nu_max):
         raise ValueError("nu_max must be finite to calculate MQDT states.")
 
-    nu_list = model.calc_detm_roots(nu_min, nu_max)
+    nu_list = find_roots(model.calc_det_scaled_m_matrix, nu_min, nu_max)
     if len(nu_list) == 0:
         logger.warning(
             "No MQDT states found in the range nu_min=%s, nu_max=%s for model %s", nu_min, nu_max, model.name

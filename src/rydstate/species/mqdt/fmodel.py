@@ -7,7 +7,6 @@ from typing import TYPE_CHECKING, Any, ClassVar, overload
 import numpy as np
 
 from rydstate.species.utils import calc_energy_from_nu, calc_modified_ritz_formula_in_nu, calc_nu_from_energy
-from rydstate.utils.linalg import find_roots
 
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase, AngularKetFJ
@@ -263,29 +262,44 @@ class FModel:
         nuis = self.calc_channel_nuis(nu)
         return np.array(np.diag(np.tan(np.pi * nuis)) + kmat)
 
-    def _calc_scaled_m_matrix(self, nu: float) -> NDArray:
-        # we scale the M-matrix by cos(pi * nui) to improve numerical stability when finding roots of det(M) = 0
-        # this is especially important for states with nu close to half integer
+    def calc_scaled_m_matrix(self, nu: float) -> NDArray:
+        r"""Return the scaled M-matrix in the collision (outer) channel frame.
+
+        The scaled M-matrix is defined as
+
+        .. math::
+            M_{\text{scaled}} = \cos(\pi \nu) M = \sin(\pi \nu) + \cos(\pi \nu) K
+
+        We use this to improve numerical stability when finding roots of det(M) = 0.
+        This is especially important for states with nu close to half integer.
+        """
         kmat = self.calc_k_matrix(nu)
         nuis = self.calc_channel_nuis(nu)
-        return np.array(np.diag(np.sin(np.pi * nuis)) + np.cos(np.pi * nuis) * kmat)
+        return np.array(np.diag(np.sin(np.pi * nuis)) + np.diag(np.cos(np.pi * nuis)) @ kmat)
 
-    def calc_detm_roots(self, nu_min: float, nu_max: float) -> list[float]:
-        """Find zeros of det(mmat(nu)) in [nu_min, nu_max] using scipy root finding.
+    def calc_det_m_matrix(self, nu: float) -> float:
+        """Calculate the determinant of the M-matrix at a given nu value.
 
         Args:
-            nu_min: Lower bound of the search range.
-            nu_max: Upper bound of the search range.
+            nu: Effective principal quantum number with reference to the lowest ionization threshold.
 
         Returns:
-            List of nu values where det(mmat) ≈ 0.
+            Determinant of the M-matrix at the given nu value.
 
         """
+        return float(np.linalg.det(self.calc_m_matrix(nu)))
 
-        def det_mmat(nu: float) -> float:
-            return float(np.linalg.det(self._calc_scaled_m_matrix(nu)))
+    def calc_det_scaled_m_matrix(self, nu: float) -> float:
+        """Calculate the determinant of the scaled M-matrix at a given nu value.
 
-        return find_roots(det_mmat, nu_min, nu_max)
+        Args:
+            nu: Effective principal quantum number with reference to the lowest ionization threshold.
+
+        Returns:
+            Determinant of the scaled M-matrix at the given nu value.
+
+        """
+        return float(np.linalg.det(self.calc_scaled_m_matrix(nu)))
 
 
 class FModelSQDT(FModel):
