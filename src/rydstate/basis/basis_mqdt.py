@@ -56,7 +56,7 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
             if isinstance(model, FModelSQDT):
                 if skip_high_l:
                     continue
-                _nu_min = n_min_high_l
+                _nu_min = max(_nu_min, n_min_high_l)
             logger.debug("  calculating states for model %s with nu_min=%s, nu_max=%s", model.name, _nu_min, nu[1])
             _states = get_mqdt_states_from_fmodel(model, _nu_min, nu[1])
             if len(_states) == 0:
