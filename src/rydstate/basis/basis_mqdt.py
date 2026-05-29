@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 class BasisMQDT(BasisBase[RydbergStateMQDT]):
     """Basis set of MQDT Rydberg states for a given species over a range of effective principal quantum numbers."""
 
-    def __init__(  # noqa: C901
+    def __init__(  # noqa: C901, PLR0912
         self,
         species: str | SpeciesObjectMQDT,
         nu: tuple[float, float],
@@ -33,7 +33,7 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
     ) -> None:
         self.species = SpeciesObjectMQDT.from_name(species) if isinstance(species, str) else species
 
-        self.models: list[FModel] = []
+        models: list[FModel] = []
         i_c, j_c, s_r = self.species.i_c, 0.5, 0.5
         for _l_r in range(int(nu[1]) + 1):
             if not is_allowed_qn(l_r, _l_r):
@@ -46,8 +46,15 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
                         channel = AngularKetFJ(
                             l_r=_l_r, j_r=float(j_r), f_c=float(f_c), f_tot=float(_f_tot), species=self.species
                         )
-                        self.models.extend(self.species.get_mqdt_models(channel))
-        self.models = list(set(self.models))  # remove duplicates
+                        models.extend(self.species.get_mqdt_models(channel))
+
+        # remove duplicates
+        self.models: list[FModel] = []
+        model_names: set[str] = set()
+        for model in models:
+            if model.full_name not in model_names:
+                self.models.append(model)
+                model_names.add(model.full_name)
 
         logger.debug("Calculating MQDT states...")
         self.states: list[RydbergStateMQDT] = []

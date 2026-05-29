@@ -104,6 +104,13 @@ def test_reference_field_set(model: FModel) -> None:
     assert hasattr(model, "reference"), f"{model.full_name}: missing 'reference' field"
 
 
+def test_model_name_unique(model: FModel) -> None:
+    """Every model must have a unique combination of species_name and name (full_name)."""
+    full_name = model.full_name
+    duplicates = [m for m in ALL_MODELS if m.full_name == full_name]
+    assert len(duplicates) == 1, f"{model.full_name}: {len(duplicates)} duplicate models found"
+
+
 def test_species_field_set(model: FModel) -> None:
     """Every model must have a species field."""
     assert model.species_name is not None, f"{model.full_name}: species is None"
