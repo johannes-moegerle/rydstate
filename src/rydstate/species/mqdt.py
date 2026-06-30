@@ -4,8 +4,10 @@ from abc import ABC
 from functools import cached_property
 from typing import TYPE_CHECKING, Any, ClassVar, overload
 
+from rydstate.angular.utils import Unknown, is_unknown
 from rydstate.metaclass_cache import CachedABCMeta
 from rydstate.species.fmodel import FModelSQDT
+from rydstate.species.sqdt import get_sqdt
 from rydstate.species.utils import get_all_subclasses
 from rydstate.units import ureg
 
@@ -100,6 +102,12 @@ class MQDT(ABC, metaclass=CachedABCMeta):
         if len(models) == 0:
             models = [FModelSQDT(self.species, outer_channel, mqdt=self)]
         return models
+
+    def is_allowed_shell(self, n: int, l_r: int, s_tot: float | Unknown = Unknown) -> bool:
+        if is_unknown(l_r):
+            return True
+        sqdt = get_sqdt(self.species)
+        return sqdt.is_allowed_shell(n, l_r, s_tot)
 
 
 def get_mqdt(species: str, tag: str | None = None) -> MQDT:

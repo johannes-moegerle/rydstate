@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import inspect
+import logging
 import math
 from functools import cached_property
 from typing import TYPE_CHECKING, Any, ClassVar, overload
@@ -18,6 +19,8 @@ if TYPE_CHECKING:
     from rydstate.species.mqdt import MQDT
     from rydstate.species.utils import RydbergRitzParameters
     from rydstate.units import NDArray, PintFloat
+
+logger = logging.getLogger(__name__)
 
 
 class FModel:
@@ -314,6 +317,55 @@ class FModel:
 
         """
         return float(np.linalg.det(self.calc_scaled_m_matrix(nu)))
+
+    def calc_nu(self, n: int, angular_ket: AngularKetFJ[Any], prev_nus: list[float] | None = None) -> float:
+        ind = self.outer_channels.index(angular_ket)
+
+        prev_nus = [n] if prev_nus is None else prev_nus
+        nu_ref = _calc_nu_ref(self.mqdt, angular_ket, prev_nus[-1])
+
+        trafo = self.calc_frame_transformation(nu_ref)
+        mu_closecoupling = np.diag(self.calc_eigen_quantum_defects(nu_ref))
+        mu_fj = trafo @ mu_closecoupling @ trafo.T
+
+        mu1 = mu_fj[ind, ind]
+
+        k = trafo @ np.tan(np.pi * mu_closecoupling) @ trafo.T
+        tan_mu = k[ind, ind]
+        mu = np.arctan(tan_mu) / np.pi
+        # TODO this is a bit hacky
+        mu += round(mu1)
+
+        nu = float(n - mu)
+        prev_nus.append(nu)
+        if abs(prev_nus[-1] - prev_nus[-2]) < 1e-3:
+            return nu
+
+        if len(prev_nus) > 10:
+            logger.warning(
+                "calc_nu did not converge for %s at %d after %s iterations, returning last value %f.",
+                *(angular_ket, n, prev_nus, nu),
+            )
+            return nu
+
+        return self.calc_nu(n, angular_ket, prev_nus=prev_nus)
+
+
+def _calc_nu_ref(mqdt: MQDT, angular_ket: AngularKetFJ[Any], prev_nu: float) -> float:
+    element_properties = get_element_properties(mqdt.species)
+    core_energy = mqdt.get_ionization_threshold(angular_ket.get_core_ket(), unit="hartree")
+    reference_core_energy = mqdt.reference_ionization_energy_au
+
+    eps_i = calc_energy_from_nu(element_properties.reduced_mass_au, prev_nu)
+    # E_tot = I_i + eps_i = I_ref + eps_ref with eps_i = -1 / (2 * (nu_i^2))
+    # => eps_ref = eps_i + I_i - I_ref
+    eps_ref = eps_i + core_energy - reference_core_energy
+    if eps_ref >= 0:
+        # channel state is above reference ionization threshold
+        return 120.0  # large nu_ref value for continuum states
+        # TODO larger value breaks for Yb171
+
+    return calc_nu_from_energy(element_properties.reduced_mass_au, eps_ref)
 
 
 def get_fmodels(module: ModuleType, species: str) -> list[type[FModel]]:
