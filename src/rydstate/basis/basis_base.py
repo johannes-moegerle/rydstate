@@ -28,6 +28,14 @@ class BasisBase(ABC, Generic[_RydbergState]):
     def __len__(self) -> int:
         return len(self.states)
 
+    def shallow_copy(self) -> Self:
+        """Return a shallow copy of the basis."""
+        new_basis = self.__class__.__new__(self.__class__)
+        new_basis.species = self.species
+        new_basis.element_properties = self.element_properties
+        new_basis.states = self.states.copy()
+        return new_basis
+
     @overload
     def filter_states(
         self, qn: str, value: tuple[float, float], *, delta: float = 1e-10, keep_unknown: bool = False
