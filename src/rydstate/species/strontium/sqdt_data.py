@@ -44,3 +44,8 @@ class SQDTStrontium88(SQDT):
         (3, 3.0, 1): (0.119, -2.0, 100, 0.0, 0.0),  # [3]
         (3, 4.0, 1): (0.120, -2.4, 120, 0.0, 0.0),  # [3]
     }
+
+
+class SQDTStrontium87(SQDT):
+    species = "Sr87"
+    is_default = True

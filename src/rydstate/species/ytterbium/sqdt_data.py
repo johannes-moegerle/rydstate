@@ -47,3 +47,13 @@ class SQDTYtterbium174(SQDT):
         # (4, 4.0, "+"): (0.0262659964, 0.0254568575, 0.0, 0.0, 0.0),  # [3] S8
         # (4, 4.0, "-"): (-0.148808463, -0.134219071, 0.0, 0.0, 0.0),  # [3] S8
     }
+
+
+class SQDTYtterbium171(SQDT):
+    species = "Yb171"
+    is_default = True
+
+
+class SQDTYtterbium173(SQDT):
+    species = "Yb173"
+    is_default = True
