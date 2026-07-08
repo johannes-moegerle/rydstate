@@ -157,6 +157,17 @@ class Radial:
                 return int(np.sign(w))
         return 0
 
+    def set_outside_to_zero(self, r: float) -> None:
+        """Set the wavefunction to zero outside of the given radius."""
+        if r < 0:
+            raise ValueError("r must be non-negative")
+        z = math.sqrt(r)
+        if z < self.z_list[0]:
+            self._w_list[:] = 0
+        else:
+            i = np.searchsorted(self.z_list, z, side="right")
+            self._w_list[i:] = 0
+
     def calc_overlap(self, other: Radial, *, integration_method: INTEGRATION_METHODS = "sum") -> float:
         r"""Calculate the overlap <self|other> of two radial kets.
 

@@ -492,3 +492,8 @@ class RadialDummy(Radial, metaclass=CachedABCMeta):
         if not isinstance(scalar, Number):
             return NotImplemented
         return RadialDummy(scalar * self._coeff, self.nu)
+
+    def set_outside_to_zero(self, r: float) -> None:
+        """Set the wavefunction to zero outside of the given radius."""
+        if r < 0:
+            raise ValueError("r must be non-negative")
