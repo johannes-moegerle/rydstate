@@ -80,6 +80,9 @@ class BasisBase(ABC, Generic[_RydbergState]):
     def calc_std_qn(self, qn: str) -> NDArray:
         return np.array([state.calc_std_qn(qn) for state in self.states])
 
+    def calc_short_range_exp_qn(self, qn: str, r_max: float) -> NDArray:
+        return np.array([state.calc_short_range_exp_qn(qn, r_max) for state in self.states])
+
     def calc_reduced_overlap(self, other: RydbergState) -> NDArray:
         """Calculate the reduced overlap <self|other> (ignoring the magnetic quantum number m)."""
         return np.array([bra.calc_reduced_overlap(other) for bra in self.states])

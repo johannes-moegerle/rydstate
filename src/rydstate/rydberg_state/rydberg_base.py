@@ -330,6 +330,29 @@ class RydbergState:
 
         raise ValueError(f"Unknown quantum number {qn}")
 
+    def calc_short_range_exp_qn(self, qn: str, r_max: float) -> float:
+        new = self.with_outside_zero(r_max)
+        return new.calc_exp_qn(qn)
+
+    def with_outside_zero(self, r_max: float) -> RydbergState:
+        """Return a new RydbergState with the radial wavefunctions set to zero for r > r_max."""
+        rydberg_kets: list[RydbergKet] = []
+        coefficients: list[float] = []
+        for coeff, ket in self:
+            radial = ket.radial.copy()
+            radial.set_outside_to_zero(r_max)
+            r_norm = radial.norm
+            if r_norm < 1e-12:
+                # if channels cancel almost completely, we ignore them to avoid numerical issues
+                continue
+            rydberg_kets.append(RydbergKet(ket.species, ket.angular, radial / r_norm))
+            coefficients.append(r_norm * coeff)
+
+        norm = np.linalg.norm(coefficients)  # normalize the coefficients
+        return RydbergState(
+            self.species, np.array(coefficients) / norm, rydberg_kets, nu=self.nu, energy_au=self._energy_au
+        )
+
     @overload
     def get_spontaneous_transition_rates(self: Self, unit: None = None) -> tuple[list[Self], PintArray]: ...
 
