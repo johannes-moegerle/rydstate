@@ -480,6 +480,10 @@ class RadialDummy(Radial, metaclass=CachedABCMeta):
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self._coeff}, nu={self.nu})"
 
+    def copy(self) -> RadialDummy:
+        """Return a copy of the radial dummy ket."""
+        return RadialDummy(self._coeff, self.nu)
+
     @property
     def norm(self) -> float:
         return abs(self._coeff)

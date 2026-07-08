@@ -39,6 +39,10 @@ class Radial:
         if np.isnan(self.w_list).any():
             raise ValueError("w_list must not contain NaN values")
 
+    def copy(self) -> Radial:
+        """Return a copy of the radial ket."""
+        return Radial(self.z_list.copy(), self.w_list.copy())
+
     @property
     def z_list(self) -> NDArray:
         r"""The grid in the scaled dimensionless coordinate :math:`z = \sqrt{r/a_0}`.
