@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 import math
 from numbers import Number
-from typing import TYPE_CHECKING, overload
+from typing import TYPE_CHECKING, Self, overload
 
 import numpy as np
 
@@ -157,7 +157,7 @@ class Radial:
                 return int(np.sign(w))
         return 0
 
-    def set_outside_to_zero(self, r: float) -> None:
+    def set_outside_to_zero(self, r: float) -> Self:
         """Set the wavefunction to zero outside of the given radius."""
         if r < 0:
             raise ValueError("r must be non-negative")
@@ -167,6 +167,7 @@ class Radial:
         else:
             i = np.searchsorted(self.z_list, z, side="right")
             self._w_list[i:] = 0
+        return self
 
     def calc_overlap(self, other: Radial, *, integration_method: INTEGRATION_METHODS = "sum") -> float:
         r"""Calculate the overlap <self|other> of two radial kets.

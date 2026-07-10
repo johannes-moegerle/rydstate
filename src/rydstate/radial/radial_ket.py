@@ -17,6 +17,8 @@ from rydstate.radial.radial_base import Radial
 from rydstate.species.utils import calc_energy_from_nu
 
 if TYPE_CHECKING:
+    from typing_extensions import Self
+
     from rydstate.radial.radial_matrix_element import INTEGRATION_METHODS
     from rydstate.species.potential import Potential
     from rydstate.units import NDArray
@@ -493,7 +495,8 @@ class RadialDummy(Radial, metaclass=CachedABCMeta):
             return NotImplemented
         return RadialDummy(scalar * self._coeff, self.nu)
 
-    def set_outside_to_zero(self, r: float) -> None:
+    def set_outside_to_zero(self, r: float) -> Self:
         """Set the wavefunction to zero outside of the given radius."""
         if r < 0:
             raise ValueError("r must be non-negative")
+        return self
