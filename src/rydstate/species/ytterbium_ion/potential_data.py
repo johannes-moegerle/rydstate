@@ -4,21 +4,19 @@ from rydstate.species.potential import PotentialCorePolarizabilityWithCutoff, Po
 
 
 class PotentialCoulombYtterbium171Ion(PotentialCoulomb):
-    is_default = True
     species = "Yb171_ion"
 
 
 class PotentialCoulombYtterbium173Ion(PotentialCoulomb):
-    is_default = True
     species = "Yb173_ion"
 
 
 class PotentialCoulombYtterbium174Ion(PotentialCoulomb):
-    is_default = True
     species = "Yb174_ion"
 
 
 class _PotentialCorePolarizabilityWithCutoffYtterbiumIonAbstract(PotentialCorePolarizabilityWithCutoff):
+    is_default = True
     # these values are taken from
     # Chen, Wu, Zhang, Tang, Jiang, Dong (2023), https://doi.org/10.1088/1674-1056/acbc6c
     # alpha_core^1 is the first-order (dipole) static polarizability of the Yb2+ core electrons (only the

@@ -16,7 +16,6 @@ class PotentialCoulombStrontium88Ion(PotentialCoulomb):
 
 
 class _PotentialMarinescu1994StrontiumIonAbstract(PotentialMarinescu1994):
-    is_default = True
     # these values are taken from
     # Greene, Aymar (1991), https://doi.org/10.1103/PhysRevA.44.1773
     # Note that the potential there is defined with Marinescu a_j = Greene \alpha_i as follows:
@@ -43,6 +42,7 @@ class PotentialMarinescu1994Strontium88Ion(_PotentialMarinescu1994StrontiumIonAb
 
 
 class _PotentialCorePolarizabilityWithCutoffStrontiumIonAbstract(PotentialCorePolarizabilityWithCutoff):
+    is_default = True
     # these values are taken from
     # Jiang, Mitroy, Cheng, Bromley (2016), https://arxiv.org/abs/1605.05040
     # alpha_core^k are the static k-th order (dipole, quadrupole, octupole) polarizabilities of the Sr2+
