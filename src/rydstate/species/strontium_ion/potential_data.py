@@ -45,11 +45,12 @@ class PotentialMarinescu1994Strontium88Ion(_PotentialMarinescu1994StrontiumIonAb
 class _PotentialCorePolarizabilityWithCutoffStrontiumIonAbstract(PotentialCorePolarizabilityWithCutoff):
     # these values are taken from
     # Jiang, Mitroy, Cheng, Bromley (2016), https://arxiv.org/abs/1605.05040
-    # alpha_c is the first-order (dipole) static polarizability of the Sr2+ core (their alpha_core^1),
-    # and the cutoff radii rho_{l,j} (Table III) were tuned to reproduce the Sr+ energies including the
-    # spin-orbit splittings. For l > 3 the cutoff falls back to the largest tabulated l of the same j-branch.
+    # alpha_core^k are the static k-th order (dipole, quadrupole, octupole) polarizabilities of the Sr2+
+    # core, and the cutoff radii rho_{l,j} (Table III) were tuned to reproduce the Sr+ energies including
+    # the spin-orbit splittings. For l > 3 the cutoff falls back to the largest tabulated l of the same
+    # j-branch.
     reference: ClassVar[str] = "J. Jiang et al. (2016), Phys. Rev. A 94, 062514, https://arxiv.org/abs/1605.05040"
-    alpha_c_core_polarizability_with_cutoff = 5.813
+    alpha_dict_core_polarizability_with_cutoff: ClassVar = {1: 5.813, 2: 17.15, 3: 113.0}
     rho_dict_core_polarizability_with_cutoff: ClassVar = {
         (0, 0.5): 2.04960,  # s_1/2
         (1, 0.5): 1.97169,  # p_1/2

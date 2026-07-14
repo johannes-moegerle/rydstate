@@ -370,19 +370,25 @@ class PotentialFei2009(Potential):
 
 
 class PotentialCorePolarizabilityWithCutoff(Potential):
-    r"""Coulomb plus static core dipole polarizability potential with a short-range cutoff.
+    r"""Coulomb plus static core polarizability potential with a short-range cutoff.
 
     This is the one-electron model potential used to describe the Rydberg electron of a singly ionized
     alkaline-earth-metal (or alkaline-earth-like) atom moving in the field of its doubly ionized core.
-    The physical potential is the Coulomb interaction with the ionic core plus the polarization potential
+    The physical potential is the Coulomb interaction with the ionic core plus a sum of static core
+    polarization terms up to order K (dipole k=1, quadrupole k=2, octupole k=3, ...),
 
     .. math::
-        V(x) = - \frac{Z_{net}}{x} - \frac{\alpha_d}{2x^4} (1 - e^{-x^6/\rho_{l_r,j_r}^6}),
+        V(x) = - \frac{Z_{net}}{x}
+            - \sum_{k=1}^{K} \frac{\alpha_{core}^k}{2 x^{2(k+1)}} g_k^2(x),
+            \qquad g_k^2(x) = 1 - e^{-x^{2(k+2)}/\rho_{l_r,j_r}^{2(k+2)}},
 
-    where :math:`\alpha_d` is the static dipole polarizability of the core and the exponential is a cutoff
-    function that removes the unphysical divergence of the polarization potential at the origin.
+    where :math:`\alpha_{core}^k` is the k-th order static core polarizability and :math:`g_k(x)` is a cutoff
+    function that removes the unphysical divergence of the polarization potential at the origin. Only the
+    multipole orders tabulated for the species are included (e.g. dipole only, or dipole + quadrupole +
+    octupole).
 
-    The cutoff radius :math:`\rho_{l_r,j_r}` is tabulated per ``(l, j)`` of the Rydberg electron. This
+    The cutoff radius :math:`\rho_{l_r,j_r}` is shared across all multipole orders and tabulated per
+    ``(l, j)`` of the Rydberg electron. This
     covers both the ``j``-resolved case (Chen et al. (2023), Jiang et al. (2016), where the cutoff is
     tuned per ``(l, j)`` to reproduce the spin-orbit splittings) and the purely ``l``-dependent case
     (Mitroy et al. (2008), where the two fine-structure partners share the same cutoff). For a ``l`` with
@@ -396,8 +402,8 @@ class PotentialCorePolarizabilityWithCutoff(Potential):
 
     tag = "core_polarizability_with_cutoff"
 
-    alpha_c_core_polarizability_with_cutoff: ClassVar[float]
-    """Static core dipole polarizability :math:`\\alpha_d` in atomic units (a.u.)."""
+    alpha_dict_core_polarizability_with_cutoff: ClassVar[dict[int, float]]
+    """Static core multipole polarizabilities {k: alpha_core^k} in a.u. (k=1 dipole, 2 quadrupole, 3 octupole)."""
     rho_dict_core_polarizability_with_cutoff: ClassVar[dict[tuple[int, float | Unknown], float]]
     """Cutoff radii {(l, j): rho_{l,j}} in atomic units (a.u.); use j = Unknown for l without splitting."""
     reference: ClassVar[str] = (
@@ -438,13 +444,16 @@ class PotentialCorePolarizabilityWithCutoff(Potential):
     def calc_model_potential(self, x: XType) -> XType:
         r"""Calculate the core polarizability model potential in atomic units.
 
-        The model potential, see :attr:`~PotentialCorePolarizabilityWithCutoff.reference`, is given by
+        The model potential, see :attr:`~PotentialCorePolarizabilityWithCutoff.reference`, is the Coulomb
+        potential plus a sum of static core polarization terms (dipole k=1, quadrupole k=2, octupole k=3, ...),
 
         .. math::
-            V(x) = - \frac{Z_{net}}{x} - \frac{\alpha_d}{2x^4} (1 - e^{-x^6/\rho^6})
+            V(x) = - \frac{Z_{net}}{x}
+                - \sum_{k} \frac{\alpha_{core}^k}{2 x^{2(k+1)}} \left(1 - e^{-x^{2(k+2)}/\rho^{2(k+2)}}\right)
 
         where :math:`Z_{net}` is the net charge of the ionic core seen by the Rydberg electron,
-        :math:`\alpha_d` is the static core dipole polarizability, and :math:`\rho` is the cutoff radius.
+        :math:`\alpha_{core}^k` is the k-th order static core polarizability, and :math:`\rho` is the
+        cutoff radius (shared across all multipole orders).
 
         Args:
             x: The dimensionless radial coordinate x = r / a_0, for which to calculate potential.
@@ -453,20 +462,24 @@ class PotentialCorePolarizabilityWithCutoff(Potential):
             V: The core polarizability model potential V(x) in atomic units.
 
         """
-        v_c = self.calc_potential_coulomb(x)
+        v = self.calc_potential_coulomb(x)
 
-        alpha_c = self.alpha_c_core_polarizability_with_cutoff
-        if alpha_c == 0:
-            return v_c
+        alpha_dict = self.alpha_dict_core_polarizability_with_cutoff
+        if all(alpha_k == 0 for alpha_k in alpha_dict.values()):
+            return v
 
         rho = self._get_rho()
-        x2: XType = x * x
-        x4: XType = x2 * x2
-        x6: XType = x4 * x2
-        g2 = 1 - np.exp(-(x6 / rho**6))
-        v_p: XType = -alpha_c / (2 * x4) * g2
+        for k, alpha_k in alpha_dict.items():
+            if alpha_k == 0:
+                continue
+            # polarization order k: -alpha_k / (2 x^{2(k+1)}) * (1 - exp(-x^{2(k+2)} / rho^{2(k+2)}))
+            x_pol: XType = x ** (2 * (k + 1))
+            x_cut: XType = x ** (2 * (k + 2))
+            g2 = 1 - np.exp(-(x_cut / rho ** (2 * (k + 2))))
+            v_pk: XType = -alpha_k / (2 * x_pol) * g2
+            v = v + v_pk
 
-        return v_c + v_p
+        return v
 
 
 def get_potential_class(species: str, tag: str | None = None) -> type[Potential]:

@@ -21,9 +21,10 @@ class PotentialCoulombYtterbium174Ion(PotentialCoulomb):
 class _PotentialCorePolarizabilityWithCutoffYtterbiumIonAbstract(PotentialCorePolarizabilityWithCutoff):
     # these values are taken from
     # Chen, Wu, Zhang, Tang, Jiang, Dong (2023), https://doi.org/10.1088/1674-1056/acbc6c
-    # alpha_c is the first-order static dipole polarizability of the Yb2+ core electrons, and the
-    # cutoff radii rho_{l,j} (Table 1) were tuned to reproduce the binding energies of Yb+ (see Eq. (3)).
-    alpha_c_core_polarizability_with_cutoff = 7.72
+    # alpha_core^1 is the first-order (dipole) static polarizability of the Yb2+ core electrons (only the
+    # dipole term is used, see Eq. (3)), and the cutoff radii rho_{l,j} (Table 1) were tuned to reproduce
+    # the binding energies of Yb+.
+    alpha_dict_core_polarizability_with_cutoff: ClassVar = {1: 7.72}
     rho_dict_core_polarizability_with_cutoff: ClassVar = {
         (0, 0.5): 2.4687,  # s_1/2
         (1, 0.5): 2.1196,  # p_1/2
