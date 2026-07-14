@@ -165,7 +165,7 @@ class BasisSQDT(BasisBase[RydbergStateSQDT[T_AngularKet]], Generic[T_AngularKet]
                             n=n,
                             angular_ket=angular_ket,
                             sqdt=self.sqdt,
-                            potential=self.potential_class(l_r),
+                            potential=self.potential_class(l_r, j_r=angular_ket.get_qn("j_r", allow_unknown=True)),
                         )
                         self.states.append(state)  # type: ignore [arg-type]
 
@@ -205,7 +205,7 @@ class BasisSQDT(BasisBase[RydbergStateSQDT[T_AngularKet]], Generic[T_AngularKet]
                             n=n,
                             angular_ket=angular_ket,
                             sqdt=self.sqdt,
-                            potential=self.potential_class(l_r),
+                            potential=self.potential_class(l_r, j_r=angular_ket.get_qn("j_r", allow_unknown=True)),
                         )
                         self.states.append(state)  # type: ignore [arg-type]
 
@@ -243,6 +243,6 @@ class BasisSQDT(BasisBase[RydbergStateSQDT[T_AngularKet]], Generic[T_AngularKet]
                             n=n,
                             angular_ket=angular_ket,
                             sqdt=self.sqdt,
-                            potential=self.potential_class(l_r),
+                            potential=self.potential_class(l_r, j_r=angular_ket.get_qn("j_r", allow_unknown=True)),
                         )
                         self.states.append(state)  # type: ignore [arg-type]

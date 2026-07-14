@@ -192,7 +192,9 @@ class RydbergStateSQDT(RydbergState, Generic[GenericT_AngularKet]):
                 raise ValueError("The potential must have the same l_r as the angular ket.")
             self.potential = potential
         else:
-            self.potential = get_potential_class(species, tag=potential)(self.angular.l_r)
+            self.potential = get_potential_class(species, tag=potential)(
+                self.angular.l_r, j_r=self.angular.get_qn("j_r", allow_unknown=True)
+            )
 
         if abs(self.norm - 1) > 1e-10:
             raise ValueError(

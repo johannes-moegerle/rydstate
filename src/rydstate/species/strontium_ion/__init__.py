@@ -3,6 +3,8 @@ from rydstate.species.strontium_ion.element_properties_data import (
     ElementPropertiesStrontium88Ion,
 )
 from rydstate.species.strontium_ion.potential_data import (
+    PotentialCorePolarizabilityWithCutoffStrontium87Ion,
+    PotentialCorePolarizabilityWithCutoffStrontium88Ion,
     PotentialCoulombStrontium87Ion,
     PotentialCoulombStrontium88Ion,
     PotentialMarinescu1994Strontium87Ion,
@@ -13,6 +15,8 @@ from rydstate.species.strontium_ion.sqdt_data import SQDTStrontium87Ion, SQDTStr
 __all__ = [
     "ElementPropertiesStrontium87Ion",
     "ElementPropertiesStrontium88Ion",
+    "PotentialCorePolarizabilityWithCutoffStrontium87Ion",
+    "PotentialCorePolarizabilityWithCutoffStrontium88Ion",
     "PotentialCoulombStrontium87Ion",
     "PotentialCoulombStrontium88Ion",
     "PotentialMarinescu1994Strontium87Ion",

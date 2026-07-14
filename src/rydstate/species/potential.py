@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, ClassVar, TypeVar
 
 import numpy as np
 
-from rydstate.angular.utils import is_unknown
+from rydstate.angular.utils import Unknown, is_unknown
 from rydstate.metaclass_cache import CachedABCMeta
 from rydstate.species.element_properties import get_element_properties
 from rydstate.species.utils import get_all_subclasses
@@ -31,11 +31,15 @@ class Potential(ABC, metaclass=CachedABCMeta):
     is_default: ClassVar[bool] = False
     """Whether this potential is the default potential for the species."""
 
-    def __init__(self, l_r: int) -> None:
+    def __init__(self, l_r: int, j_r: float | Unknown = Unknown) -> None:
         r"""Initialize the potential.
 
         Args:
             l_r: Orbital angular momentum of the Rydberg electron.
+            j_r: Total angular momentum of the Rydberg electron.
+                Optional, only needed for potentials whose parameters depend on j_r
+                (see e.g. :class:`PotentialCorePolarizabilityWithCutoff`).
+                Defaults to ``Unknown``.
 
         """
         self.element_properties = get_element_properties(self.species)
@@ -44,8 +48,18 @@ class Potential(ABC, metaclass=CachedABCMeta):
             raise ValueError(f"l_r must be an integer, and larger or equal 0, but {l_r=}")
         self.l_r = int(l_r)
 
+        self.j_r: float | Unknown
+        if is_unknown(j_r):
+            self.j_r = Unknown
+        elif j_r > 0 and abs(j_r - self.l_r) == 0.5:
+            self.j_r = float(j_r)
+        else:
+            raise ValueError(f"j_r must be a positive half-integer with j_r = l_r +/- 1/2, but {j_r=} for {l_r=}")
+
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__}(l_r={self.l_r})"
+        if is_unknown(self.j_r):
+            return f"{self.__class__.__name__}(l_r={self.l_r})"
+        return f"{self.__class__.__name__}(l_r={self.l_r}, j_r={self.j_r})"
 
     def calc_potential_coulomb(self, x: XType) -> XType:
         r"""Calculate the Coulomb potential V_Col(x) in atomic units.
@@ -353,6 +367,106 @@ class PotentialFei2009(Potential):
         with np.errstate(over="ignore"):
             denom: XType = 1 - alpha + alpha * np.exp(beta * x**delta + gamma * x ** (2.0 * delta))
             return -1 / x - (self.element_properties.Z - 1) / (x * denom)
+
+
+class PotentialCorePolarizabilityWithCutoff(Potential):
+    r"""Coulomb plus static core dipole polarizability potential with a short-range cutoff.
+
+    This is the one-electron model potential used to describe the Rydberg electron of a singly ionized
+    alkaline-earth-metal (or alkaline-earth-like) atom moving in the field of its doubly ionized core.
+    The physical potential is the Coulomb interaction with the ionic core plus the polarization potential
+
+    .. math::
+        V(x) = - \frac{Z_{net}}{x} - \frac{\alpha_d}{2x^4} (1 - e^{-x^6/\rho_{l_r,j_r}^6}),
+
+    where :math:`\alpha_d` is the static dipole polarizability of the core and the exponential is a cutoff
+    function that removes the unphysical divergence of the polarization potential at the origin.
+
+    The cutoff radius :math:`\rho_{l_r,j_r}` is tabulated per ``(l, j)`` of the Rydberg electron. This
+    covers both the ``j``-resolved case (Chen et al. (2023), Jiang et al. (2016), where the cutoff is
+    tuned per ``(l, j)`` to reproduce the spin-orbit splittings) and the purely ``l``-dependent case
+    (Mitroy et al. (2008), where the two fine-structure partners share the same cutoff). For a ``l`` with
+    no fine-structure splitting the cutoff is given with the key ``(l, Unknown)``; such an entry can be
+    evaluated without ``j_r`` (e.g. in LS coupling), whereas a ``j``-resolved entry requires ``j_r`` to be
+    known, i.e. a coupling where ``j_r`` is a good quantum number (JJ or FJ).
+
+    See also: J. Mitroy et al., Phys. Rev. A 77, 032512 (2008); T. Chen et al., Chin. Phys. B 32, 053206
+    (2023); J. Jiang et al., Phys. Rev. A 94, 062514 (2016).
+    """
+
+    tag = "core_polarizability_with_cutoff"
+
+    alpha_c_core_polarizability_with_cutoff: ClassVar[float]
+    """Static core dipole polarizability :math:`\\alpha_d` in atomic units (a.u.)."""
+    rho_dict_core_polarizability_with_cutoff: ClassVar[dict[tuple[int, float | Unknown], float]]
+    """Cutoff radii {(l, j): rho_{l,j}} in atomic units (a.u.); use j = Unknown for l without splitting."""
+    reference: ClassVar[str] = (
+        "T. Chen et al., Chin. Phys. B 32, 053206 (2023), https://doi.org/10.1088/1674-1056/acbc6c"
+    )
+
+    def _get_rho(self) -> float:
+        r"""Return the cutoff radius rho for the current (l_r, j_r) in atomic units.
+
+        An entry with key (l, Unknown) applies to that l irrespective of j (no fine-structure splitting)
+        and can therefore be used even when j_r is unknown (e.g. in LS coupling). A j-resolved entry
+        (l, j) requires j_r to be known. For l beyond the table the largest tabulated l is used, keeping
+        the same fine-structure branch j = l +/- 1/2.
+        """
+        rho_dict = self.rho_dict_core_polarizability_with_cutoff
+        if len(rho_dict) == 0:
+            raise ValueError(f"No cutoff radii defined for the species {self.species}.")
+
+        # For l beyond the table, fall back to the largest tabulated l (the cutoff barely affects such
+        # high-l wavefunctions), keeping the same fine-structure branch j = l +/- 1/2 when j_r is known.
+        max_l = max(l for l, _ in rho_dict)
+        l = min(self.l_r, max_l)
+
+        if not is_unknown(self.j_r):
+            j = l + (self.j_r - self.l_r)
+            if (l, j) in rho_dict:
+                return rho_dict[(l, j)]
+        if (l, Unknown) in rho_dict:
+            return rho_dict[(l, Unknown)]
+
+        if is_unknown(self.j_r):
+            raise ValueError(
+                f"{self.__class__.__name__} has a j-dependent cutoff for l_r={self.l_r} and requires j_r to "
+                "be set, but j_r is None. Use a coupling scheme where j_r is a good quantum number (JJ or FJ)."
+            )
+        raise ValueError(f"No cutoff radius tabulated for l_r={self.l_r}, j_r={self.j_r} in {self.species}.")
+
+    def calc_model_potential(self, x: XType) -> XType:
+        r"""Calculate the core polarizability model potential in atomic units.
+
+        The model potential, see :attr:`~PotentialCorePolarizabilityWithCutoff.reference`, is given by
+
+        .. math::
+            V(x) = - \frac{Z_{net}}{x} - \frac{\alpha_d}{2x^4} (1 - e^{-x^6/\rho^6})
+
+        where :math:`Z_{net}` is the net charge of the ionic core seen by the Rydberg electron,
+        :math:`\alpha_d` is the static core dipole polarizability, and :math:`\rho` is the cutoff radius.
+
+        Args:
+            x: The dimensionless radial coordinate x = r / a_0, for which to calculate potential.
+
+        Returns:
+            V: The core polarizability model potential V(x) in atomic units.
+
+        """
+        v_c = self.calc_potential_coulomb(x)
+
+        alpha_c = self.alpha_c_core_polarizability_with_cutoff
+        if alpha_c == 0:
+            return v_c
+
+        rho = self._get_rho()
+        x2: XType = x * x
+        x4: XType = x2 * x2
+        x6: XType = x4 * x2
+        g2 = 1 - np.exp(-(x6 / rho**6))
+        v_p: XType = -alpha_c / (2 * x4) * g2
+
+        return v_c + v_p
 
 
 def get_potential_class(species: str, tag: str | None = None) -> type[Potential]:

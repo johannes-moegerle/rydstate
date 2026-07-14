@@ -207,7 +207,7 @@ def get_mqdt_states_from_fmodel(  # noqa: C901, PLR0912
         for nui, angular_ket in zip(nuis, model.outer_channels, strict=True):
             radial: RadialKet | RadialDummy
             if not is_unknown(angular_ket.l_r):
-                potential = potential_class(angular_ket.l_r)
+                potential = potential_class(angular_ket.l_r, j_r=angular_ket.get_qn("j_r", allow_unknown=True))
                 radial = RadialKet(float(nui), potential, sign_convention="positive_at_outer_bound")
             else:
                 radial = RadialDummy(1.0, nui)

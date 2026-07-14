@@ -15,6 +15,7 @@ from rydstate.species.fmodel import FModel, FModelSQDT
 from rydstate.species.mqdt import MQDT, get_mqdt
 from rydstate.species.potential import (
     Potential,
+    PotentialCorePolarizabilityWithCutoff,
     PotentialCoulomb,
     PotentialFei2009,
     PotentialMarinescu1994,
@@ -30,6 +31,7 @@ __all__ = [
     "FModel",
     "FModelSQDT",
     "Potential",
+    "PotentialCorePolarizabilityWithCutoff",
     "PotentialCoulomb",
     "PotentialFei2009",
     "PotentialMarinescu1994",

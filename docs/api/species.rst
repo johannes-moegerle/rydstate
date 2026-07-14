@@ -12,6 +12,7 @@ General classes
     PotentialCoulomb
     PotentialMarinescu1994
     PotentialFei2009
+    PotentialCorePolarizabilityWithCutoff
     SQDT
     MQDT
 
