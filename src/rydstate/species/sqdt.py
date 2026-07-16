@@ -1,23 +1,17 @@
 from __future__ import annotations
 
-import inspect
 import logging
-import re
 from abc import ABC
-from fractions import Fraction
 from functools import cached_property
-from pathlib import Path
 from typing import TYPE_CHECKING, Any, ClassVar, overload
-
-import numpy as np
 
 from rydstate.angular.utils import check_spin_addition_rule, get_possible_quantum_number_values, is_unknown
 from rydstate.metaclass_cache import CachedABCMeta
 from rydstate.species.element_properties import get_element_properties
+from rydstate.species.nist import parse_nist_energy_levels, resolve_species_data_file
 from rydstate.species.utils import (
     calc_modified_ritz_formula,
     calc_nu_from_energy,
-    convert_electron_configuration,
     get_all_subclasses,
 )
 from rydstate.units import ureg
@@ -25,6 +19,7 @@ from rydstate.units import ureg
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase
     from rydstate.angular.utils import Unknown
+    from rydstate.species.nist import NistEnergyLevels
     from rydstate.species.utils import RydbergRitzParameters
     from rydstate.units import PintFloat
 
@@ -61,74 +56,22 @@ class SQDT(ABC, metaclass=CachedABCMeta):
     def __repr__(self) -> str:
         return f"SQDT({self.species}, {self.tag})"
 
-    def _setup_nist_energy_levels(self) -> None:  # noqa: C901, PLR0912
+    def _setup_nist_energy_levels(self) -> None:
         """Set up NIST energy levels.
 
-        This method should be called in the constructor to load the NIST energy levels.
-        It reads the file given by ``nist_data_file`` and prepares the data for further use.
-
-        The file should be directly downloaded from https://physics.nist.gov/PhysRefData/ASD/levels_form.html
-        in the 'Tab-delimited' format and in units of Hartree.
-
+        This method is called in the constructor to load the NIST energy levels.
+        It reads the file given by ``nist_data_file`` and prepares the data for further use
+        (see :func:`~rydstate.species.nist.parse_nist_energy_levels`).
         """
-        self._nist_energy_levels: dict[tuple[int, int, float, float], float] = {}
+        self._nist_energy_levels: NistEnergyLevels = {}
 
         if self.nist_data_file is None:
             return
 
-        file = Path(inspect.getfile(type(self))).resolve().parent / self.nist_data_file
-        if not file.exists():
-            raise ValueError(f"NIST energy data file {file} does not exist.")
-
-        header = file.read_text().splitlines()[0]
-        if "Level (Hartree)" not in header:
-            raise ValueError(
-                f"NIST energy data file {file} not given in Hartree, please download the data in units of Hartree."
-            )
-
-        data = np.loadtxt(file, skiprows=1, dtype=str, quotechar='"', delimiter="\t")
-        # data[i] := (Configuration, Term, J, Prefix, Energy, Suffix, Uncertainty, Reference)
-        core_config_parts = convert_electron_configuration(self.element_properties.core_electron_configuration)
-
-        for row in data:
-            if re.match(r"^([A-Z])", row[0]):
-                # Skip rows, where the first column starts with an element symbol
-                continue
-
-            try:
-                config_parts = convert_electron_configuration(row[0])
-            except ValueError:
-                # Skip rows with invalid electron configuration format
-                # (they usually correspond to core configurations, that are not the ground state configuration)
-                # e.g. strontium "4d.(2D<3/2>).4f"
-                continue
-            if sum(part[2] for part in config_parts) != sum(part[2] for part in core_config_parts) + 1:
-                # Skip configurations, where the number of electrons does not match the core configuration + 1
-                continue
-
-            for part in core_config_parts:
-                if part in config_parts:
-                    config_parts.remove(part)
-                elif (part[0], part[1], part[2] + 1) in config_parts:
-                    config_parts.remove((part[0], part[1], part[2] + 1))
-                    config_parts.append((part[0], part[1], 1))
-                else:
-                    break
-            if sum(part[2] for part in config_parts) != 1:
-                # Skip configurations, where the inner electrons are not in the ground state configuration
-                continue
-            n, l = config_parts[0][:2]
-
-            multiplicity = int(row[1][0])
-            s_tot = (multiplicity - 1) / 2
-
-            j_tot_list = [float(Fraction(j_str)) for j_str in row[2].split(",")]
-            for j_tot in j_tot_list:
-                energy = float(row[4])
-                self._nist_energy_levels[(n, l, j_tot, s_tot)] = energy
-
-        if len(self._nist_energy_levels) == 0:
-            raise ValueError(f"No NIST energy levels found for species {self.species} in file {file}.")
+        file = resolve_species_data_file(type(self), self.nist_data_file)
+        self._nist_energy_levels = parse_nist_energy_levels(
+            file, self.element_properties.core_electron_configuration, species=self.species
+        )
 
     def is_allowed_shell(self, n: int, l: int, s_tot: float | Unknown) -> bool:
         """Check if the quantum numbers describe an allowed shell.

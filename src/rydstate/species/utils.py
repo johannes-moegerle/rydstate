@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import inspect
 import math
-import re
 from typing import TYPE_CHECKING, TypeAlias, TypeVar
 
 import numpy as np
@@ -68,27 +67,6 @@ def calc_energy_from_nu(reduced_mass_au: float, nu: float, charge: int = 1) -> f
 
     """
     return -0.5 * charge**2 * reduced_mass_au / nu**2
-
-
-def convert_electron_configuration(config: str) -> list[tuple[int, int, int]]:
-    """Convert an electron configuration string to a list of tuples [(n, l, number), ...].
-
-    This means convert a string representing the outermost electrons
-    like "4f14.6s" to [(4, 2, 14), (6, 0, 1)].
-    """
-    l_str2int = {"s": 0, "p": 1, "d": 2, "f": 3, "g": 4, "h": 5, "i": 6, "k": 7, "l": 8, "m": 9}
-    parts = config.split(".")
-    converted_parts = []
-    for part in parts:
-        match = re.match(r"^(\d+)([a-z])(\d*)$", part)
-        if match is None:
-            raise ValueError(f"Invalid configuration format: {config}.")
-        n = int(match.group(1))
-        l = l_str2int[match.group(2)]
-        number = int(match.group(3)) if match.group(3) else 1
-        converted_parts.append((n, l, number))
-
-    return converted_parts
 
 
 def calc_modified_ritz_formula(n: int, parameters: RydbergRitzParameters) -> float:
