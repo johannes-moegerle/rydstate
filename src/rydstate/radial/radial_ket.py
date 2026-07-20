@@ -476,7 +476,10 @@ class RadialDummy(Radial, metaclass=CachedABCMeta):
     nu: float
 
     def __init__(self, coeff: float, nu: float, *, element_properties: ElementProperties | None = None) -> None:
+        if not nu > 0:
+            raise ValueError(f"nu must be larger than 0, but is {nu=}")
         self.nu = nu
+
         self._coeff = coeff
         self.element_properties = element_properties
 
@@ -491,3 +494,22 @@ class RadialDummy(Radial, metaclass=CachedABCMeta):
         if not isinstance(scalar, Number):
             return NotImplemented
         return RadialDummy(scalar * self._coeff, self.nu, element_properties=self.element_properties)
+
+    def get_outer_sign(self) -> int:
+        return int(np.sign(self._coeff))
+
+    def _calc_matrix_element_au(
+        self,
+        other: Radial,
+        k_radial: RadialMatrixElementOperator,
+        *,
+        integration_method: INTEGRATION_METHODS = "sum",  # noqa: ARG002
+    ) -> float:
+        if not other._is_dummy or k_radial != 0:  # noqa: SLF001
+            return 0.0
+        # the wavefunction of a dummy is unknown, so we approximate it by a Coulomb (Whittaker) function,
+        # for which the overlap can be approximated as
+        # 2 * sqrt(nu1 * nu2) / (nu1 + nu2) * sinc(nu1 - nu2), with the normalized sinc(x) = sin(pi x) / (pi x)
+        # it is one for equal nu and vanishes if the nu differ by a non-zero integer
+        overlap = 2 * np.sqrt(self.nu * other.nu) / (self.nu + other.nu) * np.sinc(self.nu - other.nu)  # type: ignore [operator]
+        return self._coeff.conjugate() * other._coeff * overlap  # type: ignore [attr-defined,no-any-return]  # noqa: SLF001

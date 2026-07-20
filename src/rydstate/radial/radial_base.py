@@ -173,8 +173,6 @@ class Radial:
 
     def get_outer_sign(self) -> int:
         """Get the sign of the outermost non-zero value of the wavefunction."""
-        if self._is_dummy:
-            return int(np.sign(self._coeff))  # type: ignore [attr-defined]
         for w in self.w_list[::-1]:
             if w != 0:
                 return int(np.sign(w))
@@ -264,12 +262,9 @@ class Radial:
         *,
         integration_method: INTEGRATION_METHODS = "sum",
     ) -> float:
-        if self._is_dummy or other._is_dummy:
-            if self._is_dummy is not other._is_dummy:
-                return 0.0
-            if k_radial == 0 and self._common_nu(other) is not None:
-                return self._coeff.conjugate() * other._coeff  # type: ignore [attr-defined,no-any-return]
-            # if not k_radial == 0 or nu are not the same we cant compute the matrix element and simply return 0
+        # self is never a dummy here, since RadialDummy overrides this method
+        if other._is_dummy:
+            # the wavefunction of the dummy is unknown, so we cant compute the matrix element and return 0
             return 0.0
 
         if k_radial == "electric_dipole_closed_shell_core":
