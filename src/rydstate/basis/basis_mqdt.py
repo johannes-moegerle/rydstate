@@ -12,7 +12,7 @@ from rydstate.basis.utils import get_m_range, is_allowed_qn
 from rydstate.linalg import calc_nullvector, find_roots
 from rydstate.radial import RadialDummy, RadialKet
 from rydstate.rydberg_state import RydbergKet, RydbergStateMQDT
-from rydstate.species import MQDT, FModelSQDT, Potential, get_mqdt, get_potential_class
+from rydstate.species import MQDT, Potential, get_mqdt, get_potential_class
 
 if TYPE_CHECKING:
     from typing_extensions import Self
@@ -31,10 +31,9 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
         species: str,
         nu: tuple[float, float],
         *,
-        f_tot: tuple[float, float] | None = None,
         l_r: tuple[int, int] | None = None,
+        f_tot: tuple[float, float] | None = None,
         m: tuple[float, float] | None | NotSet = NotSet,
-        include_sqdt_fallback_models: bool = True,
         # potential and mqdt parameters
         mqdt: MQDT | str | None = None,
         potential_class: type[Potential] | str | None = None,
@@ -44,17 +43,15 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
         Args:
             species: Atomic species.
             nu: Tuple of (nu_min, nu_max) for the effective principal quantum number.
-            f_tot: Optional tuple of (f_tot_min, f_tot_max) for the total angular momentum.
-                Default None, include all f_tot values.
             l_r: Optional tuple of (l_r_min, l_r_max) for the Rydberg electron orbital angular momentum.
                 This is used to filter models, which include at least one channel with
                 l_c=0 and l_r in the specified range.
                 Default None, include all models.
+            f_tot: Optional tuple of (f_tot_min, f_tot_max) for the total angular momentum.
+                Default None, include all f_tot values.
             m: Optional tuple of (m_min, m_max) for the magnetic quantum number range.
                 Default NotSet, only include states with m=NotSet.
                 If m is given as None, include all allowed m values.
-            include_sqdt_fallback_models: Whether to include simple SQDT models (with zero quantum defects) as fallback
-                for states, for which no MQDT models are available.
             mqdt: The MQDT data to use for the states.
                 Either an instance of an MQDT class
                 or a string representing the tag of the MQDT class to use.
@@ -74,7 +71,7 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
         # the maximum l_r is limited by the maximum nu, because l_r < n for bound states
         # and for high l_r the quantum defects are 0, so n = nu
         max_l_r = int(nu[1])
-        self._init_models(max_l_r, f_tot, l_r, include_sqdt_fallback_models=include_sqdt_fallback_models)
+        self._init_models(max_l_r, f_tot, l_r)
         self._init_states(nu, m)
 
     def shallow_copy(self) -> Self:
@@ -88,8 +85,6 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
         max_l_r: int,
         f_tot_range: tuple[float, float] | None,
         l_r_range: tuple[int, int] | None,
-        *,
-        include_sqdt_fallback_models: bool,
     ) -> None:
         self.models: list[FModel] = []
         s_r = 0.5
@@ -109,8 +104,6 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
                         )
                         for model in self.mqdt.get_mqdt_models(channel):
                             if model in self.models:
-                                continue
-                            if isinstance(model, FModelSQDT) and not include_sqdt_fallback_models:
                                 continue
                             self.models.append(model)
 

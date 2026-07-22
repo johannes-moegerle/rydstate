@@ -72,8 +72,8 @@ class BasisSQDT(BasisBase[RydbergStateSQDT[T_AngularKet]], Generic[T_AngularKet]
         species: str,
         n: tuple[int, int],
         *,
-        f_tot: tuple[float, float] | None = None,
         l_r: tuple[int, int] | None = None,
+        f_tot: tuple[float, float] | None = None,
         m: tuple[float, float] | None | NotSet = NotSet,
         coupling_scheme: CouplingScheme = "LS",
         # potential and sqdt parameters
@@ -85,10 +85,10 @@ class BasisSQDT(BasisBase[RydbergStateSQDT[T_AngularKet]], Generic[T_AngularKet]
         Args:
             species: Atomic species.
             n: Tuple of (n_min, n_max) for the principal quantum number.
-            f_tot: Optional tuple of (f_tot_min, f_tot_max) for the total angular momentum.
-                Default None, include all f_tot values.
             l_r: Optional tuple of (l_r_min, l_r_max) for the Rydberg electron orbital angular momentum.
                 Default None, include all l_r values.
+            f_tot: Optional tuple of (f_tot_min, f_tot_max) for the total angular momentum.
+                Default None, include all f_tot values.
             m: Optional tuple of (m_min, m_max) for the magnetic quantum number.
                 If None, all m values are included.
                 Default NotSet, m is not specified and will be set to NotSet for all states.
