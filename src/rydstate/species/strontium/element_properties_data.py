@@ -36,3 +36,4 @@ class ElementPropertiesStrontium88(_ElementPropertiesStrontiumAbstract):
         rydberg_constant.m / (1 + electron_mass.to("u").m / _isotope_mass_u),
         str(rydberg_constant.u),
     )
+    nuclear_dipole = 0.0
