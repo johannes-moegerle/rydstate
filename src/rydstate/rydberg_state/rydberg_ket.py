@@ -13,6 +13,7 @@ from rydstate.units import MatrixElementOperatorRanks, ureg
 
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase
+    from rydstate.angular.utils import AngularOperatorType
     from rydstate.radial.radial_base import Radial
     from rydstate.rydberg_state.rydberg_sqdt import RydbergStateSQDT
     from rydstate.units import MatrixElementOperator, PintFloat
@@ -90,7 +91,14 @@ class RydbergKet:
             The reduced matrix element for the given operator.
 
         """
-        matrix_element_au = self._calc_reduced_matrix_element_au(other, operator)
+        if operator == "magnetic_dipole":
+            matrix_element_au = self._calc_magnetic_reduced_matrix_element_au(other, operator)
+        elif operator.startswith("electric_"):
+            matrix_element_au = self._calc_electric_reduced_matrix_element_au(other, operator)
+        elif is_angular_operator_type(operator):
+            matrix_element_au = self._calc_angular_reduced_matrix_element_au(other, operator)
+        else:
+            raise NotImplementedError(f"Operator {operator} not implemented.")
 
         if unit == "a.u.":
             return matrix_element_au
@@ -111,41 +119,21 @@ class RydbergKet:
             return matrix_element_au * matrix_element_unit.to_base_units()  # type: ignore [no-any-return]
         return matrix_element_au * matrix_element_unit.to(unit).magnitude
 
-    def _calc_reduced_matrix_element_au(self, other: RydbergKet, operator: MatrixElementOperator) -> float:
+    def _calc_electric_reduced_matrix_element_au(self, other: RydbergKet, operator: MatrixElementOperator) -> float:
         if operator == "electric_dipole":
-            matrix_element = self._calc_reduced_matrix_element_au(other, "electric_dipole_rydberg")
+            matrix_element = self._calc_electric_reduced_matrix_element_au(other, "electric_dipole_rydberg")
             if self.element_properties.number_valence_electrons == 2:
-                matrix_element += self._calc_reduced_matrix_element_au(other, "electric_dipole_core")
+                matrix_element += self._calc_electric_reduced_matrix_element_au(other, "electric_dipole_core")
             return matrix_element
 
         k_radial, k_angular = self._get_ks(operator)
 
-        if operator == "magnetic_dipole":
-            # Magnetic dipole operator: mu = - mu_B (g_l <l_tot> + g_s <s_tot>)
-            g_s = 2.0023192
-            value_s_tot = self.angular.calc_reduced_matrix_element(other.angular, "s_tot", k_angular)
-            g_l = 1
-            value_l_tot = self.angular.calc_reduced_matrix_element(other.angular, "l_tot", k_angular)
-            angular_matrix_element = g_s * value_s_tot + g_l * value_l_tot
-            prefactor = -0.5
-            # Note: we use the convention, that the magnetic dipole moments are given
-            # as the same dimensionality as the Bohr magneton (mu = - mu_B (g_l l + g_s s_tot))
-            # such that - mu * B (where the magnetic field B is given in dimension Tesla) is an energy
-
-        elif operator.startswith("electric_"):
-            angular_operator: Literal["spherical", "spherical_core"]
-            angular_operator = "spherical" if "core" not in operator else "spherical_core"
-            # Electric multipole operator: p_{k,q} = e r^k_radial * sqrt(4pi / (2k+1)) * Y_{k_angular,q}(\theta, phi)
-            angular_matrix_element = self.angular.calc_reduced_matrix_element(
-                other.angular, angular_operator, k_angular
-            )
-            # Prefactor sqrt(4 pi / (2 k_angular + 1)) for the electric multipole operators, precomputed for performance
-            prefactor = ELECTRIC_MULTIPOLE_PREFACTORS[k_angular]
-        elif is_angular_operator_type(operator):
-            prefactor = 1
-            angular_matrix_element = self.angular.calc_reduced_matrix_element(other.angular, operator, k_angular)
-        else:
-            raise NotImplementedError(f"Operator {operator} not implemented.")
+        angular_operator: Literal["spherical", "spherical_core"]
+        angular_operator = "spherical" if "core" not in operator else "spherical_core"
+        # Electric multipole operator: p_{k,q} = e r^k_radial * sqrt(4pi / (2k+1)) * Y_{k_angular,q}(\theta, phi)
+        angular_matrix_element = self.angular.calc_reduced_matrix_element(other.angular, angular_operator, k_angular)
+        # Prefactor sqrt(4 pi / (2 k_angular + 1)) for the electric multipole operators, precomputed for performance
+        prefactor = ELECTRIC_MULTIPOLE_PREFACTORS[k_angular]
 
         if angular_matrix_element == 0:
             return 0.0
@@ -161,6 +149,36 @@ class RydbergKet:
             matrix_element = prefactor * angular_matrix_element * core_radial_matrix_element * rydberg_radial_overlap
 
         return matrix_element
+
+    def _calc_magnetic_reduced_matrix_element_au(self, other: RydbergKet, operator: MatrixElementOperator) -> float:
+        k_radial, k_angular = self._get_ks(operator)
+
+        # Magnetic dipole operator: mu = - mu_B (g_l <l_tot> + g_s <s_tot>)
+        g_s = 2.0023192
+        value_s_tot = self.angular.calc_reduced_matrix_element(other.angular, "s_tot", k_angular)
+        g_l = 1
+        value_l_tot = self.angular.calc_reduced_matrix_element(other.angular, "l_tot", k_angular)
+        angular_matrix_element = g_s * value_s_tot + g_l * value_l_tot
+        prefactor = -0.5
+        # Note: we use the convention, that the magnetic dipole moments are given
+        # as the same dimensionality as the Bohr magneton (mu = - mu_B (g_l l + g_s s_tot))
+        # such that - mu * B (where the magnetic field B is given in dimension Tesla) is an energy
+
+        if angular_matrix_element == 0:
+            return 0.0
+
+        radial_matrix_element = self.radial.calc_matrix_element(other.radial, k_radial, unit="a.u.")
+        return prefactor * angular_matrix_element * radial_matrix_element
+
+    def _calc_angular_reduced_matrix_element_au(self, other: RydbergKet, operator: AngularOperatorType) -> float:
+        k_radial, k_angular = self._get_ks(operator)
+        angular_matrix_element = self.angular.calc_reduced_matrix_element(other.angular, operator, k_angular)
+
+        if angular_matrix_element == 0:
+            return 0.0
+
+        radial_matrix_element = self.radial.calc_matrix_element(other.radial, k_radial, unit="a.u.")
+        return angular_matrix_element * radial_matrix_element
 
     def _calc_core_radial_matrix_element_au(self, other: RydbergKet, k_radial: int) -> float:
         r"""Calculate the radial matrix element :math:`\langle self_c | r^{k_{radial}} | other_c \rangle` in a.u.
