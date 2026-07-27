@@ -133,7 +133,7 @@ class RydbergKet:
         k_radial, k_angular = self._get_ks(operator)
 
         angular_operator: AngularOperatorType
-        angular_operator = "spherical_inner_valence" if operator == "electric_dipole_inner_valence" else "spherical"
+        angular_operator = "spherical_inner_valence" if operator.endswith("_inner_valence") else "spherical"
         # Electric multipole operator: p_{k,q} = e r^k_radial * sqrt(4pi / (2k+1)) * Y_{k_angular,q}(\theta, phi)
         angular_matrix_element = self.angular.calc_reduced_matrix_element(other.angular, angular_operator, k_angular)
         # Prefactor sqrt(4 pi / (2 k_angular + 1)) for the electric multipole operators, precomputed for performance
@@ -142,10 +142,10 @@ class RydbergKet:
         if angular_matrix_element == 0:
             return 0.0
 
-        if operator == "electric_dipole_rydberg":
+        if operator.endswith("_rydberg"):
             radial_matrix_element = self.radial.calc_matrix_element(other.radial, k_radial, unit="a.u.")
             matrix_element = prefactor * angular_matrix_element * radial_matrix_element
-        elif operator == "electric_dipole_inner_valence":
+        elif operator.endswith("_inner_valence"):
             core_radial_matrix_element = self._calc_core_radial_matrix_element_au(other, k_radial)
             if core_radial_matrix_element == 0:
                 return 0.0

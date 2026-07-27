@@ -18,6 +18,7 @@ from rydstate.species.utils import calc_energy_from_nu
 
 if TYPE_CHECKING:
     from rydstate.radial.radial_matrix_element import INTEGRATION_METHODS
+    from rydstate.species.element_properties import ElementProperties
     from rydstate.species.potential import Potential
     from rydstate.units import NDArray
 
@@ -29,6 +30,8 @@ WavefunctionSignConvention = Literal["positive_at_outer_bound", "n_l_1"] | None
 
 class RadialKet(Radial, metaclass=CachedABCMeta):
     r"""Class representing a radial Rydberg state."""
+
+    element_properties: ElementProperties
 
     def __init__(
         self,
@@ -76,6 +79,7 @@ class RadialKet(Radial, metaclass=CachedABCMeta):
         )
 
         self.potential = potential
+        self.element_properties = potential.element_properties
         self.l_r = potential.l_r
 
         if not nu > 0:
@@ -143,7 +147,7 @@ class RadialKet(Radial, metaclass=CachedABCMeta):
         if hasattr(self, "_z_list"):
             raise RuntimeError("The grid points were already created, you should not create them again.")
 
-        net_charge = self.potential.element_properties.net_charge
+        net_charge = self.element_properties.net_charge
         if x_min is None:
             # we set z_min explicitly too small,
             # since the integration will automatically stop after the turning point,
@@ -228,7 +232,7 @@ class RadialKet(Radial, metaclass=CachedABCMeta):
 
         # Note: Inside this method we use y and x like it is used in the numerov function
         # and not like in the rest of this class, i.e. y = w(z) and x = z
-        element_properties = self.potential.element_properties
+        element_properties = self.element_properties
         energy_au = calc_energy_from_nu(element_properties.reduced_mass_au, self.nu, element_properties.net_charge)
         v_eff = self.potential.calc_total_effective_potential(self.x_list)
         glist = 8 * element_properties.reduced_mass_au * self.z_list * self.z_list * (energy_au - v_eff)
@@ -283,9 +287,8 @@ class RadialKet(Radial, metaclass=CachedABCMeta):
         logger.warning("Using Whittaker to get the wavefunction is not recommended! Use this only for comparison.")
 
         whitw_vectorized = np.vectorize(whitw, otypes=[float])
-        element_properties = self.potential.element_properties
-        m_star = element_properties.reduced_mass_au
-        net_charge = element_properties.net_charge
+        m_star = self.element_properties.reduced_mass_au
+        net_charge = self.element_properties.net_charge
         whitw_list = whitw_vectorized(self.nu, self.l_r + 0.5, m_star * 2 * net_charge * self.x_list / self.nu)
 
         # to get the correct whittaker functions, u_list should be multiplied with nu^(3/2)
@@ -364,8 +367,7 @@ class RadialKet(Radial, metaclass=CachedABCMeta):
         elif self.nu <= 16:
             tol = 2e-3
 
-        element_properties = self.potential.element_properties
-        if element_properties.number_valence_electrons == 2:
+        if self.element_properties.number_valence_electrons == 2:
             # For divalent atoms the inner boundary is less well behaved ...
             tol = 2e-2
 
@@ -401,7 +403,7 @@ class RadialKet(Radial, metaclass=CachedABCMeta):
         # Check that numerov stopped and did not run until z_force_stop
         if run_backward:
             z_stop = z_list[np.argwhere(w_list != 0).flatten()[0]]
-            z_tol = 0.035 if element_properties.number_valence_electrons == 1 else 0.05
+            z_tol = 0.035 if self.element_properties.number_valence_electrons == 1 else 0.05
             if self.l_r == 0 and z_stop > z_tol:  # z_stop should run almost to zero for l=0
                 warning_msgs.append(f"The integration for l=0 did stop at {z_stop} (should be close to zero).")
             if self.l_r > 0 and z_force_stop > z_stop - self.dz / 2 and inner_weight_scaled_to_whole_grid > 1e-6:
@@ -473,9 +475,10 @@ class RadialKet(Radial, metaclass=CachedABCMeta):
 class RadialDummy(Radial, metaclass=CachedABCMeta):
     _is_dummy = True
 
-    def __init__(self, coeff: float, nu: float) -> None:
+    def __init__(self, coeff: float, nu: float, *, element_properties: ElementProperties | None = None) -> None:
         self.nu = nu
         self._coeff = coeff
+        self.element_properties = element_properties
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self._coeff}, nu={self.nu})"
@@ -487,4 +490,4 @@ class RadialDummy(Radial, metaclass=CachedABCMeta):
     def __mul__(self, scalar: float) -> RadialDummy:
         if not isinstance(scalar, Number):
             return NotImplemented
-        return RadialDummy(scalar * self._coeff, self.nu)
+        return RadialDummy(scalar * self._coeff, self.nu, element_properties=self.element_properties)

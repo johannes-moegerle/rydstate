@@ -12,6 +12,7 @@ from rydstate.units import ureg
 
 if TYPE_CHECKING:
     from rydstate.radial.radial_matrix_element import INTEGRATION_METHODS
+    from rydstate.species.element_properties import ElementProperties
     from rydstate.units import NDArray, PintFloat
 
 logger = logging.getLogger(__name__)
@@ -21,10 +22,14 @@ class Radial:
     _z_list: NDArray
     _w_list: NDArray
     _is_dummy: bool = False
+    element_properties: ElementProperties | None = None
 
-    def __init__(self, z_list: NDArray, w_list: NDArray) -> None:
+    def __init__(
+        self, z_list: NDArray, w_list: NDArray, *, element_properties: ElementProperties | None = None
+    ) -> None:
         self._z_list = np.asarray(z_list)
         self._w_list = np.asarray(w_list)
+        self.element_properties = element_properties
 
         if len(z_list) < 2:
             raise ValueError("z_list must have at least 2 elements")
@@ -124,8 +129,11 @@ class Radial:
     def __add__(self, other: Radial) -> Radial:
         if not isinstance(other, Radial):
             return NotImplemented
+        if self.element_properties != other.element_properties:
+            raise ValueError("Cannot add Radial states with different element_properties")
+
         z_common, w_self, w_other = self._align(other)
-        return Radial(z_common, w_self + w_other)
+        return Radial(z_common, w_self + w_other, element_properties=self.element_properties)
 
     def __sub__(self, other: Radial) -> Radial:
         return self.__add__(-other)
@@ -133,7 +141,7 @@ class Radial:
     def __mul__(self, scalar: float) -> Radial:
         if not isinstance(scalar, Number):
             return NotImplemented
-        return Radial(self.z_list, scalar * self.w_list)
+        return Radial(self.z_list, scalar * self.w_list, element_properties=self.element_properties)
 
     def __rmul__(self, scalar: float) -> Radial:
         return self.__mul__(scalar)
