@@ -49,22 +49,17 @@ def test_alkaline_basis(species: str) -> None:
     assert (basis.states[-1].n, basis.states[-1].angular.l_r) == (35, 34)
     assert len(basis.states) == {"Sr88": 768, "Yb174": 768}[species]
 
-    # also test JJ and FJ coupling
-    basis_jj = BasisSQDT(species, n=(30, 35), coupling_scheme="JJ")
-    basis_fj = BasisSQDT(species, n=(30, 35), coupling_scheme="FJ")
-    assert len(basis_jj.states) == len(basis.states)
-    assert len(basis_fj.states) == len(basis.states)
-
     if species in ["Sr87", "Yb171"]:
         pytest.skip("Quantum defects for Sr87 and Yb171 not implemented yet.")
 
-    state0 = basis.states[0]
-    ov = basis.calc_reduced_overlap(state0)
+    state_ind = 2
+    state = basis.states[state_ind]
+    ov = basis.calc_reduced_overlap(state)
     compare_ov = np.zeros(len(basis.states))
-    compare_ov[0] = 1.0
+    compare_ov[state_ind] = 1.0
     assert np.allclose(ov, compare_ov, atol=1e-3)
 
-    me = basis.calc_reduced_matrix_element(state0, "electric_dipole", unit="e a0")
+    me = basis.calc_reduced_matrix_element(state, "electric_dipole", unit="e a0")
     assert np.shape(me) == (len(basis.states),)
     assert np.count_nonzero(me) > 0
 

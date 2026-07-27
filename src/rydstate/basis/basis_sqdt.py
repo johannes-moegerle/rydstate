@@ -136,6 +136,7 @@ class BasisSQDT(BasisBase[RydbergStateSQDT[T_AngularKet]], Generic[T_AngularKet]
                 if not is_allowed_qn(l_r_range, l_r):
                     continue
                 add_states(n, l_r, f_tot_range, m_range)
+        self.states.sort(key=lambda state: state.nu)
 
     def _add_states_ls(
         self,
