@@ -26,7 +26,6 @@ class Yb173_S15_HighN(FModel):
     eigen_quantum_defects = [
         [0.438426851, 3.91762642, -10612.6828, 8017432.38, -2582622910.0],
     ]
-    mixing_angles = []
 
 
 class Yb173_S25_HighN(FModel):
@@ -91,7 +90,6 @@ class Yb173_S35_HighN(FModel):
     eigen_quantum_defects = [
         [0.438426851, 3.91762642, -10612.6828, 8017432.38, -2582622910.0],
     ]
-    mixing_angles = []
 
 
 class Yb173_P05_HighN(FModel):

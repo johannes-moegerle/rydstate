@@ -74,7 +74,6 @@ class Yb171_S15_HighN(FModel):
     eigen_quantum_defects = [
         [0.438542187, 3.78366407, -10709.7378, 8054542.58, -2523011670],
     ]
-    mixing_angles = []
 
 
 class Yb171_P05_HighN(FModel):
@@ -211,7 +210,6 @@ class Yb171_D05_HighN(FModel):
     eigen_quantum_defects = [
         [0.75336354, -1.84349555, 994.210321],
     ]
-    mixing_angles = []
 
 
 class Yb171_D15_HighN(FModel):
@@ -315,7 +313,6 @@ class Yb171_D35_HighN(FModel):
     eigen_quantum_defects = [
         [0.72861481, 0.79979111, -484.236631],
     ]
-    mixing_angles = []
 
 
 class Yb171_F25_HighN(FModel):
@@ -457,7 +454,6 @@ class Yb171_F45_HighN(FModel):
     eigen_quantum_defects = [
         [0.0834193873, -1.11453386, -1545.71844],
     ]
-    mixing_angles = []
 
 
 class Yb171_G25_HighN(FModel):
@@ -477,7 +473,6 @@ class Yb171_G25_HighN(FModel):
     eigen_quantum_defects = [
         [0.02613255, -0.14203905],
     ]
-    mixing_angles = []
 
 
 class Yb171_G35_HighN(FModel):
@@ -553,7 +548,6 @@ class Yb171_G55_HighN(FModel):
     eigen_quantum_defects = [
         [0.02536571, -0.18507079],
     ]
-    mixing_angles = []
 
 
 # --------------------------------------------------------
@@ -623,7 +617,6 @@ class Yb171_S15_LowN(FModel):
     eigen_quantum_defects = [
         [0.432841, 0.724559, -1.95424],
     ]
-    mixing_angles = []
 
 
 class Yb171_P05_Lowest(FModel):
@@ -677,7 +670,6 @@ class Yb171_P05_LowN(FModel):
         [0.967918, 0.25116, 0.868505],
         [0.969279, 0.288219, 1.36228],
     ]
-    mixing_angles = []
 
 
 class Yb171_P15_Lowest(FModel):
@@ -785,7 +777,6 @@ class Yb171_P25_Lowest(FModel):
     eigen_quantum_defects = [
         [0.906105, 0.383471, 1.23512],
     ]
-    mixing_angles = []
 
 
 class Yb171_P25_LowN(FModel):
@@ -838,7 +829,6 @@ class Yb171_D05_LowN(FModel):
     eigen_quantum_defects = [
         [0.758222, -0.017906, 3.392161],
     ]
-    mixing_angles = []
 
 
 class Yb171_D15_LowN(FModel):
@@ -942,4 +932,3 @@ class Yb171_D35_LowN(FModel):
     eigen_quantum_defects = [
         [0.734512, -0.019501, 3.459114],
     ]
-    mixing_angles = []

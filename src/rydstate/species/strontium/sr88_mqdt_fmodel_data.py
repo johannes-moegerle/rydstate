@@ -29,7 +29,6 @@ class Sr88_S0_HighN(FModel):
     eigen_quantum_defects = [
         [3.26896, -0.138, 0.9],
     ]
-    mixing_angles = []
 
 
 class Sr88_S1_HighN(FModel):
@@ -49,7 +48,6 @@ class Sr88_S1_HighN(FModel):
     eigen_quantum_defects = [
         [3.370778, 0.418, -0.3],
     ]
-    mixing_angles = []
 
 
 # --------------------------------------------------------
@@ -104,7 +102,6 @@ class Sr88_P0_HighN(FModel):
     eigen_quantum_defects = [
         [2.8867, 0.44, -1.9],
     ]
-    mixing_angles = []
 
 
 class Sr88_P1_HighN(FModel):
@@ -127,7 +124,6 @@ class Sr88_P1_HighN(FModel):
         [2.724, -4.67, -157],
         [2.8826, 0.407, -1.3],
     ]
-    mixing_angles = []
 
 
 class Sr88_P2_HighN(FModel):
@@ -147,7 +143,6 @@ class Sr88_P2_HighN(FModel):
     eigen_quantum_defects = [
         [2.882, 0.446, -1.9],
     ]
-    mixing_angles = []
 
 
 class Sr88_D1_HighN(FModel):
@@ -167,7 +162,6 @@ class Sr88_D1_HighN(FModel):
     eigen_quantum_defects = [
         [2.67524, -13.15, -4444],
     ]
-    mixing_angles = []
 
 
 class Sr88_D2_HighN(FModel):
@@ -212,7 +206,6 @@ class Sr88_D3_HighN(FModel):
     eigen_quantum_defects = [
         [2.655, -41.4, -15363],
     ]
-    mixing_angles = []
 
 
 class Sr88_F2_HighN(FModel):
@@ -232,7 +225,6 @@ class Sr88_F2_HighN(FModel):
     eigen_quantum_defects = [
         [0.12, -2.2, 120],
     ]
-    mixing_angles = []
 
 
 class Sr88_F3_HighN(FModel):
@@ -255,7 +247,6 @@ class Sr88_F3_HighN(FModel):
         [0.089, -2, 30],
         [0.12, -2.2, 120],
     ]
-    mixing_angles = []
 
 
 class Sr88_F4_HighN(FModel):
@@ -275,4 +266,3 @@ class Sr88_F4_HighN(FModel):
     eigen_quantum_defects = [
         [0.12, -2.2, 120],
     ]
-    mixing_angles = []

@@ -74,7 +74,6 @@ class Yb174_S1_HighN(FModel):
     eigen_quantum_defects = [
         [0.4382, 4, -1e4, 8e6, -3e9],
     ]
-    mixing_angles = []
 
 
 class Yb174_P0_HighN(FModel):
@@ -197,7 +196,6 @@ class Yb174_D1_HighN(FModel):
     eigen_quantum_defects = [  # TABLE I main text
         [0.75258093, 0.3826, -483.1],
     ]
-    mixing_angles = []
 
 
 class Yb174_D2_HighN(FModel):
@@ -256,7 +254,6 @@ class Yb174_D3_HighN(FModel):
     eigen_quantum_defects = [
         [0.72902016, -0.705328923, 829.238844],
     ]
-    mixing_angles = []
 
 
 class Yb174_F2_HighN(FModel):
@@ -276,7 +273,6 @@ class Yb174_F2_HighN(FModel):
     eigen_quantum_defects = [
         [0.0718252326, -1.00091963, -106.291066],
     ]
-    mixing_angles = []
 
 
 class Yb174_F3_HighN(FModel):
@@ -346,7 +342,6 @@ class Yb174_F4_HighN(FModel):
     eigen_quantum_defects = [
         [0.0839027969, -2.91009023],
     ]
-    mixing_angles = []
 
 
 class Yb174_G3_HighN(FModel):
@@ -366,7 +361,6 @@ class Yb174_G3_HighN(FModel):
     eigen_quantum_defects = [
         [0.0260964574, -0.14139526],
     ]
-    mixing_angles = []
 
 
 class Yb174_G4_HighN(FModel):
@@ -413,7 +407,6 @@ class Yb174_G5_HighN(FModel):
     eigen_quantum_defects = [
         [0.02536571, -0.18507079],
     ]
-    mixing_angles = []
 
 
 # --------------------------------------------------------
@@ -438,7 +431,6 @@ class Yb174_S0_LowN(FModel):
     eigen_quantum_defects = [
         [0.525055, 0],
     ]
-    mixing_angles = []
 
 
 class Yb174_S1_LowN(FModel):
@@ -458,7 +450,6 @@ class Yb174_S1_LowN(FModel):
     eigen_quantum_defects = [
         [0.432841, 0.724559, -1.95424],
     ]
-    mixing_angles = []
 
 
 class Yb174_P0_LowN(FModel):
@@ -478,7 +469,6 @@ class Yb174_P0_LowN(FModel):
     eigen_quantum_defects = [
         [0.969279, 0.288219, 1.36228],
     ]
-    mixing_angles = []
 
 
 class Yb174_P1_Lowest(FModel):
@@ -526,7 +516,6 @@ class Yb174_P1_LowN(FModel):
         [0.967223, -3.03997, 0.569205],
         [0.967918, 0.25116, 0.868505],
     ]
-    mixing_angles = []
 
 
 class Yb174_P2_LowN(FModel):
@@ -546,7 +535,6 @@ class Yb174_P2_LowN(FModel):
     eigen_quantum_defects = [
         [0.906105, 0.383471, 1.23512],
     ]
-    mixing_angles = []
 
 
 class Yb174_D1_LowN(FModel):
@@ -566,7 +554,6 @@ class Yb174_D1_LowN(FModel):
     eigen_quantum_defects = [
         [0.758222, -0.017906, 3.392161],
     ]
-    mixing_angles = []
 
 
 class Yb174_D2_LowN(FModel):
@@ -611,4 +598,3 @@ class Yb174_D3_LowN(FModel):
     eigen_quantum_defects = [
         [0.734512, -0.019501, 3.459114],
     ]
-    mixing_angles = []

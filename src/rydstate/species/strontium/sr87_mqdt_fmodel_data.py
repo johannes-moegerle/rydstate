@@ -29,7 +29,6 @@ class Sr87_S35_HighN(FModel):
     eigen_quantum_defects = [
         [3.370778, 0.418, -0.3],
     ]
-    mixing_angles = []
 
 
 class Sr87_S45_HighN(FModel):
@@ -52,7 +51,6 @@ class Sr87_S45_HighN(FModel):
         [3.26896, -0.138, 0.9],
         [3.370778, 0.418, -0.3],
     ]
-    mixing_angles = []
 
 
 class Sr87_S55_HighN(FModel):
@@ -72,7 +70,6 @@ class Sr87_S55_HighN(FModel):
     eigen_quantum_defects = [
         [3.370778, 0.418, -0.3],
     ]
-    mixing_angles = []
 
 
 # --------------------------------------------------------
@@ -106,7 +103,6 @@ class Sr87_P45_LowN(FModel):
         [0.13143188, 0],
         [0.11955235, 0],
     ]
-    mixing_angles = []
 
 
 # --------------------------------------------------------
@@ -131,7 +127,6 @@ class Sr87_P25_HighN(FModel):
     eigen_quantum_defects = [
         [2.882, 0.446, -1.9],
     ]
-    mixing_angles = []
 
 
 class Sr87_P35_HighN(FModel):
@@ -157,7 +152,6 @@ class Sr87_P35_HighN(FModel):
         [2.8826, 0.407, -1.3],
         [2.882, 0.446, -1.9],
     ]
-    mixing_angles = []
 
 
 class Sr87_P45_HighN(FModel):
@@ -186,7 +180,6 @@ class Sr87_P45_HighN(FModel):
         [2.8826, 0.407, -1.3],
         [2.882, 0.446, -1.9],
     ]
-    mixing_angles = []
 
 
 class Sr87_P55_HighN(FModel):
@@ -212,7 +205,6 @@ class Sr87_P55_HighN(FModel):
         [2.8826, 0.407, -1.3],
         [2.882, 0.446, -1.9],
     ]
-    mixing_angles = []
 
 
 class Sr87_P65_HighN(FModel):
@@ -232,7 +224,6 @@ class Sr87_P65_HighN(FModel):
     eigen_quantum_defects = [
         [2.882, 0.446, -1.9],
     ]
-    mixing_angles = []
 
 
 # --------------------------------------------------------
@@ -257,7 +248,6 @@ class Sr87_D15_HighN(FModel):
     eigen_quantum_defects = [
         [2.655, -41.4, -15363],
     ]
-    mixing_angles = []
 
 
 class Sr87_D25_HighN(FModel):
@@ -426,7 +416,6 @@ class Sr87_D75_HighN(FModel):
     eigen_quantum_defects = [
         [2.655, -41.4, -15363],
     ]
-    mixing_angles = []
 
 
 # --------------------------------------------------------
@@ -460,4 +449,3 @@ class Sr87_F45_HighN(FModel):
         [0.12, -2.2, 120],
         [0.12, -2.2, 120],
     ]
-    mixing_angles = []

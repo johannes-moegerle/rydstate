@@ -49,10 +49,11 @@ class FModel:
     """List of eigen quantum defects for the close-coupling channels.
     Each entry can be a constant or a list of polynomial coefficients."""
 
-    mixing_angles: ClassVar[list[tuple[int, int, RydbergRitzParameters]]]
+    mixing_angles: ClassVar[list[tuple[int, int, RydbergRitzParameters]] | None] = None
     """List of mixing angles between close-coupling channels.
     Each entry is a tuple (i_idx, j_idx, params) where i_idx and j_idx are the indices of the involved channels
-    and params are the parameters for the energy dependence of the angle (constant or polynomial coefficients)."""
+    and params are the parameters for the energy dependence of the angle (constant or polynomial coefficients).
+    The default None means no mixing between the close-coupling channels."""
 
     def __init__(self, mqdt: MQDT) -> None:
         self.mqdt = mqdt
@@ -210,8 +211,9 @@ class FModel:
 
         """
         n = len(self.inner_channels)
-        if len(self.mixing_angles) == 0:
-            return np.eye(n)
+        rot = np.eye(n)
+        if self.mixing_angles is None:
+            return rot
         # Find reference channel nu for energy-dependent angles
         # convention: first involved channel of first energy-dependent mixing entry
         ref_nu: float | None = None
@@ -222,7 +224,6 @@ class FModel:
                 break
         if ref_nu is None:
             ref_nu = 0.0  # unused; angles are constant
-        rot = np.eye(n)
         for i_idx, j_idx, params in self.mixing_angles:
             angle = calc_modified_ritz_formula_in_nu(ref_nu, params)
             r = np.eye(n)
@@ -342,6 +343,5 @@ class FModelSQDT(FModel):
         self.inner_channels = [channel]  # type: ignore [misc]
         self.outer_channels = [channel]  # type: ignore [misc]
         self.eigen_quantum_defects = [0]  # type: ignore [misc]
-        self.mixing_angles = []  # type: ignore [misc]
 
         super().__init__(mqdt)

@@ -77,12 +77,25 @@ def test_all_channels_have_ionization_threshold(model: FModel) -> None:
 
 def test_mixing_angles_indices_valid(model: FModel) -> None:
     """Mixing angle indices must refer to valid channel positions."""
+    if model.mixing_angles is None:
+        return
     n_channels = len(model.inner_channels)
     for entry in model.mixing_angles:
         i, j = entry[0], entry[1]
         assert 0 <= i < n_channels, f"{model.full_name}: mixing_angles index {i} out of range [0, {n_channels})"
         assert 0 <= j < n_channels, f"{model.full_name}: mixing_angles index {j} out of range [0, {n_channels})"
         assert i != j, f"{model.full_name}: mixing_angles has self-coupling ({i}, {j})"
+
+
+def test_no_unknown_class_attributes(model: FModel) -> None:
+    """Models must only define attributes known to FModel.
+
+    Since all FModel fields have either a default or are only used if present (e.g. mixing_angles),
+    a misspelled field name would otherwise be silently ignored.
+    """
+    known = set(FModel.__annotations__) | set(dir(FModel))
+    unknown = {key for key in type(model).__dict__ if not key.startswith("_")} - known
+    assert not unknown, f"{model.full_name}: unknown class attributes {sorted(unknown)} (misspelled field?)"
 
 
 def test_model_name_contains_quantum_number(model: FModel) -> None:
