@@ -3,20 +3,20 @@ from __future__ import annotations
 import logging
 import math
 from functools import cached_property
-from typing import TYPE_CHECKING, Any, get_args, overload
+from typing import TYPE_CHECKING, Any, overload
 
 from rydstate.angular.angular_ket import AngularKetLS
 from rydstate.angular.utils import is_angular_momentum_quantum_number, is_angular_operator_type, is_unknown
 from rydstate.species.element_properties import get_element_properties
 from rydstate.species.sqdt import get_sqdt
-from rydstate.units import MatrixElementOperator, MatrixElementOperatorRanks, ureg
+from rydstate.units import MatrixElementOperatorRanks, ureg
 
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase
     from rydstate.angular.utils import AngularOperatorType
     from rydstate.radial.radial_base import Radial
     from rydstate.rydberg_state.rydberg_sqdt import RydbergStateSQDT
-    from rydstate.units import PintFloat
+    from rydstate.units import MatrixElementOperator, PintFloat
 
 
 logger = logging.getLogger(__name__)
@@ -78,7 +78,7 @@ class RydbergKet:
         k_radial and k_angular are determined from the operator automatically.
 
         For the "electric_dipole" operator, the matrix element of
-        "electric_dipole_rydberg" and "electric_dipole_closed_shell_core"
+        "electric_dipole_rydberg", "electric_dipole_inner_valence" and "electric_dipole_closed_shell_core"
         are calculated separately and added together.
 
         Args:
@@ -125,6 +125,7 @@ class RydbergKet:
             matrix_element = self._calc_electric_reduced_matrix_element_au(other, "electric_dipole_rydberg")
             if self.element_properties.number_valence_electrons == 2:
                 matrix_element += self._calc_electric_reduced_matrix_element_au(other, "electric_dipole_inner_valence")
+            matrix_element += self._calc_electric_reduced_matrix_element_au(other, "electric_dipole_closed_shell_core")
             return matrix_element
 
         if operator in ("electric_quadrupole", "electric_octupole", "electric_quadrupole_zero"):
@@ -151,6 +152,11 @@ class RydbergKet:
                 return 0.0
             rydberg_radial_overlap = self.radial.calc_overlap(other.radial)
             matrix_element = prefactor * angular_matrix_element * core_radial_matrix_element * rydberg_radial_overlap
+        elif operator.endswith("_closed_shell_core"):
+            radial_matrix_element = self.radial.calc_matrix_element(
+                other.radial, "electric_dipole_closed_shell_core", unit="a.u."
+            )
+            matrix_element = prefactor * angular_matrix_element * radial_matrix_element
         else:
             raise ValueError(f"Operator {operator} not implemented for electric multipole matrix elements.")
 
@@ -275,9 +281,9 @@ class RydbergKet:
 
     def _get_ks(self, operator: MatrixElementOperator) -> tuple[int, int]:
         """Get the k_radial and k_angular for the given operator."""
-        if operator in get_args(MatrixElementOperator):
-            operator = operator.removesuffix("_rydberg").removesuffix("_inner_valence")  # type: ignore [assignment]
-            return MatrixElementOperatorRanks[operator]
+        stripped = operator.removesuffix("_rydberg").removesuffix("_inner_valence").removesuffix("_closed_shell_core")
+        if stripped in MatrixElementOperatorRanks:
+            return MatrixElementOperatorRanks[stripped]
         if is_angular_operator_type(operator):
             k_radial = 0
             if operator.startswith("identity_"):

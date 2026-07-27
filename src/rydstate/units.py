@@ -25,6 +25,7 @@ MatrixElementOperator = Literal[
     "electric_dipole",
     "electric_dipole_rydberg",
     "electric_dipole_inner_valence",
+    "electric_dipole_closed_shell_core",
     "electric_quadrupole",
     "electric_quadrupole_rydberg",
     "electric_octupole",

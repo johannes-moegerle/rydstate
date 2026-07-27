@@ -7,11 +7,14 @@ from typing import TYPE_CHECKING, overload
 
 import numpy as np
 
-from rydstate.radial.radial_matrix_element import calc_radial_matrix_element_from_w_z
+from rydstate.radial.radial_matrix_element import (
+    calc_radial_matrix_element,
+    calc_radial_matrix_element_electric_dipole_closed_shell_core,
+)
 from rydstate.units import ureg
 
 if TYPE_CHECKING:
-    from rydstate.radial.radial_matrix_element import INTEGRATION_METHODS
+    from rydstate.radial.radial_matrix_element import INTEGRATION_METHODS, RadialMatrixElementOperator
     from rydstate.species.element_properties import ElementProperties
     from rydstate.units import NDArray, PintFloat
 
@@ -176,18 +179,28 @@ class Radial:
 
     @overload
     def calc_matrix_element(
-        self, other: Radial, k_radial: int, *, unit: None = None, integration_method: INTEGRATION_METHODS = "sum"
+        self,
+        other: Radial,
+        k_radial: RadialMatrixElementOperator,
+        *,
+        unit: None = None,
+        integration_method: INTEGRATION_METHODS = "sum",
     ) -> PintFloat: ...
 
     @overload
     def calc_matrix_element(
-        self, other: Radial, k_radial: int, unit: str, *, integration_method: INTEGRATION_METHODS = "sum"
+        self,
+        other: Radial,
+        k_radial: RadialMatrixElementOperator,
+        unit: str,
+        *,
+        integration_method: INTEGRATION_METHODS = "sum",
     ) -> float: ...
 
     def calc_matrix_element(
         self,
         other: Radial,
-        k_radial: int,
+        k_radial: RadialMatrixElementOperator,
         unit: str | None = None,
         *,
         integration_method: INTEGRATION_METHODS = "sum",
@@ -206,8 +219,8 @@ class Radial:
 
         Args:
             other: Other radial ket
-            k_radial: Power of r in the matrix element
-                (default=0, this corresponds to the overlap integral \int dr r^2 R_1(r) R_2(r))
+            k_radial: Power of r in the matrix element, or a string indicating a special operator
+                (e.g. "electric_dipole_closed_shell_core")
             unit: Unit of the returned matrix element, default None returns a Pint quantity.
             integration_method: Integration method to use
 
@@ -219,7 +232,11 @@ class Radial:
 
         if unit == "a.u.":
             return radial_matrix_element_au
-        radial_matrix_element: PintFloat = radial_matrix_element_au * ureg.Quantity(1, "a0") ** k_radial
+        radial_matrix_element: PintFloat
+        if k_radial == "electric_dipole_closed_shell_core":
+            radial_matrix_element = radial_matrix_element_au * ureg.Quantity(1, "a0") ** 1
+        else:
+            radial_matrix_element = radial_matrix_element_au * ureg.Quantity(1, "a0") ** k_radial
         if unit is None:
             return radial_matrix_element
         return radial_matrix_element.to(unit).magnitude
@@ -227,7 +244,7 @@ class Radial:
     def _calc_matrix_element_au(
         self,
         other: Radial,
-        k_radial: int,
+        k_radial: RadialMatrixElementOperator,
         *,
         integration_method: INTEGRATION_METHODS = "sum",
     ) -> float:
@@ -239,6 +256,26 @@ class Radial:
             # if not k_radial == 0 or nu are not the same we cant compute the matrix element and simply return 0
             return 0.0
 
-        return calc_radial_matrix_element_from_w_z(
-            self.z_list, self.w_list, other.z_list, other.w_list, k_radial, integration_method
-        )
+        if k_radial == "electric_dipole_closed_shell_core":
+            if self.element_properties is None or self.element_properties != other.element_properties:
+                raise ValueError(f"Cannot compute {k_radial} for Radial with different or None element_properties")
+            if (
+                self.element_properties.alpha_closed_shell_core == 0.0
+                or self.element_properties.r_c_dipole_operator is None
+            ):
+                return 0.0
+            return calc_radial_matrix_element_electric_dipole_closed_shell_core(
+                self.z_list,
+                self.w_list,
+                other.z_list,
+                other.w_list,
+                alpha_closed_shell_core=self.element_properties.alpha_closed_shell_core,
+                r_c=self.element_properties.r_c_dipole_operator,
+                integration_method=integration_method,
+            )
+
+        if isinstance(k_radial, int):
+            return calc_radial_matrix_element(
+                self.z_list, self.w_list, other.z_list, other.w_list, k_radial, integration_method
+            )
+        raise ValueError(f"Invalid k_radial: {k_radial}")

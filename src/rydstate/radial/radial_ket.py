@@ -17,7 +17,7 @@ from rydstate.radial.radial_base import Radial
 from rydstate.species.utils import calc_energy_from_nu
 
 if TYPE_CHECKING:
-    from rydstate.radial.radial_matrix_element import INTEGRATION_METHODS
+    from rydstate.radial.radial_matrix_element import INTEGRATION_METHODS, RadialMatrixElementOperator
     from rydstate.species.element_properties import ElementProperties
     from rydstate.species.potential import Potential
     from rydstate.units import NDArray
@@ -74,9 +74,9 @@ class RadialKet(Radial, metaclass=CachedABCMeta):
                 The "n_l_1" convention requires ``n_expected`` to be set.
 
         """
-        self._matrix_element_cache: weakref.WeakKeyDictionary[RadialKet, dict[tuple[int, str], float]] = (
-            weakref.WeakKeyDictionary()
-        )
+        self._matrix_element_cache: weakref.WeakKeyDictionary[
+            RadialKet, dict[tuple[RadialMatrixElementOperator, str], float]
+        ] = weakref.WeakKeyDictionary()
 
         self.potential = potential
         self.element_properties = potential.element_properties
@@ -450,7 +450,7 @@ class RadialKet(Radial, metaclass=CachedABCMeta):
     def _calc_matrix_element_au(
         self,
         other: Radial,
-        k_radial: int,
+        k_radial: RadialMatrixElementOperator,
         *,
         integration_method: INTEGRATION_METHODS = "sum",
     ) -> float:
