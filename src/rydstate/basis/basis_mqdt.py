@@ -103,9 +103,8 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
                             l_r=l_r, j_r=float(j_r), f_c=float(f_c), f_tot=float(f_tot), species=self.species
                         )
                         for model in self.mqdt.get_mqdt_models(channel):
-                            if model in self.models:
-                                continue
-                            self.models.append(model)
+                            if model not in self.models:
+                                self.models.append(model)
 
     def _init_states(
         self,
@@ -155,14 +154,13 @@ def get_mqdt_states_from_fmodel(  # noqa: C901
     nu_max = min(nu_range[1], model.nu_max)
     if np.isinf(nu_max):
         raise ValueError("nu_max must be finite to calculate MQDT states.")
-    if nu_min > nu_max:
-        return []
 
     nu_list = find_roots(lambda nu: np.linalg.det(model.calc_scaled_m_matrix(nu)), nu_min, nu_max)
     if len(nu_list) == 0:
-        logger.warning(
-            "No MQDT states found in the range nu_min=%s, nu_max=%s for model %s", nu_min, nu_max, model.name
-        )
+        if nu_max - nu_min > 1.0:
+            logger.warning(
+                "No MQDT states found for model %s in the range nu_min=%s, nu_max=%s", model.full_name, nu_min, nu_max
+            )
         return []
 
     coefficients_fj: list[float] = []
