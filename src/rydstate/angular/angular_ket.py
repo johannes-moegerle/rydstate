@@ -661,7 +661,7 @@ class AngularKetBase(ABC, Generic[GenericT_Unknown], metaclass=CachedABCMeta):
         if is_unknown(qn_self) or is_unknown(qn_other):
             return 0.0  # TODO, ignore Unknown contributions for now
 
-        if operator in ("spherical", "spherical_core"):
+        if operator in ("spherical", "spherical_inner_valence"):
             complete_reduced_matrix_element = calc_reduced_spherical_matrix_element(qn_self, qn_other, kappa)  # type: ignore [arg-type]
         elif is_angular_momentum_quantum_number(operator):
             complete_reduced_matrix_element = calc_reduced_spin_matrix_element(qn_self, qn_other)

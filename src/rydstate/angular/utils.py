@@ -49,7 +49,7 @@ IdentityOperators = Literal[
 
 AngularOperatorType = Literal[
     "spherical",
-    "spherical_core",
+    "spherical_inner_valence",
     AngularMomentumQuantumNumbers,
     IdentityOperators,
 ]
@@ -228,7 +228,7 @@ def get_qn_name_from_operator(operator: AngularOperatorType) -> AngularMomentumQ
     qn: str = operator
     if operator == "spherical":
         qn = "l_r"
-    elif operator == "spherical_core":
+    elif operator == "spherical_inner_valence":
         qn = "l_c"
     elif operator.startswith("identity_"):
         qn = operator.removeprefix("identity_")
