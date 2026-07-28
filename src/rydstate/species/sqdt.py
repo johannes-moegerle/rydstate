@@ -51,27 +51,14 @@ class SQDT(ABC, metaclass=CachedABCMeta):
     def __init__(self) -> None:
         self.element_properties = get_element_properties(self.species)
 
-        self._setup_nist_energy_levels()
+        self._nist_energy_levels: NistEnergyLevels = {}
+        if self.nist_data_file is not None:
+            # Load the NIST energy levels if a NIST data file is specified
+            file = resolve_species_data_file(type(self), self.nist_data_file)
+            self._nist_energy_levels = parse_nist_energy_levels(file, self.element_properties)
 
     def __repr__(self) -> str:
         return f"SQDT({self.species}, {self.tag})"
-
-    def _setup_nist_energy_levels(self) -> None:
-        """Set up NIST energy levels.
-
-        This method is called in the constructor to load the NIST energy levels.
-        It reads the file given by ``nist_data_file`` and prepares the data for further use
-        (see :func:`~rydstate.species.nist.parse_nist_energy_levels`).
-        """
-        self._nist_energy_levels: NistEnergyLevels = {}
-
-        if self.nist_data_file is None:
-            return
-
-        file = resolve_species_data_file(type(self), self.nist_data_file)
-        self._nist_energy_levels = parse_nist_energy_levels(
-            file, self.element_properties.core_electron_configuration, species=self.species
-        )
 
     def is_allowed_shell(self, n: int, l: int, s_tot: float | Unknown) -> bool:
         """Check if the quantum numbers describe an allowed shell.
