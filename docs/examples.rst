@@ -45,6 +45,7 @@ Some comparisons to old versions of pairinteraction, ARC and NIST data.
    examples/comparisons/compare_z_min_cutoff.ipynb
    examples/comparisons/compare_nist_energy_levels_data.ipynb
    examples/comparisons/compare_nist_matrix_elements.ipynb
+   examples/comparisons/compare_udel_portal_matrix_elements.ipynb
    examples/comparisons/compare_model_potentials.ipynb
    examples/comparisons/compare_whittaker.ipynb
 
