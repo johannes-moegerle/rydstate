@@ -20,7 +20,7 @@ class _PotentialMarinescu1994StrontiumIonAbstract(PotentialMarinescu1994):
     # a_2 = \alpha_3
     # a_3 = -\alpha_2 (Note the minus sign!)
     # and a_4 = 0
-    alpha_c_marinescu_1994 = 7.5
+    alpha_core_marinescu_1994 = 7.5
     r_c_dict_marinescu_1994: ClassVar = {0: 1.7965, 1: 1.3960, 2: 1.6820, 3: 1.0057}
     model_potential_parameter_marinescu_1994: ClassVar = {
         0: (3.4187, 1.5915, -4.7332, 0),

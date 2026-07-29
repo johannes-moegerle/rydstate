@@ -11,7 +11,7 @@ class PotentialMarinescu1994Potassium(PotentialMarinescu1994):
     species = "K"
     is_default = True
 
-    alpha_c_marinescu_1994 = 5.3310
+    alpha_core_marinescu_1994 = 5.3310
     r_c_dict_marinescu_1994: ClassVar = {0: 0.83167545, 1: 0.85235381, 2: 0.83216907, 3: 6.50294371}
     model_potential_parameter_marinescu_1994: ClassVar = {
         0: (3.56079437, 1.83909642, -1.74701102, -1.03237313),

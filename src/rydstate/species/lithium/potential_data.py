@@ -11,7 +11,7 @@ class PotentialMarinescu1994Lithium(PotentialMarinescu1994):
     species = "Li"
     is_default = True
 
-    alpha_c_marinescu_1994 = 0.1923
+    alpha_core_marinescu_1994 = 0.1923
     r_c_dict_marinescu_1994: ClassVar = {0: 0.61340824, 1: 0.61566441, 2: 2.34126273}
     model_potential_parameter_marinescu_1994: ClassVar = {
         0: (2.47718079, 1.84150932, -0.02169712, -0.11988362),

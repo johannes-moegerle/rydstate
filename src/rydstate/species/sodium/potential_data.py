@@ -11,7 +11,7 @@ class PotentialMarinescu1994Sodium(PotentialMarinescu1994):
     species = "Na"
     is_default = True
 
-    alpha_c_marinescu_1994 = 0.9448
+    alpha_core_marinescu_1994 = 0.9448
     r_c_dict_marinescu_1994: ClassVar = {0: 0.45489422, 1: 0.45798739, 2: 0.71875312, 3: 28.6735059}
     model_potential_parameter_marinescu_1994: ClassVar = {
         0: (4.82223117, 2.45449865, -1.12255048, -1.42631393),

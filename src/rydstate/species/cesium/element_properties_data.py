@@ -14,3 +14,6 @@ class ElementPropertiesCesium(ElementProperties):
     core_electron_configuration = "5p6"
 
     corrected_rydberg_constant = (109736.8627339, "1/cm")
+
+    alpha_closed_shell_core = 15.6440  # M. Marinescu et al., Phys. Rev. A 49, 982 (1994), https://journals.aps.org/pra/abstract/10.1103/PhysRevA.49.982
+    r_c_dipole_operator = 3.42  # fitted to NIST matrix elements

@@ -13,6 +13,9 @@ class _ElementPropertiesStrontiumAbstractIon(ElementProperties, ABC):
     additional_allowed_shells: ClassVar = [(4, 2), (4, 3)]
     core_electron_configuration = "4p6"
 
+    # Greene, Aymar Phys. Rev. A 44, 1773, 1991 (https://doi.org/10.1103/PhysRevA.44.1773)
+    alpha_closed_shell_core = 7.5
+
 
 class ElementPropertiesStrontium87Ion(_ElementPropertiesStrontiumAbstractIon):
     species = "Sr87_ion"

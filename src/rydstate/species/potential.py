@@ -252,8 +252,8 @@ class PotentialMarinescu1994(Potential):
 
     tag = "marinescu_1994"
 
-    alpha_c_marinescu_1994: ClassVar[float]
-    """Static dipole polarizability in atomic units (a.u.), used for the parametric model potential."""
+    alpha_core_marinescu_1994: ClassVar[float]
+    """Static dipole polarizability (a.u.) of the core, used for the parametric model potential."""
     r_c_dict_marinescu_1994: ClassVar[dict[int, float]]
     """Cutoff radius {l: r_c} to truncate the unphysical short-range contribution of the polarization potential."""
     model_potential_parameter_marinescu_1994: ClassVar[dict[int, tuple[float, float, float, float]]]
@@ -268,9 +268,10 @@ class PotentialMarinescu1994(Potential):
         The model potential, see :attr:`~PotentialMarinescu1994.reference`, is given by
 
         .. math::
-            V_{mp,marinescu}(x) = - \frac{Z_{l}}{x} - \frac{\alpha_c}{2x^4} (1 - e^{-x^6/x_c**6})
+            V_{mp,marinescu}(x) = - \frac{Z_{l}}{x} - \frac{\alpha_{core}}{2x^4} (1 - e^{-x^6/x_c**6})
 
-        where Z_{l} is the effective nuclear charge, :math:`\alpha_c` is the static core dipole polarizability,
+        where Z_{l} is the effective nuclear charge,
+        :math:`\alpha_{core}` is the static dipole polarizability of the ionic core,
         and x_c is the effective core size.
 
         .. math::
@@ -297,8 +298,8 @@ class PotentialMarinescu1994(Potential):
         z_nl: XType = z_net + (self.element_properties.Z - z_net) * exp_a1 - x * (a3 + a4 * x) * exp_a2
         v_c = -z_nl / x
 
-        alpha_c = self.alpha_c_marinescu_1994
-        if alpha_c == 0:
+        alpha_core = self.alpha_core_marinescu_1994
+        if alpha_core == 0:
             v_p = 0
         else:
             r_c_dict = self.r_c_dict_marinescu_1994
@@ -310,7 +311,7 @@ class PotentialMarinescu1994(Potential):
             x4: XType = x2 * x2
             x6: XType = x4 * x2
             exp_x6 = np.exp(-(x6 / x_c**6))
-            v_p = -alpha_c / (2 * x4) * (1 - exp_x6)
+            v_p = -alpha_core / (2 * x4) * (1 - exp_x6)
 
         return v_c + v_p
 

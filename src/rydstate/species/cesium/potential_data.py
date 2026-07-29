@@ -11,7 +11,7 @@ class PotentialMarinescu1994Cesium(PotentialMarinescu1994):
     species = "Cs"
     is_default = True
 
-    alpha_c_marinescu_1994 = 15.6440
+    alpha_core_marinescu_1994 = 15.6440
     r_c_dict_marinescu_1994: ClassVar = {0: 1.92046930, 1: 2.13383095, 2: 0.93007296, 3: 1.99969677}
     model_potential_parameter_marinescu_1994: ClassVar = {
         0: (3.49546309, 1.47533800, -9.72143084, 0.02629242),

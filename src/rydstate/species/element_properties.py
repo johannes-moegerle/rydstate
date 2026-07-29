@@ -45,6 +45,20 @@ class ElementProperties(ABC, metaclass=CachedABCMeta):
     nuclear_dipole: ClassVar[float] = 0.0
     """Nuclear dipole moment of the species."""
 
+    alpha_closed_shell_core: ClassVar[float] = 0.0
+    """Static dipole polarizability (a.u.) of the core including the closed-shell electrons.
+    It is used for the electric-dipole moment correction due to the core,
+    see e.g. Weisheit Phys. Rev. A 5, 1621, 1972 (https://link.aps.org/doi/10.1103/PhysRevA.5.1621).
+    The core-polarization corrected electric-dipole operator is d(r) = r - alpha_core/r^2 * (1 - exp(-(r/r_c)^3)).
+    This is also used for model potentials including the core-polarization term,
+    see e.g. :py:class:`PotentialMarinescu1994`.
+    """
+    r_c_dipole_operator: ClassVar[float | None] = None
+    """Cutoff radius (a.u.) of the core-polarization corrected electric-dipole operator (see alpha_closed_shell_core).
+    The default None means no correction is applied (i.e. the bare electric-dipole operator d(r) = r is used).
+    If not said otherwise, r_c is fitted to the NIST ASD line strengths of the principal series (ground state -> np_j).
+    """
+
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}()"
 
