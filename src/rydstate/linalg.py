@@ -36,7 +36,7 @@ def find_roots(
     Args:
         func: 1D scalar function to find roots of.
         x_min: Left endpoint of search interval.
-        x_max: Right endpoint of search interval (must be > x_min).
+        x_max: Right endpoint of search interval.
         atol: Absolute tolerance for root validation.
         min_dx: Minimum spacing between roots.
             We use this to determine a grid spacing that is fine enough to detect all roots.
@@ -46,7 +46,12 @@ def find_roots(
         Sorted list of x values where func(x) ≈ 0.
 
     """
-    if x_min >= x_max:
+    if x_min > x_max:
+        return []
+
+    if x_min == x_max:
+        if abs(func(x_min)) <= atol:
+            return [x_min]
         return []
 
     n_grid = math.ceil((x_max - x_min) / min_dx) + 1
