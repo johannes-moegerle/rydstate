@@ -1,3 +1,6 @@
+import logging
+
+import pytest
 from rydstate import BasisMQDT
 from rydstate.angular import AngularKetFJ
 from rydstate.species import FModelSQDT, get_mqdt
@@ -75,3 +78,21 @@ def test_mqdt_basis_sort_and_filter() -> None:
     basis.filter_states("nu", (27.0, 28.0))
     assert len(basis) < n_before
     assert all(27.0 - 1e-10 <= s.nu <= 28.0 + 1e-10 for s in basis.states)
+
+
+@pytest.mark.parametrize("nu", [86.97, 90.97, 92.97, 93.97, 95.97, 96.97, 97.97])
+def test_difficult_yb174_g4_highn_states(nu: float, caplog: pytest.LogCaptureFixture) -> None:
+    """Test that the some of the difficult states of the Yb174_G4_HighN model can be found in the basis.
+
+    In former versions, calc_nullvector would fail to find the nullspace of the M-matrix for these states.
+    """
+    with caplog.at_level(logging.WARNING):
+        basis = BasisMQDT("Yb174", nu=(nu - 0.2, nu + 0.2), l_r=(4, 4), f_tot=(4.0, 4.0))
+        assert any(abs(s.nu - nu) < 1e-2 for s in basis.states)
+
+    errors = [record for record in caplog.records if record.levelno >= logging.ERROR]
+    assert len(errors) == 0, "Unexpected errors were logged: " + "; ".join(record.getMessage() for record in errors)
+    warnings = [record for record in caplog.records if record.levelno >= logging.WARNING]
+    assert len(warnings) == 0, "Unexpected warnings were logged: " + "; ".join(
+        record.getMessage() for record in warnings
+    )

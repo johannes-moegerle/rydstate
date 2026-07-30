@@ -171,26 +171,22 @@ def calc_nullvector(
     matrix: NDArray,
     *,
     method: Literal["numpy_svd", "scipy_nullspace", "scipy_nullspace_gesvd"] = "scipy_nullspace",
-    atol: float = 1e-8,
+    rcond: float = 1e-6,
 ) -> NDArray | None:
-    """Calculate the nullspace vector of a matrix.
-
-    We use scipy.linalg.null_space.
-    If the nullspace has more than one vector, we raise an error since this should not happen for the MQDT M-matrix.
-    """
+    """Calculate the nullspace vector of a matrix."""
     if matrix.shape == (1, 1):
-        if abs(matrix[0, 0]) > atol:
+        if abs(matrix[0, 0]) > 1e-8:
             raise RuntimeError(f"Matrix is 1x1 but not close to zero (value={matrix[0, 0]}), this should not happen.")
         return np.array([1.0])
 
     if method == "numpy_svd":
         _u, s, vt = np.linalg.svd(matrix)
-        null_mask = s <= atol
+        null_mask = s <= rcond * abs(s[0])
         nullspace = vt.T[:, null_mask]
     elif method == "scipy_nullspace":
-        nullspace = scipy.linalg.null_space(matrix, rcond=atol)
+        nullspace = scipy.linalg.null_space(matrix, rcond=rcond)
     elif method == "scipy_nullspace_gesvd":
-        nullspace = scipy.linalg.null_space(matrix, rcond=atol, lapack_driver="gesvd")
+        nullspace = scipy.linalg.null_space(matrix, rcond=rcond, lapack_driver="gesvd")
     else:
         raise ValueError(f"Invalid method: {method}")
 
