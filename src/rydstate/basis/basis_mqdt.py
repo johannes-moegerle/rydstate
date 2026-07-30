@@ -212,7 +212,7 @@ def get_mqdt_states_from_fmodel(
                     rydberg_kets,
                     nu=nu,
                     energy_au=energy_au,
-                    mqdt=model.mqdt,
+                    model=model,
                     potential_class=potential_class,
                 )
             )

@@ -13,6 +13,7 @@ if TYPE_CHECKING:
 
     from rydstate.rydberg_state.rydberg_ket import RydbergKet
     from rydstate.species import MQDT, Potential
+    from rydstate.species.fmodel import FModel
     from rydstate.units import NDArray
 
 
@@ -30,7 +31,7 @@ class RydbergStateMQDT(RydbergStateBase):
         rydberg_kets: Sequence[RydbergKet],
         nu: float,
         energy_au: float,
-        mqdt: MQDT,
+        model: FModel,
         potential_class: type[Potential],
     ) -> None:
         self.species = species
@@ -38,7 +39,7 @@ class RydbergStateMQDT(RydbergStateBase):
         self.rydberg_kets = list(rydberg_kets)
         self.nu = float(nu)
         self._energy_au = float(energy_au)
-        self.mqdt = mqdt
+        self.model = model
         self.potential_class = potential_class
 
         if len(rydberg_kets) == 0:
@@ -61,3 +62,8 @@ class RydbergStateMQDT(RydbergStateBase):
     def __str__(self) -> str:
         terms = [f"{coeff}*{rydberg_ket!s}" for coeff, rydberg_ket in self]
         return f"{', '.join(terms)}"
+
+    @property
+    def mqdt(self) -> MQDT:
+        """Return the MQDT object used to calculate this state."""
+        return self.model.mqdt
