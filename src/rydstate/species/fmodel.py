@@ -162,7 +162,7 @@ class FModel:
             Diagonal K-matrix in the close-coupling frame.
 
         """
-        return np.diag(np.tan(np.pi * np.array(self.calc_eigen_quantum_defects(nu))))
+        return np.diag(np.tan(np.pi * self.calc_eigen_quantum_defects(nu)))
 
     def calc_frame_transformation_outer_inner(self) -> NDArray:
         """Return the frame transformation matrix Q mapping inner to outer channels.
@@ -239,6 +239,8 @@ class FModel:
             Frame transformation matrix U = Q R (n_outer, n_closecoupling).
 
         """
+        if len(self.mixing_angles) == 0:
+            return self.frame_transformation_outer_inner
         return self.frame_transformation_outer_inner @ self.calc_frame_transformation_inner_closecoupling(nu)
 
     def calc_k_matrix(self, nu: float) -> NDArray:
@@ -280,7 +282,7 @@ class FModel:
         """
         kmat = self.calc_k_matrix(nu)
         nuis = self.calc_channel_nuis(nu)
-        return np.array(np.diag(np.tan(np.pi * nuis)) + kmat)
+        return np.diag(np.tan(np.pi * nuis)) + kmat
 
     def calc_scaled_m_matrix(self, nu: float) -> NDArray:
         r"""Return the scaled M-matrix in the collision (outer) channel frame.
@@ -361,3 +363,9 @@ class FModelSQDT(FModel):
         self.mixing_angles = []  # type: ignore [misc]
 
         super().__init__(mqdt)
+
+    def calc_det_scaled_m_matrix(self, nu: float) -> float:
+        # Fast path for SQDT models: the single channel has a vanishing quantum defect, so K = 0 and the
+        # scaled M-matrix reduces to the 1x1 matrix sin(pi * nui) (see FModel.calc_scaled_m_matrix).
+        nui = self.calc_channel_nuis(nu)[0]
+        return math.sin(math.pi * nui)
