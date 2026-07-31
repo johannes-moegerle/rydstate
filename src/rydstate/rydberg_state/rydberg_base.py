@@ -51,6 +51,8 @@ class RydbergStateBase(ABC):
     For MQDT states, we define the corresponding principal quantum number n via the number of nodes
     in the radial wavefunction of the most dominant channel.
     """
+    f_tot: float
+    """The total angular momentum quantum number f_tot of the Rydberg state."""
 
     def __init__(self) -> None:
         if abs(self.norm - 1) > 1e-10:

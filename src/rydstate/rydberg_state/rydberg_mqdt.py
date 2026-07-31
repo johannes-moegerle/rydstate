@@ -54,6 +54,7 @@ class RydbergStateMQDT(RydbergStateBase):
             raise ValueError("RydbergStateMQDT initialized with duplicate rydberg_kets.")
 
         self.angular = AngularState(self._coefficients, [ket.angular for ket in rydberg_kets])  # type: ignore [misc]
+        self.f_tot = self.angular.f_tot
 
         super().__init__()
 
