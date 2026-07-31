@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+from bisect import bisect_right
 from typing import TYPE_CHECKING, Any
 
 from rydstate.angular.utils import is_unknown
@@ -40,34 +41,31 @@ def generate_matrix_elements_tables(
 
     basis.sort_states("nu")  # sort by nu == sort by energy
     list_of_id_state = list(enumerate(basis.states))
-    list_of_id_state = sorted(list_of_id_state, key=lambda x: (x[1].angular.calc_exp_qn("l_r"), x[1].nu, x[0]))
 
     # precomupte l_r values for efficient k_angular_max filtering
-    unknown_angular_kets = [
-        {ket.angular for ket in state.rydberg_kets if is_unknown(ket.angular.l_r)} for _, state in list_of_id_state
-    ]
+    # (channels with unknown l_r are ignored here, they never contribute to any of the matrix elements of interest)
     l_r_sets = [
         {ket.angular.l_r for ket in state.rydberg_kets if not is_unknown(ket.angular.l_r)}
         for _, state in list_of_id_state
     ]
-    l_r_min = [min(l_r_set) for l_r_set in l_r_sets]
-    l_r_max = [max(l_r_set) for l_r_set in l_r_sets]
+    # sort the states by their smallest l_r (and nu and id)
+    sort_order = sorted(
+        range(len(list_of_id_state)),
+        key=lambda i: (min(l_r_sets[i]), list_of_id_state[i][1].nu, list_of_id_state[i][0]),
+    )
+    list_of_id_state = [list_of_id_state[i] for i in sort_order]
+    l_r_min = [min(l_r_sets[i]) for i in sort_order]
+    l_r_max = [max(l_r_sets[i]) for i in sort_order]
+    assert sorted(l_r_min) == l_r_min, "l_r_min is not sorted"
 
     matrix_elements: dict[str, list[tuple[int, int, float]]] = {tkey: [] for tkey in MATRIX_ELEMENTS_OF_INTEREST}
     for i1, (id1, state1) in enumerate(list_of_id_state):
-        for i2, (id2, state2) in enumerate(list_of_id_state[i1:], start=i1):
-            if l_r_min[i2] - l_r_max[i1] > k_angular_max and unknown_angular_kets[i1].isdisjoint(
-                unknown_angular_kets[i2]
-            ):
-                # If the difference in l_r is larger than k_angular_max
-                # and the states dont share a common unknown angular ket
-                # no matrix elements have to be calculated
-                continue
-            if (
-                state1.nu > all_nu_up_to
-                and state2.nu > all_nu_up_to
-                and abs(state1.nu - state2.nu) > max_delta_nu + 0.5
-            ):
+        # Because l_r_min is sorted, for all states from i2_stop on, every channel differs by more than k_angular_max
+        # in l_r from every channel of state1, so all their matrix elements with state1 vanish, and we can skip them.
+        i2_stop = bisect_right(l_r_min, l_r_max[i1] + k_angular_max)
+        nu1_above_cutoff = state1.nu > all_nu_up_to
+        for id2, state2 in list_of_id_state[i1:i2_stop]:
+            if nu1_above_cutoff and state2.nu > all_nu_up_to and abs(state1.nu - state2.nu) > max_delta_nu + 0.5:
                 # If delta_nu is larger than max_delta_nu (+0.5 to not lose states compared to previous max_delta_n)
                 # we dont calculate the matrix elements anymore,
                 # since these are so small, that they are usually not relevant for further calculations
