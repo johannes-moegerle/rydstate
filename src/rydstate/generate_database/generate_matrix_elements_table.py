@@ -72,6 +72,10 @@ def generate_matrix_elements_tables(
         i2_stop = bisect_right(l_r_min, l_r_max[i1] + k_angular_max)
         nu1_above_cutoff = state1.nu > all_nu_up_to
         for id2, state2 in list_of_id_state[i1:i2_stop]:
+            # similar to the l_r filter, we can skip all pairs of states whose f_tot differs by more than k_angular_max
+            if abs(state1.f_tot - state2.f_tot) > k_angular_max:
+                continue
+
             if nu1_above_cutoff and state2.nu > all_nu_up_to and abs(state1.nu - state2.nu) > max_delta_nu + 0.5:
                 # If delta_nu is larger than max_delta_nu (+0.5 to not lose states compared to previous max_delta_n)
                 # we dont calculate the matrix elements anymore,
