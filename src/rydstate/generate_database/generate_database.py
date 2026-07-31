@@ -48,13 +48,11 @@ def create_tables_for_one_species(
         if nu is not None:
             basis.filter_states("nu", nu)
 
-    states_table = generate_states_table(basis)
-    matrix_elements_tables = generate_matrix_elements_tables(basis, max_delta_nu, all_nu_up_to, free_memory=True)
-    tables: dict[str, dict[str, list[Any]]] = {"states": states_table, **matrix_elements_tables}
+    write_table_to_parquet(pd.DataFrame(generate_states_table(basis)), "states")
 
-    # convert the tables to parquet files
-    for tkey, data in tables.items():
-        write_table_to_parquet(pd.DataFrame(data), tkey)
+    matrix_elements_tables = generate_matrix_elements_tables(basis, max_delta_nu, all_nu_up_to, free_memory=True)
+    for tkey in list(matrix_elements_tables):
+        write_table_to_parquet(pd.DataFrame(matrix_elements_tables.pop(tkey)), tkey)
 
 
 def create_tables_for_misc(f_max: float, kappa_max: int = 3) -> None:
