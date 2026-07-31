@@ -45,6 +45,13 @@ class RydbergStateBase(ABC):
     _energy_au: float
     """The energy of the Rydberg state in atomic units (Hartree)."""
 
+    n: int
+    """The principal quantum number n of the Rydberg state.
+
+    For MQDT states, we define the corresponding principal quantum number n via the number of nodes
+    in the radial wavefunction of the most dominant channel.
+    """
+
     def __init__(self) -> None:
         if abs(self.norm - 1) > 1e-10:
             raise ValueError(
@@ -209,10 +216,7 @@ class RydbergStateBase(ABC):
         if qn == "nu":
             return self.nu
         if qn == "n":
-            n = getattr(self, "n", None)
-            if n is None:
-                raise ValueError(f"{self} has no quantum number n")
-            return n  # type: ignore [no-any-return]
+            return self.n
         if qn == "nui":
             return float(sum([abs(coeff) ** 2 * ket.radial.nu / self.norm**2 for coeff, ket in self]))
         raise ValueError(f"Unknown quantum number {qn}")
