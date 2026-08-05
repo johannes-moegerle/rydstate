@@ -23,8 +23,9 @@ def find_roots(
     func: Callable[[float], float],
     x_min: float,
     x_max: float,
-    atol: float = 1e-9,
     min_dx: float = 1e-2,
+    atol: float = 1e-9,
+    xtol: float = 1e-13,
 ) -> list[float]:
     """Find all roots of func in [x_min, x_max].
 
@@ -37,11 +38,12 @@ def find_roots(
         func: 1D scalar function to find roots of.
         x_min: Left endpoint of search interval.
         x_max: Right endpoint of search interval.
-        atol: Absolute tolerance for root validation.
         min_dx: Grid spacing used to detect sign changes and dips.
             Isolated roots and pairs of roots are found even if they are closer than
             min_dx, as long as the grid resolves the dip of |func| around them.
             Three or more roots within one grid cell can still be missed.
+        atol: Absolute tolerance for root validation.
+        xtol: Absolute tolerance for root refinement.
 
     Returns:
         Sorted list of x values where func(x) ≈ 0.
@@ -50,12 +52,7 @@ def find_roots(
     if x_min > x_max:
         return []
 
-    if x_min == x_max:
-        if abs(func(x_min)) <= atol:
-            return [x_min]
-        return []
-
-    approximate_roots = _find_approximate_roots(func, x_min, x_max, min_dx=min_dx)
+    approximate_roots = _find_approximate_roots(func, x_min, x_max, min_dx=min_dx, extend_grid=True)
 
     roots: list[float] = []
     for x_left, x_right in approximate_roots.values():
@@ -63,10 +60,16 @@ def find_roots(
             root = x_left
         else:
             try:
-                root = brentq(func, x_left, x_right, xtol=1e-13, rtol=1e-13)
+                root = brentq(func, x_left, x_right, xtol=xtol)
             except ValueError:
                 logger.warning("Brent's method failed to find root in [%f, %f], skipping.", x_left, x_right)
                 continue
+
+        # the grid used in _find_approximate_roots is extended by one dx on each side, so it can also find roots
+        # at the boundary (or slightly outside) of [x_min, x_max].
+        # Points outside the interval (up to xtol) are discarded here.
+        if not x_min - xtol <= root <= x_max + xtol:
+            continue
 
         val = func(root)
         if abs(val) > atol:
@@ -87,14 +90,23 @@ def _find_approximate_roots(
     x_min: float,
     x_max: float,
     min_dx: float = 1e-2,
+    extend_grid: bool = True,
 ) -> dict[float, tuple[float, float]]:
-    assert x_min < x_max, "x_min must be less than x_max"
+    assert x_min <= x_max, "x_min must be less than or equal to x_max"
     approximate_roots: dict[float, tuple[float, float]] = {}
 
-    n_grid = math.ceil((x_max - x_min) / min_dx) + 1
+    if x_min == x_max:
+        xs = np.array([x_min])
+        dx = min_dx
+    else:
+        n_grid = math.ceil((x_max - x_min) / min_dx) + 1
+        xs = np.linspace(x_min, x_max, n_grid)
+        dx = xs[1] - xs[0]
 
-    xs = np.linspace(x_min, x_max, n_grid)
-    dx = xs[1] - xs[0]
+    # extend the grid by one dx on each side
+    # the roots this finds outside of [x_min, x_max] are discarded again by find_roots
+    if extend_grid:
+        xs = np.concatenate(([xs[0] - dx], xs, [xs[-1] + dx]))
 
     fs = np.array([func(x) for x in xs])
     abs_fs = np.abs(fs)
@@ -116,12 +128,6 @@ def _find_approximate_roots(
             for x_left, x_right in zip(xs[:-1][conditions], xs[1:][conditions], strict=True)
         }
     )
-
-    # check the endpoints for almost zero values (and no sign changes)
-    if abs_fs[0] < 1e-13 and fs[0] != 0 and not sign_change[0]:
-        approximate_roots[xs[0]] = (xs[0], xs[0])
-    if abs_fs[-1] < 1e-13 and fs[-1] != 0 and not sign_change[-1]:
-        approximate_roots[xs[-1]] = (xs[-1], xs[-1])
 
     # find dips in abs(func(x)) that are not detected by the sign change
     is_dip = (
@@ -155,7 +161,7 @@ def _find_approximate_roots(
                 *(dx, x, fs[i]),
             )
             continue
-        new_roots = _find_approximate_roots(func, x - dx, x + dx, min_dx=dx * 1e-2)
+        new_roots = _find_approximate_roots(func, x - dx, x + dx, min_dx=dx * 1e-2, extend_grid=False)
         approximate_roots.update(new_roots)
 
     return approximate_roots

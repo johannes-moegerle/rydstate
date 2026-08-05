@@ -41,6 +41,19 @@ def test_find_roots_detects_nearly_degenerate_pair_within_one_grid_cell(
     np.testing.assert_allclose(roots, reference_roots, atol=1e-13, rtol=1e-13)
 
 
+@pytest.mark.parametrize("dx", dx_list)
+def test_find_roots_at_the_endpoints_of_the_interval(dx: float) -> None:
+    # Since the grid is padded by one dx on each side, the endpoints are ordinary grid points,
+    # i.e. whether a root close to an endpoint is returned only depends on the position of the root,
+    # and not on the value of func at the endpoint (which is smaller than atol in all cases here).
+    assert find_roots(lambda x: (x - 30 - 1e-10) * 1e-8, 30, 31, min_dx=dx) == pytest.approx([30 + 1e-10])
+    assert find_roots(lambda x: (x - 31 + 1e-10) * 1e-8, 30, 31, min_dx=dx) == pytest.approx([31 - 1e-10])
+
+    # roots slightly outside of the interval are not returned
+    assert find_roots(lambda x: (x - 30 + 1e-10) * 1e-8, 30, 31, min_dx=dx) == []
+    assert find_roots(lambda x: (x - 31 - 1e-10) * 1e-8, 30, 31, min_dx=dx) == []
+
+
 @pytest.mark.parametrize("scale", [1, 1e3, 1e6])
 @pytest.mark.parametrize("dx", dx_list)
 def test_find_roots_ignores_dips_that_do_not_reach_zero(dx: float, scale: float) -> None:
