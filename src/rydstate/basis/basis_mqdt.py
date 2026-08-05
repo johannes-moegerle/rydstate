@@ -131,7 +131,7 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
         self.states.sort(key=lambda state: state.nu)
 
 
-def get_mqdt_states_from_fmodel(  # noqa: C901
+def get_mqdt_states_from_fmodel(
     model: FModel,
     nu_range: tuple[float, float],
     m_range: tuple[float, float] | None | NotSet,
@@ -184,9 +184,6 @@ def get_mqdt_states_from_fmodel(  # noqa: C901
 
         nuis = model.calc_channel_nuis(nu)
         coefficients = calc_nullvector(model.calc_m_matrix(nu))
-        if coefficients is None:
-            logger.warning("Failed to calculate nullvector for nu=%s, skipping this state.", nu)
-            continue
         coefficients = np.array(
             [coeff * (nui ** (3 / 2)) / np.cos(np.pi * nui) for coeff, nui in zip(coefficients, nuis, strict=True)]
         )

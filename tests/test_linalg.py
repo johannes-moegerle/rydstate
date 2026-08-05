@@ -1,8 +1,11 @@
 from __future__ import annotations
 
+import logging
+from typing import Literal
+
 import numpy as np
 import pytest
-from rydstate.linalg import find_roots
+from rydstate.linalg import calc_nullvector, find_roots
 
 dx_list = [0.5, 0.3, 0.1, 0.01, 0.015, 0.011]
 
@@ -62,3 +65,47 @@ def test_find_roots_ignores_dips_that_do_not_reach_zero(dx: float, scale: float)
     func = lambda x: scale * ((x - 0.5015) ** 2 + 1e-2)  # noqa: E731
 
     assert find_roots(func, 0, 1, min_dx=dx) == []
+
+
+@pytest.mark.parametrize("method", ["numpy_svd", "scipy_svd", "scipy_svd_gesvd"])
+def test_calc_nullvector_singular_matrix(
+    method: Literal["numpy_svd", "scipy_svd", "scipy_svd_gesvd"], caplog: pytest.LogCaptureFixture
+) -> None:
+    matrix = np.array([[1.0, 2.0], [2.0, 4.0]])  # exactly singular
+
+    with caplog.at_level(logging.WARNING):
+        nullvector = calc_nullvector(matrix, method=method)
+
+    assert np.linalg.norm(nullvector) == pytest.approx(1)
+    assert np.linalg.norm(matrix @ nullvector) == pytest.approx(0, abs=1e-14)
+    assert caplog.records == []
+
+
+def test_calc_nullvector_almost_singular_matrix(caplog: pytest.LogCaptureFixture) -> None:
+    # even if the matrix is not singular (up to rcond), we still return the best possible nullvector
+    angle = 0.3
+    rot = np.array([[np.cos(angle), -np.sin(angle)], [np.sin(angle), np.cos(angle)]])
+    matrix = rot @ np.diag([1.0, 1e-4]) @ rot.T
+
+    with caplog.at_level(logging.WARNING):
+        nullvector = calc_nullvector(matrix)
+
+    assert abs(nullvector @ rot[:, 1]) == pytest.approx(1)  # the singular vector of the smallest singular value
+    assert "not singular" in caplog.text
+
+
+def test_calc_nullvector_degenerate_nullspace(caplog: pytest.LogCaptureFixture) -> None:
+    matrix = np.diag([1.0, 0.0, 0.0])
+
+    with caplog.at_level(logging.WARNING):
+        nullvector = calc_nullvector(matrix)
+
+    assert np.linalg.norm(matrix @ nullvector) == pytest.approx(0, abs=1e-14)
+    assert "more than one vector" in caplog.text
+
+
+def test_calc_nullvector_one_by_one_matrix() -> None:
+    assert calc_nullvector(np.array([[0.0]])) == pytest.approx([1.0])
+
+    with pytest.raises(RuntimeError, match="Matrix is 1x1 but not close to zero"):
+        calc_nullvector(np.array([[1.0]]))

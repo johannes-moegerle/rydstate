@@ -169,31 +169,47 @@ def _find_approximate_roots(
 
 def calc_nullvector(
     matrix: NDArray,
-    *,
-    method: Literal["numpy_svd", "scipy_nullspace", "scipy_nullspace_gesvd"] = "scipy_nullspace",
-    rcond: float = 1e-6,
-) -> NDArray | None:
-    """Calculate the nullspace vector of a matrix."""
+    method: Literal["numpy_svd", "scipy_svd", "scipy_svd_gesvd"] = "scipy_svd",
+) -> NDArray:
+    """Calculate the nullvector of a matrix, which is singular by construction (like the MQDT M-matrix).
+
+    We always return the right singular vector belonging to the smallest singular value,
+    i.e. the best possible nullvector, even if the matrix is only approximately singular
+    (e.g. because the root of det(M) was not located exactly).
+
+    Args:
+        matrix: The (by construction singular) matrix to calculate the nullvector of.
+        method: Which routine to use for the singular value decomposition.
+
+    Returns:
+        The right singular vector belonging to the smallest singular value.
+
+    """
+    tol = 1e-6
     if matrix.shape == (1, 1):
-        if abs(matrix[0, 0]) > 1e-8:
+        if abs(matrix[0, 0]) > tol:
             raise RuntimeError(f"Matrix is 1x1 but not close to zero (value={matrix[0, 0]}), this should not happen.")
         return np.array([1.0])
+    assert matrix.shape[0] == matrix.shape[1], "Matrix must be square"
 
     if method == "numpy_svd":
         _u, s, vt = np.linalg.svd(matrix)
-        null_mask = s <= rcond * abs(s[0])
-        nullspace = vt.T[:, null_mask]
-    elif method == "scipy_nullspace":
-        nullspace = scipy.linalg.null_space(matrix, rcond=rcond)
-    elif method == "scipy_nullspace_gesvd":
-        nullspace = scipy.linalg.null_space(matrix, rcond=rcond, lapack_driver="gesvd")
+    elif method == "scipy_svd":
+        _u, s, vt = scipy.linalg.svd(matrix)
+    elif method == "scipy_svd_gesvd":
+        _u, s, vt = scipy.linalg.svd(matrix, lapack_driver="gesvd")
     else:
         raise ValueError(f"Invalid method: {method}")
 
-    if nullspace.shape[1] == 0:
-        logger.error("Nullspace is empty, no solution found.")
-        return None
-    if nullspace.shape[1] > 1:
-        logger.error("Nullspace has more than one vector (shape=%s), returning first vector.", nullspace.shape)
+    if s[0] == 0:
+        raise RuntimeError("Matrix is entirely zero, this should not happen.")
+    if len(s) > 1 and s[-1] / s[0] > tol:
+        logger.warning("Matrix is not singular (s[-1]/s[0]=%.1e), the nullvector is only approximate.", s[-1] / s[0])
+    elif len(s) > 2 and s[-2] <= 10 * s[-1]:
+        logger.warning(
+            "Nullspace has more than one vector (s[-1]/s[0]=%.1e, s[-2]/s[0]=%.1e), "
+            "returning the one with the smallest singular value.",
+            *(s[-1] / s[0], s[-2] / s[0]),
+        )
 
-    return np.array(nullspace[:, 0])
+    return np.array(vt[-1])
