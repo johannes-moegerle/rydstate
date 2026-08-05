@@ -23,14 +23,29 @@ def test_find_roots_detects_integer_endpoint_roots(dx: float) -> None:
     np.testing.assert_allclose(roots, reference_roots, atol=1e-13, rtol=1e-13)
 
 
+@pytest.mark.parametrize("scale", [1e-6, 1, 1e6])
 @pytest.mark.parametrize("x_null", [(26.9739, 26.9747), (26.8881, 26.8882)])
 @pytest.mark.parametrize("dx", [dx for dx in dx_list if dx <= 0.02])
-def test_find_roots_detects_nearly_degenerate_pair_within_one_grid_cell(x_null: tuple[float, float], dx: float) -> None:
+def test_find_roots_detects_nearly_degenerate_pair_within_one_grid_cell(
+    x_null: tuple[float, float], dx: float, scale: float
+) -> None:
     # Two roots much closer than min_dx produce no sign change on the grid,
     # only a dip of |func|, which is also detected by find_roots.
     # (e.g. the Yb174 6sng G J=4 MQDT model, whose two eigen quantum defects differ by less than 1e-3)
-    func = lambda nu: (nu - x_null[0]) * (nu - x_null[1]) * np.tan(nu * np.pi)  # noqa: E731
+    # The overall scale of func must not matter here, since det(M) of the different MQDT models
+    # ranges from order 1e-6 to order 1.
+    func = lambda nu: scale * (nu - x_null[0]) * (nu - x_null[1]) * np.tan(nu * np.pi)  # noqa: E731
 
     reference_roots = [*x_null, 27]
     roots = find_roots(func, 26.5, 27.5, min_dx=dx)
     np.testing.assert_allclose(roots, reference_roots, atol=1e-13, rtol=1e-13)
+
+
+@pytest.mark.parametrize("scale", [1, 1e3, 1e6])
+@pytest.mark.parametrize("dx", dx_list)
+def test_find_roots_ignores_dips_that_do_not_reach_zero(dx: float, scale: float) -> None:
+    # A local minimum of |func| that stays clearly away from zero must not be reported as a root,
+    # again independently of the overall scale of func.
+    func = lambda x: scale * ((x - 0.5015) ** 2 + 1e-2)  # noqa: E731
+
+    assert find_roots(func, 0, 1, min_dx=dx) == []

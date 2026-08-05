@@ -130,10 +130,24 @@ def _find_approximate_roots(
         & (sign_fs[:-2] == sign_fs[1:-1])
         & (sign_fs[1:-1] == sign_fs[2:])
     )
+
+    # How far (in units of the grid spacing) the roots of the local parabola may lie off the real axis,
+    # before we consider a dip of |func| to be unrelated to any root
+    max_dip_miss_in_dx = 2.0
+
     for i, x in zip(np.where(is_dip)[0] + 1, xs[1:-1][is_dip], strict=True):
-        if abs_fs[i] / dx > 1e2:
-            # if it is a local minimum of |func| but it is far away from zero (compared to the grid spacing),
-            # we assume it is not a root and skip it
+        # Fit a parabola p(t) = a * t**2 + b * t + c through the dip and its two neighbours,
+        # where t = (x - xs[i]) / dx is the distance from the dip in units of the grid spacing
+        c = fs[i]
+        b = (fs[i + 1] - fs[i - 1]) / 2
+        a = (fs[i + 1] - 2 * fs[i] + fs[i - 1]) / 2
+        # The parabola crosses zero if its discriminant is non-negative. If it is negative, the parabola has
+        # a pair of complex roots t = -b / (2 * a) +- i * sqrt(-discriminant) / (2 * |a|), i.e. it misses the
+        # real axis by sqrt(-discriminant) / (2 * |a|) grid spacings. Only if this miss is larger than
+        # max_dip_miss_in_dx grid spacings, we assume the dip is not due to a pair of roots and skip it.
+        # Note that this condition is invariant under rescaling func
+        discriminant = b**2 - 4 * a * c
+        if discriminant < -4 * (max_dip_miss_in_dx * a) ** 2:
             continue
         if dx < 1e-8:
             logger.warning(
