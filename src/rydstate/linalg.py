@@ -31,7 +31,7 @@ def find_roots(
     Uses a dense uniform grid to detect sign changes, then refines each bracket with Brent's method.
     A pair of roots lying between two adjacent grid points has no sign change on
     the grid, but shows up as a local minimum of |func|;
-    We refine such dips by recursively calling find_approximate_roots on a smaller interval around the dip.
+    We refine such dips by recursively calling _find_approximate_roots on a smaller interval around the dip.
 
     Args:
         func: 1D scalar function to find roots of.
@@ -55,7 +55,7 @@ def find_roots(
             return [x_min]
         return []
 
-    approximate_roots = find_approximate_roots(func, x_min, x_max, min_dx=min_dx)
+    approximate_roots = _find_approximate_roots(func, x_min, x_max, min_dx=min_dx)
 
     roots: list[float] = []
     for x_left, x_right in approximate_roots.values():
@@ -82,7 +82,7 @@ def find_roots(
     return roots
 
 
-def find_approximate_roots(
+def _find_approximate_roots(
     func: Callable[[float], float],
     x_min: float,
     x_max: float,
@@ -141,7 +141,7 @@ def find_approximate_roots(
                 *(dx, x, fs[i]),
             )
             continue
-        new_roots = find_approximate_roots(func, x - dx, x + dx, min_dx=dx * 1e-2)
+        new_roots = _find_approximate_roots(func, x - dx, x + dx, min_dx=dx * 1e-2)
         approximate_roots.update(new_roots)
 
     return approximate_roots
