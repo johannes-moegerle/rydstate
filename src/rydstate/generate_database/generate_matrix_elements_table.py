@@ -67,6 +67,9 @@ def generate_matrix_elements_tables(
         tkey: {col: array(dtype) for col, dtype in COLUMNS.items()} for tkey in MATRIX_ELEMENTS_OF_INTEREST
     }
     for i1, (id1, state1) in enumerate(list_of_id_state):
+        logger.debug(
+            "Calculating matrix elements for state %s/%s (id=%s, nu=%s)", i1 + 1, len(list_of_id_state), id1, state1.nu
+        )
         # Because l_r_min is sorted, for all states from i2_stop on, every channel differs by more than k_angular_max
         # in l_r from every channel of state1, so all their matrix elements with state1 vanish, and we can skip them.
         i2_stop = bisect_right(l_r_min, l_r_max[i1] + k_angular_max)

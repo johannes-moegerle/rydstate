@@ -131,7 +131,7 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
         self.states.sort(key=lambda state: state.nu)
 
 
-def get_mqdt_states_from_fmodel(
+def get_mqdt_states_from_fmodel(  # noqa: C901
     model: FModel,
     nu_range: tuple[float, float],
     m_range: tuple[float, float] | None | NotSet,
@@ -166,9 +166,10 @@ def get_mqdt_states_from_fmodel(
 
     nu_list = find_roots(model.calc_det_scaled_m_matrix, nu_min, nu_max)
     if len(nu_list) == 0:
-        logger.warning(
-            "No MQDT states found in the range nu_min=%s, nu_max=%s for model %s", nu_min, nu_max, model.name
-        )
+        if (nu_max - nu_min) > 0.5:
+            logger.warning(
+                "No MQDT states found in the range nu_min=%s, nu_max=%s for model %s", nu_min, nu_max, model.name
+            )
         return []
 
     states: list[RydbergStateMQDT] = []
