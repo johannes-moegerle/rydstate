@@ -183,7 +183,7 @@ def get_mqdt_states_from_fmodel(
             )
 
         nuis = model.calc_channel_nuis(nu)
-        coefficients = calc_nullvector(model.calc_m_matrix(nu))
+        coefficients = calc_nullvector(model.calc_scaled_m_matrix(nu))
         coefficients = np.array(
             [coeff * (nui ** (3 / 2)) / np.cos(np.pi * nui) for coeff, nui in zip(coefficients, nuis, strict=True)]
         )
