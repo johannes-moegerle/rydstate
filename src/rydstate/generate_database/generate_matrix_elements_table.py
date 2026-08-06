@@ -33,7 +33,7 @@ MATRIX_ELEMENTS_OF_INTEREST: dict[str, MatrixElementOperator] = {
 }
 
 
-def generate_matrix_elements_tables(
+def generate_matrix_elements_tables(  # noqa: C901
     basis: BasisMQDT | BasisSQDT[Any],
     max_delta_nu: float = float("inf"),
     all_nu_up_to: float = float("inf"),
@@ -66,10 +66,15 @@ def generate_matrix_elements_tables(
     matrix_elements: dict[str, dict[str, array[Any]]] = {
         tkey: {col: array(dtype) for col, dtype in COLUMNS.items()} for tkey in MATRIX_ELEMENTS_OF_INTEREST
     }
+    number_of_states = len(list_of_id_state)
+    log_every = max(1, number_of_states // 20)  # only log the progress every 5%, i.e. at most 20 times
     for i1, (id1, state1) in enumerate(list_of_id_state):
-        logger.debug(
-            "Calculating matrix elements for state %s/%s (id=%s, nu=%s)", i1 + 1, len(list_of_id_state), id1, state1.nu
-        )
+        if i1 % log_every == 0:
+            logger.info(
+                "Calculating matrix elements for state %s/%s (%d%%)",
+                *(i1 + 1, number_of_states, 100 * i1 / number_of_states),
+            )
+
         # Because l_r_min is sorted, for all states from i2_stop on, every channel differs by more than k_angular_max
         # in l_r from every channel of state1, so all their matrix elements with state1 vanish, and we can skip them.
         i2_stop = bisect_right(l_r_min, l_r_max[i1] + k_angular_max)
