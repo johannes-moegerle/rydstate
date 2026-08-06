@@ -72,6 +72,9 @@ def find_roots(
             continue
 
         val = func(root)
+        if abs(val) > 1e10:
+            # found a singularity instead of a root, ignore this
+            continue
         if abs(val) > atol:
             logger.warning("Root not close to zero: x=%f f(x)=%e. Skipping.", root, val)
             continue
@@ -117,7 +120,7 @@ def _find_approximate_roots(
     approximate_roots.update({x: (x, x) for x in xs[zeros]})
 
     # find approximate roots that have a sign change between two adjacent (finite and non-zero) grid points
-    finite = abs_fs < 1e10
+    finite = np.isfinite(fs)
     non_zeros = np.bitwise_not(zeros)
     sign_change = sign_fs[:-1] * sign_fs[1:] < 0
     conditions = sign_change & (finite[:-1] & finite[1:]) & (non_zeros[:-1] & non_zeros[1:])
