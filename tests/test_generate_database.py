@@ -5,6 +5,7 @@ from typing import Any
 import numpy as np
 import pytest
 from rydstate import RydbergStateSQDTAlkali
+from rydstate.angular.utils import minus_one_pow
 from rydstate.basis import BasisMQDT, BasisSQDT
 from rydstate.generate_database.generate_matrix_elements_table import (
     MATRIX_ELEMENTS_OF_INTEREST,
@@ -89,16 +90,21 @@ def test_generate_matrix_elements_table(species_specifier: str) -> None:
         assert np.isclose(val, reference)
 
 
-@pytest.mark.parametrize("species_specifier", ["Yb174_mqdt", "Rb"])
+@pytest.mark.parametrize("species_specifier", ["Rb", "Sr88_sqdt", "Yb174_mqdt", "Yb171_mqdt"])
 def test_matrix_elements_table_matches_unfiltered_reference(species_specifier: str) -> None:
-    """Compare the matrix element tables against an unfiltered loop over all pairs of states.
+    r"""Compare the matrix element tables against an unfiltered loop over all pairs of states.
 
     generate_matrix_elements_tables only evaluates the state pairs that survive the l_r window
     (bisect on the sorted l_r_min) and the f_tot triangle rule. Both filters can only fail by
     silently omitting rows, which test_generate_matrix_elements_table cannot detect since it only
     checks the values that are present.
     Comparing the values as well also covers the (j, i) rows, which are not calculated but derived
-    from the (i, j) rows via the symmetry of the reduced matrix elements.
+    from the (i, j) rows via the symmetry of the reduced matrix elements
+    :math:`\langle a || O^{(\kappa)} || b \rangle = (-1)^{f_a - f_b} \langle b || O^{(\kappa)} || a \rangle`,
+    i.e. transposing flips the sign exactly if :math:`f_a - f_b` is odd.
+    On top of that we check that the transposed row is exactly (bitwise) the row times this sign, which the
+    comparison above does not imply, but which ensures that it is still derived and not calculated again.
+    The mqdt species are important here, since their f_tot is not simply the j_tot of a single channel.
     """
     species = species_specifier.removesuffix("_mqdt").removesuffix("_sqdt")
     basis: BasisMQDT | BasisSQDT[Any]
@@ -124,6 +130,7 @@ def test_matrix_elements_table_matches_unfiltered_reference(species_specifier: s
             for tkey, me in calc_matrix_elements_one_pair(initial, final, MATRIX_ELEMENTS_OF_INTEREST).items():
                 expected[tkey][id_initial, id_final] = me
 
+    signs = set()
     for tkey, table in tables.items():
         pairs = list(zip(table["id_initial"].tolist(), table["id_final"].tolist(), strict=True))
         assert len(pairs) == len(set(pairs)), f"{tkey}: table contains duplicate rows"
@@ -135,3 +142,14 @@ def test_matrix_elements_table_matches_unfiltered_reference(species_specifier: s
 
         reference = [expected[tkey][pair] for pair in pairs]
         np.testing.assert_allclose(table["val"], reference, rtol=1e-10, atol=0, err_msg=f"wrong values in '{tkey}'")
+
+        # since no rows are missing, the transposed row of every off-diagonal row is guaranteed to exist
+        values = dict(zip(pairs, table["val"], strict=True))
+        for (id_initial, id_final), val in values.items():
+            if id_initial >= id_final:
+                continue
+            sign = minus_one_pow(basis.states[id_initial].f_tot - basis.states[id_final].f_tot)
+            assert values[id_final, id_initial] == sign * val, f"{tkey}: wrong sign of the row {(id_final, id_initial)}"
+            signs.add(sign)
+
+    assert signs == {1, -1}, f"the tables of {species_specifier} do not contain both signs, so the test is vacuous"
