@@ -8,143 +8,267 @@ import sys
 import time
 from pathlib import Path
 
-from rydstate.generate_database.generate_database import create_tables_for_misc, create_tables_for_one_species
+from rydstate.generate_database.generate_database import (
+    create_tables_for_misc,
+    create_tables_for_mqdt,
+    create_tables_for_sqdt,
+)
 
 logger = logging.getLogger(__name__)
 
 
-def main() -> None:  # noqa: C901, PLR0912, PLR0915
+def main() -> None:
     """Entry point for the generate_database script."""
+    parser = build_parser()
+    args = parser.parse_args()
+    if args.mode is None:
+        parser.print_help()
+        sys.exit(1)
+
+    try:
+        directory = prepare_directory(args)
+    except OSError as err:
+        # the message is meant for the user, so print it without a traceback
+        sys.exit(f"Error: {err}")
+    configure_logging(args.log_level, directory, args.warnings_as_exceptions)
+
+    time_start = time.perf_counter()
+    if args.mode == "misc":
+        create_tables_for_misc(f_max=args.f_max, kappa_max=3)
+    elif args.mode == "sqdt":
+        create_tables_for_sqdt(
+            args.species,
+            n=(args.n_min, args.n_max),
+            f_tot=get_qn_range(args, "f_tot"),
+            l_r=get_qn_range(args, "l_r"),  # type: ignore [arg-type]
+            max_delta_nu=args.max_delta_nu,
+            all_nu_up_to=args.all_nu_up_to,
+        )
+    elif args.mode == "mqdt":
+        create_tables_for_mqdt(
+            args.species,
+            nu=(args.nu_min, args.nu_max),
+            f_tot=get_qn_range(args, "f_tot"),
+            l_r=get_qn_range(args, "l_r"),  # type: ignore [arg-type]
+            max_delta_nu=args.max_delta_nu,
+            all_nu_up_to=args.all_nu_up_to,
+        )
+    else:
+        raise ValueError(f"Unknown mode: {args.mode}")
+
+    logger.info("Time taken: %.2f seconds", time.perf_counter() - time_start)
+    log_memory_usage()
+
+
+def build_parser() -> argparse.ArgumentParser:
+    """Build the argument parser with the sqdt, mqdt and misc subcommands."""
     parser = argparse.ArgumentParser(
         description="Generate a database, containing energies and matrix elements, for a given species.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog=("Example:\n  generate_database Rb --log-level INFO\n"),
+        epilog=(
+            "Examples:\n"
+            "  generate_database sqdt Rb --n-max 60\n"
+            "  generate_database mqdt Yb174 --nu-max 60\n"
+            "  generate_database misc --f-max 10\n"
+        ),
     )
-    parser.add_argument("species", help="The species name to generate the database for.")
-    parser.add_argument(
-        "--n-min",
-        default=None,
-        type=int,
-        help="The minimal principal quantum number n for the states to be included in the database. "
-        "Default 1 will start with the ground state configuration of the specific species (e.g. n=5 for Rb).",
-    )
-    parser.add_argument(
-        "--n-max",
-        default=None,
-        type=int,
-        help="The maximum principal quantum number n for the states to be included in the database.",
-    )
-    parser.add_argument(
-        "--nu-min",
-        default=None,
-        type=int,
-        help="The minimal effective principal quantum number nu for the states to be included in the database. "
-        "Default 0 will include all low lying states.",
-    )
-    parser.add_argument(
-        "--nu-max",
-        default=None,
-        type=int,
-        help="The maximum effective principal quantum number nu for the states to be included in the database.",
-    )
-    parser.add_argument(
-        "--max-delta-nu",
-        default=float("inf"),
-        type=float,
-        help="The maximum difference in effective principal quantum number nu for matrix elements to be calculated.",
-    )
-    parser.add_argument(
-        "--all-nu-up-to",
-        default=float("inf"),
-        type=float,
-        help="Calculate all matrix elements where at least one state has effective principal quantum number nu "
-        "smaller than or equal to this value.",
-    )
-    parser.add_argument(
-        "--f-max",
-        default=None,
-        type=float,
-        help="The maximum angular momentum quantum number f for misc database tables.",
-    )
-    parser.add_argument(
+    subparsers = parser.add_subparsers(dest="mode", title="modes")
+
+    # arguments shared by all modes
+    common = argparse.ArgumentParser(add_help=False)
+    common.add_argument(
         "--directory",
         default=None,
         type=str,
-        help="The directory where the database will be saved.",
+        help="The directory where the database will be saved. "
+        "Defaults to a subfolder of database/ derived from the mode and species.",
     )
-    parser.add_argument(
+    common.add_argument(
         "--log-level",
         default="INFO",
         choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
-        help="set the logging level (default: INFO)",
+        help="Set the logging level (default: INFO).",
     )
-    parser.add_argument(
+    common.add_argument(
         "--warnings-as-exceptions",
         action="store_true",
         help="Treat warnings in rydstate as exceptions.",
     )
-    parser.add_argument(
+    common.add_argument(
         "--overwrite",
         action="store_true",
-        help="Delete the species folder if it exists and create a new one.",
+        help="Delete the folder if it exists and create a new one.",
     )
 
-    args = parser.parse_args()
-    if args.species == "misc":
-        if (
-            args.n_min is not None
-            or args.n_max is not None
-            or args.nu_min is not None
-            or args.nu_max is not None
-            or args.max_delta_nu != float("inf")
-            or args.all_nu_up_to != float("inf")
-        ):
-            parser.error(
-                "--n-min, --n-max, --nu-min, --nu-max, --max-delta-nu, and --all-nu-up-to are only valid "
-                "when generating a species database."
-            )
-    elif args.f_max is not None:
-        parser.error("--f-max is only valid when generating the misc database.")
+    # arguments shared by the species modes (sqdt and mqdt)
+    species_common = argparse.ArgumentParser(add_help=False)
+    species_common.add_argument("species", help="The species name to generate the database for (e.g. Rb).")
+    species_common.add_argument(
+        "--f-tot-min",
+        default=None,
+        type=float,
+        help="The minimal total angular momentum quantum number f_tot for the states to be included in the database. "
+        "Defaults to 0.",
+    )
+    species_common.add_argument(
+        "--f-tot-max",
+        default=None,
+        type=float,
+        help="The maximum total angular momentum quantum number f_tot for the states to be included in the database. "
+        "Defaults to inf.",
+    )
+    species_common.add_argument(
+        "--l-r-min",
+        default=None,
+        type=int,
+        help="The minimal orbital angular momentum quantum number l_r for the states to be included in the database. "
+        "Defaults to 0.",
+    )
+    species_common.add_argument(
+        "--l-r-max",
+        default=None,
+        type=int,
+        help="The maximum orbital angular momentum quantum number l_r for the states to be included in the database. "
+        "Defaults to inf.",
+    )
+    species_common.add_argument(
+        "--max-delta-nu",
+        default=float("inf"),
+        type=float,
+        help="The maximum difference in the effective principal quantum number nu for matrix elements to be included.",
+    )
+    species_common.add_argument(
+        "--all-nu-up-to",
+        default=float("inf"),
+        type=float,
+        help="Calculate all matrix elements where at least one state has an effective principal quantum number nu "
+        "smaller than or equal to this value.",
+    )
 
-    directory = Path(args.directory) if args.directory is not None else Path("database") / args.species
+    # sqdt parser
+    sqdt_parser = subparsers.add_parser(
+        "sqdt",
+        parents=[species_common, common],
+        help="Generate the database for a species using single-channel quantum defect theory.",
+        description="Generate the database for a species using single-channel quantum defect theory. "
+        "The basis is defined via the n-range.",
+    )
+    sqdt_parser.add_argument(
+        "--n-min",
+        default=1,
+        type=int,
+        help="The minimal principal quantum number n for the states to be included in the database. "
+        "Default 1 will start with the ground state configuration of the specific species (e.g. n=5 for Rb).",
+    )
+    sqdt_parser.add_argument(
+        "--n-max",
+        required=True,
+        type=int,
+        help="The maximum principal quantum number n for the states to be included in the database.",
+    )
+
+    # mqdt parser
+    mqdt_parser = subparsers.add_parser(
+        "mqdt",
+        parents=[species_common, common],
+        help="Generate the database for a species using multi-channel quantum defect theory.",
+        description="Generate the database for a species using multi-channel quantum defect theory. "
+        "The basis is defined via the nu-range.",
+    )
+    mqdt_parser.add_argument(
+        "--nu-min",
+        default=0,
+        type=float,
+        help="The minimal effective principal quantum number nu for the states to be included in the database. "
+        "Default 0 will include all low lying states.",
+    )
+    mqdt_parser.add_argument(
+        "--nu-max",
+        required=True,
+        type=float,
+        help="The maximum effective principal quantum number nu for the states to be included in the database.",
+    )
+
+    # misc parser
+    misc_parser = subparsers.add_parser(
+        "misc",
+        parents=[common],
+        help="Generate the misc database tables, which do not depend on a species.",
+        description="Generate the misc database tables, which do not depend on a species.",
+    )
+    misc_parser.add_argument(
+        "--f-max",
+        required=True,
+        type=float,
+        help="The maximum angular momentum quantum number f for misc database tables.",
+    )
+
+    return parser
+
+
+def prepare_directory(args: argparse.Namespace) -> Path:
+    """Create the (empty) database directory and change into it."""
+    if args.directory is not None:
+        directory = Path(args.directory)
+    elif args.mode == "misc":
+        directory = Path("database") / "misc"
+    elif args.mode == "sqdt":
+        species = args.species.removesuffix("_sqdt")
+        folder = f"{species}_sqdt" if any(species.startswith(sp) for sp in ["Sr", "Yb"]) else species
+        directory = Path("database") / folder
+    elif args.mode == "mqdt":
+        species = args.species.removesuffix("_mqdt")
+        directory = Path("database") / f"{species}_mqdt"
+    else:
+        raise ValueError(f"Unknown mode: {args.mode}")
     directory = directory.resolve()
+
     if directory.exists():
-        if args.overwrite:
-            shutil.rmtree(directory)
-        else:
+        if not args.overwrite:
             raise FileExistsError(f"The folder {directory} already exists. Use --overwrite to overwrite it.")
+        check_is_generated_database(directory)
+        shutil.rmtree(directory)
     directory.mkdir(parents=True)
     os.chdir(directory)
+    return directory
 
-    configure_logging(args.log_level, directory, args.warnings_as_exceptions)
 
-    time_start = time.perf_counter()
-    if args.species == "misc":
-        if args.f_max is None:
-            parser.error("--f-max is required when generating the misc database.")
-        create_tables_for_misc(f_max=args.f_max, kappa_max=3)
-    else:
-        if args.n_max is None and args.nu_max is None:
-            parser.error("At least one of --n-max or --nu-max must be provided.")
+def check_is_generated_database(directory: Path) -> None:
+    """Raise if the directory contains anything but the files written by a previous run.
 
-        if args.n_min is None and args.n_max is None:
-            n = None
-        else:
-            n_min = args.n_min if args.n_min is not None else 1
-            n_max = args.n_max if args.n_max is not None else int(args.nu_max) + 10
-            n = (n_min, n_max)
-
-        if args.nu_min is None and args.nu_max is None:
-            nu = None
-        else:
-            nu_min = args.nu_min if args.nu_min is not None else 0
-            nu_max = args.nu_max if args.nu_max is not None else args.n_max
-            nu = (nu_min, nu_max)
-        create_tables_for_one_species(
-            args.species, n=n, nu=nu, max_delta_nu=args.max_delta_nu, all_nu_up_to=args.all_nu_up_to
+    Since --overwrite deletes the whole directory tree, only ever delete a directory that looks like a
+    previously generated database, i.e. that solely contains the log file and the parquet tables.
+    """
+    if not directory.is_dir():
+        raise FileExistsError(
+            f"Refusing to overwrite {directory}, since it is not a directory. "
+            "Delete it manually if this is really what you want."
         )
-    logger.info("Time taken: %.2f seconds", time.perf_counter() - time_start)
-    log_memory_usage()
+    unexpected = sorted(
+        entry.name
+        for entry in directory.iterdir()
+        if not (entry.is_file() and (entry.name == "log" or entry.suffix == ".parquet"))
+    )
+    if unexpected:
+        listed = ", ".join(unexpected[:5]) + (", ..." if len(unexpected) > 5 else "")
+        raise FileExistsError(
+            f"Refusing to overwrite the folder {directory}, since it does not look like a generated database "
+            f"(it contains {listed}). Delete it manually if this is really what you want."
+        )
+
+
+def get_qn_range(args: argparse.Namespace, qn: str) -> tuple[float, float] | None:
+    """Get the (<qn>_min, <qn>_max) range for the quantum number qn from the parsed arguments.
+
+    Returns None if neither the minimum nor the maximum is given, i.e. all values of qn are included.
+    """
+    qn_min, qn_max = getattr(args, f"{qn}_min"), getattr(args, f"{qn}_max")
+    if qn_min is None and qn_max is None:
+        return None
+    return (
+        qn_min if qn_min is not None else 0,
+        qn_max if qn_max is not None else float("inf"),
+    )
 
 
 def log_memory_usage() -> None:
