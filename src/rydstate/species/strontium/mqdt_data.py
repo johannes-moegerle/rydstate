@@ -16,7 +16,10 @@ class MQDTStrontium87(MQDT):
         CoreKet(4.5, 0.5, 0, 0.5, 4): (45932.287373577, "1/cm"),
         CoreKet(4.5, 0.5, 0, 0.5, 5): (45932.120512528, "1/cm"),
     }
-    reference_ionization_threshold_tuple = (45932.287373577, "1/cm")
+    # hyperfine centroid of the two F thresholds above, i.e. their (2F+1)-weighted mean
+    # (9 * 45932.287373577 + 11 * 45932.120512528) / 20, which coincides with the Sr88
+    # ionization threshold and is the reference used for the Sr87 quantum defects.
+    reference_ionization_threshold_tuple = (45932.1956, "1/cm")
     model_classes = get_fmodels(sr87_mqdt_fmodel_data, species)
 
 
