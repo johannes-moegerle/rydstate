@@ -104,10 +104,12 @@ class FModel:
         """Calculate the energy of the Rydberg state.
 
         The energy is calculated for an effective principal quantum number nu,
-        which is defined with reference to the lowest ionization threshold of the MQDT model.
+        which is defined with reference to the reference ionization threshold of the MQDT model,
+        see :attr:`~rydstate.species.mqdt.MQDT.reference_ionization_threshold_au`.
         """
         return (
-            calc_energy_from_nu(self.element_properties.reduced_mass_au, nu) + self.mqdt.reference_ionization_energy_au
+            calc_energy_from_nu(self.element_properties.reduced_mass_au, nu)
+            + self.mqdt.reference_ionization_threshold_au
         )
 
     def calc_channel_nuis(self, nu: float) -> NDArray:
@@ -119,7 +121,7 @@ class FModel:
             E = I_i - \frac{Ry}{2 \nu_i^2} = I_{\text{ref}} - \frac{Ry}{nu^2}
 
         Args:
-            nu: Effective principal quantum number with reference to the lowest ionization threshold.
+            nu: Effective principal quantum number with reference to the reference ionization threshold.
 
         Returns:
             List of channel nui values.
@@ -136,7 +138,7 @@ class FModel:
         r"""Return the eigen quantum defects evaluated at the channel-dependent effective principal quantum numbers nui.
 
         Args:
-            nu: Effective principal quantum number with reference to the lowest ionization threshold.
+            nu: Effective principal quantum number with reference to the reference ionization threshold.
 
         Returns:
             Array of eigen quantum defects.
@@ -156,7 +158,7 @@ class FModel:
         evaluated at the channel-dependent effective principal quantum numbers nui.
 
         Args:
-            nu: Effective principal quantum number with reference to the lowest ionization threshold.
+            nu: Effective principal quantum number with reference to the reference ionization threshold.
 
         Returns:
             Diagonal K-matrix in the close-coupling frame.
@@ -197,7 +199,7 @@ class FModel:
         Applies successive 2x2 rotations between the channels specified by mixing_angles.
 
         Args:
-            nu: Effective principal quantum number with reference to the lowest ionization threshold.
+            nu: Effective principal quantum number with reference to the reference ionization threshold.
 
         Returns:
             Unitary transformation matrix R (n_inner, n_closecoupling).
@@ -233,7 +235,7 @@ class FModel:
         Combines the unitary frame transformation Q with the rotation matrix R.
 
         Args:
-            nu: Effective principal quantum number with reference to the lowest ionization threshold.
+            nu: Effective principal quantum number with reference to the reference ionization threshold.
 
         Returns:
             Frame transformation matrix U = Q R (n_outer, n_closecoupling).
@@ -255,7 +257,7 @@ class FModel:
         The transpose :math:`U^T = U^{-1}` holds because U is real and orthogonal.
 
         Args:
-            nu: Effective principal quantum number with reference to the lowest ionization threshold.
+            nu: Effective principal quantum number with reference to the reference ionization threshold.
 
         Returns:
             K-matrix in the collision (outer) channel frame, K = tan(\pi \mu).
@@ -274,7 +276,7 @@ class FModel:
             M = tan(β) + K = tan(\pi \nu) + tan(\pi \mu)
 
         Args:
-            nu: Effective principal quantum number with reference to the lowest ionization threshold.
+            nu: Effective principal quantum number with reference to the reference ionization threshold.
 
         Returns:
             M-matrix in the collision (outer) channel frame, M = tan(β) + K.
@@ -303,7 +305,7 @@ class FModel:
         """Calculate the determinant of the M-matrix at a given nu value.
 
         Args:
-            nu: Effective principal quantum number with reference to the lowest ionization threshold.
+            nu: Effective principal quantum number with reference to the reference ionization threshold.
 
         Returns:
             Determinant of the M-matrix at the given nu value.
@@ -315,7 +317,7 @@ class FModel:
         """Calculate the determinant of the scaled M-matrix at a given nu value.
 
         Args:
-            nu: Effective principal quantum number with reference to the lowest ionization threshold.
+            nu: Effective principal quantum number with reference to the reference ionization threshold.
 
         Returns:
             Determinant of the scaled M-matrix at the given nu value.

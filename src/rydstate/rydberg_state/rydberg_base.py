@@ -40,7 +40,8 @@ class RydbergStateBase(ABC):
     nu: float
     """The effective principal quantum number nu.
     For SQDT states, this is also sometimes called n*.
-    For MQDT nu is given in reference to the lowest ionization threshold.
+    For MQDT nu is given in reference to the reference ionization threshold of the MQDT model,
+    see :attr:`~rydstate.species.mqdt.MQDT.reference_ionization_threshold_au`.
     """
     _energy_au: float
     """The energy of the Rydberg state in atomic units (Hartree)."""
@@ -108,7 +109,7 @@ class RydbergStateBase(ABC):
             E = - \frac{1}{2} \frac{\mu}{\nu^2} + E_{ionization}
 
         where `\mu = R_M/R_\infty` is the reduced mass and `\nu` the effective principal quantum number,
-        and `E_{ionization}` is the (reference) ionization energy of the species.
+        and `E_{ionization}` is the reference ionization threshold of the species.
         """
         if unit == "a.u.":
             return self._energy_au

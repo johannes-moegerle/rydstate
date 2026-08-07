@@ -30,10 +30,9 @@ class MQDT(ABC, metaclass=CachedABCMeta):
     """Dictionary containing the ionization thresholds for the different core states.
     The thresholds are given in the form of a tuple (ionization_threshold, unit).
     """
-    reference_core_ket: ClassVar[CoreKet | None] = None
-    """The core ket to use as reference for the ionization energy.
-    If None, the reference ionization energy is defined as the smallest ionization energy
-    in the ionization_threshold_dict."""
+    reference_ionization_threshold_tuple: ClassVar[tuple[float, str] | None] = None
+    """The reference ionization threshold, which is used to define the zero of energy for the MQDT models.
+    If None, it is defined as the smallest ionization threshold in the ionization_threshold_dict."""
 
     model_classes: ClassVar[list[type[FModel]]]
     """List of the MQDT :class:`~rydstate.species.fmodel.FModel` models available for this species.
@@ -55,39 +54,45 @@ class MQDT(ABC, metaclass=CachedABCMeta):
     def get_ionization_threshold(self, core_ket: CoreKet, unit: str) -> float: ...
 
     def get_ionization_threshold(self, core_ket: CoreKet, unit: str | None = "hartree") -> PintFloat | float:
-        """Return the ionization energy of the channel given by the core_ket in the desired unit.
+        """Return the ionization threshold of the channel given by the core_ket in the desired unit.
 
         Args:
-            core_ket: The core ket for which to return the ionization energy.
-            unit: Desired unit for the ionization energy. Default is atomic units "hartree".
+            core_ket: The core ket for which to return the ionization threshold.
+            unit: Desired unit for the ionization threshold. Default is atomic units "hartree".
 
         Returns:
-            Ionization energy in the desired unit.
+            Ionization threshold in the desired unit.
 
         """
         try:
             matching_core_ket = core_ket.find_matching_core_ket(self.ionization_threshold_dict.keys())
         except ValueError as e:
-            raise ValueError(f"Ionization energy for core ket {core_ket} is not defined.") from e
+            raise ValueError(f"Ionization threshold for core ket {core_ket} is not defined.") from e
 
-        ionization_energy_tuple = self.ionization_threshold_dict[matching_core_ket]
-        ionization_energy: PintFloat = ureg.Quantity(ionization_energy_tuple[0], ionization_energy_tuple[1])
-        ionization_energy = ionization_energy.to("hartree", "spectroscopy")
+        ionization_threshold_tuple = self.ionization_threshold_dict[matching_core_ket]
+        ionization_threshold: PintFloat = ureg.Quantity(ionization_threshold_tuple[0], ionization_threshold_tuple[1])
+        ionization_threshold = ionization_threshold.to("hartree", "spectroscopy")
         if unit is None:
-            return ionization_energy
+            return ionization_threshold
         if unit == "a.u.":
-            return ionization_energy.magnitude
-        return ionization_energy.to(unit, "spectroscopy").magnitude
+            return ionization_threshold.magnitude
+        return ionization_threshold.to(unit, "spectroscopy").magnitude
 
     @cached_property
-    def reference_ionization_energy_au(self) -> float:
-        """Reference ionization energy in atomic units (Hartree).
+    def reference_ionization_threshold_au(self) -> float:
+        """Reference ionization threshold in atomic units (Hartree).
 
-        If no reference_core_ket is defined, we define the reference ionization energy as the smallest ionization energy
-        in the ionization_threshold_dict.
+        If no reference_ionization_threshold_tuple is defined, we define the reference ionization threshold as
+        the smallest ionization threshold in the ionization_threshold_dict.
         """
-        if self.reference_core_ket is not None:
-            return self.get_ionization_threshold(self.reference_core_ket, unit="a.u.")
+        if self.reference_ionization_threshold_tuple is not None:
+            return (
+                ureg.Quantity(
+                    self.reference_ionization_threshold_tuple[0], self.reference_ionization_threshold_tuple[1]
+                )
+                .to("hartree", "spectroscopy")
+                .magnitude
+            )
         return min(self.get_ionization_threshold(core_ket, unit="a.u.") for core_ket in self.ionization_threshold_dict)
 
     def get_mqdt_models(self, outer_channel: AngularKetFJ[Any]) -> list[FModel]:
