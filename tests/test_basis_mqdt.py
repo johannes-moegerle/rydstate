@@ -57,6 +57,21 @@ def test_mqdt_basis_includes_all_available_sqdt_fallback_models() -> None:
     assert {model.outer_channels[0] for model in basis.models} == expected_channels
 
 
+def test_mqdt_basis_includes_states_at_the_boundaries_of_the_nu_range() -> None:
+    """States whose nu lies exactly on a boundary of the requested nu range are included.
+
+    The quantum defects of the SQDT fallback models vanish, so their states lie at integer nu,
+    i.e. exactly on the boundaries here. This only works if calc_channel_nuis resolves nu well
+    enough for find_roots to locate these roots inside of the requested range.
+    """
+    basis = BasisMQDT("Yb171", nu=(30, 33), l_r=(5, 5))
+    assert any(isinstance(model, FModelSQDT) for model in basis.models)
+
+    nus = [state.nu for state in basis.states]
+    assert any(abs(nu - 30) < 1e-12 for nu in nus), f"no state at the lower boundary nu=30: {sorted(nus)[:5]}"
+    assert any(abs(nu - 33) < 1e-12 for nu in nus), f"no state at the upper boundary nu=33: {sorted(nus)[-5:]}"
+
+
 def test_mqdt_basis_sort_and_filter() -> None:
     """sort_states and filter_states work on MQDT states."""
     basis = BasisMQDT("Sr88", nu=(25, 30))
