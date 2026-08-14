@@ -631,11 +631,13 @@ class AngularKetBase(ABC, Generic[GenericT_Unknown], metaclass=CachedABCMeta):
             The reduced dimensionless angular matrix element.
 
         """
+        try:
+            return self._reduced_matrix_element_cache[other._ref][operator, kappa]
+        except KeyError:
+            pass
         cache = self._get_cache_dict(other)
-        cache_key = (operator, kappa)
-        if cache_key not in cache:
-            cache[cache_key] = self._calc_reduced_matrix_element(other, operator, kappa)
-        return cache[cache_key]
+        value = cache[operator, kappa] = self._calc_reduced_matrix_element(other, operator, kappa)
+        return value
 
     def _calc_reduced_matrix_element(  # noqa: C901
         self: Self, other: AngularKetBase[Any], operator: AngularOperatorType, kappa: int

@@ -131,7 +131,7 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
         self.states.sort(key=lambda state: state.nu)
 
 
-def get_mqdt_states_from_fmodel(  # noqa: C901
+def get_mqdt_states_from_fmodel(
     model: FModel,
     nu_range: tuple[float, float],
     m_range: tuple[float, float] | None | NotSet,
@@ -174,21 +174,8 @@ def get_mqdt_states_from_fmodel(  # noqa: C901
 
     states: list[RydbergStateMQDT] = []
     for nu in nu_list:
-        mmat = model.calc_m_matrix(nu)
-        det_mmat = np.linalg.det(mmat)
-        if abs(det_mmat) > 1e-6:
-            # this can happen, because we use the scaled M-matrix to find roots ...
-            logger.warning(
-                "%s: Found a root of det(M) that is not actually a root (nu=%s, det(M)=%s). "
-                "Keeping this state, but you should treat it with caution.",
-                *(model.full_name, nu, det_mmat),
-            )
-
         nuis = model.calc_channel_nuis(nu)
-        coefficients = calc_nullvector(mmat)
-        if coefficients is None:
-            logger.warning("Failed to calculate nullvector for nu=%s, skipping this state.", nu)
-            continue
+        coefficients = calc_nullvector(model.calc_scaled_m_matrix(nu))
         coefficients = np.array(
             [coeff * (nui ** (3 / 2)) / np.cos(np.pi * nui) for coeff, nui in zip(coefficients, nuis, strict=True)]
         )
@@ -227,7 +214,7 @@ def get_mqdt_states_from_fmodel(  # noqa: C901
                     rydberg_kets,
                     nu=nu,
                     energy_au=energy_au,
-                    mqdt=model.mqdt,
+                    model=model,
                     potential_class=potential_class,
                 )
             )

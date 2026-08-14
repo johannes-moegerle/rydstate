@@ -111,11 +111,12 @@ class FModel:
         """Calculate the energy of the Rydberg state.
 
         The energy is calculated for an effective principal quantum number nu,
-        which is defined with reference to the lowest ionization threshold of the MQDT model.
+        which is defined with reference to the reference ionization threshold of the MQDT model,
+        see :attr:`~rydstate.species.mqdt.MQDT.reference_ionization_threshold_au`.
         """
         return (
             calc_energy_from_nu(self.element_properties.reduced_mass_au, nu, self.element_properties.net_charge)
-            + self.mqdt.reference_ionization_energy_au
+            + self.mqdt.reference_ionization_threshold_au
         )
 
     def calc_channel_nuis(self, nu: float) -> NDArray:
@@ -127,7 +128,7 @@ class FModel:
             E = I_i - \frac{Ry}{2 \nu_i^2} = I_{\text{ref}} - \frac{Ry}{nu^2}
 
         Args:
-            nu: Effective principal quantum number with reference to the lowest ionization threshold.
+            nu: Effective principal quantum number with reference to the reference ionization threshold.
 
         Returns:
             List of channel nui values.
@@ -146,7 +147,7 @@ class FModel:
         r"""Return the eigen quantum defects evaluated at the channel-dependent effective principal quantum numbers nui.
 
         Args:
-            nu: Effective principal quantum number with reference to the lowest ionization threshold.
+            nu: Effective principal quantum number with reference to the reference ionization threshold.
 
         Returns:
             Array of eigen quantum defects.
@@ -166,13 +167,13 @@ class FModel:
         evaluated at the channel-dependent effective principal quantum numbers nui.
 
         Args:
-            nu: Effective principal quantum number with reference to the lowest ionization threshold.
+            nu: Effective principal quantum number with reference to the reference ionization threshold.
 
         Returns:
             Diagonal K-matrix in the close-coupling frame.
 
         """
-        return np.diag(np.tan(np.pi * np.array(self.calc_eigen_quantum_defects(nu))))
+        return np.diag(np.tan(np.pi * self.calc_eigen_quantum_defects(nu)))
 
     def calc_frame_transformation_outer_inner(self) -> NDArray:
         """Return the frame transformation matrix Q mapping inner to outer channels.
@@ -204,7 +205,7 @@ class FModel:
         Applies successive 2x2 rotations between the channels specified by mixing_angles.
 
         Args:
-            nu: Effective principal quantum number with reference to the lowest ionization threshold.
+            nu: Effective principal quantum number with reference to the reference ionization threshold.
 
         Returns:
             Unitary transformation matrix R (n_inner, n_closecoupling).
@@ -240,12 +241,14 @@ class FModel:
         Combines the unitary frame transformation Q with the rotation matrix R.
 
         Args:
-            nu: Effective principal quantum number with reference to the lowest ionization threshold.
+            nu: Effective principal quantum number with reference to the reference ionization threshold.
 
         Returns:
             Frame transformation matrix U = Q R (n_outer, n_closecoupling).
 
         """
+        if len(self.mixing_angles) == 0:
+            return self.frame_transformation_outer_inner
         return self.frame_transformation_outer_inner @ self.calc_frame_transformation_inner_closecoupling(nu)
 
     def calc_k_matrix(self, nu: float) -> NDArray:
@@ -260,7 +263,7 @@ class FModel:
         The transpose :math:`U^T = U^{-1}` holds because U is real and orthogonal.
 
         Args:
-            nu: Effective principal quantum number with reference to the lowest ionization threshold.
+            nu: Effective principal quantum number with reference to the reference ionization threshold.
 
         Returns:
             K-matrix in the collision (outer) channel frame, K = tan(\pi \mu).
@@ -279,7 +282,7 @@ class FModel:
             M = tan(β) + K = tan(\pi \nu) + tan(\pi \mu)
 
         Args:
-            nu: Effective principal quantum number with reference to the lowest ionization threshold.
+            nu: Effective principal quantum number with reference to the reference ionization threshold.
 
         Returns:
             M-matrix in the collision (outer) channel frame, M = tan(β) + K.
@@ -287,7 +290,7 @@ class FModel:
         """
         kmat = self.calc_k_matrix(nu)
         nuis = self.calc_channel_nuis(nu)
-        return np.array(np.diag(np.tan(np.pi * nuis)) + kmat)
+        return np.diag(np.tan(np.pi * nuis)) + kmat
 
     def calc_scaled_m_matrix(self, nu: float) -> NDArray:
         r"""Return the scaled M-matrix in the collision (outer) channel frame.
@@ -345,3 +348,9 @@ class FModelSQDT(FModel):
         self.eigen_quantum_defects = [0]  # type: ignore [misc]
 
         super().__init__(mqdt)
+
+    def calc_det_scaled_m_matrix(self, nu: float) -> float:
+        # Fast path for SQDT models: the single channel has a vanishing quantum defect, so K = 0 and the
+        # scaled M-matrix reduces to the 1x1 matrix sin(pi * nui) (see FModel.calc_scaled_m_matrix).
+        nui = self.calc_channel_nuis(nu)[0]
+        return math.sin(math.pi * nui)

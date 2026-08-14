@@ -25,10 +25,10 @@ def generate_wigner_table(f_max: float, kappa_max: int) -> dict[str, list[float 
     wigner_data: list[tuple[float | int, ...]] = []
     for start_f_max in [0, 0.5]:  # for better caching
         for kappa in range(kappa_max + 1):
-            for f_initial in np.arange(start_f_max, f_max + 0.5, 1):
-                for f_final in np.arange(np.max([f_initial % 1, f_initial - kappa]), f_initial + kappa + 1):
+            for f_initial in _get_range(start_f_max, f_max):
+                for f_final in _get_range(max(start_f_max, f_initial - kappa), f_initial + kappa):
                     for q in range(-kappa, kappa + 1):
-                        for m_initial in np.arange(-f_initial, f_initial + 1):
+                        for m_initial in _get_range(-f_initial, f_initial):
                             m_final = m_initial + q
                             if not -f_final <= m_final <= f_final:
                                 continue
@@ -42,3 +42,9 @@ def generate_wigner_table(f_max: float, kappa_max: int) -> dict[str, list[float 
     logger.info("Created the 'wigner' table (%s rows)", len(wigner_data))
 
     return {column: [dtype(row[i]) for row in wigner_data] for i, (column, dtype) in enumerate(COLUMNS.items())}
+
+
+def _get_range(vmin: float, vmax: float) -> range | np.ndarray:
+    if vmin % 1 == 0:
+        return range(int(vmin), int(vmax) + 1)
+    return np.arange(vmin, vmax + 0.5)

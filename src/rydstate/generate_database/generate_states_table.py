@@ -5,8 +5,6 @@ from typing import TYPE_CHECKING, Any
 
 import numpy as np
 
-from rydstate.rydberg_state.rydberg_sqdt import RydbergStateSQDT
-
 if TYPE_CHECKING:
     from rydstate.basis import BasisMQDT, BasisSQDT
     from rydstate.rydberg_state.rydberg_base import RydbergState
@@ -62,13 +60,11 @@ def get_state_data(ids: int, state: RydbergState) -> tuple[float | int | str | b
     """Get the data for a given state as a tuple."""
     underspecified_channel_contribution = sum(abs(coeff) ** 2 for coeff, ket in state if ket.angular.contains_unknown)
 
-    n = state.n if isinstance(state, RydbergStateSQDT) else 0
-
     data = (
         ids,  # id
         state.get_energy("a.u."),  # energy
         state.parity,  # parity = (-1)^l_tot
-        n,  # n: quantum number
+        state.n,  # n
         state.nu,  # nu
         state.f_tot,  # f_tot
         state.calc_exp_qn("nui"),  # exp_nui

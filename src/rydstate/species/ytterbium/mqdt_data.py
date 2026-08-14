@@ -25,7 +25,8 @@ class MQDTYtterbium171(MQDT):
         CoreKet(0.5, 0.5, 1, 1.5, Unknown, label=Unknown): (80835.39, "1/cm"),
         CoreKet(0.5, 0.5, Unknown, Unknown, Unknown, label="4f13 5d 6s"): (83967.7, "1/cm"),
     }
-    reference_core_ket = CoreKet(0.5, 0.5, 0, 0.5, 1)
+    # ionization threshold of the F=1 core state (the upper of the two hyperfine thresholds)
+    reference_ionization_threshold_tuple = (50443.217463, "1/cm")
     model_classes = get_fmodels(yb171_mqdt_fmodel_data, species)
 
 
@@ -34,13 +35,14 @@ class MQDTYtterbium173(MQDT):
     is_default = True
 
     ionization_threshold_dict: ClassVar = {
-        CoreKet(2.5, 0.5, 0, 0.5, 2): (50443.291203, "1/cm"),
         CoreKet(2.5, 0.5, 0, 0.5, 3): (50442.941262, "1/cm"),
+        CoreKet(2.5, 0.5, 0, 0.5, 2): (50443.291203, "1/cm"),
         CoreKet(2.5, 0.5, 1, 0.5, Unknown, label=Unknown): (77504.98, "1/cm"),
         CoreKet(2.5, 0.5, 1, 1.5, Unknown, label=Unknown): (80835.39, "1/cm"),
         CoreKet(2.5, 0.5, Unknown, Unknown, Unknown, label="4f13 5d 6s"): (83967.7, "1/cm"),
     }
-    reference_core_ket = CoreKet(2.5, 0.5, 0, 0.5, 2)
+    # ionization threshold of the F=2 core state (the upper of the two hyperfine thresholds)
+    reference_ionization_threshold_tuple = (50443.291203, "1/cm")
     model_classes = get_fmodels(yb173_mqdt_fmodel_data, species)
 
 

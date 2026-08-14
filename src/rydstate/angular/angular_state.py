@@ -167,11 +167,11 @@ class AngularState(Generic[GenericT_AngularKet]):
         coeffs = np.array([coeff for coeff, qn in zip(self.coefficients, qns, strict=True) if not is_unknown(qn)])
         qns = [qn for qn in qns if not is_unknown(qn)]
         norm = np.linalg.norm(coeffs)
-        if 1 - norm / self.norm > 1e-2:
+        if 1 - norm / self.norm > 5e-2:
             logger.warning(
                 "Expectation value of quantum number %s calculated from kets with unknown values. "
-                "The contribution of the unknown kets (%f) is significant for %s. ",
-                *(q, 1 - norm / self.norm, self),
+                "The contribution of the unknown kets is significant but neglected: %.1f%%",
+                *(q, (1 - norm / self.norm) * 100),
             )
 
         coefficients2 = np.conjugate(coeffs) * coeffs / norm**2
@@ -195,11 +195,11 @@ class AngularState(Generic[GenericT_AngularKet]):
         coeffs = np.array([coeff for coeff, qn in zip(self.coefficients, qns, strict=True) if not is_unknown(qn)])
         qns = np.array([qn for qn in qns if not is_unknown(qn)])
         norm = np.linalg.norm(coeffs)
-        if 1 - norm / self.norm > 1e-2:
+        if 1 - norm / self.norm > 5e-2:
             logger.warning(
                 "Standard deviation of quantum number %s calculated from kets with unknown values. "
-                "The contribution of the unknown kets (%f) is significant for %s. ",
-                *(q, 1 - norm / self.norm, self),
+                "The contribution of the unknown kets is significant but neglected: %.1f%%",
+                *(q, (1 - norm / self.norm) * 100),
             )
 
         coefficients2 = np.conjugate(coeffs) * coeffs / norm**2

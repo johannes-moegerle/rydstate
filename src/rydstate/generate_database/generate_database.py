@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
-from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -18,43 +17,83 @@ from rydstate.generate_database.generate_states_table import generate_states_tab
 logger = logging.getLogger(__name__)
 
 
-def create_tables_for_one_species(
-    species_specifier: str,
-    n: tuple[int, int] | None = None,
-    nu: tuple[float, float] | None = None,
+def create_tables_for_sqdt(
+    species: str,
+    n: tuple[int, int],
+    f_tot: tuple[float, float] | None = None,
+    l_r: tuple[int, int] | None = None,
     max_delta_nu: float = np.inf,
     all_nu_up_to: float = np.inf,
 ) -> None:
-    """Create the database tables for a given species in the current directory."""
-    logger.info("Start creating database for %s", species_specifier)
+    """Create the database tables for a given species using SQDT in the current directory.
+
+    Args:
+        species: The species name.
+        n: Tuple of (n_min, n_max) for the principal quantum number.
+        f_tot: Optional tuple of (f_tot_min, f_tot_max) for the total angular momentum.
+            Default None, include all f_tot values.
+        l_r: Optional tuple of (l_r_min, l_r_max) for the orbital angular momentum of the Rydberg electron.
+            Default None, include all l_r values.
+        max_delta_nu: The maximum difference in nu for matrix elements to be calculated.
+        all_nu_up_to: Calculate all matrix elements where at least one state has nu
+            smaller than or equal to this value.
+
+    """
+    species = species.removesuffix("_sqdt")
+    logger.info("Start creating sqdt database for %s", species)
     logger.info("n-range=%s", n)
-    logger.info("nu-range=%s", nu)
+    logger.info("f_tot-range=%s", f_tot)
+    logger.info("l_r-range=%s", l_r)
     logger.info("max_delta_nu=%s, all_nu_up_to=%s", max_delta_nu, all_nu_up_to)
     logger.info("rydstate.__version__=%s", __version__)
 
     # calculate the states and matrix elements tables
-    basis: BasisSQDT[Any] | BasisMQDT
-    species = species_specifier.removesuffix("_mqdt").removesuffix("_sqdt")
-    if species_specifier.endswith("_mqdt"):
-        if nu is None:
-            raise ValueError("nu must be provided for MQDT basis")
-        basis = BasisMQDT(species, nu=nu)
-        if n is not None:
-            basis.filter_states("n", n)
-    else:
-        if n is None:
-            raise ValueError("n must be provided for SQDT basis")
-        basis = BasisSQDT(species, n=n, coupling_scheme="LS")
-        if nu is not None:
-            basis.filter_states("nu", nu)
+    basis = BasisSQDT(species, n=n, f_tot=f_tot, l_r=l_r, coupling_scheme="LS")
+    write_table_to_parquet(pd.DataFrame(generate_states_table(basis)), "states")
 
-    states_table = generate_states_table(basis)
     matrix_elements_tables = generate_matrix_elements_tables(basis, max_delta_nu, all_nu_up_to, free_memory=True)
-    tables: dict[str, dict[str, list[Any]]] = {"states": states_table, **matrix_elements_tables}
+    for tkey in list(matrix_elements_tables):
+        write_table_to_parquet(pd.DataFrame(matrix_elements_tables.pop(tkey)), tkey)
 
-    # convert the tables to parquet files
-    for tkey, data in tables.items():
-        write_table_to_parquet(pd.DataFrame(data), tkey)
+
+def create_tables_for_mqdt(
+    species: str,
+    nu: tuple[float, float],
+    f_tot: tuple[float, float] | None = None,
+    l_r: tuple[int, int] | None = None,
+    max_delta_nu: float = np.inf,
+    all_nu_up_to: float = np.inf,
+) -> None:
+    """Create the database tables for a given species using MQDT in the current directory.
+
+    Args:
+        species: The species name.
+        nu: Tuple of (nu_min, nu_max) for the effective principal quantum number.
+        f_tot: Optional tuple of (f_tot_min, f_tot_max) for the total angular momentum.
+            Default None, include all f_tot values.
+        l_r: Optional tuple of (l_r_min, l_r_max) for the orbital angular momentum of the Rydberg electron.
+            Only models with at least one channel with l_c=0 and l_r in this range are included.
+            Default None, include all l_r values.
+        max_delta_nu: The maximum difference in nu for matrix elements to be calculated.
+        all_nu_up_to: Calculate all matrix elements where at least one state has nu
+            smaller than or equal to this value.
+
+    """
+    species = species.removesuffix("_mqdt")
+    logger.info("Start creating mqdt database for %s", species)
+    logger.info("nu-range=%s", nu)
+    logger.info("f_tot-range=%s", f_tot)
+    logger.info("l_r-range=%s", l_r)
+    logger.info("max_delta_nu=%s, all_nu_up_to=%s", max_delta_nu, all_nu_up_to)
+    logger.info("rydstate.__version__=%s", __version__)
+
+    # calculate the states and matrix elements tables
+    basis = BasisMQDT(species, nu=nu, f_tot=f_tot, l_r=l_r)
+    write_table_to_parquet(pd.DataFrame(generate_states_table(basis)), "states")
+
+    matrix_elements_tables = generate_matrix_elements_tables(basis, max_delta_nu, all_nu_up_to, free_memory=True)
+    for tkey in list(matrix_elements_tables):
+        write_table_to_parquet(pd.DataFrame(matrix_elements_tables.pop(tkey)), tkey)
 
 
 def create_tables_for_misc(f_max: float, kappa_max: int = 3) -> None:

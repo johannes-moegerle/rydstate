@@ -1,10 +1,13 @@
 from __future__ import annotations
 
+import itertools
 from typing import TYPE_CHECKING
 
 import numpy as np
 import pytest
 from rydstate import BasisMQDT, RydbergStateSQDT
+from rydstate.angular.utils import is_unknown
+from rydstate.species import FModelSQDT
 
 if TYPE_CHECKING:
     from rydstate import RydbergStateMQDT
@@ -158,3 +161,58 @@ def test_core_dipole_comparable_to_rydberg_dipole(
     assert any(0.1 < ratio < 10 for ratio in ratios), (
         f"core dipole not comparable to rydberg dipole for {species}: |core/rydberg| ratios={ratios}"
     )
+
+
+def test_n_of_sqdt_fallback_model_uses_channel_nui() -> None:
+    """For SQDT fallback models n is given by the channel nui, not by nu."""
+    basis = BasisMQDT("Yb171", nu=(78.0, 81.0), l_r=(5, 5), m=(0.5, 0.5))
+    assert len(basis.states) > 0
+
+    states_with_shifted_nu = 0
+    for state in basis.states:
+        assert isinstance(state.model, FModelSQDT)
+        assert len(state.rydberg_kets) == 1
+
+        nui = state.nui[0]
+        assert abs(nui - round(nui)) < 1e-9
+        assert state.n == round(nui)
+
+        if state.n != round(state.nu):
+            states_with_shifted_nu += 1
+
+    assert states_with_shifted_nu > 0
+
+
+@pytest.mark.parametrize(
+    ("species", "m", "l_r", "model_name"),
+    [
+        ("Yb174", (0, 0), (0, 0), "S J=0, nu > 2"),
+        ("Yb174", (0, 0), (2, 2), "D J=2, nu > 5"),
+        ("Yb171", (0.5, 0.5), (1, 1), "P F=1/2, nu > 5.7"),
+        ("Yb171", (0.5, 0.5), (1, 1), "P F=3/2, nu > 10"),
+    ],
+)
+def test_n_increments_by_one_along_a_rydberg_series(
+    species: str, m: tuple[float, float], l_r: tuple[int, int], model_name: str
+) -> None:
+    """Within one Rydberg series of an MQDT model, n increases by exactly one from state to state.
+
+    A single MQDT model describes several interleaved Rydberg series (one per channel), so the states
+    of a model have to be grouped by their dominant channel before comparing consecutive n.
+    """
+    basis = BasisMQDT(species, nu=(40.0, 46.0), l_r=l_r, m=m)
+    states = [state for state in basis.states if state.model.name == model_name]
+    assert len(states) > 0
+
+    def dominant_channel(state: RydbergStateMQDT) -> int:
+        """Return the index of the channel with the largest coefficient (ignoring unknown channels)."""
+        known = [(abs(coeff), i) for i, (coeff, ket) in enumerate(state) if not is_unknown(ket.angular.l_r)]
+        return max(known)[1]
+
+    states.sort(key=lambda state: (dominant_channel(state), state.nu))
+    for channel, series in itertools.groupby(states, key=dominant_channel):
+        n_list = [state.n for state in series]
+        assert len(n_list) > 1, f"series of channel {channel} is too short to test"
+        assert all(n_next - n == 1 for n, n_next in itertools.pairwise(n_list)), (
+            f"n does not increase by one along the series of channel {channel}: {n_list}"
+        )

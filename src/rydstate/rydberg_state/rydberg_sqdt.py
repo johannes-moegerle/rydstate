@@ -180,6 +180,7 @@ class RydbergStateSQDT(RydbergState, Generic[GenericT_AngularKet]):
                 f_tot=f_tot,
                 m=m,
             )
+        self.f_tot = self.angular.f_tot
 
         self.n = n
         self.sqdt = sqdt if isinstance(sqdt, SQDT) else get_sqdt(species, tag=sqdt)
