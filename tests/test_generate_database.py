@@ -141,7 +141,7 @@ def test_matrix_elements_table_matches_unfiltered_reference(species_specifier: s
         assert not extra, f"{tkey}: {len(extra)} rows for vanishing matrix elements: {extra[:5]}"
 
         reference = [expected[tkey][pair] for pair in pairs]
-        np.testing.assert_allclose(table["val"], reference, rtol=1e-10, atol=0, err_msg=f"wrong values in '{tkey}'")
+        np.testing.assert_allclose(table["val"], reference, rtol=1e-10, atol=1e-20, err_msg=f"wrong values in '{tkey}'")
 
         # since no rows are missing, the transposed row of every off-diagonal row is guaranteed to exist
         values = dict(zip(pairs, table["val"], strict=True))

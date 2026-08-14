@@ -63,7 +63,7 @@ def get_state_data(ids: int, state: RydbergState) -> tuple[float | int | str | b
     data = (
         ids,  # id
         state.get_energy("a.u."),  # energy
-        state.parity,  # parity = (-1)^l_tot
+        state.parity,  # parity = (-1)^(l_r + l_c)
         state.n,  # n
         state.nu,  # nu
         state.f_tot,  # f_tot

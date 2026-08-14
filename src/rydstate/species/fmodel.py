@@ -247,7 +247,7 @@ class FModel:
             Frame transformation matrix U = Q R (n_outer, n_closecoupling).
 
         """
-        if len(self.mixing_angles) == 0:
+        if self.mixing_angles is None:
             return self.frame_transformation_outer_inner
         return self.frame_transformation_outer_inner @ self.calc_frame_transformation_inner_closecoupling(nu)
 
@@ -349,8 +349,8 @@ class FModelSQDT(FModel):
 
         super().__init__(mqdt)
 
-    def calc_det_scaled_m_matrix(self, nu: float) -> float:
+    def calc_scaled_m_matrix(self, nu: float) -> NDArray:
         # Fast path for SQDT models: the single channel has a vanishing quantum defect, so K = 0 and the
         # scaled M-matrix reduces to the 1x1 matrix sin(pi * nui) (see FModel.calc_scaled_m_matrix).
         nui = self.calc_channel_nuis(nu)[0]
-        return math.sin(math.pi * nui)
+        return np.array([[math.sin(math.pi * nui)]])

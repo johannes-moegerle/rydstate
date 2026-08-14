@@ -368,7 +368,7 @@ class RadialKet(Radial, metaclass=CachedABCMeta):
             tol = 2e-3
 
         # for divalent atoms, the wavefunction (currently) is not expected to be close to zero at the inner boundary
-        is_alkali = self.potential.element_properties.number_valence_electrons == 1
+        is_alkali = self.element_properties.number_valence_electrons == 1
         if is_alkali and inner_weight_scaled_to_whole_grid > tol:
             warning_msgs.append(
                 f"The wavefunction is not close to zero at the inner boundary"

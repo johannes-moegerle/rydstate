@@ -38,14 +38,15 @@ class RydbergStateMQDT(RydbergState):
 
         super().__init__(species, coefficients, rydberg_kets, nu, energy_au)
 
-    def __str__(self) -> str:
-        terms = [f"{coeff}*{rydberg_ket!s}" for coeff, rydberg_ket in self]
-        return f"{', '.join(terms)}"
-
     @property
     def mqdt(self) -> MQDT:
         """Return the MQDT object used to calculate this state."""
         return self.model.mqdt
+
+    @property
+    def nui(self) -> NDArray:
+        """Return the effective principal quantum numbers nui of the different channels."""
+        return np.array([rydberg_ket.radial.nu for rydberg_ket in self.rydberg_kets])  # type: ignore [attr-defined]
 
     @cached_property
     def n(self) -> int:  # type: ignore [override]
@@ -60,17 +61,12 @@ class RydbergStateMQDT(RydbergState):
         if (
             len(defects) == 1 and np.isscalar(defects[0]) and abs(defects[0]) < 1e-10  # type: ignore [arg-type]
         ):
-            return round(self.nui[0])
+            return round(float(self.nui[0]))
 
         main_ket = max(
             [(coeff, ket) for coeff, ket in self if not is_unknown(ket.angular.l_r)], key=lambda x: abs(x[0])
         )[1]
-        return main_ket.radial.nodes + main_ket.angular.l_r + 1
-
-    @property
-    def nui(self) -> NDArray:
-        """Return the effective principal quantum numbers nui of the different channels."""
-        return np.array([rydberg_ket.radial.nu for rydberg_ket in self.rydberg_kets])  # type: ignore [attr-defined]
+        return int(main_ket.radial.nodes + main_ket.angular.l_r + 1)
 
     def calc_exp_qn(self, qn: str) -> float:
         if qn == "nui":

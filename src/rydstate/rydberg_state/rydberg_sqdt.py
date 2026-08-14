@@ -180,7 +180,6 @@ class RydbergStateSQDT(RydbergState, Generic[GenericT_AngularKet]):
                 f_tot=f_tot,
                 m=m,
             )
-        self.f_tot = self.angular.f_tot
 
         self.n = n
         self.sqdt = sqdt if isinstance(sqdt, SQDT) else get_sqdt(species, tag=sqdt)
@@ -267,9 +266,6 @@ class RydbergStateSQDT(RydbergState, Generic[GenericT_AngularKet]):
         return energy.to(unit, "spectroscopy").magnitude
 
     def calc_exp_qn(self, qn: str) -> float:
-        if qn == "n":
-            return self.n
-
         if qn == "nui":
             return self.nu
 

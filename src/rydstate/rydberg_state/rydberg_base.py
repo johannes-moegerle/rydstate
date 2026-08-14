@@ -296,8 +296,6 @@ class RydbergState:
             return self.parity
         if qn == "n":
             return self.n
-        if qn == "nui":
-            return float(sum([abs(coeff) ** 2 * ket.radial.nu / self.norm**2 for coeff, ket in self]))
 
         if is_angular_momentum_quantum_number(qn):
             if qn not in self.rydberg_kets[0].angular.quantum_number_names:
@@ -309,9 +307,7 @@ class RydbergState:
         raise ValueError(f"Unknown quantum number {qn}")
 
     def calc_std_qn(self, qn: str) -> float:
-        if qn == "nu":
-            return 0
-        if qn == "parity":
+        if qn in ("nu", "parity"):
             return 0
 
         if is_angular_momentum_quantum_number(qn):
