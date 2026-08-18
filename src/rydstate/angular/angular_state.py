@@ -74,7 +74,7 @@ class AngularState(Generic[GenericT_AngularKet]):
     @property
     def norm(self) -> float:
         """Return the norm of the state (should be 1)."""
-        return np.linalg.norm(self._coefficients)  # type: ignore [return-value]
+        return float(np.linalg.norm(self._coefficients))
 
     @cached_property
     def coefficients(self) -> NDArray:
