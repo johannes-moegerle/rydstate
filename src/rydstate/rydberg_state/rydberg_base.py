@@ -87,6 +87,7 @@ class RydbergState:
                 "RydbergState initialized with non-normalized coefficients: "
                 f"{self.norm=} {self.coefficients=}, {self.rydberg_kets=}"
             )
+        self._coefficients = (self.coefficients / self.norm).tolist()
 
         self.f_tot = rydberg_kets[0].angular.f_tot
         if not all(rydberg_ket.angular.f_tot == self.f_tot for rydberg_ket in rydberg_kets):
