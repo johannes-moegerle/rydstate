@@ -13,8 +13,8 @@ class MQDTStrontium87(MQDT):
     is_default = True
 
     ionization_threshold_dict: ClassVar = {
-        CoreKet(4.5, 0.5, 0, 0.5, 4): (45932.287373577, "1/cm"),
-        CoreKet(4.5, 0.5, 0, 0.5, 5): (45932.120512528, "1/cm"),
+        CoreKet(i_c=4.5, l_c=0, j_c=0.5, f_c=4): (45932.287373577, "1/cm"),
+        CoreKet(i_c=4.5, l_c=0, j_c=0.5, f_c=5): (45932.120512528, "1/cm"),
     }
     # hyperfine centroid of the two F thresholds above, i.e. their (2F+1)-weighted mean
     # (9 * 45932.287373577 + 11 * 45932.120512528) / 20, which coincides with the Sr88
@@ -28,6 +28,6 @@ class MQDTStrontium88(MQDT):
     is_default = True
 
     ionization_threshold_dict: ClassVar = {
-        CoreKet(0, 0.5, 0, 0.5): (45932.1956, "1/cm"),
+        CoreKet(i_c=0, l_c=0, j_c=0.5): (45932.1956, "1/cm"),
     }
     model_classes = get_fmodels(sr88_mqdt_fmodel_data, species)

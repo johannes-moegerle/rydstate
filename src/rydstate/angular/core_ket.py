@@ -18,7 +18,7 @@ class CoreKet:
     def __init__(
         self,
         i_c: float | None = None,
-        s_c: float | None = None,
+        s_c: float = 0.5,
         l_c: Unknown | int | None = None,
         j_c: Unknown | float | None = None,
         f_c: Unknown | float | None = None,
@@ -29,8 +29,6 @@ class CoreKet:
             raise ValueError("Nuclear spin i_c must be set.")
         self.i_c = float(i_c)
 
-        if s_c is None:
-            raise ValueError("Core spin s_c must be set.")
         self.s_c = float(s_c)
 
         if l_c is None:
