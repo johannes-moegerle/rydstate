@@ -52,7 +52,7 @@ html_static_path = ["_static"]
 
 # -- Options for jupyter notebooks -------------------------------------------------
 nbsphinx_prolog = """
-{% set docname = env.doc2path(env.docname, base=None).split("/")[-1] %}
+{% set docname = (env.doc2path(env.docname, base=None) | string).split("/")[-1] %}
 
 .. raw:: html
 
