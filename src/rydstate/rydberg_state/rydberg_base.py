@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 from functools import cached_property
-from typing import TYPE_CHECKING, Any, overload
+from typing import TYPE_CHECKING, Any, Literal, overload
 
 import numpy as np
 from scipy.special import exprel
@@ -107,11 +107,26 @@ class RydbergState:
         return f"{self.__class__.__name__}({', '.join(terms)})"
 
     def __str__(self) -> str:
-        terms = [f"{coeff}*{rydberg_ket!s}" for coeff, rydberg_ket in self]
-        return f"{', '.join(terms)}"
+        return self.get_label()
 
     def __iter__(self) -> Iterator[tuple[float, RydbergKet]]:
         return zip(self._coefficients, self.rydberg_kets, strict=True)
+
+    def get_label(self, fmt: Literal["raw", "ket", "bra"] = "ket") -> str:
+        """Label representing the state.
+
+        Args:
+            fmt: The format of the label, i.e. whether to return the raw label, or the label in ket or bra notation.
+
+        Returns:
+            The label of the state in the given format.
+
+        """
+        if len(self.rydberg_kets) == 1:
+            sign = "" if self._coefficients[0] >= 0 else "-"
+            return sign + self.rydberg_kets[0].get_label(fmt=fmt)
+        label = " + ".join(f"{c:.2g}*{k.get_label(fmt=fmt)}" for c, k in self)
+        return label.replace("+ -", "- ")
 
     def to_coupling_scheme(self, coupling_scheme: CouplingScheme) -> RydbergState:
         """Convert the Rydberg state to a different coupling scheme.

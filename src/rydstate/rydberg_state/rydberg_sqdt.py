@@ -6,7 +6,11 @@ from typing import TYPE_CHECKING, Generic, TypeVar, overload
 
 from rydstate.angular import NotSet
 from rydstate.angular.angular_ket import AngularKetBase, AngularKetLS
-from rydstate.angular.utils import AllKnown, is_not_set, quantum_numbers_to_angular_ket
+from rydstate.angular.utils import (
+    AllKnown,
+    is_not_set,
+    quantum_numbers_to_angular_ket,
+)
 from rydstate.radial import RadialKet
 from rydstate.rydberg_state.rydberg_base import RydbergState
 from rydstate.rydberg_state.rydberg_ket import RydbergKet
@@ -185,7 +189,7 @@ class RydbergStateSQDT(RydbergState, Generic[GenericT_AngularKet]):
         self.sqdt = sqdt if isinstance(sqdt, SQDT) else get_sqdt(species, tag=sqdt)
         _s_tot = self.angular.get_qn("s_tot", allow_unknown=True)
         if not self.sqdt.is_allowed_shell(self.n, self.angular.l_r, _s_tot):
-            raise ValueError(f"The Rydberg state {self} is not allowed due to forbidden shell configurations.")
+            raise ValueError(f"The Rydberg state {self!r} is not allowed due to forbidden shell configurations.")
 
         if isinstance(potential, Potential):
             if potential.l_r != self.angular.l_r:
@@ -206,9 +210,6 @@ class RydbergStateSQDT(RydbergState, Generic[GenericT_AngularKet]):
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.species}, n={self.n}, {self.angular!r})"
-
-    def __str__(self) -> str:
-        return f"|{self.species}:n={self.n}, {self.angular!s}⟩"
 
     @cached_property
     def nu(self) -> float:  # type: ignore [override]
@@ -232,7 +233,7 @@ class RydbergStateSQDT(RydbergState, Generic[GenericT_AngularKet]):
 
     @cached_property
     def rydberg_kets(self) -> list[RydbergKet]:  # type: ignore [override]
-        return [RydbergKet(self.species, self.angular, self.radial)]
+        return [RydbergKet(self.species, self.angular, self.radial, n=self.n)]
 
     def _free_memory(self) -> None:
         super()._free_memory()

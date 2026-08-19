@@ -140,6 +140,39 @@ def is_not_set(obj: Any) -> TypeIs[NotSet]:  # noqa: ANN401
     return obj is NotSet
 
 
+ORBITAL_TO_STRING: dict[int, str] = {0: "s", 1: "p", 2: "d", 3: "f", 4: "g", 5: "h", 6: "i"}
+
+
+def get_spectroscopic_letter(l: int | Unknown) -> str:
+    """Return the spectroscopic letter (s, p, d, f, ...) for the orbital angular momentum quantum number l.
+
+    For l values without a spectroscopic letter in :data:`ORBITAL_TO_STRING` the fallback "(l={l})" is returned,
+    and for an Unknown l the placeholder "(l=?)".
+    """
+    if is_unknown(l):
+        return "(l=?)"
+    if l != int(l) or l < 0:
+        raise ValueError(f"get_spectroscopic_letter: Invalid orbital angular momentum quantum number {l=}.")
+    return ORBITAL_TO_STRING.get(l, f"(l={int(l)})")
+
+
+def format_quantum_number(value: float | Unknown) -> str:
+    """Format a quantum number as string.
+
+    Half-integers are formatted as fractions as long as the numerator is a single digit,
+    i.e. ``abs(value) < 5`` (e.g. 1.5 -> '3/2'), and as decimals otherwise (e.g. 5.5 -> '5.5').
+    """
+    if is_unknown(value):
+        return "?"
+    if value % 1 == 0:
+        return str(int(value))
+    if (2 * value) % 1 == 0:
+        if abs(value) < 5:
+            return f"{int(2 * value)}/2"
+        return f"{value:.1f}"
+    raise ValueError(f"format_quantum_number: Invalid quantum number {value=}. Must be integer or half-integer.")
+
+
 def minus_one_pow(n: float) -> int:
     """Calculate (-1)^n for an integer n and raise an error if n is not an integer."""
     if n % 2 == 0:

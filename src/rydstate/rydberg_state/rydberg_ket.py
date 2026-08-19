@@ -3,17 +3,24 @@ from __future__ import annotations
 import logging
 import math
 from functools import cached_property
-from typing import TYPE_CHECKING, Any, overload
+from typing import TYPE_CHECKING, Any, Literal, overload
 
-from rydstate.angular.angular_ket import AngularKetLS
-from rydstate.angular.utils import is_angular_momentum_quantum_number, is_angular_operator_type, is_unknown
+from rydstate.angular.angular_ket import AngularKetFJ, AngularKetJJ, AngularKetLS
+from rydstate.angular.utils import (
+    format_quantum_number,
+    get_spectroscopic_letter,
+    is_angular_momentum_quantum_number,
+    is_angular_operator_type,
+    is_not_set,
+    is_unknown,
+)
 from rydstate.species.element_properties import get_element_properties
 from rydstate.species.sqdt import get_sqdt
 from rydstate.units import MatrixElementOperatorRanks, ureg
 
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase
-    from rydstate.angular.utils import AngularOperatorType
+    from rydstate.angular.utils import AngularMomentumQuantumNumbers, AngularOperatorType
     from rydstate.radial.radial_base import Radial
     from rydstate.rydberg_state.rydberg_sqdt import RydbergStateSQDT
     from rydstate.units import MatrixElementOperator, PintFloat
@@ -35,18 +42,90 @@ class RydbergKet:
         species: str,
         angular: AngularKetBase[Any],
         radial: Radial,
+        *,
+        n: int | None = None,
     ) -> None:
         r"""Initialize the Rydberg state."""
         self.species = species
         self.element_properties = get_element_properties(species)
         self.angular = angular
         self.radial = radial
+        self.n = n
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.species}, {self.radial!r}, {self.angular!r})"
 
     def __str__(self) -> str:
-        return f"({self.species}, {self.radial}, {self.angular})"
+        return self.get_label()
+
+    def get_label(self, fmt: Literal["raw", "ket", "bra"] = "ket") -> str:  # noqa: C901, PLR0912
+        """Return a label of the Rydberg ket in the common spectroscopic notation.
+
+        Args:
+            fmt: The format of the label, i.e. whether to return the raw label, or the label in ket or bra notation.
+
+        Returns:
+            The label of the Rydberg ket.
+
+        """
+        angular = self.angular
+
+        def qn(name: AngularMomentumQuantumNumbers) -> str:
+            return format_quantum_number(angular.get_qn(name, allow_unknown=False))
+
+        label = f"{self.species}:"
+
+        nu = getattr(self.radial, "nu", None)
+        nu_str = f"{nu:.1f}" if nu is not None else "?"
+        n_str = f"{self.n}" if self.n is not None else f"[{nu_str}]"
+
+        if angular.contains_unknown:
+            # channels with unknown quantum numbers can only be identified by their label
+            angular_str = angular.label if angular.label is not None else "angular=?"
+            label += f"nu={nu_str},{angular_str}"
+
+        elif self.element_properties.number_valence_electrons == 1:
+            if not (angular.s_c == 0 and angular.l_c == 0):
+                raise RuntimeError(
+                    f"Alkali RydbergKet with unexpected quantum numbers: s_c={angular.s_c}, l_c={angular.l_c}"
+                )
+            l_str = get_spectroscopic_letter(angular.l_r).upper()
+            label += f"{n_str}{l_str}_{qn('j_tot')}"
+
+        # divalent atoms
+        elif isinstance(angular, AngularKetLS):
+            l_tot_str = get_spectroscopic_letter(angular.l_tot).upper()
+            if angular.l_c == 0:
+                label += f"S={qn('s_tot')},{n_str}{l_tot_str}_{qn('j_tot')}"
+            else:
+                n_c = self.element_properties.ground_state_shell[0]
+                l_str = get_spectroscopic_letter(angular.l_r)
+                l_c_str = get_spectroscopic_letter(angular.l_c)
+                label += f"S={qn('s_tot')},({n_c}{l_c_str},{n_str}{l_str}){l_tot_str}_{qn('j_tot')}"
+        elif isinstance(angular, (AngularKetJJ, AngularKetFJ)):
+            n_c = self.element_properties.ground_state_shell[0]
+            l_str = get_spectroscopic_letter(angular.l_r)
+            l_c_str = get_spectroscopic_letter(angular.l_c)
+            label += f"({n_c}{l_c_str}_{qn('j_c')},{n_str}{l_str}_{qn('j_r')})"
+            if isinstance(angular, AngularKetJJ) or angular.i_c == 0:
+                label += f",J={qn('j_tot')}"
+            else:
+                label += f",f_c={qn('f_c')}"
+        else:
+            raise NotImplementedError(f"get_label is not implemented for angular kets of type {type(angular)}.")
+
+        if angular.i_c != 0:
+            label += f",F={qn('f_tot')}"
+        if not is_not_set(angular.m):
+            label += f",m={format_quantum_number(angular.m)}"
+
+        if fmt == "raw":
+            return label
+        if fmt == "ket":
+            return f"|{label}⟩"
+        if fmt == "bra":
+            return f"⟨{label}|"
+        raise ValueError(f"Unknown fmt {fmt}")
 
     def calc_reduced_overlap(self, other: RydbergKet) -> float:
         """Calculate the reduced overlap <self|other> (ignoring the magnetic quantum number m)."""
