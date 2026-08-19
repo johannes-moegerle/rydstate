@@ -188,7 +188,7 @@ class RydbergStateSQDT(RydbergState, Generic[GenericT_AngularKet]):
         self.n = n
         self.sqdt = sqdt if isinstance(sqdt, SQDT) else get_sqdt(species, tag=sqdt)
         _s_tot = self.angular.get_qn("s_tot", allow_unknown=True)
-        if not self.sqdt.is_allowed_shell(self.n, self.angular.l_r, _s_tot):
+        if not self.element_properties.is_allowed_shell(self.n, self.angular.l_r, _s_tot):
             raise ValueError(f"The Rydberg state {self!r} is not allowed due to forbidden shell configurations.")
 
         if isinstance(potential, Potential):

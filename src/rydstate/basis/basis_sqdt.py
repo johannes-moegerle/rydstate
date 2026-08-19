@@ -151,7 +151,7 @@ class BasisSQDT(BasisBase[RydbergStateSQDT[T_AngularKet]], Generic[T_AngularKet]
         s_tot_list = np.arange(s_r - s_c, s_r + s_c + 1)
 
         for s_tot in s_tot_list:
-            if not self.sqdt.is_allowed_shell(n, l_r, s_tot):
+            if not self.element_properties.is_allowed_shell(n, l_r, s_tot):
                 continue
             for j_tot in np.arange(abs(l_r - s_tot), l_r + s_tot + 1):
                 for f_tot in np.arange(abs(j_tot - i_c), j_tot + i_c + 1):
@@ -182,7 +182,7 @@ class BasisSQDT(BasisBase[RydbergStateSQDT[T_AngularKet]], Generic[T_AngularKet]
         s_c = j_c = self.element_properties.s_c
         s_tot_list = np.arange(s_r - s_c, s_r + s_c + 1)
 
-        allowed = [self.sqdt.is_allowed_shell(n, l_r, s) for s in s_tot_list]
+        allowed = [self.element_properties.is_allowed_shell(n, l_r, s) for s in s_tot_list]
         if not all(allowed):
             if any(allowed):
                 logger.warning(
@@ -222,7 +222,7 @@ class BasisSQDT(BasisBase[RydbergStateSQDT[T_AngularKet]], Generic[T_AngularKet]
         s_c = j_c = self.element_properties.s_c
         s_tot_list = np.arange(s_r - s_c, s_r + s_c + 1)
 
-        allowed = [self.sqdt.is_allowed_shell(n, l_r, s) for s in s_tot_list]
+        allowed = [self.element_properties.is_allowed_shell(n, l_r, s) for s in s_tot_list]
         if not all(allowed):
             if any(allowed):
                 logger.warning(

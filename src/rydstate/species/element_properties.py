@@ -4,6 +4,7 @@ from abc import ABC
 from functools import cached_property
 from typing import TYPE_CHECKING, ClassVar, overload
 
+from rydstate.angular.utils import Unknown, check_spin_addition_rule, get_possible_quantum_number_values, is_unknown
 from rydstate.metaclass_cache import CachedABCMeta
 from rydstate.species.utils import get_all_subclasses
 from rydstate.units import rydberg_constant, ureg
@@ -74,6 +75,35 @@ class ElementProperties(ABC, metaclass=CachedABCMeta):
     def s_r(self) -> float:
         """Total spin of the rydberg electron (always 0.5)."""
         return 0.5
+
+    def is_allowed_shell(self, n: int, l: int, s_tot: float | Unknown) -> bool:
+        """Check if the quantum numbers describe an allowed shell.
+
+        I.e. whether the shell is above the ground state shell.
+
+        Args:
+            n: Principal quantum number
+            l: Orbital angular momentum quantum number
+            s_tot: Total spin quantum number
+
+        Returns:
+            True if the quantum numbers specify a shell equal to or above the ground state shell, False otherwise.
+
+        """
+        if is_unknown(s_tot):
+            allowed_s_tot = get_possible_quantum_number_values(self.s_c, self.s_r, s_tot)
+            return all(self.is_allowed_shell(n, l, _s_tot) for _s_tot in allowed_s_tot)
+
+        if not check_spin_addition_rule(self.s_c, self.s_r, s_tot):
+            raise ValueError(f"Invalid spin {s_tot=} for {self.species}.")
+
+        if (n, l) == self.ground_state_shell:
+            return s_tot != 1  # For alkaline earth atoms, the triplet state of the ground state shell is not allowed
+        if n < 1 or l < 0 or l >= n:
+            raise ValueError(f"Invalid shell: (n={n}, l={l}). Must be n >= 1 and 0 <= l <= n-1.")
+        if (n, l) >= self.ground_state_shell:
+            return True
+        return (n, l) in self.additional_allowed_shells
 
     @overload
     def get_corrected_rydberg_constant(self, unit: None = None) -> PintFloat: ...

@@ -314,7 +314,7 @@ class RydbergKet:
         # for now, it is correct to assume that the core electron is
         # in the lowest allowed shell of the ion for the given l_c
         for n_c in range(l_c + 1, l_c + 15):
-            if core_sqdt.is_allowed_shell(n_c, l_c, 0.5):
+            if core_sqdt.element_properties.is_allowed_shell(n_c, l_c, 0.5):
                 return RydbergStateSQDT(ion_species, n_c, angular_ket=core_angular_ket, sqdt=core_sqdt)
 
         raise ValueError(f"No allowed shell found for ion species {ion_species} with l_c={l_c}.")
