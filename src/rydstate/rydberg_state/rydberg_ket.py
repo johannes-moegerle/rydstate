@@ -98,12 +98,12 @@ class RydbergKet:
             if angular.l_c == 0:
                 label += f"S={qn('s_tot')},{n_str}{l_tot_str}_{qn('j_tot')}"
             else:
-                n_c = self.element_properties.ground_state_shell[0]
+                n_c = self.angular.n_c
                 l_str = get_spectroscopic_letter(angular.l_r)
                 l_c_str = get_spectroscopic_letter(angular.l_c)
                 label += f"S={qn('s_tot')},({n_c}{l_c_str},{n_str}{l_str}){l_tot_str}_{qn('j_tot')}"
         elif isinstance(angular, (AngularKetJJ, AngularKetFJ)):
-            n_c = self.element_properties.ground_state_shell[0]
+            n_c = self.angular.n_c
             l_str = get_spectroscopic_letter(angular.l_r)
             l_c_str = get_spectroscopic_letter(angular.l_c)
             label += f"({n_c}{l_c_str}_{qn('j_c')},{n_str}{l_str}_{qn('j_r')})"
@@ -290,6 +290,18 @@ class RydbergKet:
         """Get the corresponding ion state of the Rydberg ket."""
         from rydstate.rydberg_state.rydberg_sqdt import RydbergStateSQDT  # noqa: PLC0415
 
+        s_c = self.angular.s_c
+        l_c = self.angular.l_c
+        j_c = self.angular.get_qn("j_c", allow_unknown=True)
+        f_c = self.angular.get_qn("f_c", allow_unknown=True)
+        n_c = self.angular.n_c
+        if s_c == 0:
+            return None
+        if is_unknown(l_c) or is_unknown(j_c) or is_unknown(f_c) or is_unknown(n_c):
+            return None
+        if n_c is None:
+            raise RuntimeError("The principal quantum number n_c of the core electron is not set in the angular ket.")
+
         ion_species = f"{self.species}_ion"
         try:
             core_sqdt = get_sqdt(ion_species)
@@ -301,23 +313,9 @@ class RydbergKet:
             )
             return None
 
-        l_c = self.angular.l_c
-        j_c = self.angular.get_qn("j_c", allow_unknown=True)
-        f_c = self.angular.get_qn("f_c", allow_unknown=True)
-        if is_unknown(l_c) or is_unknown(j_c) or is_unknown(f_c):
-            return None
-
         # The core electron of the neutral atom is the valence electron of the ion, with total angular momentum j_c.
         core_angular_ket = AngularKetLS(l_r=l_c, j_tot=j_c, f_tot=f_c, species=ion_species)
-
-        # TODO: we should probably also store n_c for the core angular ket in the future
-        # for now, it is correct to assume that the core electron is
-        # in the lowest allowed shell of the ion for the given l_c
-        for n_c in range(l_c + 1, l_c + 15):
-            if core_sqdt.element_properties.is_allowed_shell(n_c, l_c, 0.5):
-                return RydbergStateSQDT(ion_species, n_c, angular_ket=core_angular_ket, sqdt=core_sqdt)
-
-        raise ValueError(f"No allowed shell found for ion species {ion_species} with l_c={l_c}.")
+        return RydbergStateSQDT(ion_species, n_c, angular_ket=core_angular_ket, sqdt=core_sqdt)
 
     @overload
     def calc_matrix_element(

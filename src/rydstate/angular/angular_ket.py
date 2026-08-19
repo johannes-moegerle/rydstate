@@ -38,6 +38,7 @@ if TYPE_CHECKING:
 
     from rydstate.angular.angular_state import AngularState
     from rydstate.angular.utils import AngularMomentumQuantumNumbers, AngularOperatorType, CouplingScheme
+    from rydstate.species.element_properties import ElementProperties
 
 logger = logging.getLogger(__name__)
 
@@ -51,6 +52,7 @@ class AngularKetBase(ABC, Generic[GenericT_Unknown], metaclass=CachedABCMeta):
     # We use __slots__ to prevent dynamic attributes and make the objects immutable after initialization
     __slots__ = (
         "i_c",
+        "n_c",
         "s_c",
         "l_c",
         "s_r",
@@ -103,6 +105,8 @@ class AngularKetBase(ABC, Generic[GenericT_Unknown], metaclass=CachedABCMeta):
     If NotSet, only reduced matrix elements can be calculated.
     """
 
+    n_c: int | Unknown | None
+    """Principal quantum number of the core electron, None if not applicable."""
     label: str | None
     """Optional label for this ket, should only be used, if the ket has Unknown quantum numbers."""
 
@@ -117,6 +121,7 @@ class AngularKetBase(ABC, Generic[GenericT_Unknown], metaclass=CachedABCMeta):
         m: float | NotSet,
         *,
         parity: int | None = None,
+        n_c: int | Unknown | None = None,
         label: str | None = None,
         species: str | None,
         allow_unknown: bool = False,
@@ -157,6 +162,9 @@ class AngularKetBase(ABC, Generic[GenericT_Unknown], metaclass=CachedABCMeta):
         self.l_c = l_c if l_c is not None else Unknown  # type: ignore [assignment]
         if not is_unknown(self.l_c):
             self.l_c = int(self.l_c)
+        if n_c is None and species is not None:
+            n_c = determine_n_c(element_properties, self.l_c)
+        self.n_c = n_c
 
         self.s_r = float(s_r) if s_r is not None else Unknown
         self.l_r = l_r if l_r is not None else Unknown  # type: ignore [assignment]
@@ -191,7 +199,7 @@ class AngularKetBase(ABC, Generic[GenericT_Unknown], metaclass=CachedABCMeta):
     def _post_init(self) -> None:
         self.quantum_numbers = tuple(getattr(self, qn) for qn in self.quantum_number_names)
         # Precompute the hash once: the ket is immutable after initialization (see __setattr__)
-        self._hash = hash((self.quantum_number_names, self.quantum_numbers, self.m, self.label, self.parity))
+        self._hash = hash((self.quantum_number_names, self.quantum_numbers, self.m, self.n_c, self.label, self.parity))
         # Cache a single weakref to self, reused as a key in other kets' matrix-element caches.
         self._ref: weakref.ref[AngularKetBase[Any]] = weakref.ref(self)
         self._initialized = True
@@ -243,6 +251,8 @@ class AngularKetBase(ABC, Generic[GenericT_Unknown], metaclass=CachedABCMeta):
             args += f", m={self.m}"
         if is_unknown(self.l_r) or is_unknown(self.l_c):
             args += f", parity={self.parity}"
+        if self.n_c is not None:
+            args += f", n_c={self.n_c}"
         if self.label is not None:
             args += f", label={self.label}"
         return f"{self.__class__.__name__}({args})"
@@ -260,6 +270,8 @@ class AngularKetBase(ABC, Generic[GenericT_Unknown], metaclass=CachedABCMeta):
     def _equal_up_to_m(self, other: AngularKetBase[Any]) -> bool:
         if type(self) is not type(other):
             return False
+        if self.n_c != other.n_c:
+            return False
         if self.label != other.label:
             return False
         if self.parity != other.parity:
@@ -272,7 +284,14 @@ class AngularKetBase(ABC, Generic[GenericT_Unknown], metaclass=CachedABCMeta):
     def replace_m(self, m: float | NotSet) -> Self:
         """Return a copy of this ket with the given magnetic quantum number m."""
         qn_dict = dict(zip(self.quantum_number_names, self.quantum_numbers, strict=True))
-        return self.__class__(**qn_dict, m=m, parity=self.parity, label=self.label, allow_unknown=self._allow_unknown)  # type: ignore [arg-type]
+        return self.__class__(
+            **qn_dict,  # type: ignore [arg-type]
+            m=m,
+            parity=self.parity,
+            n_c=self.n_c,
+            label=self.label,
+            allow_unknown=self._allow_unknown,
+        )
 
     @property
     def contains_unknown(self) -> bool:
@@ -402,6 +421,7 @@ class AngularKetBase(ABC, Generic[GenericT_Unknown], metaclass=CachedABCMeta):
                 f_tot=self.f_tot,
                 m=self.m,
                 parity=self.parity,
+                n_c=self.n_c,
                 label=self.label,
                 allow_unknown=True,
             )
@@ -429,6 +449,7 @@ class AngularKetBase(ABC, Generic[GenericT_Unknown], metaclass=CachedABCMeta):
                             f_tot=self.f_tot,
                             m=self.m,
                             parity=self.parity,
+                            n_c=self.n_c,
                             label=self.label,
                             allow_unknown=self._allow_unknown,
                         )
@@ -459,6 +480,7 @@ class AngularKetBase(ABC, Generic[GenericT_Unknown], metaclass=CachedABCMeta):
                 f_tot=self.f_tot,
                 m=self.m,
                 parity=self.parity,
+                n_c=self.n_c,
                 label=self.label,
                 allow_unknown=self._allow_unknown,
             )
@@ -486,6 +508,7 @@ class AngularKetBase(ABC, Generic[GenericT_Unknown], metaclass=CachedABCMeta):
                             f_tot=self.f_tot,
                             m=self.m,
                             parity=self.parity,
+                            n_c=self.n_c,
                             label=self.label,
                             allow_unknown=self._allow_unknown,
                         )
@@ -516,6 +539,7 @@ class AngularKetBase(ABC, Generic[GenericT_Unknown], metaclass=CachedABCMeta):
                 f_tot=self.f_tot,
                 m=self.m,
                 parity=self.parity,
+                n_c=self.n_c,
                 label=self.label,
                 allow_unknown=self._allow_unknown,
             )
@@ -543,6 +567,7 @@ class AngularKetBase(ABC, Generic[GenericT_Unknown], metaclass=CachedABCMeta):
                             f_tot=self.f_tot,
                             m=self.m,
                             parity=self.parity,
+                            n_c=self.n_c,
                             label=self.label,
                             allow_unknown=self._allow_unknown,
                         )
@@ -800,7 +825,7 @@ class AngularKetBase(ABC, Generic[GenericT_Unknown], metaclass=CachedABCMeta):
         label = self.label
         if label is None and (is_unknown(f_c) or is_unknown(j_c)):
             label = Unknown
-        return CoreKet(i_c=self.i_c, s_c=self.s_c, l_c=self.l_c, j_c=j_c, f_c=f_c, label=label)
+        return CoreKet(i_c=self.i_c, s_c=self.s_c, l_c=self.l_c, j_c=j_c, f_c=f_c, n_c=self.n_c, label=label)
 
 
 class AngularKetLS(AngularKetBase[GenericT_Unknown], Generic[GenericT_Unknown]):
@@ -877,13 +902,25 @@ class AngularKetLS(AngularKetBase[GenericT_Unknown], Generic[GenericT_Unknown]):
         m: float | NotSet = NotSet,
         *,
         parity: int | None = None,
+        n_c: int | Unknown | None = None,
         label: str | None = None,
         species: str | None = None,
         allow_unknown: bool = False,
     ) -> None:
         """Initialize the Spin ket."""
         super().__init__(
-            i_c, s_c, l_c, s_r, l_r, f_tot, m, parity=parity, label=label, species=species, allow_unknown=allow_unknown
+            i_c=i_c,
+            s_c=s_c,
+            l_c=l_c,
+            s_r=s_r,
+            l_r=l_r,
+            f_tot=f_tot,
+            m=m,
+            parity=parity,
+            n_c=n_c,
+            label=label,
+            species=species,
+            allow_unknown=allow_unknown,
         )
 
         self.s_tot = try_trivial_spin_addition(self.s_c, self.s_r, s_tot)  # type: ignore [assignment]
@@ -988,13 +1025,25 @@ class AngularKetJJ(AngularKetBase[GenericT_Unknown], Generic[GenericT_Unknown]):
         m: float | NotSet = NotSet,
         *,
         parity: int | None = None,
+        n_c: int | Unknown | None = None,
         label: str | None = None,
         species: str | None = None,
         allow_unknown: bool = False,
     ) -> None:
         """Initialize the Spin ket."""
         super().__init__(
-            i_c, s_c, l_c, s_r, l_r, f_tot, m, parity=parity, label=label, species=species, allow_unknown=allow_unknown
+            i_c=i_c,
+            s_c=s_c,
+            l_c=l_c,
+            s_r=s_r,
+            l_r=l_r,
+            f_tot=f_tot,
+            m=m,
+            parity=parity,
+            n_c=n_c,
+            label=label,
+            species=species,
+            allow_unknown=allow_unknown,
         )
 
         self.j_c = try_trivial_spin_addition(self.l_c, self.s_c, j_c)  # type: ignore [assignment]
@@ -1097,13 +1146,25 @@ class AngularKetFJ(AngularKetBase[GenericT_Unknown], Generic[GenericT_Unknown]):
         m: float | NotSet = NotSet,
         *,
         parity: int | None = None,
+        n_c: int | Unknown | None = None,
         label: str | None = None,
         species: str | None = None,
         allow_unknown: bool = False,
     ) -> None:
         """Initialize the Spin ket."""
         super().__init__(
-            i_c, s_c, l_c, s_r, l_r, f_tot, m, parity=parity, label=label, species=species, allow_unknown=allow_unknown
+            i_c=i_c,
+            s_c=s_c,
+            l_c=l_c,
+            s_r=s_r,
+            l_r=l_r,
+            f_tot=f_tot,
+            m=m,
+            parity=parity,
+            n_c=n_c,
+            label=label,
+            species=species,
+            allow_unknown=allow_unknown,
         )
 
         self.j_c = try_trivial_spin_addition(self.l_c, self.s_c, j_c)  # type: ignore [assignment]
@@ -1130,3 +1191,27 @@ class AngularKetFJ(AngularKetBase[GenericT_Unknown], Generic[GenericT_Unknown]):
             msgs.append(f"{self.f_c=}, {self.j_r=}, {self.f_tot=} don't satisfy spin addition rule.")
 
         super().sanity_check(msgs)
+
+
+def determine_n_c(element_properties: ElementProperties, l_c: int | Unknown) -> int | Unknown | None:
+    """Determine the principal quantum number of the core electron.
+
+    In principle, we should simply also store n_c explicitly.
+    However, so far (and probably also in the future),
+    only channels with the lowest allowed n_c for a given l_c are relevant, and thus we can simply determine n_c.
+    """
+    if element_properties.number_valence_electrons == 1:
+        return None  # no core electron for alkali atoms
+
+    if is_unknown(l_c):
+        return Unknown
+
+    # TODO: we should probably also store n_c for the core angular ket in the future
+    # for now simply return the lowest allowed n for the given l_c of the core
+    # in principle, we could also allow for higher n_c values, but probably we dont need this
+    # (in principle we would need the element_properties of the ion, but using s_tot=0 gives the same result)
+    n_ground_state = element_properties.ground_state_shell[0]
+    for n_c in range(l_c + 1, max(l_c + 1, n_ground_state) + 1):
+        if element_properties.is_allowed_shell(n_c, l_c, s_tot=0):
+            return n_c
+    raise RuntimeError("Could not determine n_c, this should not happen.")

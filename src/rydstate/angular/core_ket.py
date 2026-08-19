@@ -11,13 +11,27 @@ if TYPE_CHECKING:
 
 
 class CoreKet:
-    __slots__ = ("i_c", "s_c", "l_c", "j_c", "f_c", "label", "quantum_numbers")
+    __slots__ = ("i_c", "n_c", "s_c", "l_c", "j_c", "f_c", "label", "quantum_numbers")
 
-    quantum_number_names: ClassVar = ("i_c", "s_c", "l_c", "j_c", "f_c")
+    quantum_number_names: ClassVar = ("i_c", "n_c", "s_c", "l_c", "j_c", "f_c")
+
+    i_c: float
+    """Nuclear spin quantum number."""
+    n_c: int | Unknown | None
+    """Principal quantum number of the core electron, None if not applicable."""
+    s_c: float
+    """Core electron spin quantum number (0 for alkali atoms, 0.5 for alkaline earth atoms)."""
+    l_c: int | Unknown
+    """Core electron orbital quantum number (usually 0)."""
+    j_c: float | Unknown
+    """Total core electron angular quantum number (s_c + l_c)."""
+    f_c: float | Unknown
+    """Total core angular quantum number (j_c + i_c)."""
 
     def __init__(
         self,
         i_c: float | None = None,
+        n_c: Unknown | int | None = None,
         s_c: float = 0.5,
         l_c: Unknown | int | None = None,
         j_c: Unknown | float | None = None,
@@ -30,6 +44,9 @@ class CoreKet:
         self.i_c = float(i_c)
 
         self.s_c = float(s_c)
+        self.n_c = n_c
+        if self.n_c is None and self.s_c != 0:
+            raise ValueError("Principal quantum number n_c must be set if a core electron is present.")
 
         if l_c is None:
             raise ValueError("Core orbital angular momentum l_c must be set.")
@@ -46,6 +63,8 @@ class CoreKet:
 
     def __repr__(self) -> str:
         args = f"i_c={self.i_c}, s_c={self.s_c}, l_c={self.l_c}, j_c={self.j_c}, f_c={self.f_c}"
+        if self.n_c is not None:
+            args += f", n_c={self.n_c}"
         if self.label is not None:
             args += f", label={self.label}"
         return f"{self.__class__.__name__}({args})"

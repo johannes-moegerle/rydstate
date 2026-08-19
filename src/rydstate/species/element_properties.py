@@ -4,12 +4,13 @@ from abc import ABC
 from functools import cached_property
 from typing import TYPE_CHECKING, ClassVar, overload
 
-from rydstate.angular.utils import Unknown, check_spin_addition_rule, get_possible_quantum_number_values, is_unknown
+from rydstate.angular.utils import check_spin_addition_rule, get_possible_quantum_number_values, is_unknown
 from rydstate.metaclass_cache import CachedABCMeta
 from rydstate.species.utils import get_all_subclasses
 from rydstate.units import rydberg_constant, ureg
 
 if TYPE_CHECKING:
+    from rydstate.angular.utils import Unknown
     from rydstate.units import PintFloat
 
 
