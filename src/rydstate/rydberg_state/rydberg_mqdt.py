@@ -38,6 +38,13 @@ class RydbergStateMQDT(RydbergState):
 
         super().__init__(species, coefficients, rydberg_kets, nu, energy_au)
 
+    def __repr__(self) -> str:
+        return (
+            f"{self.__class__.__name__}({self.species}, nu={self.nu}, f_tot={self.f_tot}, "
+            f"parity={self.parity}, m={self.m}, channels={len(self.rydberg_kets)}, "
+            f"model='{self.model.full_name}')"
+        )
+
     @property
     def mqdt(self) -> MQDT:
         """Return the MQDT object used to calculate this state."""

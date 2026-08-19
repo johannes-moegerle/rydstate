@@ -59,6 +59,9 @@ class FModel:
         self.mqdt = mqdt
         self.element_properties = get_element_properties(self.species)
 
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}({self.full_name})"
+
     @property
     def full_name(self) -> str:
         """Return the full name of the model, combining species and model name."""
