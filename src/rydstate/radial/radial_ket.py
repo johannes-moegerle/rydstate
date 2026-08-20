@@ -32,6 +32,7 @@ class RadialKet(Radial, metaclass=CachedABCMeta):
     r"""Class representing a radial Rydberg state."""
 
     element_properties: ElementProperties
+    nu: float
 
     def __init__(
         self,
@@ -472,6 +473,7 @@ class RadialKet(Radial, metaclass=CachedABCMeta):
 
 class RadialDummy(Radial, metaclass=CachedABCMeta):
     _is_dummy = True
+    nu: float
 
     def __init__(self, coeff: float, nu: float, *, element_properties: ElementProperties | None = None) -> None:
         self.nu = nu

@@ -53,7 +53,10 @@ class RydbergStateMQDT(RydbergState):
     @property
     def nui(self) -> NDArray:
         """Return the effective principal quantum numbers nui of the different channels."""
-        return np.array([rydberg_ket.radial.nu for rydberg_ket in self.rydberg_kets])  # type: ignore [attr-defined]
+        nus = [rydberg_ket.radial.nu for rydberg_ket in self.rydberg_kets]
+        if any(nu is None for nu in nus):
+            raise ValueError(f"The nui are not well defined for all channels of {self}")
+        return np.array(nus)
 
     @cached_property
     def n(self) -> int:  # type: ignore [override]

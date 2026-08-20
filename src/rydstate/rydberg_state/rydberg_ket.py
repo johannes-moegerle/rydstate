@@ -75,7 +75,7 @@ class RydbergKet:
 
         label = f"{self.species}:"
 
-        nu = getattr(self.radial, "nu", None)
+        nu = self.radial.nu
         nu_str = f"{nu:.1f}" if nu is not None else "?"
         n_str = f"{self.n}" if self.n is not None else f"[{nu_str}]"
 

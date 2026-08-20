@@ -13,6 +13,7 @@ from rydstate.species.potential import get_potential_class
 
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase
+    from rydstate.angular.utils import CouplingScheme
 
 
 def _create_rydberg_ket(species: str, angular: AngularKetBase[Any], nu: float, n: int | None = None) -> RydbergKet:
@@ -165,11 +166,36 @@ def test_get_label_unknown_channel_with_n() -> None:
 
 
 def test_get_label_rydberg_ket_without_nu() -> None:
-    """Radial wavefunctions without a well defined nu (e.g. after a change of the coupling scheme) use [?]."""
+    """Radial wavefunctions without a well defined nu (e.g. a superposition of different nu) use [?]."""
     angular = AngularKetLS(species="Sr88", l_r=1, s_tot=0, j_tot=1, m=0)
-    radial = RadialKet(10.35, get_potential_class("Sr88")(1)) * 1.0  # a sum/product of radial kets has no nu
-    assert not hasattr(radial, "nu")
+    potential = get_potential_class("Sr88")(1)
+    radial = RadialKet(10.35, potential) + RadialKet(11.35, potential)  # a sum of different nu has no nu
+    assert radial.nu is None
     assert RydbergKet("Sr88", angular, radial).get_label("raw") == "Sr88:S=0,[?]P_1,m=0"
+
+
+def test_get_label_rydberg_ket_with_rescaled_radial() -> None:
+    """Scaling a radial wavefunction (or adding wavefunctions with the same nu) keeps nu."""
+    angular = AngularKetLS(species="Sr88", l_r=1, s_tot=0, j_tot=1, m=0)
+    radial_ket = RadialKet(10.35, get_potential_class("Sr88")(1))
+    for radial in [radial_ket * 1.0, radial_ket * 0.5 + radial_ket * 0.5]:
+        assert radial.nu == 10.35
+        assert RydbergKet("Sr88", angular, radial).get_label("raw") == "Sr88:S=0,[10.3]P_1,m=0"
+
+
+@pytest.mark.parametrize(
+    ("coupling_scheme", "label"),
+    [
+        ("LS", "-Sr88:S=1,[{nu:.1f}]D_1,m=0"),
+        ("JJ", "-Sr88:(5s_1/2,[{nu:.1f}]d_3/2),J=1,m=0"),
+    ],
+)
+def test_get_label_after_to_coupling_scheme(coupling_scheme: CouplingScheme, label: str) -> None:
+    """Changing the coupling scheme recombines the radial wavefunctions, but keeps their (common) nu."""
+    state = RydbergStateSQDT("Sr88", 60, l_r=2, s_tot=1, j_tot=1, m=0)
+    converted = state.to_coupling_scheme(coupling_scheme)
+    # the converted rydberg kets do not know their n anymore, so they use nu instead
+    assert converted.get_label("raw") == label.format(nu=state.nu)
 
 
 def test_get_label_state_and_ket_agree() -> None:

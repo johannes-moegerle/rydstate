@@ -26,13 +26,21 @@ class Radial:
     _w_list: NDArray
     _is_dummy: bool = False
     element_properties: ElementProperties | None = None
+    nu: float | None = None
+    """The effective principal quantum number of the wavefunction, or None if it is not well defined."""
 
     def __init__(
-        self, z_list: NDArray, w_list: NDArray, *, element_properties: ElementProperties | None = None
+        self,
+        z_list: NDArray,
+        w_list: NDArray,
+        *,
+        element_properties: ElementProperties | None = None,
+        nu: float | None = None,
     ) -> None:
         self._z_list = np.asarray(z_list)
         self._w_list = np.asarray(w_list)
         self.element_properties = element_properties
+        self.nu = nu
 
         if len(z_list) < 2:
             raise ValueError("z_list must have at least 2 elements")
@@ -129,6 +137,14 @@ class Radial:
 
         return z_common, w_self, w_other
 
+    def _common_nu(self, other: Radial) -> float | None:
+        """Return the nu shared by ``self`` and ``other``, or None if they differ."""
+        if self.nu is None or other.nu is None:
+            return None
+        if abs(self.nu - other.nu) > 1e-10:
+            return None
+        return self.nu
+
     def __add__(self, other: Radial) -> Radial:
         if not isinstance(other, Radial):
             return NotImplemented
@@ -136,7 +152,7 @@ class Radial:
             raise ValueError("Cannot add Radial states with different element_properties")
 
         z_common, w_self, w_other = self._align(other)
-        return Radial(z_common, w_self + w_other, element_properties=self.element_properties)
+        return Radial(z_common, w_self + w_other, element_properties=self.element_properties, nu=self._common_nu(other))
 
     def __sub__(self, other: Radial) -> Radial:
         return self.__add__(-other)
@@ -144,7 +160,7 @@ class Radial:
     def __mul__(self, scalar: float) -> Radial:
         if not isinstance(scalar, Number):
             return NotImplemented
-        return Radial(self.z_list, scalar * self.w_list, element_properties=self.element_properties)
+        return Radial(self.z_list, scalar * self.w_list, element_properties=self.element_properties, nu=self.nu)
 
     def __rmul__(self, scalar: float) -> Radial:
         return self.__mul__(scalar)
@@ -251,7 +267,7 @@ class Radial:
         if self._is_dummy or other._is_dummy:
             if self._is_dummy is not other._is_dummy:
                 return 0.0
-            if k_radial == 0 and abs(self.nu - other.nu) < 1e-10:  # type: ignore [attr-defined]
+            if k_radial == 0 and self._common_nu(other) is not None:
                 return self._coeff.conjugate() * other._coeff  # type: ignore [attr-defined,no-any-return]
             # if not k_radial == 0 or nu are not the same we cant compute the matrix element and simply return 0
             return 0.0
