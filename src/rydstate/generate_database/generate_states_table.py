@@ -60,6 +60,9 @@ def get_state_data(ids: int, state: RydbergState) -> tuple[float | int | str | b
     """Get the data for a given state as a tuple."""
     underspecified_channel_contribution = sum(abs(coeff) ** 2 for coeff, ket in state if ket.angular.contains_unknown)
 
+    state_ls = state.to_coupling_scheme("LS")
+    state_fj = state.to_coupling_scheme("FJ")
+
     data = (
         ids,  # id
         state.get_energy("a.u."),  # energy
@@ -68,17 +71,17 @@ def get_state_data(ids: int, state: RydbergState) -> tuple[float | int | str | b
         state.nu,  # nu
         state.f_tot,  # f_tot
         state.calc_exp_qn("nui"),  # exp_nui
-        state.calc_exp_qn("l_tot"),  # exp_l
-        state.calc_exp_qn("j_tot"),  # exp_j
-        state.calc_exp_qn("s_tot"),  # exp_s
+        state_ls.calc_exp_qn("l_tot"),  # exp_l
+        state_ls.calc_exp_qn("j_tot"),  # exp_j
+        state_ls.calc_exp_qn("s_tot"),  # exp_s
         state.calc_exp_qn("l_r"),  # exp_l_ryd
-        state.calc_exp_qn("j_r"),  # exp_j_ryd = j for sqdt only one valence electron
+        state_fj.calc_exp_qn("j_r"),  # exp_j_ryd = j for sqdt only one valence electron
         state.calc_std_qn("nui"),  # std_nui = 0
-        state.calc_std_qn("l_tot"),  # std_l
-        state.calc_std_qn("j_tot"),  # std_j
-        state.calc_std_qn("s_tot"),  # std_s
+        state_ls.calc_std_qn("l_tot"),  # std_l
+        state_ls.calc_std_qn("j_tot"),  # std_j
+        state_ls.calc_std_qn("s_tot"),  # std_s
         state.calc_std_qn("l_r"),  # std_l_ryd
-        state.calc_std_qn("j_r"),  # std_j_ryd
+        state_fj.calc_std_qn("j_r"),  # std_j_ryd
         bool(state.element_properties.i_c == 0),  # is_j_total_momentum
         bool(len(state.rydberg_kets) > 1),  # is_calculated_with_mqdt
         underspecified_channel_contribution,  # underspecified_channel_contribution = 0 for sqdt
