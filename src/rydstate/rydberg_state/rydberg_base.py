@@ -138,6 +138,11 @@ class RydbergState:
             The Rydberg state in the new coupling scheme.
 
         """
+        if self.coupling_scheme == coupling_scheme:
+            return RydbergState(
+                self.species, self.coefficients, self.rydberg_kets, nu=self.nu, energy_au=self._energy_au
+            )
+
         angular_ket: AngularKetBase[Any]
         angular_radial_wf: dict[AngularKetBase[Any], Radial] = {}
         for coeff_r, rydberg_ket in self:

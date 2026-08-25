@@ -186,15 +186,15 @@ def test_get_label_rydberg_ket_with_rescaled_radial() -> None:
 @pytest.mark.parametrize(
     ("coupling_scheme", "label"),
     [
-        ("LS", "-Sr88:S=1,[{nu:.1f}]D_1,m=0"),
+        ("LS", "Sr88:S=1,60D_1,m=0"),  # the state is already given in LS
         ("JJ", "-Sr88:(5s_1/2,[{nu:.1f}]d_3/2),J=1,m=0"),
+        ("FJ", "-Sr88:(5s_1/2,[{nu:.1f}]d_3/2),J=1,m=0"),
     ],
 )
 def test_get_label_after_to_coupling_scheme(coupling_scheme: CouplingScheme, label: str) -> None:
     """Changing the coupling scheme recombines the radial wavefunctions, but keeps their (common) nu."""
     state = RydbergStateSQDT("Sr88", 60, l_r=2, s_tot=1, j_tot=1, m=0)
     converted = state.to_coupling_scheme(coupling_scheme)
-    # the converted rydberg kets do not know their n anymore, so they use nu instead
     assert converted.get_label("raw") == label.format(nu=state.nu)
 
 
