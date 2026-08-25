@@ -32,6 +32,7 @@ logger = logging.getLogger(__name__)
 ELECTRIC_MULTIPOLE_PREFACTORS: dict[int, float] = {
     k_angular: math.sqrt(4 * math.pi / (2 * k_angular + 1)) for _, k_angular in MatrixElementOperatorRanks.values()
 }
+SQRT_2 = math.sqrt(2)
 
 
 class RydbergKet:
@@ -159,6 +160,9 @@ class RydbergKet:
         For the "electric_dipole" operator, the matrix element of
         "electric_dipole_rydberg", "electric_dipole_inner_valence" and "electric_dipole_closed_shell_core"
         are calculated separately and added together.
+        In addition, the sum is multiplied by the symmetry factor sqrt(2),
+        if exactly one of self and other has both its valence electrons in the same shell,
+        see also :attr:`valence_electrons_are_in_the_same_shell`.
 
         Args:
             other: The other Rydberg state for which to calculate the matrix element.
@@ -205,6 +209,16 @@ class RydbergKet:
             if self.element_properties.number_valence_electrons == 2:
                 matrix_element += self._calc_electric_reduced_matrix_element_au(other, "electric_dipole_inner_valence")
             matrix_element += self._calc_electric_reduced_matrix_element_au(other, "electric_dipole_closed_shell_core")
+
+            if self.valence_electrons_are_in_the_same_shell != other.valence_electrons_are_in_the_same_shell:  # xor
+                # we always assume that the two valence electrons are distinguishable,
+                # which for one electron in the Rydberg state, and the other close to the core, is fine.
+                # However, if for the initial state (or final) state, both electrons are in the same shell
+                # then the matrix element is enhanced by a factor of sqrt(2) due to the antisymmetrization.
+                # <5s5s|d_1 + d_2|5snp> actually means
+                # <5s(1)5s(2)|d_1 + d_2 (|5s(1)np(2)> + |np(1)5s(2)>)/sqrt(2) = sqrt(2) <5s|d|np>
+                matrix_element *= SQRT_2
+
             return matrix_element
 
         if operator in ("electric_quadrupole", "electric_octupole", "electric_quadrupole_zero"):
@@ -316,6 +330,30 @@ class RydbergKet:
         # The core electron of the neutral atom is the valence electron of the ion, with total angular momentum j_c.
         core_angular_ket = AngularKetLS(l_r=l_c, j_tot=j_c, f_tot=f_c, species=ion_species)
         return RydbergStateSQDT(ion_species, n_c, angular_ket=core_angular_ket, sqdt=core_sqdt)
+
+    @cached_property
+    def valence_electrons_are_in_the_same_shell(self) -> bool:
+        r"""Whether the Rydberg electron occupies the same shell as the inner valence electron."""
+        if self.radial.nu > self.element_properties.ground_state_shell[0]:  # type: ignore [operator]
+            return False
+        if self.angular.l_r != self.angular.l_c:
+            return False
+        j_r = self.angular.get_qn("j_r", allow_unknown=True)
+        j_c = self.angular.get_qn("j_c", allow_unknown=True)
+        if is_unknown(j_r) or is_unknown(j_c) or j_r != j_c:
+            return False
+        if self.core_state is None:
+            return False
+        overlap = abs(self.radial.calc_overlap(self.core_state.radial))
+        if overlap < 0.5:
+            return False
+        if overlap < 0.8:
+            logger.warning(
+                "Overlap between Rydberg electron and inner valence electron is %.2f (between 0.5 and 0.8). "
+                "Assuming they are in the same shell.",
+                overlap,
+            )
+        return True
 
     @overload
     def calc_matrix_element(
