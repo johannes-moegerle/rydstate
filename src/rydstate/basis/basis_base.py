@@ -14,7 +14,7 @@ from rydstate.units import ureg
 
 if TYPE_CHECKING:
     from rydstate.angular.utils import Unknown
-    from rydstate.units import MatrixElementOperator, NDArray, PintArray, PintFloat
+    from rydstate.units import MatrixElementOperator, MatrixElementPart, NDArray, PintArray, PintFloat
 
 _RydbergState = TypeVar("_RydbergState", bound=RydbergState)
 
@@ -86,16 +86,31 @@ class BasisBase(ABC, Generic[_RydbergState]):
 
     @overload
     def calc_reduced_matrix_element(
-        self, other: RydbergState, operator: MatrixElementOperator, unit: None = None
+        self,
+        other: RydbergState,
+        operator: MatrixElementOperator,
+        *,
+        part: MatrixElementPart = "all",
+        unit: None = None,
     ) -> PintArray: ...
 
     @overload
     def calc_reduced_matrix_element(
-        self, other: RydbergState, operator: MatrixElementOperator, unit: str
+        self,
+        other: RydbergState,
+        operator: MatrixElementOperator,
+        *,
+        part: MatrixElementPart = "all",
+        unit: str,
     ) -> NDArray: ...
 
     def calc_reduced_matrix_element(
-        self, other: RydbergState, operator: MatrixElementOperator, unit: str | None = None
+        self,
+        other: RydbergState,
+        operator: MatrixElementOperator,
+        *,
+        part: MatrixElementPart = "all",
+        unit: str | None = None,
     ) -> PintArray | NDArray:
         r"""Calculate the reduced matrix element :math:`\langle bra || O || other \rangle` for all states of self.
 
@@ -104,7 +119,7 @@ class BasisBase(ABC, Generic[_RydbergState]):
         Returns a 1D array values, where values[i] corresponds to the reduced matrix element
         :math:`\langle self.states[i] || O || other \rangle`.
         """
-        values_list = [bra.calc_reduced_matrix_element(other, operator, unit=unit) for bra in self.states]
+        values_list = [bra.calc_reduced_matrix_element(other, operator, part=part, unit=unit) for bra in self.states]
         if unit is not None:
             return np.array(values_list)
 
@@ -115,16 +130,31 @@ class BasisBase(ABC, Generic[_RydbergState]):
 
     @overload
     def calc_reduced_matrix_elements(
-        self, other: BasisBase[Any], operator: MatrixElementOperator, unit: None = None
+        self,
+        other: BasisBase[Any],
+        operator: MatrixElementOperator,
+        *,
+        part: MatrixElementPart = "all",
+        unit: None = None,
     ) -> PintArray: ...
 
     @overload
     def calc_reduced_matrix_elements(
-        self, other: BasisBase[Any], operator: MatrixElementOperator, unit: str
+        self,
+        other: BasisBase[Any],
+        operator: MatrixElementOperator,
+        *,
+        part: MatrixElementPart = "all",
+        unit: str,
     ) -> NDArray: ...
 
     def calc_reduced_matrix_elements(
-        self, other: BasisBase[Any], operator: MatrixElementOperator, unit: str | None = None
+        self,
+        other: BasisBase[Any],
+        operator: MatrixElementOperator,
+        *,
+        part: MatrixElementPart = "all",
+        unit: str | None = None,
     ) -> PintArray | NDArray:
         r"""Calculate the reduced matrix element for all states in self and other.
 
@@ -134,7 +164,8 @@ class BasisBase(ABC, Generic[_RydbergState]):
         :math:`\langle self.states[i] || O || other.states[j] \rangle`.
         """
         values_list = [
-            [bra.calc_reduced_matrix_element(ket, operator, unit=unit) for ket in other.states] for bra in self.states
+            [bra.calc_reduced_matrix_element(ket, operator, part=part, unit=unit) for ket in other.states]
+            for bra in self.states
         ]
         if unit is not None:
             return np.array(values_list)
