@@ -230,9 +230,16 @@ class RydbergKet:
     ) -> float:
         if part == "all":
             matrix_element = self._calc_electric_reduced_matrix_element_au(other, operator, part="rydberg")
-            if self.element_properties.number_valence_electrons == 2:
+            if (
+                self.element_properties.number_valence_electrons == 2
+                and self.core_state is not None
+                and other.core_state is not None
+            ):
                 matrix_element += self._calc_electric_reduced_matrix_element_au(other, operator, part="inner_valence")
-            matrix_element += self._calc_electric_reduced_matrix_element_au(other, operator, part="closed_shell_core")
+            if operator == "electric_dipole" and self.element_properties.alpha_closed_shell_core != 0:
+                matrix_element += self._calc_electric_reduced_matrix_element_au(
+                    other, operator, part="closed_shell_core"
+                )
             return matrix_element
 
         k_radial, k_angular = _get_ks(operator)
@@ -251,14 +258,11 @@ class RydbergKet:
             radial_matrix_element = self.radial.calc_matrix_element(other.radial, k_radial, unit="a.u.")
         elif part == "inner_valence":
             radial_matrix_element = self._calc_core_radial_matrix_element_au(other, k_radial)
-            if radial_matrix_element == 0:
-                return 0.0
             rydberg_radial_overlap = self.radial.calc_overlap(other.radial)
             prefactor *= rydberg_radial_overlap
         elif part == "closed_shell_core":
             if operator != "electric_dipole":
-                # TODO, currently we only support the closed shell core contribution for the electric dipole operator.
-                return 0
+                raise NotImplementedError(f"Operator {operator} not implemented for closed shell core matrix elements.")
             radial_matrix_element = self.radial.calc_matrix_element(
                 other.radial, "electric_dipole_closed_shell_core", unit="a.u."
             )
@@ -316,7 +320,7 @@ class RydbergKet:
         for the given l_c.
         """
         if self.core_state is None or other.core_state is None:
-            return 0.0
+            raise RuntimeError("Cannot calculate core radial matrix element: core state is not available.")
 
         return self.core_state.radial.calc_matrix_element(other.core_state.radial, k_radial, unit="a.u.")
 
