@@ -225,10 +225,12 @@ class RydbergKet:
             return matrix_element_au * matrix_element_unit.to_base_units()  # type: ignore [no-any-return]
         return matrix_element_au * matrix_element_unit.to(unit).magnitude
 
-    def _calc_electric_reduced_matrix_element_au(
+    def _calc_electric_reduced_matrix_element_au(  # noqa: C901
         self, other: RydbergKet, operator: MatrixElementOperator, part: MatrixElementPart
     ) -> float:
         if part == "all":
+            if self.radial._is_dummy or other.radial._is_dummy:  # noqa: SLF001
+                return 0.0
             matrix_element = self._calc_electric_reduced_matrix_element_au(other, operator, part="rydberg")
             if (
                 self.element_properties.number_valence_electrons == 2
