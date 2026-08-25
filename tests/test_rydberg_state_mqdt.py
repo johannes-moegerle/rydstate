@@ -147,8 +147,8 @@ def test_core_dipole_comparable_to_rydberg_dipole(
 
     ratios = []
     for low in low_lying.states:
-        core = low.calc_reduced_matrix_element(state_of_interest, "electric_dipole_inner_valence", unit="e a0")
-        rydberg = low.calc_reduced_matrix_element(state_of_interest, "electric_dipole_rydberg", unit="e a0")
+        core = low.calc_reduced_matrix_element(state_of_interest, "electric_dipole", part="inner_valence", unit="e a0")
+        rydberg = low.calc_reduced_matrix_element(state_of_interest, "electric_dipole", part="rydberg", unit="e a0")
         assert np.isfinite(core)
         assert np.isfinite(rydberg)
         # collect states with a sizeable core dipole that also have a sizeable Rydberg dipole

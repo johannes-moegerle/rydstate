@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 import math
-from functools import cached_property
+from functools import cache, cached_property
 from typing import TYPE_CHECKING, Any, Literal, overload
 
 from rydstate.angular.angular_ket import AngularKetFJ, AngularKetJJ, AngularKetLS
@@ -23,7 +23,7 @@ if TYPE_CHECKING:
     from rydstate.angular.utils import AngularMomentumQuantumNumbers, AngularOperatorType
     from rydstate.radial.radial_base import Radial
     from rydstate.rydberg_state.rydberg_sqdt import RydbergStateSQDT
-    from rydstate.units import MatrixElementOperator, PintFloat
+    from rydstate.units import MatrixElementOperator, MatrixElementPart, PintFloat
 
 
 logger = logging.getLogger(__name__)
@@ -138,14 +138,31 @@ class RydbergKet:
 
     @overload
     def calc_reduced_matrix_element(
-        self, other: RydbergKet, operator: MatrixElementOperator, unit: None = None
+        self,
+        other: RydbergKet,
+        operator: MatrixElementOperator,
+        *,
+        part: MatrixElementPart = "all",
+        unit: None = None,
     ) -> PintFloat: ...
 
     @overload
-    def calc_reduced_matrix_element(self, other: RydbergKet, operator: MatrixElementOperator, unit: str) -> float: ...
-
     def calc_reduced_matrix_element(
-        self, other: RydbergKet, operator: MatrixElementOperator, unit: str | None = None
+        self,
+        other: RydbergKet,
+        operator: MatrixElementOperator,
+        *,
+        part: MatrixElementPart = "all",
+        unit: str,
+    ) -> float: ...
+
+    def calc_reduced_matrix_element(  # noqa: C901
+        self,
+        other: RydbergKet,
+        operator: MatrixElementOperator,
+        *,
+        part: MatrixElementPart = "all",
+        unit: str | None = None,
     ) -> PintFloat | float:
         r"""Calculate the reduced matrix element.
 
@@ -157,16 +174,17 @@ class RydbergKet:
         where \hat{O}^{(k_{angular})} is the operator of rank k_angular for which to calculate the matrix element.
         k_radial and k_angular are determined from the operator automatically.
 
-        For the "electric_dipole" operator, the matrix element of
-        "electric_dipole_rydberg", "electric_dipole_inner_valence" and "electric_dipole_closed_shell_core"
-        are calculated separately and added together.
-        In addition, the sum is multiplied by the symmetry factor sqrt(2),
+        For the ``"electric_..."`` operators, the matrix element of "rydberg", "inner_valence" and "closed_shell_core"
+        are calculated separately and added together
+        (currently "closed_shell_core" is only supported for the "electric_dipole" operator).
+        In addition, each term is multiplied by the symmetry factor sqrt(2),
         if exactly one of self and other has both its valence electrons in the same shell,
         see also :attr:`valence_electrons_are_in_the_same_shell`.
 
         Args:
             other: The other Rydberg state for which to calculate the matrix element.
             operator: The operator for which to calculate the matrix element.
+            part: The part of the matrix element to calculate.
             unit: The unit to which to convert the radial matrix element.
                 Can be "a.u." for atomic units (so no conversion is done), or a specific unit.
                 Default None will return a pint quantity.
@@ -176,10 +194,14 @@ class RydbergKet:
 
         """
         if operator == "magnetic_dipole":
+            if part != "all":
+                raise ValueError(f"Part {part} is currently not supported for magnetic dipole matrix elements.")
             matrix_element_au = self._calc_magnetic_reduced_matrix_element_au(other, operator)
         elif operator.startswith("electric_"):
-            matrix_element_au = self._calc_electric_reduced_matrix_element_au(other, operator)
+            matrix_element_au = self._calc_electric_reduced_matrix_element_au(other, operator, part=part)
         elif is_angular_operator_type(operator):
+            if part != "all":
+                raise ValueError(f"Part {part} is not valid for angular operators.")
             matrix_element_au = self._calc_angular_reduced_matrix_element_au(other, operator)
         else:
             raise NotImplementedError(f"Operator {operator} not implemented.")
@@ -187,7 +209,7 @@ class RydbergKet:
         if unit == "a.u.":
             return matrix_element_au
 
-        k_radial, _k_angular = self._get_ks(operator)
+        k_radial, _k_angular = _get_ks(operator)
         radial_unit: PintFloat = ureg.Quantity(1, "bohr_radius") ** k_radial
         matrix_element_unit: PintFloat
         if operator == "magnetic_dipole":
@@ -203,60 +225,59 @@ class RydbergKet:
             return matrix_element_au * matrix_element_unit.to_base_units()  # type: ignore [no-any-return]
         return matrix_element_au * matrix_element_unit.to(unit).magnitude
 
-    def _calc_electric_reduced_matrix_element_au(self, other: RydbergKet, operator: MatrixElementOperator) -> float:
-        if operator == "electric_dipole":
-            matrix_element = self._calc_electric_reduced_matrix_element_au(other, "electric_dipole_rydberg")
+    def _calc_electric_reduced_matrix_element_au(
+        self, other: RydbergKet, operator: MatrixElementOperator, part: MatrixElementPart
+    ) -> float:
+        if part == "all":
+            matrix_element = self._calc_electric_reduced_matrix_element_au(other, operator, part="rydberg")
             if self.element_properties.number_valence_electrons == 2:
-                matrix_element += self._calc_electric_reduced_matrix_element_au(other, "electric_dipole_inner_valence")
-            matrix_element += self._calc_electric_reduced_matrix_element_au(other, "electric_dipole_closed_shell_core")
-
-            if self.valence_electrons_are_in_the_same_shell != other.valence_electrons_are_in_the_same_shell:  # xor
-                # we always assume that the two valence electrons are distinguishable,
-                # which for one electron in the Rydberg state, and the other close to the core, is fine.
-                # However, if for the initial state (or final) state, both electrons are in the same shell
-                # then the matrix element is enhanced by a factor of sqrt(2) due to the antisymmetrization.
-                # <5s5s|d_1 + d_2|5snp> actually means
-                # <5s(1)5s(2)|d_1 + d_2 (|5s(1)np(2)> + |np(1)5s(2)>)/sqrt(2) = sqrt(2) <5s|d|np>
-                matrix_element *= SQRT_2
-
+                matrix_element += self._calc_electric_reduced_matrix_element_au(other, operator, part="inner_valence")
+            matrix_element += self._calc_electric_reduced_matrix_element_au(other, operator, part="closed_shell_core")
             return matrix_element
 
-        if operator in ("electric_quadrupole", "electric_octupole", "electric_quadrupole_zero"):
-            operator += "_rydberg"  # type: ignore [assignment]
-
-        k_radial, k_angular = self._get_ks(operator)
+        k_radial, k_angular = _get_ks(operator)
 
         angular_operator: AngularOperatorType
-        angular_operator = "spherical_inner_valence" if operator.endswith("_inner_valence") else "spherical"
+        angular_operator = "spherical_inner_valence" if part == "inner_valence" else "spherical"
         # Electric multipole operator: p_{k,q} = e r^k_radial * sqrt(4pi / (2k+1)) * Y_{k_angular,q}(\theta, phi)
         angular_matrix_element = self.angular.calc_reduced_matrix_element(other.angular, angular_operator, k_angular)
-        # Prefactor sqrt(4 pi / (2 k_angular + 1)) for the electric multipole operators, precomputed for performance
-        prefactor = ELECTRIC_MULTIPOLE_PREFACTORS[k_angular]
-
         if angular_matrix_element == 0:
             return 0.0
 
-        if operator.endswith("_rydberg"):
+        # Prefactor sqrt(4 pi / (2 k_angular + 1)) for the electric multipole operators, precomputed for performance
+        prefactor = ELECTRIC_MULTIPOLE_PREFACTORS[k_angular]
+
+        if part == "rydberg":
             radial_matrix_element = self.radial.calc_matrix_element(other.radial, k_radial, unit="a.u.")
-            matrix_element = prefactor * angular_matrix_element * radial_matrix_element
-        elif operator.endswith("_inner_valence"):
-            core_radial_matrix_element = self._calc_core_radial_matrix_element_au(other, k_radial)
-            if core_radial_matrix_element == 0:
+        elif part == "inner_valence":
+            radial_matrix_element = self._calc_core_radial_matrix_element_au(other, k_radial)
+            if radial_matrix_element == 0:
                 return 0.0
             rydberg_radial_overlap = self.radial.calc_overlap(other.radial)
-            matrix_element = prefactor * angular_matrix_element * core_radial_matrix_element * rydberg_radial_overlap
-        elif operator.endswith("_closed_shell_core"):
+            prefactor *= rydberg_radial_overlap
+        elif part == "closed_shell_core":
+            if operator != "electric_dipole":
+                # TODO, currently we only support the closed shell core contribution for the electric dipole operator.
+                return 0
             radial_matrix_element = self.radial.calc_matrix_element(
                 other.radial, "electric_dipole_closed_shell_core", unit="a.u."
             )
-            matrix_element = prefactor * angular_matrix_element * radial_matrix_element
         else:
-            raise ValueError(f"Operator {operator} not implemented for electric multipole matrix elements.")
+            raise ValueError(f"Operator part {part} not implemented for electric multipole matrix elements.")
 
-        return matrix_element
+        if self.valence_electrons_are_in_the_same_shell != other.valence_electrons_are_in_the_same_shell:  # xor
+            # we always assume that the two valence electrons are distinguishable,
+            # which for one electron in the Rydberg state, and the other close to the core, is fine.
+            # However, if for the initial state (or final) state, both electrons are in the same shell
+            # then the matrix element is enhanced by a factor of sqrt(2) due to the antisymmetrization.
+            # <5s5s|d_1 + d_2|5snp> actually means
+            # <5s(1)5s(2)|d_1 + d_2 (|5s(1)np(2)> + |np(1)5s(2)>)/sqrt(2) = sqrt(2) <5s|d|np>
+            prefactor *= SQRT_2
+
+        return prefactor * angular_matrix_element * radial_matrix_element
 
     def _calc_magnetic_reduced_matrix_element_au(self, other: RydbergKet, operator: MatrixElementOperator) -> float:
-        k_radial, k_angular = self._get_ks(operator)
+        k_radial, k_angular = _get_ks(operator)
 
         # Magnetic dipole operator: mu = - mu_B (g_l <l_tot> + g_s <s_tot>)
         g_s = 2.0023192
@@ -276,7 +297,7 @@ class RydbergKet:
         return prefactor * angular_matrix_element * radial_matrix_element
 
     def _calc_angular_reduced_matrix_element_au(self, other: RydbergKet, operator: AngularOperatorType) -> float:
-        k_radial, k_angular = self._get_ks(operator)
+        k_radial, k_angular = _get_ks(operator)
         angular_matrix_element = self.angular.calc_reduced_matrix_element(other.angular, operator, k_angular)
 
         if angular_matrix_element == 0:
@@ -357,14 +378,34 @@ class RydbergKet:
 
     @overload
     def calc_matrix_element(
-        self, other: RydbergKet, operator: MatrixElementOperator, q: int, unit: None = None
+        self,
+        other: RydbergKet,
+        operator: MatrixElementOperator,
+        q: int,
+        *,
+        part: MatrixElementPart = "all",
+        unit: None = None,
     ) -> PintFloat: ...
 
     @overload
-    def calc_matrix_element(self, other: RydbergKet, operator: MatrixElementOperator, q: int, unit: str) -> float: ...
+    def calc_matrix_element(
+        self,
+        other: RydbergKet,
+        operator: MatrixElementOperator,
+        q: int,
+        *,
+        part: MatrixElementPart = "all",
+        unit: str,
+    ) -> float: ...
 
     def calc_matrix_element(
-        self, other: RydbergKet, operator: MatrixElementOperator, q: int, unit: str | None = None
+        self,
+        other: RydbergKet,
+        operator: MatrixElementOperator,
+        q: int,
+        *,
+        part: MatrixElementPart = "all",
+        unit: str | None = None,
     ) -> PintFloat | float:
         r"""Calculate the matrix element.
 
@@ -381,6 +422,7 @@ class RydbergKet:
             other: The other Rydberg state for which to calculate the matrix element.
             operator: The operator for which to calculate the matrix element.
             q: The component of the operator.
+            part: The part of the matrix element to calculate.
             unit: The unit to which to convert the radial matrix element.
                 Can be "a.u." for atomic units (so no conversion is done), or a specific unit.
                 Default None will return a pint quantity.
@@ -389,20 +431,21 @@ class RydbergKet:
             The matrix element for the given operator.
 
         """
-        _k_radial, k_angular = self._get_ks(operator)
+        _k_radial, k_angular = _get_ks(operator)
         prefactor = self.angular._calc_wigner_eckart_prefactor(other.angular, k_angular, q)  # noqa: SLF001
-        reduced_matrix_element = self.calc_reduced_matrix_element(other, operator, unit)
+        reduced_matrix_element = self.calc_reduced_matrix_element(other, operator, part=part, unit=unit)
         return prefactor * reduced_matrix_element
 
-    def _get_ks(self, operator: MatrixElementOperator) -> tuple[int, int]:
-        """Get the k_radial and k_angular for the given operator."""
-        stripped = operator.removesuffix("_rydberg").removesuffix("_inner_valence").removesuffix("_closed_shell_core")
-        if stripped in MatrixElementOperatorRanks:
-            return MatrixElementOperatorRanks[stripped]
-        if is_angular_operator_type(operator):
-            k_radial = 0
-            if operator.startswith("identity_"):
-                return k_radial, 0
-            if is_angular_momentum_quantum_number(operator):
-                return k_radial, 1
-        raise ValueError(f"Operator {operator} not supported.")
+
+@cache
+def _get_ks(operator: MatrixElementOperator) -> tuple[int, int]:
+    """Get the k_radial and k_angular for the given operator."""
+    if operator in MatrixElementOperatorRanks:
+        return MatrixElementOperatorRanks[operator]
+    if is_angular_operator_type(operator):
+        k_radial = 0
+        if operator.startswith("identity_"):
+            return k_radial, 0
+        if is_angular_momentum_quantum_number(operator):
+            return k_radial, 1
+    raise ValueError(f"Operator {operator} not supported.")

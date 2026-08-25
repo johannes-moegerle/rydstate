@@ -26,7 +26,7 @@ if TYPE_CHECKING:
 
     from rydstate.angular.utils import CouplingScheme
     from rydstate.radial import Radial
-    from rydstate.units import MatrixElementOperator, NDArray, PintArray, PintFloat
+    from rydstate.units import MatrixElementOperator, MatrixElementPart, NDArray, PintArray, PintFloat
 
 
 logger = logging.getLogger(__name__)
@@ -224,14 +224,31 @@ class RydbergState:
 
     @overload
     def calc_reduced_matrix_element(
-        self, other: RydbergState, operator: MatrixElementOperator, unit: None = None
+        self,
+        other: RydbergState,
+        operator: MatrixElementOperator,
+        *,
+        part: MatrixElementPart = "all",
+        unit: None = None,
     ) -> PintFloat: ...
 
     @overload
-    def calc_reduced_matrix_element(self, other: RydbergState, operator: MatrixElementOperator, unit: str) -> float: ...
+    def calc_reduced_matrix_element(
+        self,
+        other: RydbergState,
+        operator: MatrixElementOperator,
+        *,
+        part: MatrixElementPart = "all",
+        unit: str,
+    ) -> float: ...
 
     def calc_reduced_matrix_element(
-        self, other: RydbergState, operator: MatrixElementOperator, unit: str | None = None
+        self,
+        other: RydbergState,
+        operator: MatrixElementOperator,
+        *,
+        part: MatrixElementPart = "all",
+        unit: str | None = None,
     ) -> PintFloat | float:
         r"""Calculate the reduced matrix element.
 
@@ -246,6 +263,7 @@ class RydbergState:
         Args:
             other: The other Rydberg state for which to calculate the matrix element.
             operator: The operator for which to calculate the matrix element.
+            part: The part of the matrix element to calculate.
             unit: The unit to which to convert the radial matrix element.
                 Can be "a.u." for atomic units (so no conversion is done), or a specific unit.
                 Default None will return a pint quantity.
@@ -256,25 +274,45 @@ class RydbergState:
         """
         if len(self.rydberg_kets) == 1 and len(other.rydberg_kets) == 1:
             # fast path for sqdt states
-            me = self.rydberg_kets[0].calc_reduced_matrix_element(other.rydberg_kets[0], operator, unit=unit)
+            me = self.rydberg_kets[0].calc_reduced_matrix_element(other.rydberg_kets[0], operator, part=part, unit=unit)
             return me * self._coefficients_conjugate[0] * other._coefficients[0]
 
         value = 0.0
         for coeff1, ket1 in zip(self._coefficients_conjugate, self.rydberg_kets, strict=True):
             for coeff2, ket2 in zip(other._coefficients, other.rydberg_kets, strict=True):
-                value += coeff1 * coeff2 * ket1.calc_reduced_matrix_element(ket2, operator, unit=unit)
+                value += coeff1 * coeff2 * ket1.calc_reduced_matrix_element(ket2, operator, part=part, unit=unit)
         return value
 
     @overload
     def calc_matrix_element(
-        self, other: RydbergState, operator: MatrixElementOperator, q: int, unit: None = None
+        self,
+        other: RydbergState,
+        operator: MatrixElementOperator,
+        q: int,
+        *,
+        part: MatrixElementPart = "all",
+        unit: None = None,
     ) -> PintFloat: ...
 
     @overload
-    def calc_matrix_element(self, other: RydbergState, operator: MatrixElementOperator, q: int, unit: str) -> float: ...
+    def calc_matrix_element(
+        self,
+        other: RydbergState,
+        operator: MatrixElementOperator,
+        q: int,
+        *,
+        part: MatrixElementPart = "all",
+        unit: str,
+    ) -> float: ...
 
     def calc_matrix_element(
-        self, other: RydbergState, operator: MatrixElementOperator, q: int, unit: str | None = None
+        self,
+        other: RydbergState,
+        operator: MatrixElementOperator,
+        q: int,
+        *,
+        part: MatrixElementPart = "all",
+        unit: str | None = None,
     ) -> PintFloat | float:
         r"""Calculate the matrix element.
 
@@ -291,6 +329,7 @@ class RydbergState:
             other: The other Rydberg state for which to calculate the matrix element.
             operator: The operator for which to calculate the matrix element.
             q: The component of the operator.
+            part: The part of the matrix element to calculate.
             unit: The unit to which to convert the radial matrix element.
                 Can be "a.u." for atomic units (so no conversion is done), or a specific unit.
                 Default None will return a pint quantity.
@@ -302,7 +341,7 @@ class RydbergState:
         value = 0.0
         for coeff1, ket1 in zip(self._coefficients_conjugate, self.rydberg_kets, strict=True):
             for coeff2, ket2 in zip(other._coefficients, other.rydberg_kets, strict=True):
-                value += coeff1 * coeff2 * ket1.calc_matrix_element(ket2, operator, q=q, unit=unit)
+                value += coeff1 * coeff2 * ket1.calc_matrix_element(ket2, operator, q=q, part=part, unit=unit)
         return value
 
     def calc_exp_qn(self, qn: str) -> float:
