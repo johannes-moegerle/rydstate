@@ -1,0 +1,435 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compare Sr \(5s5s \rightarrow 5snl\) matrix elements with NIST &mdash; RydState 0.12.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f24cbf82"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Compare different effective model potentials" href="compare_model_potentials.html" />
+    <link rel="prev" title="Compare Rb \(5s \rightarrow np_j\) matrix elements with NIST" href="compare_nist_matrix_elements.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            RydState
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../examples.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#radialket">RadialKet</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../radial/hydrogen_wavefunction.html">Hydrogen radial wavefunction via numerov and from sympy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../radial/rubidium_wavefunction.html">Rubidium wavefunction and potential</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#angularstate">AngularState</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../angular/angular_state.html">Using AngularKets and AngularStates in different spin coupling schemes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#rydbergstate">RydbergState</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dipole_matrix_elements.html">Calculating dipole matrix elements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../lifetimes.html">Lifetimes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#mqdt">MQDT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../mqdt/mqdt_exp_qn.html">Labeling the angular character of Yb 171</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../examples.html#comparisons">Comparisons</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="compare_z_min_cutoff.html">Comparison of the z_min values for circular states</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compare_nist_energy_levels_data.html">Compare NIST energy levels data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compare_nist_matrix_elements.html">Compare Rb <span class="math notranslate nohighlight">\(5s \rightarrow np_j\)</span> matrix elements with NIST</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Compare Sr <span class="math notranslate nohighlight">\(5s5s \rightarrow 5snl\)</span> matrix elements with NIST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compare_model_potentials.html">Compare different effective model potentials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compare_whittaker.html">Comparison: Numerov - Whittaker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../benchmark/benchmark_njit.html">Benchmark of Numerov integration with and without using numba.njit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api_reference.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/rydberg_state.html">Rydberg States</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.rydberg_state.RydbergStateSQDT.html">RydbergStateSQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.rydberg_state.RydbergStateSQDTAlkali.html">RydbergStateSQDTAlkali</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.rydberg_state.RydbergStateMQDT.html">RydbergStateMQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.rydberg_state.RydbergKet.html">RydbergKet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/basis.html">Rydberg Basis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.BasisSQDT.html">BasisSQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.BasisMQDT.html">BasisMQDT</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/angular.html">Angular module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.angular.AngularKetLS.html">AngularKetLS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.angular.AngularKetJJ.html">AngularKetJJ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.angular.AngularKetFJ.html">AngularKetFJ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.angular.AngularState.html">AngularState</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.angular.CoreKet.html">CoreKet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.angular.utils.html">utils</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/radial.html">Radial module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.radial.RadialKet.html">RadialKet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/species.html">Species Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.species.ElementProperties.html">ElementProperties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.species.PotentialCoulomb.html">PotentialCoulomb</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.species.PotentialMarinescu1994.html">PotentialMarinescu1994</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.species.PotentialFei2009.html">PotentialFei2009</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.species.SQDT.html">SQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.species.MQDT.html">MQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.species.cesium.html">cesium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.species.hydrogen.html">hydrogen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.species.lithium.html">lithium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.species.potassium.html">potassium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.species.rubidium.html">rubidium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.species.sodium.html">sodium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.species.strontium.html">strontium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.species.ytterbium.html">ytterbium</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generate_database.html">Generate Database module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.generate_database.create_tables_for_sqdt.html">create_tables_for_sqdt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.generate_database.create_tables_for_mqdt.html">create_tables_for_mqdt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.generate_database.create_tables_for_misc.html">create_tables_for_misc</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<style>
+a.gitbutton {
+  display: block;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #fff;
+  padding-top: 10px;
+  padding-left: 85px;
+  padding-right: 0px;
+  margin: 22px;
+  width: 240px;
+  height: 60px;
+  background: transparent url("../../_static/buttons/github.svg") 0 0 no-repeat;
+}
+a.gitbutton small {
+  display: block;
+  font-size: 11px;
+}
+button.toctree-expand {
+  display: none;
+}
+</style>
+<a href="https://github.com/pairinteraction/rydstate" class="gitbutton">Explore<small>the GitHub repository</small></a>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RydState</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../examples.html">Examples</a></li>
+      <li class="breadcrumb-item active">Compare Sr <span class="math notranslate nohighlight">\(5s5s \rightarrow 5snl\)</span> matrix elements with NIST</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/examples/comparisons/compare_nist_matrix_elements_Sr88_sqdt.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <style>
+    .nbinput .prompt,
+    .nboutput .prompt {
+        display: none;
+    }
+</style>
+
+<div class="admonition note">
+  This page was generated from the Jupyter notebook
+  <a class="reference external" href="compare_nist_matrix_elements_Sr88_sqdt.ipynb">compare_nist_matrix_elements_Sr88_sqdt.ipynb</a>.
+</div><section id="Compare-Sr-5s5s-\rightarrow-5snl-matrix-elements-with-NIST">
+<h1>Compare Sr <span class="math notranslate nohighlight">\(5s5s \rightarrow 5snl\)</span> matrix elements with NIST<a class="headerlink" href="#Compare-Sr-5s5s-\rightarrow-5snl-matrix-elements-with-NIST" title="Link to this heading"></a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># %matplotlib widget</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">rydstate</span>
+</pre></div>
+</div>
+</div>
+<section id="NIST-reference-values">
+<h2>NIST reference values<a class="headerlink" href="#NIST-reference-values" title="Link to this heading"></a></h2>
+<p>The NIST ASD line strength of an E1 transition is <span class="math notranslate nohighlight">\(S = |\langle J \Vert d \Vert J' \rangle|^2\)</span> in atomic units <span class="math notranslate nohighlight">\((e\,a_0)^2\)</span>, so it is directly comparable to the square of rydstate’s reduced matrix elements.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># {(n, s_tot): S in (e a0)^2} from https://physics.nist.gov/PhysRefData/ASD/lines_form.html (retrieved 2026-07-24)</span>
+<span class="n">nist_s</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mf">2.91e1</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mf">7.1e-2</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mf">1.3e-1</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mf">3.5e-1</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mf">2.09e-1</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mf">1.2e-1</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mf">6.3e-2</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mf">4.0e-2</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mf">2.57e-2</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mf">1.89e-2</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mf">1.4e-2</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mf">1.0e-2</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mf">7.9e-3</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mf">6.6e-3</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mf">5.0e-3</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mf">4.01e-3</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Bare-vs.-full-operator">
+<h2>Bare vs. full operator<a class="headerlink" href="#Bare-vs.-full-operator" title="Link to this heading"></a></h2>
+<p>The full matrix element (including the symmetry factor <span class="math notranslate nohighlight">\(\sqrt{2}\)</span>) is used automatically if “electric_dipole” is specified. The symmetry factor applies because exactly one of the two states, the <span class="math notranslate nohighlight">\(5s5s\)</span> ground state, has both of its valence electrons in the same shell, see <code class="docutils literal notranslate"><span class="pre">RydbergKet.valence_electrons_are_in_the_same_shell</span></code>.</p>
+<p>The <span class="math notranslate nohighlight">\(\sqrt{2}\)</span> enters every contribution to the matrix element, so it cannot be switched off via the <code class="docutils literal notranslate"><span class="pre">part</span></code> argument (<code class="docutils literal notranslate"><span class="pre">part=&quot;rydberg&quot;</span></code> selects only the contribution of the Rydberg electron, but still includes the <span class="math notranslate nohighlight">\(\sqrt{2}\)</span>). To compute the bare values for comparison, we therefore overwrite the cached <code class="docutils literal notranslate"><span class="pre">valence_electrons_are_in_the_same_shell</span></code> of the ground state, i.e. we treat the two valence electrons as distinguishable.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_max</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">matrix_elements</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">for</span> <span class="n">potential</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"coulomb"</span><span class="p">,</span> <span class="s2">"fei_2009"</span><span class="p">]:</span>
+    <span class="n">basis_ns</span> <span class="o">=</span> <span class="n">rydstate</span><span class="o">.</span><span class="n">BasisSQDT</span><span class="p">(</span><span class="s2">"Sr88"</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_max</span><span class="p">),</span> <span class="n">l_r</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">potential_class</span><span class="o">=</span><span class="n">potential</span><span class="p">)</span>
+    <span class="n">ground_state</span> <span class="o">=</span> <span class="n">basis_ns</span><span class="o">.</span><span class="n">sort_states</span><span class="p">(</span><span class="s2">"nu"</span><span class="p">)</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">basis_np</span> <span class="o">=</span> <span class="n">rydstate</span><span class="o">.</span><span class="n">BasisSQDT</span><span class="p">(</span><span class="s2">"Sr88"</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_max</span><span class="p">),</span> <span class="n">l_r</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">potential_class</span><span class="o">=</span><span class="n">potential</span><span class="p">)</span>
+
+    <span class="n">matrix_elements</span><span class="p">[</span><span class="n">potential</span> <span class="o">+</span> <span class="s2">" - full"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">calc_exp_qn</span><span class="p">(</span><span class="s2">"s_tot"</span><span class="p">)):</span> <span class="n">state</span><span class="o">.</span><span class="n">calc_reduced_matrix_element</span><span class="p">(</span>
+            <span class="n">ground_state</span><span class="p">,</span> <span class="s2">"electric_dipole"</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"e a0"</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">basis_np</span><span class="o">.</span><span class="n">states</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="n">ket</span> <span class="ow">in</span> <span class="n">ground_state</span><span class="o">.</span><span class="n">rydberg_kets</span><span class="p">:</span>  <span class="c1"># ignore the symmetry factor for the bare matrix elements</span>
+        <span class="n">ket</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s2">"valence_electrons_are_in_the_same_shell"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">matrix_elements</span><span class="p">[</span><span class="n">potential</span> <span class="o">+</span> <span class="s2">" - bare"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">calc_exp_qn</span><span class="p">(</span><span class="s2">"s_tot"</span><span class="p">)):</span> <span class="n">state</span><span class="o">.</span><span class="n">calc_reduced_matrix_element</span><span class="p">(</span>
+            <span class="n">ground_state</span><span class="p">,</span> <span class="s2">"electric_dipole"</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"e a0"</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">basis_np</span><span class="o">.</span><span class="n">states</span>
+    <span class="p">}</span>
+    <span class="k">for</span> <span class="n">ket</span> <span class="ow">in</span> <span class="n">ground_state</span><span class="o">.</span><span class="n">rydberg_kets</span><span class="p">:</span>  <span class="c1"># restore the cached property</span>
+        <span class="k">del</span> <span class="n">ket</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s2">"valence_electrons_are_in_the_same_shell"</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+The wavefunction for the radial_ket RadialKet(nu=2.127979643626841, potential=PotentialCoulombStrontium88(l_r=1)) has some issues:
+      The wavefunction has 0 nodes, but should have 3 nodes.
+The wavefunction for the radial_ket RadialKet(nu=1.545675122591217, potential=PotentialCoulombStrontium88(l_r=0)) has some issues:
+      The wavefunction has 1 nodes, but should have 4 nodes.
+      The integration for l=0 did stop at 0.31 (should be close to zero).
+The wavefunction for the radial_ket RadialKet(nu=3.045213644985167, potential=PotentialCoulombStrontium88(l_r=1)) has some issues:
+      The wavefunction has 1 nodes, but should have 4 nodes.
+The wavefunction for the radial_ket RadialKet(nu=3.9522901100766417, potential=PotentialCoulombStrontium88(l_r=1)) has some issues:
+      The wavefunction has 2 nodes, but should have 5 nodes.
+The wavefunction for the radial_ket RadialKet(nu=5.6236817451158005, potential=PotentialCoulombStrontium88(l_r=1)) has some issues:
+      The wavefunction has 4 nodes, but should have 6 nodes.
+The wavefunction for the radial_ket RadialKet(nu=6.491731900670257, potential=PotentialCoulombStrontium88(l_r=1)) has some issues:
+      The wavefunction has 5 nodes, but should have 7 nodes.
+The wavefunction for the radial_ket RadialKet(nu=7.418856305064204, potential=PotentialCoulombStrontium88(l_r=1)) has some issues:
+      The wavefunction has 6 nodes, but should have 8 nodes.
+The wavefunction for the radial_ket RadialKet(nu=8.37221815884094, potential=PotentialCoulombStrontium88(l_r=1)) has some issues:
+      The wavefunction has 7 nodes, but should have 9 nodes.
+The wavefunction for the radial_ket RadialKet(nu=9.346279622264944, potential=PotentialCoulombStrontium88(l_r=1)) has some issues:
+      The wavefunction has 8 nodes, but should have 10 nodes.
+The wavefunction for the radial_ket RadialKet(nu=10.329455102826303, potential=PotentialCoulombStrontium88(l_r=1)) has some issues:
+      The wavefunction has 9 nodes, but should have 11 nodes.
+The wavefunction for the radial_ket RadialKet(nu=11.317831826476322, potential=PotentialCoulombStrontium88(l_r=1)) has some issues:
+      The wavefunction has 10 nodes, but should have 12 nodes.
+The wavefunction for the radial_ket RadialKet(nu=12.310080802166087, potential=PotentialCoulombStrontium88(l_r=1)) has some issues:
+      The wavefunction has 11 nodes, but should have 13 nodes.
+The wavefunction for the radial_ket RadialKet(nu=13.302284823867543, potential=PotentialCoulombStrontium88(l_r=1)) has some issues:
+      The wavefunction has 12 nodes, but should have 14 nodes.
+The wavefunction for the radial_ket RadialKet(nu=14.297188901569285, potential=PotentialCoulombStrontium88(l_r=1)) has some issues:
+      The wavefunction has 13 nodes, but should have 15 nodes.
+The wavefunction for the radial_ket RadialKet(nu=15.293182210659385, potential=PotentialCoulombStrontium88(l_r=1)) has some issues:
+      The wavefunction has 14 nodes, but should have 16 nodes.
+The wavefunction for the radial_ket RadialKet(nu=16.289972518144626, potential=PotentialCoulombStrontium88(l_r=1)) has some issues:
+      The wavefunction has 15 nodes, but should have 17 nodes.
+The wavefunction for the radial_ket RadialKet(nu=17.287359805289437, potential=PotentialCoulombStrontium88(l_r=1)) has some issues:
+      The wavefunction has 16 nodes, but should have 18 nodes.
+The wavefunction for the radial_ket RadialKet(nu=18.285203378127346, potential=PotentialCoulombStrontium88(l_r=1)) has some issues:
+      The wavefunction has 17 nodes, but should have 19 nodes.
+The wavefunction for the radial_ket RadialKet(nu=19.283401893162083, potential=PotentialCoulombStrontium88(l_r=1)) has some issues:
+      The wavefunction has 18 nodes, but should have 20 nodes.
+The wavefunction for the radial_ket RadialKet(nu=20.281880815804744, potential=PotentialCoulombStrontium88(l_r=1)) has some issues:
+      The wavefunction has 19 nodes, but should have 21 nodes.
+The wavefunction for the radial_ket RadialKet(nu=21.280584311637018, potential=PotentialCoulombStrontium88(l_r=1)) has some issues:
+      The wavefunction has 20 nodes, but should have 22 nodes.
+The wavefunction for the radial_ket RadialKet(nu=22.279469865945003, potential=PotentialCoulombStrontium88(l_r=1)) has some issues:
+      The wavefunction has 21 nodes, but should have 23 nodes.
+The wavefunction for the radial_ket RadialKet(nu=23.278504630090985, potential=PotentialCoulombStrontium88(l_r=1)) has some issues:
+      The wavefunction has 22 nodes, but should have 24 nodes.
+The wavefunction for the radial_ket RadialKet(nu=24.27766288858316, potential=PotentialCoulombStrontium88(l_r=1)) has some issues:
+      The wavefunction has 23 nodes, but should have 25 nodes.
+The wavefunction for the radial_ket RadialKet(nu=25.276924270023173, potential=PotentialCoulombStrontium88(l_r=1)) has some issues:
+      The wavefunction has 24 nodes, but should have 26 nodes.
+The wavefunction for the radial_ket RadialKet(nu=26.276272461957472, potential=PotentialCoulombStrontium88(l_r=1)) has some issues:
+      The wavefunction has 25 nodes, but should have 27 nodes.
+The wavefunction for the radial_ket RadialKet(nu=27.275694273432602, potential=PotentialCoulombStrontium88(l_r=1)) has some issues:
+      The wavefunction has 26 nodes, but should have 28 nodes.
+The wavefunction for the radial_ket RadialKet(nu=5.6236817451158005, potential=PotentialFei2009Strontium88(l_r=1)) has some issues:
+      The wavefunction has 7 nodes, but should have 6 nodes.
+The wavefunction for the radial_ket RadialKet(nu=6.491731900670257, potential=PotentialFei2009Strontium88(l_r=1)) has some issues:
+      The wavefunction has 8 nodes, but should have 7 nodes.
+The wavefunction for the radial_ket RadialKet(nu=7.418856305064204, potential=PotentialFei2009Strontium88(l_r=1)) has some issues:
+      The wavefunction has 9 nodes, but should have 8 nodes.
+</pre></div></div>
+</div>
+</section>
+<section id="Comparison-plot">
+<h2>Comparison plot<a class="headerlink" href="#Comparison-plot" title="Link to this heading"></a></h2>
+<p>Left: the matrix elements themselves. Right: the ratio of the calculated matrix elements to the NIST values.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax_me</span><span class="p">,</span> <span class="n">ax_ratio</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"C0"</span><span class="p">,</span> <span class="s2">"C0"</span><span class="p">,</span> <span class="s2">"C1"</span><span class="p">,</span> <span class="s2">"C1"</span><span class="p">,</span> <span class="s2">"C2"</span><span class="p">,</span> <span class="s2">"C2"</span><span class="p">,</span> <span class="s2">"C3"</span><span class="p">,</span> <span class="s2">"C3"</span><span class="p">]</span>
+<span class="n">linestyles</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"-"</span><span class="p">,</span> <span class="s2">"--"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">,</span> <span class="s2">"--"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">,</span> <span class="s2">"--"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">,</span> <span class="s2">"--"</span><span class="p">]</span>
+<span class="n">markers</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"o"</span><span class="p">,</span> <span class="s2">"s"</span><span class="p">,</span> <span class="s2">"x"</span><span class="p">,</span> <span class="s2">"s"</span><span class="p">,</span> <span class="s2">"^"</span><span class="p">,</span> <span class="s2">"v"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">"s"</span><span class="p">,</span> <span class="s2">"^"</span><span class="p">,</span> <span class="s2">"v"</span><span class="p">]</span>
+
+<span class="n">s_tot</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">s_tot_label</span> <span class="o">=</span> <span class="sa">rf</span><span class="s2">"$s_</span><span class="se">{{</span><span class="s2">tot</span><span class="se">}}</span><span class="s2">=</span><span class="si">{</span><span class="n">s_tot</span><span class="si">}</span><span class="s2">$"</span>
+<span class="n">n_nist</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">n</span> <span class="k">for</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">_s_tot</span><span class="p">)</span> <span class="ow">in</span> <span class="n">nist_s</span> <span class="k">if</span> <span class="n">_s_tot</span> <span class="o">==</span> <span class="n">s_tot</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">me</span> <span class="ow">in</span> <span class="n">matrix_elements</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">n_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">_s_tot</span><span class="p">)</span> <span class="ow">in</span> <span class="n">me</span> <span class="k">if</span> <span class="n">_s_tot</span> <span class="o">==</span> <span class="n">s_tot</span><span class="p">]</span>
+    <span class="n">style</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"color"</span><span class="p">:</span> <span class="n">colors</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s2">"linestyle"</span><span class="p">:</span> <span class="n">linestyles</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s2">"marker"</span><span class="p">:</span> <span class="n">markers</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s2">"markersize"</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span>
+    <span class="n">ax_me</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">n_list</span><span class="p">,</span> <span class="p">[</span><span class="nb">abs</span><span class="p">(</span><span class="n">me</span><span class="p">[(</span><span class="n">n</span><span class="p">,</span> <span class="n">s_tot</span><span class="p">)])</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">n_list</span><span class="p">],</span> <span class="o">**</span><span class="n">style</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">s_tot_label</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">ax_ratio</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">n_nist</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">([</span><span class="n">me</span><span class="p">[(</span><span class="n">n</span><span class="p">,</span> <span class="n">s_tot</span><span class="p">)]</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">nist_s</span><span class="p">[(</span><span class="n">n</span><span class="p">,</span> <span class="n">s_tot</span><span class="p">)])</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">n_nist</span><span class="p">]),</span> <span class="o">**</span><span class="n">style</span><span class="p">)</span>
+
+<span class="n">ax_me</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">n_nist</span><span class="p">,</span>
+    <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">nist_s</span><span class="p">[(</span><span class="n">n</span><span class="p">,</span> <span class="n">s_tot</span><span class="p">)])</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">n_nist</span><span class="p">],</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">"k"</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s2">"X"</span><span class="p">,</span>
+    <span class="n">markeredgecolor</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
+    <span class="n">fillstyle</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">"NIST, </span><span class="si">{</span><span class="n">s_tot_label</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">ax_me</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s2">"log"</span><span class="p">)</span>
+<span class="n">ax_me</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s2">"log"</span><span class="p">)</span>
+<span class="n">ax_me</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">"5"</span><span class="p">,</span> <span class="s2">"6"</span><span class="p">,</span> <span class="s2">"8"</span><span class="p">,</span> <span class="s2">"10"</span><span class="p">,</span> <span class="s2">"15"</span><span class="p">,</span> <span class="s2">"20"</span><span class="p">])</span>
+<span class="n">ax_me</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"principal quantum number $n$"</span><span class="p">)</span>
+<span class="n">ax_me</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">"$\sqrt{S_\mathrm</span><span class="si">{calc}</span><span class="s2">} = |\langle 5s_{1/2} \Vert d \Vert np_j \rangle|$  ($e\,a_0$)"</span><span class="p">)</span>
+<span class="n">ax_me</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">ax_ratio</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">ax_ratio</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"principal quantum number $n$"</span><span class="p">)</span>
+<span class="n">ax_ratio</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">"$\sqrt{S_\mathrm</span><span class="si">{calc}</span><span class="s2">} / \sqrt{S_\mathrm</span><span class="si">{NIST}</span><span class="s2">}$"</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/examples_comparisons_compare_nist_matrix_elements_Sr88_sqdt_7_0.png" src="../../_images/examples_comparisons_compare_nist_matrix_elements_Sr88_sqdt_7_0.png" />
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="compare_nist_matrix_elements.html" class="btn btn-neutral float-left" title="Compare Rb \(5s \rightarrow np_j\) matrix elements with NIST" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="compare_model_potentials.html" class="btn btn-neutral float-right" title="Compare different effective model potentials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, RydState Developers.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

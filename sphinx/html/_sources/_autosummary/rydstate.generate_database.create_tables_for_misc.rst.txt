@@ -1,0 +1,6 @@
+﻿create\_tables\_for\_misc
+=========================
+
+.. currentmodule:: rydstate.generate_database
+
+.. autofunction:: create_tables_for_misc

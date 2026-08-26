@@ -1,0 +1,41 @@
+PotentialFei2009Strontium87
+===========================
+
+.. currentmodule:: rydstate.species.strontium
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~PotentialFei2009Strontium87.__init__
+      ~PotentialFei2009Strontium87.calc_effective_potential_centrifugal
+      ~PotentialFei2009Strontium87.calc_effective_potential_sqrt
+      ~PotentialFei2009Strontium87.calc_hydrogen_turning_point_z
+      ~PotentialFei2009Strontium87.calc_model_potential
+      ~PotentialFei2009Strontium87.calc_potential_coulomb
+      ~PotentialFei2009Strontium87.calc_total_effective_potential
+      ~PotentialFei2009Strontium87.calc_turning_point_z
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~PotentialFei2009Strontium87.is_default
+   ~PotentialFei2009Strontium87.model_potential_parameter_fei_2009
+   ~PotentialFei2009Strontium87.reference
+   ~PotentialFei2009Strontium87.species
+   ~PotentialFei2009Strontium87.tag
+
+
+
+.. autoclass:: rydstate.species.strontium.PotentialFei2009Strontium87
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

@@ -1,0 +1,65 @@
+yb173\_mqdt\_fmodel\_data
+=========================
+Full module path: rydstate.species.ytterbium.yb173\_mqdt\_fmodel\_data
+
+.. workaround to ignore generic classes like AtomSQDT[int]
+
+
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+
+
+.. currentmodule:: rydstate.species.ytterbium.yb173_mqdt_fmodel_data
+
+
+
+
+
+
+.. rubric:: Classes
+
+.. .. inheritance-diagram:: rydstate.species.ytterbium.yb173_mqdt_fmodel_data
+..     :parts: 1
+
+.. autosummary::
+   :toctree: .
+   
+      Yb173_P05_HighN
+      Yb173_P15_HighN
+      Yb173_P25_HighN
+      Yb173_P35_HighN
+      Yb173_P45_HighN
+      Yb173_S15_HighN
+      Yb173_S25_HighN
+      Yb173_S35_HighN
+
+
+
+
+
+
+.. rubric:: Module description
+
+.. automodule:: rydstate.species.ytterbium.yb173_mqdt_fmodel_data

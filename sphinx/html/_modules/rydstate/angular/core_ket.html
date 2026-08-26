@@ -1,0 +1,354 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rydstate.angular.core_ket &mdash; RydState 0.12.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=f24cbf82"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            RydState
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.html#radialket">RadialKet</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/radial/hydrogen_wavefunction.html">Hydrogen radial wavefunction via numerov and from sympy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/radial/rubidium_wavefunction.html">Rubidium wavefunction and potential</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.html#angularstate">AngularState</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/angular/angular_state.html">Using AngularKets and AngularStates in different spin coupling schemes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.html#rydbergstate">RydbergState</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/dipole_matrix_elements.html">Calculating dipole matrix elements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/lifetimes.html">Lifetimes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.html#mqdt">MQDT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/mqdt/mqdt_exp_qn.html">Labeling the angular character of Yb 171</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.html#comparisons">Comparisons</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/comparisons/compare_z_min_cutoff.html">Comparison of the z_min values for circular states</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/comparisons/compare_nist_energy_levels_data.html">Compare NIST energy levels data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/comparisons/compare_nist_matrix_elements.html">Compare Rb <span class="math notranslate nohighlight">\(5s \rightarrow np_j\)</span> matrix elements with NIST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/comparisons/compare_nist_matrix_elements_Sr88_sqdt.html">Compare Sr <span class="math notranslate nohighlight">\(5s5s \rightarrow 5snl\)</span> matrix elements with NIST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/comparisons/compare_model_potentials.html">Compare different effective model potentials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/comparisons/compare_whittaker.html">Comparison: Numerov - Whittaker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/benchmark/benchmark_njit.html">Benchmark of Numerov integration with and without using numba.njit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_reference.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/rydberg_state.html">Rydberg States</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.rydberg_state.RydbergStateSQDT.html">RydbergStateSQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.rydberg_state.RydbergStateSQDTAlkali.html">RydbergStateSQDTAlkali</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.rydberg_state.RydbergStateMQDT.html">RydbergStateMQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.rydberg_state.RydbergKet.html">RydbergKet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/basis.html">Rydberg Basis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.BasisSQDT.html">BasisSQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.BasisMQDT.html">BasisMQDT</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/angular.html">Angular module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.angular.AngularKetLS.html">AngularKetLS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.angular.AngularKetJJ.html">AngularKetJJ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.angular.AngularKetFJ.html">AngularKetFJ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.angular.AngularState.html">AngularState</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.angular.CoreKet.html">CoreKet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.angular.utils.html">utils</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/radial.html">Radial module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.radial.RadialKet.html">RadialKet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/species.html">Species Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.ElementProperties.html">ElementProperties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.PotentialCoulomb.html">PotentialCoulomb</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.PotentialMarinescu1994.html">PotentialMarinescu1994</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.PotentialFei2009.html">PotentialFei2009</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.SQDT.html">SQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.MQDT.html">MQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.cesium.html">cesium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.hydrogen.html">hydrogen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.lithium.html">lithium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.potassium.html">potassium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.rubidium.html">rubidium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.sodium.html">sodium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.strontium.html">strontium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.ytterbium.html">ytterbium</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generate_database.html">Generate Database module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.generate_database.create_tables_for_sqdt.html">create_tables_for_sqdt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.generate_database.create_tables_for_mqdt.html">create_tables_for_mqdt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.generate_database.create_tables_for_misc.html">create_tables_for_misc</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<style>
+a.gitbutton {
+  display: block;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #fff;
+  padding-top: 10px;
+  padding-left: 85px;
+  padding-right: 0px;
+  margin: 22px;
+  width: 240px;
+  height: 60px;
+  background: transparent url("../../../_static/buttons/github.svg") 0 0 no-repeat;
+}
+a.gitbutton small {
+  display: block;
+  font-size: 11px;
+}
+button.toctree-expand {
+  display: none;
+}
+</style>
+<a href="https://github.com/pairinteraction/rydstate" class="gitbutton">Explore<small>the GitHub repository</small></a>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">RydState</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">rydstate.angular.core_ket</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for rydstate.angular.core_ket</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">ClassVar</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.angular.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_unknown</span><span class="p">,</span> <span class="n">try_trivial_spin_addition</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.angular.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Unknown</span>
+
+
+<div class="viewcode-block" id="CoreKet">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.angular.CoreKet.html#rydstate.angular.CoreKet">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CoreKet</span><span class="p">:</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"i_c"</span><span class="p">,</span> <span class="s2">"n_c"</span><span class="p">,</span> <span class="s2">"s_c"</span><span class="p">,</span> <span class="s2">"l_c"</span><span class="p">,</span> <span class="s2">"j_c"</span><span class="p">,</span> <span class="s2">"f_c"</span><span class="p">,</span> <span class="s2">"label"</span><span class="p">,</span> <span class="s2">"quantum_numbers"</span><span class="p">)</span>
+
+    <span class="n">quantum_number_names</span><span class="p">:</span> <span class="n">ClassVar</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"i_c"</span><span class="p">,</span> <span class="s2">"n_c"</span><span class="p">,</span> <span class="s2">"s_c"</span><span class="p">,</span> <span class="s2">"l_c"</span><span class="p">,</span> <span class="s2">"j_c"</span><span class="p">,</span> <span class="s2">"f_c"</span><span class="p">)</span>
+
+    <span class="n">i_c</span><span class="p">:</span> <span class="nb">float</span>
+<span class="w">    </span><span class="sd">"""Nuclear spin quantum number."""</span>
+    <span class="n">n_c</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="n">Unknown</span> <span class="o">|</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""Principal quantum number of the core electron, None if not applicable."""</span>
+    <span class="n">s_c</span><span class="p">:</span> <span class="nb">float</span>
+<span class="w">    </span><span class="sd">"""Core electron spin quantum number (0 for alkali atoms, 0.5 for alkaline earth atoms)."""</span>
+    <span class="n">l_c</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="n">Unknown</span>
+<span class="w">    </span><span class="sd">"""Core electron orbital quantum number (usually 0)."""</span>
+    <span class="n">j_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">Unknown</span>
+<span class="w">    </span><span class="sd">"""Total core electron angular quantum number (s_c + l_c)."""</span>
+    <span class="n">f_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">Unknown</span>
+<span class="w">    </span><span class="sd">"""Total core angular quantum number (j_c + i_c)."""</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">i_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_c</span><span class="p">:</span> <span class="n">Unknown</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">s_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">l_c</span><span class="p">:</span> <span class="n">Unknown</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">j_c</span><span class="p">:</span> <span class="n">Unknown</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">f_c</span><span class="p">:</span> <span class="n">Unknown</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">label</span><span class="p">:</span> <span class="n">Unknown</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Initialize the core angular ket."""</span>
+        <span class="k">if</span> <span class="n">i_c</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Nuclear spin i_c must be set."</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">i_c</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">i_c</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">s_c</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">s_c</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_c</span> <span class="o">=</span> <span class="n">n_c</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_c</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_c</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Principal quantum number n_c must be set if a core electron is present."</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">l_c</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Core orbital angular momentum l_c must be set."</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">l_c</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">l_c</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">is_unknown</span><span class="p">(</span><span class="n">l_c</span><span class="p">)</span> <span class="k">else</span> <span class="n">l_c</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">j_c</span> <span class="o">=</span> <span class="n">try_trivial_spin_addition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_c</span><span class="p">,</span> <span class="n">j_c</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f_c</span> <span class="o">=</span> <span class="n">try_trivial_spin_addition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">j_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">i_c</span><span class="p">,</span> <span class="n">f_c</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quantum_numbers</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qn</span><span class="p">)</span> <span class="k">for</span> <span class="n">qn</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantum_number_names</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span>
+
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">is_unknown</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">j_c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_c</span><span class="p">))</span> <span class="ow">and</span> <span class="n">label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Label must be set if any of l_c, j_c, or f_c is unknown."</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"i_c=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">i_c</span><span class="si">}</span><span class="s2">, s_c=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">s_c</span><span class="si">}</span><span class="s2">, l_c=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">l_c</span><span class="si">}</span><span class="s2">, j_c=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">j_c</span><span class="si">}</span><span class="s2">, f_c=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f_c</span><span class="si">}</span><span class="s2">"</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_c</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">", n_c=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_c</span><span class="si">}</span><span class="s2">"</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">", label=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s2">"</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">)"</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">CoreKet</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">label</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantum_numbers</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">quantum_numbers</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)),</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantum_numbers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">contains_unknown</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return True if any of the quantum numbers is Unknown."""</span>
+        <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">is_unknown</span><span class="p">(</span><span class="n">qn</span><span class="p">)</span> <span class="k">for</span> <span class="n">qn</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantum_numbers</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CoreKet.find_matching_core_ket">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.angular.CoreKet.html#rydstate.angular.CoreKet.find_matching_core_ket">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_matching_core_ket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matching_core_ket_list</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">CoreKet</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">CoreKet</span><span class="p">:</span>  <span class="c1"># noqa: C901, PLR0912</span>
+<span class="w">        </span><span class="sd">"""Find the matching core ket in the given list of core kets.</span>
+
+<span class="sd">        This means, is one core_ket in the list a broader or equal description of the same core state.</span>
+<span class="sd">        Specifically, a core_ket from the list is a match if:</span>
+
+<span class="sd">        - The quantum numbers are the same or the quantum number of the matching_core_ket (from the list) is unknown.</span>
+<span class="sd">        - The label is the same, or the label of the matching_core_ket is unknown,</span>
+<span class="sd">          or the label of the matching_core_ket is contained in the label of self.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            matching_core_ket_list: List of core kets to search for a match.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The matching core ket from the list.</span>
+
+<span class="sd">        """</span>
+        <span class="n">matching_kets</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">matching_core_ket_list</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span>
+                <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qn</span><span class="p">)</span> <span class="o">==</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">match</span><span class="p">,</span> <span class="n">qn</span><span class="p">)</span> <span class="ow">or</span> <span class="n">is_unknown</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">match</span><span class="p">,</span> <span class="n">qn</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">qn</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantum_number_names</span>
+            <span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">is_unknown</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">)</span> <span class="ow">or</span> <span class="n">is_unknown</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">label</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">is_unknown</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">label</span><span class="p">):</span>
+                    <span class="n">matching_kets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">match</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">match</span><span class="o">.</span><span class="n">label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">==</span> <span class="n">match</span><span class="o">.</span><span class="n">label</span><span class="p">:</span>
+                    <span class="n">matching_kets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">match</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">match</span><span class="o">.</span><span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">:</span>
+                <span class="n">matching_kets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">match</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">matching_kets</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"No matching core ket found for </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> in the provided list."</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">matching_kets</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">matching_kets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># else len(matching_kets) &gt; 1:</span>
+        <span class="c1"># if multiple matches are found, return the most specific one</span>
+        <span class="c1"># i.e. the one which should have all the others as matches as well</span>
+        <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">matching_kets</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">other_core_ket</span> <span class="ow">in</span> <span class="n">matching_kets</span><span class="p">:</span>
+                    <span class="k">match</span><span class="o">.</span><span class="n">find_matching_core_ket</span><span class="p">([</span><span class="n">other_core_ket</span><span class="p">])</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>  <span class="c1"># noqa: PERF203</span>
+                <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">match</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"Multiple matching core kets found for </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> in the provided list, "</span>
+            <span class="s2">"but no most specific match could be identified."</span>
+        <span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, RydState Developers.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

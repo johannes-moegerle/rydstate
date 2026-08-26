@@ -1,0 +1,6 @@
+check\_spin\_addition\_rule
+===========================
+
+.. currentmodule:: rydstate.angular.utils
+
+.. autofunction:: check_spin_addition_rule

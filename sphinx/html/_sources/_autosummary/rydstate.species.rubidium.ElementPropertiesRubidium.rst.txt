@@ -1,0 +1,46 @@
+ElementPropertiesRubidium
+=========================
+
+.. currentmodule:: rydstate.species.rubidium
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~ElementPropertiesRubidium.__init__
+      ~ElementPropertiesRubidium.get_corrected_rydberg_constant
+      ~ElementPropertiesRubidium.is_allowed_shell
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~ElementPropertiesRubidium.Z
+   ~ElementPropertiesRubidium.additional_allowed_shells
+   ~ElementPropertiesRubidium.alpha_closed_shell_core
+   ~ElementPropertiesRubidium.core_electron_configuration
+   ~ElementPropertiesRubidium.corrected_rydberg_constant
+   ~ElementPropertiesRubidium.ground_state_shell
+   ~ElementPropertiesRubidium.i_c
+   ~ElementPropertiesRubidium.net_charge
+   ~ElementPropertiesRubidium.nuclear_dipole
+   ~ElementPropertiesRubidium.number_valence_electrons
+   ~ElementPropertiesRubidium.r_c_dipole_operator
+   ~ElementPropertiesRubidium.reduced_mass_au
+   ~ElementPropertiesRubidium.s_c
+   ~ElementPropertiesRubidium.s_r
+   ~ElementPropertiesRubidium.species
+
+
+
+.. autoclass:: rydstate.species.rubidium.ElementPropertiesRubidium
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

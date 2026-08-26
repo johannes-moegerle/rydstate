@@ -1,0 +1,46 @@
+ElementPropertiesSodium
+=======================
+
+.. currentmodule:: rydstate.species.sodium
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~ElementPropertiesSodium.__init__
+      ~ElementPropertiesSodium.get_corrected_rydberg_constant
+      ~ElementPropertiesSodium.is_allowed_shell
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~ElementPropertiesSodium.Z
+   ~ElementPropertiesSodium.additional_allowed_shells
+   ~ElementPropertiesSodium.alpha_closed_shell_core
+   ~ElementPropertiesSodium.core_electron_configuration
+   ~ElementPropertiesSodium.corrected_rydberg_constant
+   ~ElementPropertiesSodium.ground_state_shell
+   ~ElementPropertiesSodium.i_c
+   ~ElementPropertiesSodium.net_charge
+   ~ElementPropertiesSodium.nuclear_dipole
+   ~ElementPropertiesSodium.number_valence_electrons
+   ~ElementPropertiesSodium.r_c_dipole_operator
+   ~ElementPropertiesSodium.reduced_mass_au
+   ~ElementPropertiesSodium.s_c
+   ~ElementPropertiesSodium.s_r
+   ~ElementPropertiesSodium.species
+
+
+
+.. autoclass:: rydstate.species.sodium.ElementPropertiesSodium
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

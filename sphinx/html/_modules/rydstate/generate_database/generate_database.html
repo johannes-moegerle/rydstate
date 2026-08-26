@@ -1,0 +1,345 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rydstate.generate_database.generate_database &mdash; RydState 0.12.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=f24cbf82"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            RydState
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.html#radialket">RadialKet</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/radial/hydrogen_wavefunction.html">Hydrogen radial wavefunction via numerov and from sympy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/radial/rubidium_wavefunction.html">Rubidium wavefunction and potential</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.html#angularstate">AngularState</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/angular/angular_state.html">Using AngularKets and AngularStates in different spin coupling schemes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.html#rydbergstate">RydbergState</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/dipole_matrix_elements.html">Calculating dipole matrix elements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/lifetimes.html">Lifetimes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.html#mqdt">MQDT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/mqdt/mqdt_exp_qn.html">Labeling the angular character of Yb 171</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.html#comparisons">Comparisons</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/comparisons/compare_z_min_cutoff.html">Comparison of the z_min values for circular states</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/comparisons/compare_nist_energy_levels_data.html">Compare NIST energy levels data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/comparisons/compare_nist_matrix_elements.html">Compare Rb <span class="math notranslate nohighlight">\(5s \rightarrow np_j\)</span> matrix elements with NIST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/comparisons/compare_nist_matrix_elements_Sr88_sqdt.html">Compare Sr <span class="math notranslate nohighlight">\(5s5s \rightarrow 5snl\)</span> matrix elements with NIST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/comparisons/compare_model_potentials.html">Compare different effective model potentials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/comparisons/compare_whittaker.html">Comparison: Numerov - Whittaker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/benchmark/benchmark_njit.html">Benchmark of Numerov integration with and without using numba.njit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_reference.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/rydberg_state.html">Rydberg States</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.rydberg_state.RydbergStateSQDT.html">RydbergStateSQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.rydberg_state.RydbergStateSQDTAlkali.html">RydbergStateSQDTAlkali</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.rydberg_state.RydbergStateMQDT.html">RydbergStateMQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.rydberg_state.RydbergKet.html">RydbergKet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/basis.html">Rydberg Basis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.BasisSQDT.html">BasisSQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.BasisMQDT.html">BasisMQDT</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/angular.html">Angular module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.angular.AngularKetLS.html">AngularKetLS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.angular.AngularKetJJ.html">AngularKetJJ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.angular.AngularKetFJ.html">AngularKetFJ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.angular.AngularState.html">AngularState</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.angular.CoreKet.html">CoreKet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.angular.utils.html">utils</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/radial.html">Radial module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.radial.RadialKet.html">RadialKet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/species.html">Species Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.ElementProperties.html">ElementProperties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.PotentialCoulomb.html">PotentialCoulomb</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.PotentialMarinescu1994.html">PotentialMarinescu1994</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.PotentialFei2009.html">PotentialFei2009</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.SQDT.html">SQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.MQDT.html">MQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.cesium.html">cesium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.hydrogen.html">hydrogen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.lithium.html">lithium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.potassium.html">potassium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.rubidium.html">rubidium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.sodium.html">sodium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.strontium.html">strontium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.ytterbium.html">ytterbium</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generate_database.html">Generate Database module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.generate_database.create_tables_for_sqdt.html">create_tables_for_sqdt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.generate_database.create_tables_for_mqdt.html">create_tables_for_mqdt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.generate_database.create_tables_for_misc.html">create_tables_for_misc</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<style>
+a.gitbutton {
+  display: block;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #fff;
+  padding-top: 10px;
+  padding-left: 85px;
+  padding-right: 0px;
+  margin: 22px;
+  width: 240px;
+  height: 60px;
+  background: transparent url("../../../_static/buttons/github.svg") 0 0 no-repeat;
+}
+a.gitbutton small {
+  display: block;
+  font-size: 11px;
+}
+button.toctree-expand {
+  display: none;
+}
+</style>
+<a href="https://github.com/pairinteraction/rydstate" class="gitbutton">Explore<small>the GitHub repository</small></a>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">RydState</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">rydstate.generate_database.generate_database</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for rydstate.generate_database.generate_database</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">rydstate</span><span class="w"> </span><span class="kn">import</span> <span class="n">__version__</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.angular.wigner_symbols</span><span class="w"> </span><span class="kn">import</span> <span class="n">calc_wigner_3j</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.basis.basis_mqdt</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasisMQDT</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.basis.basis_sqdt</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasisSQDT</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.generate_database.generate_matrix_elements_table</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_matrix_elements_tables</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.generate_database.generate_misc_table</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_wigner_table</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.generate_database.generate_states_table</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_states_table</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="create_tables_for_sqdt">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.generate_database.create_tables_for_sqdt.html#rydstate.generate_database.create_tables_for_sqdt">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_tables_for_sqdt</span><span class="p">(</span>
+    <span class="n">species</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">n</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+    <span class="n">f_tot</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">l_r</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">max_delta_nu</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
+    <span class="n">all_nu_up_to</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Create the database tables for a given species using SQDT in the current directory.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        species: The species name.</span>
+<span class="sd">        n: Tuple of (n_min, n_max) for the principal quantum number.</span>
+<span class="sd">        f_tot: Optional tuple of (f_tot_min, f_tot_max) for the total angular momentum.</span>
+<span class="sd">            Default None, include all f_tot values.</span>
+<span class="sd">        l_r: Optional tuple of (l_r_min, l_r_max) for the orbital angular momentum of the Rydberg electron.</span>
+<span class="sd">            Default None, include all l_r values.</span>
+<span class="sd">        max_delta_nu: The maximum difference in nu for matrix elements to be calculated.</span>
+<span class="sd">        all_nu_up_to: Calculate all matrix elements where at least one state has nu</span>
+<span class="sd">            smaller than or equal to this value.</span>
+
+<span class="sd">    """</span>
+    <span class="n">species</span> <span class="o">=</span> <span class="n">species</span><span class="o">.</span><span class="n">removesuffix</span><span class="p">(</span><span class="s2">"_sqdt"</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Start creating sqdt database for </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">species</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"n-range=</span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"f_tot-range=</span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">f_tot</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"l_r-range=</span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">l_r</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"max_delta_nu=</span><span class="si">%s</span><span class="s2">, all_nu_up_to=</span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">max_delta_nu</span><span class="p">,</span> <span class="n">all_nu_up_to</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"rydstate.__version__=</span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">__version__</span><span class="p">)</span>
+
+    <span class="c1"># calculate the states and matrix elements tables</span>
+    <span class="n">basis</span> <span class="o">=</span> <span class="n">BasisSQDT</span><span class="p">(</span><span class="n">species</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">f_tot</span><span class="o">=</span><span class="n">f_tot</span><span class="p">,</span> <span class="n">l_r</span><span class="o">=</span><span class="n">l_r</span><span class="p">,</span> <span class="n">coupling_scheme</span><span class="o">=</span><span class="s2">"LS"</span><span class="p">)</span>
+    <span class="n">write_table_to_parquet</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">generate_states_table</span><span class="p">(</span><span class="n">basis</span><span class="p">)),</span> <span class="s2">"states"</span><span class="p">)</span>
+
+    <span class="n">matrix_elements_tables</span> <span class="o">=</span> <span class="n">generate_matrix_elements_tables</span><span class="p">(</span><span class="n">basis</span><span class="p">,</span> <span class="n">max_delta_nu</span><span class="p">,</span> <span class="n">all_nu_up_to</span><span class="p">,</span> <span class="n">free_memory</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">tkey</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">matrix_elements_tables</span><span class="p">):</span>
+        <span class="n">write_table_to_parquet</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">matrix_elements_tables</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">tkey</span><span class="p">)),</span> <span class="n">tkey</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="create_tables_for_mqdt">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.generate_database.create_tables_for_mqdt.html#rydstate.generate_database.create_tables_for_mqdt">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_tables_for_mqdt</span><span class="p">(</span>
+    <span class="n">species</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">nu</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">f_tot</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">l_r</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">max_delta_nu</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
+    <span class="n">all_nu_up_to</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Create the database tables for a given species using MQDT in the current directory.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        species: The species name.</span>
+<span class="sd">        nu: Tuple of (nu_min, nu_max) for the effective principal quantum number.</span>
+<span class="sd">        f_tot: Optional tuple of (f_tot_min, f_tot_max) for the total angular momentum.</span>
+<span class="sd">            Default None, include all f_tot values.</span>
+<span class="sd">        l_r: Optional tuple of (l_r_min, l_r_max) for the orbital angular momentum of the Rydberg electron.</span>
+<span class="sd">            Only models with at least one channel with l_c=0 and l_r in this range are included.</span>
+<span class="sd">            Default None, include all l_r values.</span>
+<span class="sd">        max_delta_nu: The maximum difference in nu for matrix elements to be calculated.</span>
+<span class="sd">        all_nu_up_to: Calculate all matrix elements where at least one state has nu</span>
+<span class="sd">            smaller than or equal to this value.</span>
+
+<span class="sd">    """</span>
+    <span class="n">species</span> <span class="o">=</span> <span class="n">species</span><span class="o">.</span><span class="n">removesuffix</span><span class="p">(</span><span class="s2">"_mqdt"</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Start creating mqdt database for </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">species</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"nu-range=</span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">nu</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"f_tot-range=</span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">f_tot</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"l_r-range=</span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">l_r</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"max_delta_nu=</span><span class="si">%s</span><span class="s2">, all_nu_up_to=</span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">max_delta_nu</span><span class="p">,</span> <span class="n">all_nu_up_to</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"rydstate.__version__=</span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">__version__</span><span class="p">)</span>
+
+    <span class="c1"># calculate the states and matrix elements tables</span>
+    <span class="n">basis</span> <span class="o">=</span> <span class="n">BasisMQDT</span><span class="p">(</span><span class="n">species</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="n">nu</span><span class="p">,</span> <span class="n">f_tot</span><span class="o">=</span><span class="n">f_tot</span><span class="p">,</span> <span class="n">l_r</span><span class="o">=</span><span class="n">l_r</span><span class="p">)</span>
+    <span class="n">write_table_to_parquet</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">generate_states_table</span><span class="p">(</span><span class="n">basis</span><span class="p">)),</span> <span class="s2">"states"</span><span class="p">)</span>
+
+    <span class="n">matrix_elements_tables</span> <span class="o">=</span> <span class="n">generate_matrix_elements_tables</span><span class="p">(</span><span class="n">basis</span><span class="p">,</span> <span class="n">max_delta_nu</span><span class="p">,</span> <span class="n">all_nu_up_to</span><span class="p">,</span> <span class="n">free_memory</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">tkey</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">matrix_elements_tables</span><span class="p">):</span>
+        <span class="n">write_table_to_parquet</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">matrix_elements_tables</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">tkey</span><span class="p">)),</span> <span class="n">tkey</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="create_tables_for_misc">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.generate_database.create_tables_for_misc.html#rydstate.generate_database.create_tables_for_misc">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_tables_for_misc</span><span class="p">(</span><span class="n">f_max</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">kappa_max</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Create misc databases, i.e. the wigner table in the current directory."""</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Start creating misc database"</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"f_max=</span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">f_max</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"kappa_max=</span><span class="si">%d</span><span class="s2">"</span><span class="p">,</span> <span class="n">kappa_max</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"rydstate.__version__=</span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">__version__</span><span class="p">)</span>
+
+    <span class="c1"># calculate the wigner table and convert it to a parquet file</span>
+    <span class="n">misc_table</span> <span class="o">=</span> <span class="n">generate_wigner_table</span><span class="p">(</span><span class="n">f_max</span><span class="p">,</span> <span class="n">kappa_max</span><span class="p">)</span>
+    <span class="n">write_table_to_parquet</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">misc_table</span><span class="p">),</span> <span class="s2">"wigner"</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"calc_wigner_3j: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">calc_wigner_3j</span><span class="o">.</span><span class="n">cache_info</span><span class="p">())</span>  <span class="c1"># type: ignore [attr-defined]</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">write_table_to_parquet</span><span class="p">(</span><span class="n">table</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">tkey</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Write a table to a parquet file in the current directory."""</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="n">parquet_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">tkey</span><span class="si">}</span><span class="s2">.parquet"</span><span class="p">)</span>
+    <span class="c1"># use_dictionary=False, since plain encoding compresses much better for our tables</span>
+    <span class="c1"># (zstd level 3 beats higher levels here, in addition to being faster)</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="n">parquet_file</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s2">"zstd"</span><span class="p">,</span> <span class="n">compression_level</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">use_dictionary</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Size of </span><span class="si">%s</span><span class="s2">: </span><span class="si">%.6f</span><span class="s2"> megabytes"</span><span class="p">,</span> <span class="n">parquet_file</span><span class="p">,</span> <span class="n">parquet_file</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span><span class="o">.</span><span class="n">st_size</span> <span class="o">*</span> <span class="mf">1e-6</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Number of rows in </span><span class="si">%s</span><span class="s2">: </span><span class="si">%d</span><span class="s2">"</span><span class="p">,</span> <span class="n">parquet_file</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span><span class="o">.</span><span class="n">isEnabledFor</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">):</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"log"</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"a"</span><span class="p">)</span> <span class="k">as</span> <span class="n">buf</span><span class="p">:</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">buf</span><span class="o">=</span><span class="n">buf</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, RydState Developers.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

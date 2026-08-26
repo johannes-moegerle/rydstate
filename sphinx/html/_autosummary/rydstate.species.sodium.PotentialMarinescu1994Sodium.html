@@ -1,0 +1,521 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PotentialMarinescu1994Sodium &mdash; RydState 0.12.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=f24cbf82"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="SQDTSodium" href="rydstate.species.sodium.SQDTSodium.html" />
+    <link rel="prev" title="PotentialFei2009Sodium" href="rydstate.species.sodium.PotentialFei2009Sodium.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            RydState
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#radialket">RadialKet</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/radial/hydrogen_wavefunction.html">Hydrogen radial wavefunction via numerov and from sympy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/radial/rubidium_wavefunction.html">Rubidium wavefunction and potential</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#angularstate">AngularState</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/angular/angular_state.html">Using AngularKets and AngularStates in different spin coupling schemes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#rydbergstate">RydbergState</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/dipole_matrix_elements.html">Calculating dipole matrix elements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/lifetimes.html">Lifetimes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#mqdt">MQDT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/mqdt/mqdt_exp_qn.html">Labeling the angular character of Yb 171</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#comparisons">Comparisons</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_z_min_cutoff.html">Comparison of the z_min values for circular states</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_nist_energy_levels_data.html">Compare NIST energy levels data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_nist_matrix_elements.html">Compare Rb <span class="math notranslate nohighlight">\(5s \rightarrow np_j\)</span> matrix elements with NIST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_nist_matrix_elements_Sr88_sqdt.html">Compare Sr <span class="math notranslate nohighlight">\(5s5s \rightarrow 5snl\)</span> matrix elements with NIST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_model_potentials.html">Compare different effective model potentials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_whittaker.html">Comparison: Numerov - Whittaker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/benchmark/benchmark_njit.html">Benchmark of Numerov integration with and without using numba.njit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api_reference.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/rydberg_state.html">Rydberg States</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.rydberg_state.RydbergStateSQDT.html">RydbergStateSQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.rydberg_state.RydbergStateSQDTAlkali.html">RydbergStateSQDTAlkali</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.rydberg_state.RydbergStateMQDT.html">RydbergStateMQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.rydberg_state.RydbergKet.html">RydbergKet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/basis.html">Rydberg Basis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.BasisSQDT.html">BasisSQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.BasisMQDT.html">BasisMQDT</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/angular.html">Angular module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.AngularKetLS.html">AngularKetLS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.AngularKetJJ.html">AngularKetJJ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.AngularKetFJ.html">AngularKetFJ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.AngularState.html">AngularState</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.CoreKet.html">CoreKet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.utils.html">utils</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/radial.html">Radial module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.radial.RadialKet.html">RadialKet</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api/species.html">Species Data</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.ElementProperties.html">ElementProperties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.PotentialCoulomb.html">PotentialCoulomb</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.PotentialMarinescu1994.html">PotentialMarinescu1994</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.PotentialFei2009.html">PotentialFei2009</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.SQDT.html">SQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.MQDT.html">MQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.cesium.html">cesium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.hydrogen.html">hydrogen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.lithium.html">lithium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.potassium.html">potassium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.rubidium.html">rubidium</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="rydstate.species.sodium.html">sodium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.strontium.html">strontium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.ytterbium.html">ytterbium</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generate_database.html">Generate Database module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.generate_database.create_tables_for_sqdt.html">create_tables_for_sqdt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.generate_database.create_tables_for_mqdt.html">create_tables_for_mqdt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.generate_database.create_tables_for_misc.html">create_tables_for_misc</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<style>
+a.gitbutton {
+  display: block;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #fff;
+  padding-top: 10px;
+  padding-left: 85px;
+  padding-right: 0px;
+  margin: 22px;
+  width: 240px;
+  height: 60px;
+  background: transparent url("../_static/buttons/github.svg") 0 0 no-repeat;
+}
+a.gitbutton small {
+  display: block;
+  font-size: 11px;
+}
+button.toctree-expand {
+  display: none;
+}
+</style>
+<a href="https://github.com/pairinteraction/rydstate" class="gitbutton">Explore<small>the GitHub repository</small></a>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RydState</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api_reference.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../api/species.html">Species Data</a></li>
+          <li class="breadcrumb-item"><a href="rydstate.species.sodium.html">sodium</a></li>
+      <li class="breadcrumb-item active">PotentialMarinescu1994Sodium</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_autosummary/rydstate.species.sodium.PotentialMarinescu1994Sodium.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="potentialmarinescu1994sodium">
+<h1>PotentialMarinescu1994Sodium<a class="headerlink" href="#potentialmarinescu1994sodium" title="Link to this heading"></a></h1>
+<p class="rubric">Class Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(l_r)</p></td>
+<td><p>Initialize the potential.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.species.sodium.PotentialMarinescu1994Sodium.calc_effective_potential_centrifugal" title="rydstate.species.sodium.PotentialMarinescu1994Sodium.calc_effective_potential_centrifugal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_effective_potential_centrifugal</span></code></a>(x)</p></td>
+<td><p>Calculate the effective centrifugal potential V_l(x) in atomic units.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.species.sodium.PotentialMarinescu1994Sodium.calc_effective_potential_sqrt" title="rydstate.species.sodium.PotentialMarinescu1994Sodium.calc_effective_potential_sqrt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_effective_potential_sqrt</span></code></a>(x)</p></td>
+<td><p>Calculate the effective potential V_sqrt(x) from the sqrt transformation in atomic units.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.species.sodium.PotentialMarinescu1994Sodium.calc_hydrogen_turning_point_z" title="rydstate.species.sodium.PotentialMarinescu1994Sodium.calc_hydrogen_turning_point_z"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_hydrogen_turning_point_z</span></code></a>(n)</p></td>
+<td><p>Calculate the classical turning point z_i of the state if it would be a hydrogen atom.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.species.sodium.PotentialMarinescu1994Sodium.calc_model_potential" title="rydstate.species.sodium.PotentialMarinescu1994Sodium.calc_model_potential"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_model_potential</span></code></a>(x)</p></td>
+<td><p>Calculate the model potential by Marinescu et al. (1994) in atomic units.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.species.sodium.PotentialMarinescu1994Sodium.calc_potential_coulomb" title="rydstate.species.sodium.PotentialMarinescu1994Sodium.calc_potential_coulomb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_potential_coulomb</span></code></a>(x)</p></td>
+<td><p>Calculate the Coulomb potential V_Col(x) in atomic units.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.species.sodium.PotentialMarinescu1994Sodium.calc_total_effective_potential" title="rydstate.species.sodium.PotentialMarinescu1994Sodium.calc_total_effective_potential"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_total_effective_potential</span></code></a>(x)</p></td>
+<td><p>Calculate the total effective potential V_eff(x) in atomic units.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.species.sodium.PotentialMarinescu1994Sodium.calc_turning_point_z" title="rydstate.species.sodium.PotentialMarinescu1994Sodium.calc_turning_point_z"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_turning_point_z</span></code></a>(energy_au[, dz])</p></td>
+<td><p>Calculate the classical inner turning point z_i for the given state.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Class Attributes and Properties</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.species.sodium.PotentialMarinescu1994Sodium.alpha_core_marinescu_1994" title="rydstate.species.sodium.PotentialMarinescu1994Sodium.alpha_core_marinescu_1994"><code class="xref py py-obj docutils literal notranslate"><span class="pre">alpha_core_marinescu_1994</span></code></a></p></td>
+<td><p>Static dipole polarizability (a.u.) of the core, used for the parametric model potential.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.species.sodium.PotentialMarinescu1994Sodium.is_default" title="rydstate.species.sodium.PotentialMarinescu1994Sodium.is_default"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_default</span></code></a></p></td>
+<td><p>Whether this potential is the default potential for the species.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.species.sodium.PotentialMarinescu1994Sodium.model_potential_parameter_marinescu_1994" title="rydstate.species.sodium.PotentialMarinescu1994Sodium.model_potential_parameter_marinescu_1994"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_potential_parameter_marinescu_1994</span></code></a></p></td>
+<td><p>(a_1, a_2, a_3, a_4)} for the parametric model potential.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.species.sodium.PotentialMarinescu1994Sodium.r_c_dict_marinescu_1994" title="rydstate.species.sodium.PotentialMarinescu1994Sodium.r_c_dict_marinescu_1994"><code class="xref py py-obj docutils literal notranslate"><span class="pre">r_c_dict_marinescu_1994</span></code></a></p></td>
+<td><p>r_c} to truncate the unphysical short-range contribution of the polarization potential.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.species.sodium.PotentialMarinescu1994Sodium.reference" title="rydstate.species.sodium.PotentialMarinescu1994Sodium.reference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reference</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.species.sodium.PotentialMarinescu1994Sodium.species" title="rydstate.species.sodium.PotentialMarinescu1994Sodium.species"><code class="xref py py-obj docutils literal notranslate"><span class="pre">species</span></code></a></p></td>
+<td><p>The short name of the atomic species.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.species.sodium.PotentialMarinescu1994Sodium.tag" title="rydstate.species.sodium.PotentialMarinescu1994Sodium.tag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tag</span></code></a></p></td>
+<td><p>The tag for these potential parameters.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="rydstate.species.sodium.PotentialMarinescu1994Sodium">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">rydstate.species.sodium.</span></span><span class="sig-name descname"><span class="pre">PotentialMarinescu1994Sodium</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l_r</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rydstate/species/sodium/potential_data.html#PotentialMarinescu1994Sodium"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rydstate.species.sodium.PotentialMarinescu1994Sodium" title="Link to this definition"></a></dt>
+<dd><p>Initialize the potential.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>l_r</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Orbital angular momentum of the Rydberg electron.</p></li>
+<li><p><strong>args</strong> (<em>object</em>)</p></li>
+<li><p><strong>kwargs</strong> (<em>object</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>CachedT</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.sodium.PotentialMarinescu1994Sodium.species">
+<span class="sig-name descname"><span class="pre">species</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Na'</span></span><a class="headerlink" href="#rydstate.species.sodium.PotentialMarinescu1994Sodium.species" title="Link to this definition"></a></dt>
+<dd><p>The short name of the atomic species.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.sodium.PotentialMarinescu1994Sodium.is_default">
+<span class="sig-name descname"><span class="pre">is_default</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></span><a class="headerlink" href="#rydstate.species.sodium.PotentialMarinescu1994Sodium.is_default" title="Link to this definition"></a></dt>
+<dd><p>Whether this potential is the default potential for the species.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.sodium.PotentialMarinescu1994Sodium.alpha_core_marinescu_1994">
+<span class="sig-name descname"><span class="pre">alpha_core_marinescu_1994</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.9448</span></span><a class="headerlink" href="#rydstate.species.sodium.PotentialMarinescu1994Sodium.alpha_core_marinescu_1994" title="Link to this definition"></a></dt>
+<dd><p>Static dipole polarizability (a.u.) of the core, used for the parametric model potential.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.sodium.PotentialMarinescu1994Sodium.r_c_dict_marinescu_1994">
+<span class="sig-name descname"><span class="pre">r_c_dict_marinescu_1994</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{0:</span> <span class="pre">0.45489422,</span> <span class="pre">1:</span> <span class="pre">0.45798739,</span> <span class="pre">2:</span> <span class="pre">0.71875312,</span> <span class="pre">3:</span> <span class="pre">28.6735059}</span></span><a class="headerlink" href="#rydstate.species.sodium.PotentialMarinescu1994Sodium.r_c_dict_marinescu_1994" title="Link to this definition"></a></dt>
+<dd><p>r_c} to truncate the unphysical short-range contribution of the polarization potential.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Cutoff radius {l</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.sodium.PotentialMarinescu1994Sodium.model_potential_parameter_marinescu_1994">
+<span class="sig-name descname"><span class="pre">model_potential_parameter_marinescu_1994</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{0:</span> <span class="pre">(4.82223117,</span> <span class="pre">2.45449865,</span> <span class="pre">-1.12255048,</span> <span class="pre">-1.42631393),</span> <span class="pre">1:</span> <span class="pre">(5.08382502,</span> <span class="pre">2.18226881,</span> <span class="pre">-1.19534623,</span> <span class="pre">-1.03142861),</span> <span class="pre">2:</span> <span class="pre">(3.53324124,</span> <span class="pre">2.48697936,</span> <span class="pre">-0.75688448,</span> <span class="pre">-1.27852357),</span> <span class="pre">3:</span> <span class="pre">(1.11056646,</span> <span class="pre">1.05458759,</span> <span class="pre">1.73203428,</span> <span class="pre">-0.09265696)}</span></span><a class="headerlink" href="#rydstate.species.sodium.PotentialMarinescu1994Sodium.model_potential_parameter_marinescu_1994" title="Link to this definition"></a></dt>
+<dd><p>(a_1, a_2, a_3, a_4)} for the parametric model potential.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Parameters {l</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.species.sodium.PotentialMarinescu1994Sodium.calc_effective_potential_centrifugal">
+<span class="sig-name descname"><span class="pre">calc_effective_potential_centrifugal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.species.sodium.PotentialMarinescu1994Sodium.calc_effective_potential_centrifugal" title="Link to this definition"></a></dt>
+<dd><p>Calculate the effective centrifugal potential V_l(x) in atomic units.</p>
+<p>The effective centrifugal potential is given as</p>
+<div class="math notranslate nohighlight">
+\[V_{l_r}(x) = \frac{l_r(l_r+1)}{2x^2}\]</div>
+<p>where x = r / a_0 and l_r is the orbital angular momentum quantum number of the Rydberg electron.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code>(<code class="docutils literal notranslate"><span class="pre">XType</span></code>, NDArray, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>)</span>) – The dimensionless radial coordinate x = r / a_0, for which to calculate the potential.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The effective centrifugal potential V_{l_r}(x) in atomic units.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code>(<code class="docutils literal notranslate"><span class="pre">XType</span></code>, NDArray, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>)</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.species.sodium.PotentialMarinescu1994Sodium.calc_effective_potential_sqrt">
+<span class="sig-name descname"><span class="pre">calc_effective_potential_sqrt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.species.sodium.PotentialMarinescu1994Sodium.calc_effective_potential_sqrt" title="Link to this definition"></a></dt>
+<dd><p>Calculate the effective potential V_sqrt(x) from the sqrt transformation in atomic units.</p>
+<p>The sqrt transformation potential arises from the transformation from the wavefunction u(x) to w(z),
+where x = r / a_0 and w(z) = z^{-1/2} u(x=z^2) = (r/a_0)^{-1/4} sqrt(a_0) r R(r).
+Due to the transformation, an additional term is added to the radial Schrödinger equation,
+which can be written as effective potential V_{sqrt}(x) and is given by</p>
+<div class="math notranslate nohighlight">
+\[V_{sqrt}(x) = \frac{3}{32x^2}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code>(<code class="docutils literal notranslate"><span class="pre">XType</span></code>, NDArray, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>)</span>) – The dimensionless radial coordinate x = r / a_0, for which to calculate the potential.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The sqrt transformation potential V_sqrt(x) in atomic units.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code>(<code class="docutils literal notranslate"><span class="pre">XType</span></code>, NDArray, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>)</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.species.sodium.PotentialMarinescu1994Sodium.calc_hydrogen_turning_point_z">
+<span class="sig-name descname"><span class="pre">calc_hydrogen_turning_point_z</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.species.sodium.PotentialMarinescu1994Sodium.calc_hydrogen_turning_point_z" title="Link to this definition"></a></dt>
+<dd><p>Calculate the classical turning point z_i of the state if it would be a hydrogen atom.</p>
+<p>The hydrogen turning point is defined as the point,
+where for the idealized hydrogen(-like) atom the potential equals the energy,
+i.e. V_Col(r_i) + V_l(r_i) = E.
+This is exactly the case at</p>
+<div class="math notranslate nohighlight">
+\[r_i = \frac{n^2 - n \sqrt{n^2 - l_r(l_r + 1)}}{Z}\]</div>
+<p>and z_i = sqrt{r_i / a_0}, where Z is the net charge of the ionic core seen by the Rydberg electron.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Principal quantum number of the state.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The inner hydrogen turning point z_i in the scaled dimensionless coordinate z_i = sqrt{r_i / a_0}.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.species.sodium.PotentialMarinescu1994Sodium.calc_model_potential">
+<span class="sig-name descname"><span class="pre">calc_model_potential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.species.sodium.PotentialMarinescu1994Sodium.calc_model_potential" title="Link to this definition"></a></dt>
+<dd><p>Calculate the model potential by Marinescu et al. (1994) in atomic units.</p>
+<p>The model potential, see <code class="xref py py-attr docutils literal notranslate"><span class="pre">reference</span></code>, is given by</p>
+<div class="math notranslate nohighlight">
+\[V_{mp,marinescu}(x) = - \frac{Z_{l}}{x} - \frac{\alpha_{core}}{2x^4} (1 - e^{-x^6/x_c**6})\]</div>
+<p>where Z_{l} is the effective nuclear charge,
+<span class="math notranslate nohighlight">\(\alpha_{core}\)</span> is the static dipole polarizability of the ionic core,
+and x_c is the effective core size.</p>
+<div class="math notranslate nohighlight">
+\[Z_{l} = Z_{net} + (Z - Z_{net}) \exp(-a_1 x) - x (a_3 + a_4 x) \exp(-a_2 x)\]</div>
+<p>with the nuclear charge Z and the net charge <span class="math notranslate nohighlight">\(Z_{net}\)</span> of the ionic core seen by the Rydberg electron.
+The effective charge interpolates from Z (at x = 0) to <span class="math notranslate nohighlight">\(Z_{net}\)</span> (at x -&gt; infinity).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code>(<code class="docutils literal notranslate"><span class="pre">XType</span></code>, NDArray, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>)</span>) – The dimensionless radial coordinate x = r / a_0, for which to calculate potential.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The four parameter potential V_{mp,marinescu}(x) in atomic units.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code>(<code class="docutils literal notranslate"><span class="pre">XType</span></code>, NDArray, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>)</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.species.sodium.PotentialMarinescu1994Sodium.calc_potential_coulomb">
+<span class="sig-name descname"><span class="pre">calc_potential_coulomb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.species.sodium.PotentialMarinescu1994Sodium.calc_potential_coulomb" title="Link to this definition"></a></dt>
+<dd><p>Calculate the Coulomb potential V_Col(x) in atomic units.</p>
+<p>The Coulomb potential is given as</p>
+<div class="math notranslate nohighlight">
+\[V_{Col}(x) = -Z / x\]</div>
+<p>where x = r / a_0 and Z is the net charge of the ionic core seen by the Rydberg electron.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code>(<code class="docutils literal notranslate"><span class="pre">XType</span></code>, NDArray, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>)</span>) – The dimensionless radial coordinate x = r / a_0, for which to calculate the potential.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Coulomb potential V_Col(x) in atomic units.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code>(<code class="docutils literal notranslate"><span class="pre">XType</span></code>, NDArray, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>)</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.species.sodium.PotentialMarinescu1994Sodium.calc_total_effective_potential">
+<span class="sig-name descname"><span class="pre">calc_total_effective_potential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.species.sodium.PotentialMarinescu1994Sodium.calc_total_effective_potential" title="Link to this definition"></a></dt>
+<dd><p>Calculate the total effective potential V_eff(x) in atomic units.</p>
+<p>The total effective potential includes all physical and effective potentials:</p>
+<div class="math notranslate nohighlight">
+\[V_{eff}(x) = V(x) + V_{l_r}(x) + V_{sqrt}(x)\]</div>
+<p>where V(x) is the physical potential (either Coulomb or a model potential),
+V_{l_r}(x) is the effective centrifugal potential,
+and V_{sqrt}(x) is the effective potential from the sqrt transformation.</p>
+<p>Note that we on purpose do not include the spin-orbit potential for several reasons:</p>
+<ol class="lowerroman simple">
+<li><p>The fine structure corrections are important for the energies of the states.
+This includes a) spin-orbit coupling, b) Darwin term, and c) relativistic corrections to the kinetic energy.
+Since we (obviously) can not include the latter two in the potential,
+it is only consistent to not include the spin-orbit term either.</p></li>
+<li><p>The model potentials are generated without the spin-orbit term,
+since their accuracy is not sufficient to resolve the fine structure corrections at small distances.
+(This can also be seen by running Numerov for low lying states with an energy changed by e.g. 1%,
+which will lead to almost no change in the wavefunction.)</p></li>
+</ol>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code>(<code class="docutils literal notranslate"><span class="pre">XType</span></code>, NDArray, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>)</span>) – The dimensionless radial coordinate x = r / a_0, for which to calculate potential.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The total potential V_eff(x) in atomic units.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code>(<code class="docutils literal notranslate"><span class="pre">XType</span></code>, NDArray, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>)</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.species.sodium.PotentialMarinescu1994Sodium.calc_turning_point_z">
+<span class="sig-name descname"><span class="pre">calc_turning_point_z</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energy_au</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.species.sodium.PotentialMarinescu1994Sodium.calc_turning_point_z" title="Link to this definition"></a></dt>
+<dd><p>Calculate the classical inner turning point z_i for the given state.</p>
+<p>The classical turning point is defined as the point,
+where the total effective potential of the Rydberg model equals the energy,
+i.e. V_eff(r_i) = E.</p>
+<p>Note: Because we use the total effective potential, even for l=0 the turning point is not at r=0.
+The advantage of this is, that this definition of the turning point should correspond to
+where w(z) should have its last change of sign in the second derivative.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>energy_au</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – The energy, for which to calculate the classical turning point in atomic units.</p></li>
+<li><p><strong>dz</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – The precision of the turning point calculation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The inner turning point z_i in the scaled dimensionless coordinate z_i = sqrt{r_i / a_0}.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.sodium.PotentialMarinescu1994Sodium.reference">
+<span class="sig-name descname"><span class="pre">reference</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'M.</span> <span class="pre">Marinescu</span> <span class="pre">et</span> <span class="pre">al.,</span> <span class="pre">Phys.</span> <span class="pre">Rev.</span> <span class="pre">A</span> <span class="pre">49,</span> <span class="pre">982</span> <span class="pre">(1994),</span> <span class="pre">https://journals.aps.org/pra/abstract/10.1103/PhysRevA.49.982'</span></span><a class="headerlink" href="#rydstate.species.sodium.PotentialMarinescu1994Sodium.reference" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.sodium.PotentialMarinescu1994Sodium.tag">
+<span class="sig-name descname"><span class="pre">tag</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'marinescu_1994'</span></span><a class="headerlink" href="#rydstate.species.sodium.PotentialMarinescu1994Sodium.tag" title="Link to this definition"></a></dt>
+<dd><p>The tag for these potential parameters.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rydstate.species.sodium.PotentialFei2009Sodium.html" class="btn btn-neutral float-left" title="PotentialFei2009Sodium" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rydstate.species.sodium.SQDTSodium.html" class="btn btn-neutral float-right" title="SQDTSodium" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, RydState Developers.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+is\_not\_set
+============
+
+.. currentmodule:: rydstate.angular.utils
+
+.. autofunction:: is_not_set

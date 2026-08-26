@@ -1,0 +1,39 @@
+﻿MQDT
+====
+
+.. currentmodule:: rydstate.species
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~MQDT.__init__
+      ~MQDT.get_core_kets
+      ~MQDT.get_ionization_threshold
+      ~MQDT.get_mqdt_models
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~MQDT.is_default
+   ~MQDT.reference_ionization_threshold_au
+   ~MQDT.reference_ionization_threshold_tuple
+   ~MQDT.tag
+   ~MQDT.species
+   ~MQDT.ionization_threshold_dict
+   ~MQDT.model_classes
+
+
+
+.. autoclass:: rydstate.species.MQDT
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

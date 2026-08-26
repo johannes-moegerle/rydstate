@@ -1,0 +1,53 @@
+﻿rubidium
+========
+Full module path: rydstate.species.rubidium
+
+.. workaround to ignore generic classes like AtomSQDT[int]
+
+
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+
+
+.. currentmodule:: rydstate.species.rubidium
+
+
+
+
+
+
+.. rubric:: Classes
+
+.. .. inheritance-diagram:: rydstate.species.rubidium
+..     :parts: 1
+
+.. autosummary::
+   :toctree: .
+   
+      ElementPropertiesRubidium
+      PotentialCoulombRubidium
+      PotentialFei2009Rubidium
+      PotentialMarinescu1994Rubidium
+      SQDTRubidium
+
+
+
+
+
+
+.. rubric:: Module description
+
+.. automodule:: rydstate.species.rubidium

@@ -1,0 +1,38 @@
+﻿SQDT
+====
+
+.. currentmodule:: rydstate.species
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~SQDT.__init__
+      ~SQDT.calc_nu
+      ~SQDT.get_ionization_energy
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~SQDT.ionization_energy_au
+   ~SQDT.is_default
+   ~SQDT.nist_data_file
+   ~SQDT.quantum_defects
+   ~SQDT.tag
+   ~SQDT.species
+   ~SQDT.ionization_energy
+
+
+
+.. autoclass:: rydstate.species.SQDT
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

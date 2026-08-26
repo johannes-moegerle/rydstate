@@ -1,0 +1,41 @@
+﻿PotentialFei2009
+================
+
+.. currentmodule:: rydstate.species
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~PotentialFei2009.__init__
+      ~PotentialFei2009.calc_effective_potential_centrifugal
+      ~PotentialFei2009.calc_effective_potential_sqrt
+      ~PotentialFei2009.calc_hydrogen_turning_point_z
+      ~PotentialFei2009.calc_model_potential
+      ~PotentialFei2009.calc_potential_coulomb
+      ~PotentialFei2009.calc_total_effective_potential
+      ~PotentialFei2009.calc_turning_point_z
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~PotentialFei2009.is_default
+   ~PotentialFei2009.reference
+   ~PotentialFei2009.tag
+   ~PotentialFei2009.model_potential_parameter_fei_2009
+   ~PotentialFei2009.species
+
+
+
+.. autoclass:: rydstate.species.PotentialFei2009
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

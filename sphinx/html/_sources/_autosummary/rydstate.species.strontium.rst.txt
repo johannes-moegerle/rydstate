@@ -1,0 +1,78 @@
+﻿strontium
+=========
+Full module path: rydstate.species.strontium
+
+.. workaround to ignore generic classes like AtomSQDT[int]
+
+
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+
+
+.. currentmodule:: rydstate.species.strontium
+
+
+
+
+
+
+.. rubric:: Classes
+
+.. .. inheritance-diagram:: rydstate.species.strontium
+..     :parts: 1
+
+.. autosummary::
+   :toctree: .
+   
+      ElementPropertiesStrontium87
+      ElementPropertiesStrontium88
+      MQDTStrontium87
+      MQDTStrontium88
+      PotentialCoulombStrontium87
+      PotentialCoulombStrontium88
+      PotentialFei2009Strontium87
+      PotentialFei2009Strontium88
+      SQDTStrontium88
+
+
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree: .
+   :recursive:
+   
+      sr87_mqdt_fmodel_data
+      sr88_mqdt_fmodel_data
+
+
+.. rubric:: Module description
+
+.. automodule:: rydstate.species.strontium

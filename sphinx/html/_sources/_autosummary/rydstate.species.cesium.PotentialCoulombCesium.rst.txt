@@ -1,0 +1,39 @@
+PotentialCoulombCesium
+======================
+
+.. currentmodule:: rydstate.species.cesium
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~PotentialCoulombCesium.__init__
+      ~PotentialCoulombCesium.calc_effective_potential_centrifugal
+      ~PotentialCoulombCesium.calc_effective_potential_sqrt
+      ~PotentialCoulombCesium.calc_hydrogen_turning_point_z
+      ~PotentialCoulombCesium.calc_model_potential
+      ~PotentialCoulombCesium.calc_potential_coulomb
+      ~PotentialCoulombCesium.calc_total_effective_potential
+      ~PotentialCoulombCesium.calc_turning_point_z
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~PotentialCoulombCesium.is_default
+   ~PotentialCoulombCesium.species
+   ~PotentialCoulombCesium.tag
+
+
+
+.. autoclass:: rydstate.species.cesium.PotentialCoulombCesium
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

@@ -1,0 +1,43 @@
+PotentialMarinescu1994Cesium
+============================
+
+.. currentmodule:: rydstate.species.cesium
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~PotentialMarinescu1994Cesium.__init__
+      ~PotentialMarinescu1994Cesium.calc_effective_potential_centrifugal
+      ~PotentialMarinescu1994Cesium.calc_effective_potential_sqrt
+      ~PotentialMarinescu1994Cesium.calc_hydrogen_turning_point_z
+      ~PotentialMarinescu1994Cesium.calc_model_potential
+      ~PotentialMarinescu1994Cesium.calc_potential_coulomb
+      ~PotentialMarinescu1994Cesium.calc_total_effective_potential
+      ~PotentialMarinescu1994Cesium.calc_turning_point_z
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~PotentialMarinescu1994Cesium.alpha_core_marinescu_1994
+   ~PotentialMarinescu1994Cesium.is_default
+   ~PotentialMarinescu1994Cesium.model_potential_parameter_marinescu_1994
+   ~PotentialMarinescu1994Cesium.r_c_dict_marinescu_1994
+   ~PotentialMarinescu1994Cesium.reference
+   ~PotentialMarinescu1994Cesium.species
+   ~PotentialMarinescu1994Cesium.tag
+
+
+
+.. autoclass:: rydstate.species.cesium.PotentialMarinescu1994Cesium
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

@@ -1,0 +1,41 @@
+PotentialFei2009Potassium
+=========================
+
+.. currentmodule:: rydstate.species.potassium
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~PotentialFei2009Potassium.__init__
+      ~PotentialFei2009Potassium.calc_effective_potential_centrifugal
+      ~PotentialFei2009Potassium.calc_effective_potential_sqrt
+      ~PotentialFei2009Potassium.calc_hydrogen_turning_point_z
+      ~PotentialFei2009Potassium.calc_model_potential
+      ~PotentialFei2009Potassium.calc_potential_coulomb
+      ~PotentialFei2009Potassium.calc_total_effective_potential
+      ~PotentialFei2009Potassium.calc_turning_point_z
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~PotentialFei2009Potassium.is_default
+   ~PotentialFei2009Potassium.model_potential_parameter_fei_2009
+   ~PotentialFei2009Potassium.reference
+   ~PotentialFei2009Potassium.species
+   ~PotentialFei2009Potassium.tag
+
+
+
+.. autoclass:: rydstate.species.potassium.PotentialFei2009Potassium
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

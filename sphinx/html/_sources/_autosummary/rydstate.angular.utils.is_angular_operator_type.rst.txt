@@ -1,0 +1,6 @@
+is\_angular\_operator\_type
+===========================
+
+.. currentmodule:: rydstate.angular.utils
+
+.. autofunction:: is_angular_operator_type

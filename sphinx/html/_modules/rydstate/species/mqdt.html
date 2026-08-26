@@ -1,0 +1,351 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rydstate.species.mqdt &mdash; RydState 0.12.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=f24cbf82"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            RydState
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.html#radialket">RadialKet</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/radial/hydrogen_wavefunction.html">Hydrogen radial wavefunction via numerov and from sympy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/radial/rubidium_wavefunction.html">Rubidium wavefunction and potential</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.html#angularstate">AngularState</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/angular/angular_state.html">Using AngularKets and AngularStates in different spin coupling schemes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.html#rydbergstate">RydbergState</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/dipole_matrix_elements.html">Calculating dipole matrix elements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/lifetimes.html">Lifetimes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.html#mqdt">MQDT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/mqdt/mqdt_exp_qn.html">Labeling the angular character of Yb 171</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.html#comparisons">Comparisons</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/comparisons/compare_z_min_cutoff.html">Comparison of the z_min values for circular states</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/comparisons/compare_nist_energy_levels_data.html">Compare NIST energy levels data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/comparisons/compare_nist_matrix_elements.html">Compare Rb <span class="math notranslate nohighlight">\(5s \rightarrow np_j\)</span> matrix elements with NIST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/comparisons/compare_nist_matrix_elements_Sr88_sqdt.html">Compare Sr <span class="math notranslate nohighlight">\(5s5s \rightarrow 5snl\)</span> matrix elements with NIST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/comparisons/compare_model_potentials.html">Compare different effective model potentials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/comparisons/compare_whittaker.html">Comparison: Numerov - Whittaker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/benchmark/benchmark_njit.html">Benchmark of Numerov integration with and without using numba.njit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_reference.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/rydberg_state.html">Rydberg States</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.rydberg_state.RydbergStateSQDT.html">RydbergStateSQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.rydberg_state.RydbergStateSQDTAlkali.html">RydbergStateSQDTAlkali</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.rydberg_state.RydbergStateMQDT.html">RydbergStateMQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.rydberg_state.RydbergKet.html">RydbergKet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/basis.html">Rydberg Basis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.BasisSQDT.html">BasisSQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.BasisMQDT.html">BasisMQDT</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/angular.html">Angular module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.angular.AngularKetLS.html">AngularKetLS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.angular.AngularKetJJ.html">AngularKetJJ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.angular.AngularKetFJ.html">AngularKetFJ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.angular.AngularState.html">AngularState</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.angular.CoreKet.html">CoreKet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.angular.utils.html">utils</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/radial.html">Radial module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.radial.RadialKet.html">RadialKet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/species.html">Species Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.ElementProperties.html">ElementProperties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.PotentialCoulomb.html">PotentialCoulomb</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.PotentialMarinescu1994.html">PotentialMarinescu1994</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.PotentialFei2009.html">PotentialFei2009</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.SQDT.html">SQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.MQDT.html">MQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.cesium.html">cesium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.hydrogen.html">hydrogen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.lithium.html">lithium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.potassium.html">potassium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.rubidium.html">rubidium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.sodium.html">sodium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.strontium.html">strontium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.ytterbium.html">ytterbium</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generate_database.html">Generate Database module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.generate_database.create_tables_for_sqdt.html">create_tables_for_sqdt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.generate_database.create_tables_for_mqdt.html">create_tables_for_mqdt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.generate_database.create_tables_for_misc.html">create_tables_for_misc</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<style>
+a.gitbutton {
+  display: block;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #fff;
+  padding-top: 10px;
+  padding-left: 85px;
+  padding-right: 0px;
+  margin: 22px;
+  width: 240px;
+  height: 60px;
+  background: transparent url("../../../_static/buttons/github.svg") 0 0 no-repeat;
+}
+a.gitbutton small {
+  display: block;
+  font-size: 11px;
+}
+button.toctree-expand {
+  display: none;
+}
+</style>
+<a href="https://github.com/pairinteraction/rydstate" class="gitbutton">Explore<small>the GitHub repository</small></a>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">RydState</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">rydstate.species.mqdt</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for rydstate.species.mqdt</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cached_property</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">ClassVar</span><span class="p">,</span> <span class="n">overload</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.angular.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_not_set</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.metaclass_cache</span><span class="w"> </span><span class="kn">import</span> <span class="n">CachedABCMeta</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.species.fmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">FModelSQDT</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.species.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_all_subclasses</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.angular.angular_ket</span><span class="w"> </span><span class="kn">import</span> <span class="n">AngularKetBase</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.angular.core_ket</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoreKet</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.species.fmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">FModel</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">PintFloat</span>
+
+
+<div class="viewcode-block" id="MQDT">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.species.MQDT.html#rydstate.species.MQDT">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MQDT</span><span class="p">(</span><span class="n">ABC</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">CachedABCMeta</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Base class for all MQDT classes."""</span>
+
+    <span class="n">species</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">"""The short name of the atomic species."""</span>
+    <span class="n">tag</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""The tag for these MQDT parameters."""</span>
+    <span class="n">is_default</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="w">    </span><span class="sd">"""Whether this MQDT is the default MQDT for the species."""</span>
+
+    <span class="n">ionization_threshold_dict</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="n">CoreKet</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span>
+<span class="w">    </span><span class="sd">"""Dictionary containing the ionization thresholds for the different core states.</span>
+<span class="sd">    The thresholds are given in the form of a tuple (ionization_threshold, unit).</span>
+<span class="sd">    """</span>
+    <span class="n">reference_ionization_threshold_tuple</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""The reference ionization threshold, which is used to define the zero of energy for the MQDT models.</span>
+<span class="sd">    If None, it is defined as the smallest ionization threshold in the ionization_threshold_dict."""</span>
+
+    <span class="n">model_classes</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="n">FModel</span><span class="p">]]]</span>
+<span class="w">    </span><span class="sd">"""List of the MQDT :class:`~rydstate.species.fmodel.FModel` models available for this species.</span>
+
+<span class="sd">    :meta hide-value:</span>
+
+<span class="sd">    """</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">FModel</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">model_class</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">for</span> <span class="n">model_class</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_classes</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"MQDT(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">tag</span><span class="si">}</span><span class="s2">)"</span>
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_ionization_threshold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">core_ket</span><span class="p">:</span> <span class="n">CoreKet</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PintFloat</span><span class="p">:</span> <span class="o">...</span>
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_ionization_threshold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">core_ket</span><span class="p">:</span> <span class="n">CoreKet</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span> <span class="o">...</span>
+
+<div class="viewcode-block" id="MQDT.get_ionization_threshold">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.species.MQDT.html#rydstate.species.MQDT.get_ionization_threshold">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_ionization_threshold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">core_ket</span><span class="p">:</span> <span class="n">CoreKet</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="s2">"hartree"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PintFloat</span> <span class="o">|</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return the ionization threshold of the channel given by the core_ket in the desired unit.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            core_ket: The core ket for which to return the ionization threshold.</span>
+<span class="sd">            unit: Desired unit for the ionization threshold. Default is atomic units "hartree".</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Ionization threshold in the desired unit.</span>
+
+<span class="sd">        """</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">matching_core_ket</span> <span class="o">=</span> <span class="n">core_ket</span><span class="o">.</span><span class="n">find_matching_core_ket</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ionization_threshold_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Ionization threshold for core ket </span><span class="si">{</span><span class="n">core_ket</span><span class="si">}</span><span class="s2"> is not defined."</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+
+        <span class="n">ionization_threshold_tuple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ionization_threshold_dict</span><span class="p">[</span><span class="n">matching_core_ket</span><span class="p">]</span>
+        <span class="n">ionization_threshold</span><span class="p">:</span> <span class="n">PintFloat</span> <span class="o">=</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">ionization_threshold_tuple</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ionization_threshold_tuple</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">ionization_threshold</span> <span class="o">=</span> <span class="n">ionization_threshold</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"hartree"</span><span class="p">,</span> <span class="s2">"spectroscopy"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">unit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ionization_threshold</span>
+        <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s2">"a.u."</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ionization_threshold</span><span class="o">.</span><span class="n">magnitude</span>
+        <span class="k">return</span> <span class="n">ionization_threshold</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit</span><span class="p">,</span> <span class="s2">"spectroscopy"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span></div>
+
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reference_ionization_threshold_au</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Reference ionization threshold in atomic units (Hartree).</span>
+
+<span class="sd">        If no reference_ionization_threshold_tuple is defined, we define the reference ionization threshold as</span>
+<span class="sd">        the smallest ionization threshold in the ionization_threshold_dict.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_ionization_threshold_tuple</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">reference_ionization_threshold_tuple</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_ionization_threshold_tuple</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"hartree"</span><span class="p">,</span> <span class="s2">"spectroscopy"</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">magnitude</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_ionization_threshold</span><span class="p">(</span><span class="n">core_ket</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"a.u."</span><span class="p">)</span> <span class="k">for</span> <span class="n">core_ket</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ionization_threshold_dict</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MQDT.get_mqdt_models">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.species.MQDT.html#rydstate.species.MQDT.get_mqdt_models">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_mqdt_models</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outer_channel</span><span class="p">:</span> <span class="n">AngularKetBase</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">FModel</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Return a list of MQDT models for the outer_channel."""</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_not_set</span><span class="p">(</span><span class="n">outer_channel</span><span class="o">.</span><span class="n">m</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"The m quantum number of the outer_channel must be NotSet."</span><span class="p">)</span>
+        <span class="n">models</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">model</span>
+            <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">models</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">outer_channel</span><span class="o">.</span><span class="n">calc_reduced_overlap</span><span class="p">(</span><span class="n">ket</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">ket</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">outer_channels</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">models</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">models</span> <span class="o">=</span> <span class="p">[</span><span class="n">FModelSQDT</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="p">,</span> <span class="n">outer_channel</span><span class="p">,</span> <span class="n">mqdt</span><span class="o">=</span><span class="bp">self</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">models</span></div>
+
+
+<div class="viewcode-block" id="MQDT.get_core_kets">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.species.MQDT.html#rydstate.species.MQDT.get_core_kets">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_core_kets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">CoreKet</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Return a list of relevant core kets of all FModels."""</span>
+        <span class="n">core_kets</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">:</span>
+            <span class="n">core_kets</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">get_core_kets</span><span class="p">())</span>
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">core_kets</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">ket</span><span class="p">:</span> <span class="p">(</span><span class="n">ket</span><span class="o">.</span><span class="n">l_c</span><span class="p">,</span> <span class="n">ket</span><span class="o">.</span><span class="n">j_c</span><span class="p">,</span> <span class="n">ket</span><span class="o">.</span><span class="n">f_c</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">ket</span><span class="o">.</span><span class="n">label</span><span class="p">)))</span></div>
+</div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_mqdt</span><span class="p">(</span><span class="n">species</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MQDT</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Get an instance of the subclass of MQDT for the given species and tag."""</span>
+    <span class="n">subclasses</span> <span class="o">=</span> <span class="n">get_all_subclasses</span><span class="p">(</span><span class="n">MQDT</span><span class="p">,</span> <span class="n">species</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">tag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">subclasses</span> <span class="o">=</span> <span class="p">[</span><span class="bp">cls</span> <span class="k">for</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="n">subclasses</span> <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">"is_default"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)]</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subclasses</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"No subclass of MQDT found for </span><span class="si">{</span><span class="n">species</span><span class="si">=}</span><span class="s2"> and </span><span class="si">{</span><span class="n">tag</span><span class="si">=}</span><span class="s2">."</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subclasses</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">subclasses</span><span class="p">[</span><span class="mi">0</span><span class="p">]()</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Multiple subclasses of MQDT found for </span><span class="si">{</span><span class="n">species</span><span class="si">=}</span><span class="s2"> and </span><span class="si">{</span><span class="n">tag</span><span class="si">=}</span><span class="s2">: </span><span class="si">{</span><span class="n">subclasses</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, RydState Developers.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

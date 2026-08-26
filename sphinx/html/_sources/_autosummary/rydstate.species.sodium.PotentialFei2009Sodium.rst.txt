@@ -1,0 +1,41 @@
+PotentialFei2009Sodium
+======================
+
+.. currentmodule:: rydstate.species.sodium
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~PotentialFei2009Sodium.__init__
+      ~PotentialFei2009Sodium.calc_effective_potential_centrifugal
+      ~PotentialFei2009Sodium.calc_effective_potential_sqrt
+      ~PotentialFei2009Sodium.calc_hydrogen_turning_point_z
+      ~PotentialFei2009Sodium.calc_model_potential
+      ~PotentialFei2009Sodium.calc_potential_coulomb
+      ~PotentialFei2009Sodium.calc_total_effective_potential
+      ~PotentialFei2009Sodium.calc_turning_point_z
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~PotentialFei2009Sodium.is_default
+   ~PotentialFei2009Sodium.model_potential_parameter_fei_2009
+   ~PotentialFei2009Sodium.reference
+   ~PotentialFei2009Sodium.species
+   ~PotentialFei2009Sodium.tag
+
+
+
+.. autoclass:: rydstate.species.sodium.PotentialFei2009Sodium
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

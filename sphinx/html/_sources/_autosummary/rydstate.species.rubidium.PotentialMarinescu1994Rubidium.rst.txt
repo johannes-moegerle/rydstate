@@ -1,0 +1,43 @@
+PotentialMarinescu1994Rubidium
+==============================
+
+.. currentmodule:: rydstate.species.rubidium
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~PotentialMarinescu1994Rubidium.__init__
+      ~PotentialMarinescu1994Rubidium.calc_effective_potential_centrifugal
+      ~PotentialMarinescu1994Rubidium.calc_effective_potential_sqrt
+      ~PotentialMarinescu1994Rubidium.calc_hydrogen_turning_point_z
+      ~PotentialMarinescu1994Rubidium.calc_model_potential
+      ~PotentialMarinescu1994Rubidium.calc_potential_coulomb
+      ~PotentialMarinescu1994Rubidium.calc_total_effective_potential
+      ~PotentialMarinescu1994Rubidium.calc_turning_point_z
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~PotentialMarinescu1994Rubidium.alpha_core_marinescu_1994
+   ~PotentialMarinescu1994Rubidium.is_default
+   ~PotentialMarinescu1994Rubidium.model_potential_parameter_marinescu_1994
+   ~PotentialMarinescu1994Rubidium.r_c_dict_marinescu_1994
+   ~PotentialMarinescu1994Rubidium.reference
+   ~PotentialMarinescu1994Rubidium.species
+   ~PotentialMarinescu1994Rubidium.tag
+
+
+
+.. autoclass:: rydstate.species.rubidium.PotentialMarinescu1994Rubidium
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

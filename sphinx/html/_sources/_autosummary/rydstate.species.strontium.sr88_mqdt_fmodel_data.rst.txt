@@ -1,0 +1,81 @@
+sr88\_mqdt\_fmodel\_data
+========================
+Full module path: rydstate.species.strontium.sr88\_mqdt\_fmodel\_data
+
+.. workaround to ignore generic classes like AtomSQDT[int]
+
+
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+
+
+.. currentmodule:: rydstate.species.strontium.sr88_mqdt_fmodel_data
+
+
+
+
+
+
+.. rubric:: Classes
+
+.. .. inheritance-diagram:: rydstate.species.strontium.sr88_mqdt_fmodel_data
+..     :parts: 1
+
+.. autosummary::
+   :toctree: .
+   
+      Sr88_D1_HighN
+      Sr88_D2_HighN
+      Sr88_D3_HighN
+      Sr88_F2_HighN
+      Sr88_F3_HighN
+      Sr88_F4_HighN
+      Sr88_P0_HighN
+      Sr88_P1_HighN
+      Sr88_P1_LowN
+      Sr88_P2_HighN
+      Sr88_S0_HighN
+      Sr88_S1_HighN
+
+
+
+
+
+
+.. rubric:: Module description
+
+.. automodule:: rydstate.species.strontium.sr88_mqdt_fmodel_data

@@ -1,0 +1,41 @@
+PotentialFei2009Lithium
+=======================
+
+.. currentmodule:: rydstate.species.lithium
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~PotentialFei2009Lithium.__init__
+      ~PotentialFei2009Lithium.calc_effective_potential_centrifugal
+      ~PotentialFei2009Lithium.calc_effective_potential_sqrt
+      ~PotentialFei2009Lithium.calc_hydrogen_turning_point_z
+      ~PotentialFei2009Lithium.calc_model_potential
+      ~PotentialFei2009Lithium.calc_potential_coulomb
+      ~PotentialFei2009Lithium.calc_total_effective_potential
+      ~PotentialFei2009Lithium.calc_turning_point_z
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~PotentialFei2009Lithium.is_default
+   ~PotentialFei2009Lithium.model_potential_parameter_fei_2009
+   ~PotentialFei2009Lithium.reference
+   ~PotentialFei2009Lithium.species
+   ~PotentialFei2009Lithium.tag
+
+
+
+.. autoclass:: rydstate.species.lithium.PotentialFei2009Lithium
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

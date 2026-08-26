@@ -1,0 +1,39 @@
+PotentialCoulombRubidium
+========================
+
+.. currentmodule:: rydstate.species.rubidium
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~PotentialCoulombRubidium.__init__
+      ~PotentialCoulombRubidium.calc_effective_potential_centrifugal
+      ~PotentialCoulombRubidium.calc_effective_potential_sqrt
+      ~PotentialCoulombRubidium.calc_hydrogen_turning_point_z
+      ~PotentialCoulombRubidium.calc_model_potential
+      ~PotentialCoulombRubidium.calc_potential_coulomb
+      ~PotentialCoulombRubidium.calc_total_effective_potential
+      ~PotentialCoulombRubidium.calc_turning_point_z
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~PotentialCoulombRubidium.is_default
+   ~PotentialCoulombRubidium.species
+   ~PotentialCoulombRubidium.tag
+
+
+
+.. autoclass:: rydstate.species.rubidium.PotentialCoulombRubidium
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

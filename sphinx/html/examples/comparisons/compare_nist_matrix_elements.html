@@ -1,0 +1,708 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compare Rb \(5s \rightarrow np_j\) matrix elements with NIST &mdash; RydState 0.12.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f24cbf82"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Compare Sr \(5s5s \rightarrow 5snl\) matrix elements with NIST" href="compare_nist_matrix_elements_Sr88_sqdt.html" />
+    <link rel="prev" title="Compare NIST energy levels data" href="compare_nist_energy_levels_data.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            RydState
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../examples.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#radialket">RadialKet</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../radial/hydrogen_wavefunction.html">Hydrogen radial wavefunction via numerov and from sympy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../radial/rubidium_wavefunction.html">Rubidium wavefunction and potential</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#angularstate">AngularState</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../angular/angular_state.html">Using AngularKets and AngularStates in different spin coupling schemes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#rydbergstate">RydbergState</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dipole_matrix_elements.html">Calculating dipole matrix elements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../lifetimes.html">Lifetimes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#mqdt">MQDT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../mqdt/mqdt_exp_qn.html">Labeling the angular character of Yb 171</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../examples.html#comparisons">Comparisons</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="compare_z_min_cutoff.html">Comparison of the z_min values for circular states</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compare_nist_energy_levels_data.html">Compare NIST energy levels data</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Compare Rb <span class="math notranslate nohighlight">\(5s \rightarrow np_j\)</span> matrix elements with NIST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compare_nist_matrix_elements_Sr88_sqdt.html">Compare Sr <span class="math notranslate nohighlight">\(5s5s \rightarrow 5snl\)</span> matrix elements with NIST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compare_model_potentials.html">Compare different effective model potentials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compare_whittaker.html">Comparison: Numerov - Whittaker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../benchmark/benchmark_njit.html">Benchmark of Numerov integration with and without using numba.njit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api_reference.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/rydberg_state.html">Rydberg States</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.rydberg_state.RydbergStateSQDT.html">RydbergStateSQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.rydberg_state.RydbergStateSQDTAlkali.html">RydbergStateSQDTAlkali</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.rydberg_state.RydbergStateMQDT.html">RydbergStateMQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.rydberg_state.RydbergKet.html">RydbergKet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/basis.html">Rydberg Basis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.BasisSQDT.html">BasisSQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.BasisMQDT.html">BasisMQDT</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/angular.html">Angular module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.angular.AngularKetLS.html">AngularKetLS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.angular.AngularKetJJ.html">AngularKetJJ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.angular.AngularKetFJ.html">AngularKetFJ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.angular.AngularState.html">AngularState</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.angular.CoreKet.html">CoreKet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.angular.utils.html">utils</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/radial.html">Radial module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.radial.RadialKet.html">RadialKet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/species.html">Species Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.species.ElementProperties.html">ElementProperties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.species.PotentialCoulomb.html">PotentialCoulomb</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.species.PotentialMarinescu1994.html">PotentialMarinescu1994</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.species.PotentialFei2009.html">PotentialFei2009</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.species.SQDT.html">SQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.species.MQDT.html">MQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.species.cesium.html">cesium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.species.hydrogen.html">hydrogen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.species.lithium.html">lithium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.species.potassium.html">potassium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.species.rubidium.html">rubidium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.species.sodium.html">sodium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.species.strontium.html">strontium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.species.ytterbium.html">ytterbium</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generate_database.html">Generate Database module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.generate_database.create_tables_for_sqdt.html">create_tables_for_sqdt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.generate_database.create_tables_for_mqdt.html">create_tables_for_mqdt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/rydstate.generate_database.create_tables_for_misc.html">create_tables_for_misc</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<style>
+a.gitbutton {
+  display: block;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #fff;
+  padding-top: 10px;
+  padding-left: 85px;
+  padding-right: 0px;
+  margin: 22px;
+  width: 240px;
+  height: 60px;
+  background: transparent url("../../_static/buttons/github.svg") 0 0 no-repeat;
+}
+a.gitbutton small {
+  display: block;
+  font-size: 11px;
+}
+button.toctree-expand {
+  display: none;
+}
+</style>
+<a href="https://github.com/pairinteraction/rydstate" class="gitbutton">Explore<small>the GitHub repository</small></a>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RydState</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../examples.html">Examples</a></li>
+      <li class="breadcrumb-item active">Compare Rb <span class="math notranslate nohighlight">\(5s \rightarrow np_j\)</span> matrix elements with NIST</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/examples/comparisons/compare_nist_matrix_elements.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <style>
+    .nbinput .prompt,
+    .nboutput .prompt {
+        display: none;
+    }
+</style>
+
+<div class="admonition note">
+  This page was generated from the Jupyter notebook
+  <a class="reference external" href="compare_nist_matrix_elements.ipynb">compare_nist_matrix_elements.ipynb</a>.
+</div><section id="Compare-Rb-5s-\rightarrow-np_j-matrix-elements-with-NIST">
+<h1>Compare Rb <span class="math notranslate nohighlight">\(5s \rightarrow np_j\)</span> matrix elements with NIST<a class="headerlink" href="#Compare-Rb-5s-\rightarrow-np_j-matrix-elements-with-NIST" title="Link to this heading"></a></h1>
+<p>This notebook compares the reduced electric-dipole matrix elements <span class="math notranslate nohighlight">\(\langle 5s_{1/2} \Vert d \Vert np_j \rangle\)</span> of rubidium (<span class="math notranslate nohighlight">\(n = 5, \dots, 20\)</span> and <span class="math notranslate nohighlight">\(j = 1/2, 3/2\)</span>) computed by rydstate with the experimental values of the NIST Atomic Spectra Database (ASD), for</p>
+<ul class="simple">
+<li><p>the <strong>bare</strong> rydberg dipole operator <span class="math notranslate nohighlight">\(d(r) = r\)</span>, and</p></li>
+<li><p>the <strong>full</strong> (core-polarization dressed) dipole operator <span class="math notranslate nohighlight">\(d(r) = r - \frac{\alpha_c}{r^2}\left(1 - e^{-(r/r_c)^3}\right)\)</span>.</p></li>
+</ul>
+<p>The later sections then look at how the full operator affects the remaining decay channels of the <span class="math notranslate nohighlight">\(np\)</span> states and, finally, the <span class="math notranslate nohighlight">\(ns_{1/2}\)</span>, <span class="math notranslate nohighlight">\(np_{3/2}\)</span> and <span class="math notranslate nohighlight">\(nd_{5/2}\)</span> lifetimes. For those no NIST line strengths are used, so there only the bare and full values are compared to each other.</p>
+<p>The valence electron polarizes the ionic core; the induced core dipole partially shields the dipole operator. This correction goes back to <a class="reference external" href="https://doi.org/10.1088/0022-3700/1/5/308">Hameed et al J. Phys. B: Atom. Mol. Phys. 1 822, 1962</a> and <a class="reference external" href="https://doi.org/10.1103/PhysRevA.5.1621">Weisheit Phys. Rev. A 5, 1621, 1972</a>, and is also described in <a class="reference external" href="https://doi.org/10.1103/PhysRevA.49.982">Marinescu et al Phys. Rev. A 49, 982, 1994</a>, where the model potential comes from. The cutoff
+<span class="math notranslate nohighlight">\(r_c\)</span> is fitted to the NIST line strengths.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># %matplotlib widget</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">rydstate</span>
+</pre></div>
+</div>
+</div>
+<section id="NIST-reference-values">
+<h2>NIST reference values<a class="headerlink" href="#NIST-reference-values" title="Link to this heading"></a></h2>
+<p>The NIST ASD line strength of an E1 transition is <span class="math notranslate nohighlight">\(S = |\langle J \Vert d \Vert J' \rangle|^2\)</span> in atomic units <span class="math notranslate nohighlight">\((e\,a_0)^2\)</span>, so it is directly comparable to the square of rydstate’s reduced matrix elements.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># {(n, j): S in (e a0)^2} from https://physics.nist.gov/PhysRefData/ASD/lines_form.html (retrieved 2026-07-24)</span>
+<span class="n">nist_s</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">):</span> <span class="mf">1.79e1</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">):</span> <span class="mf">1.11e-1</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">):</span> <span class="mf">1.32e-2</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">):</span> <span class="mf">3.31e-3</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">):</span> <span class="mf">1.28e-3</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">):</span> <span class="mf">6.24e-4</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">):</span> <span class="mf">3.79e-4</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">):</span> <span class="mf">2.02e-4</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">):</span> <span class="mf">1.28e-4</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">):</span> <span class="mf">1.04e-4</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">):</span> <span class="mf">6.85e-5</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">):</span> <span class="mf">4.82e-5</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">):</span> <span class="mf">3.75e-5</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">):</span> <span class="mf">2.83e-5</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">):</span> <span class="mf">2.34e-5</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">):</span> <span class="mf">1.50e-5</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">):</span> <span class="mf">3.58e1</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">):</span> <span class="mf">2.59e-1</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">):</span> <span class="mf">3.62e-2</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">):</span> <span class="mf">1.01e-2</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">):</span> <span class="mf">4.25e-3</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">):</span> <span class="mf">2.10e-3</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">):</span> <span class="mf">1.50e-3</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">):</span> <span class="mf">8.62e-4</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">):</span> <span class="mf">5.95e-4</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">):</span> <span class="mf">4.57e-4</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">):</span> <span class="mf">2.72e-4</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">):</span> <span class="mf">2.25e-4</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">):</span> <span class="mf">1.77e-4</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">):</span> <span class="mf">1.42e-4</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">):</span> <span class="mf">1.10e-4</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Bare-vs.-full-operator">
+<h2>Bare vs. full operator<a class="headerlink" href="#Bare-vs.-full-operator" title="Link to this heading"></a></h2>
+<p>The full operator (including the core-polarization correction) is used automatically if “electric_dipole” is specified. To compute the bare values for comparison, one can restrict the matrix element to the contribution of the Rydberg electron via <code class="docutils literal notranslate"><span class="pre">part=&quot;rydberg&quot;</span></code>, which leaves out the “closed_shell_core” contribution.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_max</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">matrix_elements</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">for</span> <span class="n">potential</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"coulomb"</span><span class="p">,</span> <span class="s2">"fei_2009"</span><span class="p">,</span> <span class="s2">"marinescu_1994"</span><span class="p">]:</span>
+    <span class="n">basis_ns</span> <span class="o">=</span> <span class="n">rydstate</span><span class="o">.</span><span class="n">BasisSQDT</span><span class="p">(</span><span class="s2">"Rb"</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_max</span><span class="p">),</span> <span class="n">l_r</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">potential_class</span><span class="o">=</span><span class="n">potential</span><span class="p">)</span>
+    <span class="n">ground_state</span> <span class="o">=</span> <span class="n">basis_ns</span><span class="o">.</span><span class="n">sort_states</span><span class="p">(</span><span class="s2">"nu"</span><span class="p">)</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">basis_np</span> <span class="o">=</span> <span class="n">rydstate</span><span class="o">.</span><span class="n">BasisSQDT</span><span class="p">(</span><span class="s2">"Rb"</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_max</span><span class="p">),</span> <span class="n">l_r</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">potential_class</span><span class="o">=</span><span class="n">potential</span><span class="p">)</span>
+
+    <span class="n">matrix_elements</span><span class="p">[</span><span class="n">potential</span> <span class="o">+</span> <span class="s2">" - full"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">calc_exp_qn</span><span class="p">(</span><span class="s2">"j_r"</span><span class="p">)):</span> <span class="n">state</span><span class="o">.</span><span class="n">calc_reduced_matrix_element</span><span class="p">(</span>
+            <span class="n">ground_state</span><span class="p">,</span> <span class="s2">"electric_dipole"</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"e a0"</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">basis_np</span><span class="o">.</span><span class="n">states</span>
+    <span class="p">}</span>
+
+    <span class="n">matrix_elements</span><span class="p">[</span><span class="n">potential</span> <span class="o">+</span> <span class="s2">" - bare"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">calc_exp_qn</span><span class="p">(</span><span class="s2">"j_r"</span><span class="p">)):</span> <span class="n">state</span><span class="o">.</span><span class="n">calc_reduced_matrix_element</span><span class="p">(</span>
+            <span class="n">ground_state</span><span class="p">,</span> <span class="s2">"electric_dipole"</span><span class="p">,</span> <span class="n">part</span><span class="o">=</span><span class="s2">"rydberg"</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"e a0"</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">basis_np</span><span class="o">.</span><span class="n">states</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+The wavefunction for the radial_ket RadialKet(nu=2.2798755593634197, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=1.86e-01)
+      The wavefunction has 1 nodes, but should have 3 nodes.
+The wavefunction for the radial_ket RadialKet(nu=1.8047588909608785, potential=PotentialCoulombRubidium(l_r=0)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=6.38e-02)
+      The wavefunction has 1 nodes, but should have 4 nodes.
+      The integration for l=0 did stop at 0.18 (should be close to zero).
+The wavefunction for the radial_ket RadialKet(nu=2.2928137655389933, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=2.30e-01)
+      The wavefunction has 1 nodes, but should have 3 nodes.
+The wavefunction for the radial_ket RadialKet(nu=3.3166565883621346, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=1.19e-01)
+      The wavefunction has 2 nodes, but should have 4 nodes.
+The wavefunction for the radial_ket RadialKet(nu=3.3296169041882475, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=1.38e-01)
+      The wavefunction has 2 nodes, but should have 4 nodes.
+The wavefunction for the radial_ket RadialKet(nu=4.328904109253159, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=6.94e-02)
+      The wavefunction has 3 nodes, but should have 5 nodes.
+The wavefunction for the radial_ket RadialKet(nu=4.341932414575337, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=8.02e-02)
+      The wavefunction has 3 nodes, but should have 5 nodes.
+The wavefunction for the radial_ket RadialKet(nu=5.3346623184853135, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=4.32e-02)
+      The wavefunction has 4 nodes, but should have 6 nodes.
+The wavefunction for the radial_ket RadialKet(nu=5.347749980208695, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=4.99e-02)
+      The wavefunction has 4 nodes, but should have 6 nodes.
+The wavefunction for the radial_ket RadialKet(nu=6.3377119847246455, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=3.07e-02)
+      The wavefunction has 5 nodes, but should have 7 nodes.
+The wavefunction for the radial_ket RadialKet(nu=6.350837333725099, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=3.52e-02)
+      The wavefunction has 5 nodes, but should have 7 nodes.
+The wavefunction for the radial_ket RadialKet(nu=7.339558539351324, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=2.19e-02)
+      The wavefunction has 6 nodes, but should have 8 nodes.
+The wavefunction for the radial_ket RadialKet(nu=7.352764136936508, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=2.52e-02)
+      The wavefunction has 6 nodes, but should have 8 nodes.
+The wavefunction for the radial_ket RadialKet(nu=8.340755076343015, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=1.63e-02)
+      The wavefunction has 7 nodes, but should have 9 nodes.
+The wavefunction for the radial_ket RadialKet(nu=8.353923166651649, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=1.88e-02)
+      The wavefunction has 7 nodes, but should have 9 nodes.
+The wavefunction for the radial_ket RadialKet(nu=9.341810845049446, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=1.27e-02)
+      The wavefunction has 8 nodes, but should have 10 nodes.
+The wavefunction for the radial_ket RadialKet(nu=9.35498881502479, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=1.45e-02)
+      The wavefunction has 8 nodes, but should have 10 nodes.
+The wavefunction for the radial_ket RadialKet(nu=10.34236608608348, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=1.00e-02)
+      The wavefunction has 9 nodes, but should have 11 nodes.
+The wavefunction for the radial_ket RadialKet(nu=10.355489298307495, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=1.15e-02)
+      The wavefunction has 9 nodes, but should have 11 nodes.
+The wavefunction for the radial_ket RadialKet(nu=11.342795685110401, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=8.14e-03)
+      The wavefunction has 10 nodes, but should have 12 nodes.
+The wavefunction for the radial_ket RadialKet(nu=11.356113893831111, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=9.38e-03)
+      The wavefunction has 10 nodes, but should have 12 nodes.
+The wavefunction for the radial_ket RadialKet(nu=12.343068656664212, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=6.73e-03)
+      The wavefunction has 11 nodes, but should have 13 nodes.
+The wavefunction for the radial_ket RadialKet(nu=12.356196621079729, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=7.73e-03)
+      The wavefunction has 11 nodes, but should have 13 nodes.
+The wavefunction for the radial_ket RadialKet(nu=13.343486729034456, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=5.66e-03)
+      The wavefunction has 12 nodes, but should have 14 nodes.
+The wavefunction for the radial_ket RadialKet(nu=13.35667312845785, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=6.50e-03)
+      The wavefunction has 12 nodes, but should have 14 nodes.
+The wavefunction for the radial_ket RadialKet(nu=14.343705843899631, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=4.81e-03)
+      The wavefunction has 13 nodes, but should have 15 nodes.
+The wavefunction for the radial_ket RadialKet(nu=14.35689538321315, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=5.53e-03)
+      The wavefunction has 13 nodes, but should have 15 nodes.
+The wavefunction for the radial_ket RadialKet(nu=15.343883533981597, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=4.14e-03)
+      The wavefunction has 14 nodes, but should have 16 nodes.
+The wavefunction for the radial_ket RadialKet(nu=15.357075654469439, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=4.76e-03)
+      The wavefunction has 14 nodes, but should have 16 nodes.
+The wavefunction for the radial_ket RadialKet(nu=16.344029619486154, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=3.60e-03)
+      The wavefunction has 15 nodes, but should have 17 nodes.
+The wavefunction for the radial_ket RadialKet(nu=16.357223887110685, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=4.14e-03)
+      The wavefunction has 15 nodes, but should have 17 nodes.
+The wavefunction for the radial_ket RadialKet(nu=17.344151174153122, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=3.15e-03)
+      The wavefunction has 16 nodes, but should have 18 nodes.
+The wavefunction for the radial_ket RadialKet(nu=17.35734724673488, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=3.63e-03)
+      The wavefunction has 16 nodes, but should have 18 nodes.
+The wavefunction for the radial_ket RadialKet(nu=18.344253397970036, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=2.78e-03)
+      The wavefunction has 17 nodes, but should have 19 nodes.
+The wavefunction for the radial_ket RadialKet(nu=18.35745100218057, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=3.20e-03)
+      The wavefunction has 17 nodes, but should have 19 nodes.
+The wavefunction for the radial_ket RadialKet(nu=19.344340182690704, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=2.48e-03)
+      The wavefunction has 18 nodes, but should have 20 nodes.
+The wavefunction for the radial_ket RadialKet(nu=19.35753909760986, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=2.85e-03)
+      The wavefunction has 18 nodes, but should have 20 nodes.
+The wavefunction for the radial_ket RadialKet(nu=20.34441448779999, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=2.22e-03)
+      The wavefunction has 19 nodes, but should have 21 nodes.
+The wavefunction for the radial_ket RadialKet(nu=20.357614532958248, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=2.55e-03)
+      The wavefunction has 19 nodes, but should have 21 nodes.
+The wavefunction for the radial_ket RadialKet(nu=21.344478596207182, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=2.00e-03)
+      The wavefunction has 20 nodes, but should have 22 nodes.
+The wavefunction for the radial_ket RadialKet(nu=21.3576796227516, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=2.30e-03)
+      The wavefunction has 20 nodes, but should have 22 nodes.
+The wavefunction for the radial_ket RadialKet(nu=22.34453429171098, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=1.80e-03)
+      The wavefunction has 21 nodes, but should have 23 nodes.
+The wavefunction for the radial_ket RadialKet(nu=22.35773617578468, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=2.08e-03)
+      The wavefunction has 21 nodes, but should have 23 nodes.
+The wavefunction for the radial_ket RadialKet(nu=23.344582984439704, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=1.64e-03)
+      The wavefunction has 22 nodes, but should have 24 nodes.
+The wavefunction for the radial_ket RadialKet(nu=23.357785622155063, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=1.89e-03)
+      The wavefunction has 22 nodes, but should have 24 nodes.
+The wavefunction for the radial_ket RadialKet(nu=24.344625800993924, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=1.50e-03)
+      The wavefunction has 23 nodes, but should have 25 nodes.
+The wavefunction for the radial_ket RadialKet(nu=24.357829104569984, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=1.72e-03)
+      The wavefunction has 23 nodes, but should have 25 nodes.
+The wavefunction for the radial_ket RadialKet(nu=25.344663650202826, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=1.37e-03)
+      The wavefunction has 24 nodes, but should have 26 nodes.
+The wavefunction for the radial_ket RadialKet(nu=25.35786754496453, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=1.58e-03)
+      The wavefunction has 24 nodes, but should have 26 nodes.
+The wavefunction for the radial_ket RadialKet(nu=26.344697271752576, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=1.26e-03)
+      The wavefunction has 25 nodes, but should have 27 nodes.
+The wavefunction for the radial_ket RadialKet(nu=26.35790169377588, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=1.45e-03)
+      The wavefunction has 25 nodes, but should have 27 nodes.
+The wavefunction for the radial_ket RadialKet(nu=27.344727272602043, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=1.16e-03)
+      The wavefunction has 26 nodes, but should have 28 nodes.
+The wavefunction for the radial_ket RadialKet(nu=27.35793216684855, potential=PotentialCoulombRubidium(l_r=1)) has some issues:
+      The wavefunction is not close to zero at the inner boundary (inner_weight_scaled_to_whole_grid=1.34e-03)
+      The wavefunction has 26 nodes, but should have 28 nodes.
+</pre></div></div>
+</div>
+</section>
+<section id="Comparison-plot">
+<h2>Comparison plot<a class="headerlink" href="#Comparison-plot" title="Link to this heading"></a></h2>
+<p>Left: the matrix elements themselves. Right: the ratio of the calculated matrix elements to the NIST values. The color encodes the total angular momentum (<span class="math notranslate nohighlight">\(j = 1/2\)</span> blue, <span class="math notranslate nohighlight">\(j = 3/2\)</span> orange), and the black-edged crosses the NIST values. The bare operator overestimates the matrix elements; the full operator agrees with the NIST values.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax_me</span><span class="p">,</span> <span class="n">ax_ratio</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"C0"</span><span class="p">,</span> <span class="s2">"C0"</span><span class="p">,</span> <span class="s2">"C1"</span><span class="p">,</span> <span class="s2">"C1"</span><span class="p">,</span> <span class="s2">"C2"</span><span class="p">,</span> <span class="s2">"C2"</span><span class="p">,</span> <span class="s2">"C3"</span><span class="p">,</span> <span class="s2">"C3"</span><span class="p">]</span>
+<span class="n">linestyles</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"-"</span><span class="p">,</span> <span class="s2">"--"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">,</span> <span class="s2">"--"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">,</span> <span class="s2">"--"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">,</span> <span class="s2">"--"</span><span class="p">]</span>
+<span class="n">markers</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"o"</span><span class="p">,</span> <span class="s2">"s"</span><span class="p">,</span> <span class="s2">"x"</span><span class="p">,</span> <span class="s2">"s"</span><span class="p">,</span> <span class="s2">"^"</span><span class="p">,</span> <span class="s2">"v"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">"s"</span><span class="p">,</span> <span class="s2">"^"</span><span class="p">,</span> <span class="s2">"v"</span><span class="p">]</span>
+
+<span class="n">j_r</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">j_r_label</span> <span class="o">=</span> <span class="sa">rf</span><span class="s2">"$j_</span><span class="se">{{</span><span class="s2">ryd</span><span class="se">}}</span><span class="s2">=</span><span class="si">{</span><span class="n">j_r</span><span class="si">}</span><span class="s2">$"</span>
+<span class="n">n_nist</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">n</span> <span class="k">for</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">_j_r</span><span class="p">)</span> <span class="ow">in</span> <span class="n">nist_s</span> <span class="k">if</span> <span class="n">_j_r</span> <span class="o">==</span> <span class="n">j_r</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">me</span> <span class="ow">in</span> <span class="n">matrix_elements</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">n_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">_j_r</span><span class="p">)</span> <span class="ow">in</span> <span class="n">me</span> <span class="k">if</span> <span class="n">_j_r</span> <span class="o">==</span> <span class="n">j_r</span><span class="p">]</span>
+    <span class="n">style</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"color"</span><span class="p">:</span> <span class="n">colors</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s2">"linestyle"</span><span class="p">:</span> <span class="n">linestyles</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s2">"marker"</span><span class="p">:</span> <span class="n">markers</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s2">"markersize"</span><span class="p">:</span> <span class="mi">6</span><span class="p">}</span>
+    <span class="n">ax_me</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">n_list</span><span class="p">,</span> <span class="p">[</span><span class="nb">abs</span><span class="p">(</span><span class="n">me</span><span class="p">[(</span><span class="n">n</span><span class="p">,</span> <span class="n">j_r</span><span class="p">)])</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">n_list</span><span class="p">],</span> <span class="o">**</span><span class="n">style</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">j_r_label</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">ax_ratio</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">n_nist</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">([</span><span class="n">me</span><span class="p">[(</span><span class="n">n</span><span class="p">,</span> <span class="n">j_r</span><span class="p">)]</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">nist_s</span><span class="p">[(</span><span class="n">n</span><span class="p">,</span> <span class="n">j_r</span><span class="p">)])</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">n_nist</span><span class="p">]),</span> <span class="o">**</span><span class="n">style</span><span class="p">)</span>
+
+<span class="n">ax_me</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">n_nist</span><span class="p">,</span>
+    <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">nist_s</span><span class="p">[(</span><span class="n">n</span><span class="p">,</span> <span class="n">j_r</span><span class="p">)])</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">n_nist</span><span class="p">],</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">"k"</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s2">"X"</span><span class="p">,</span>
+    <span class="n">markeredgecolor</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
+    <span class="n">fillstyle</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">"NIST, </span><span class="si">{</span><span class="n">j_r_label</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">ax_me</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s2">"log"</span><span class="p">)</span>
+<span class="n">ax_me</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s2">"log"</span><span class="p">)</span>
+<span class="n">ax_me</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">"5"</span><span class="p">,</span> <span class="s2">"6"</span><span class="p">,</span> <span class="s2">"8"</span><span class="p">,</span> <span class="s2">"10"</span><span class="p">,</span> <span class="s2">"15"</span><span class="p">,</span> <span class="s2">"20"</span><span class="p">])</span>
+<span class="n">ax_me</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"principal quantum number $n$"</span><span class="p">)</span>
+<span class="n">ax_me</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">"$\sqrt{S_\mathrm</span><span class="si">{calc}</span><span class="s2">} = |\langle 5s_{1/2} \Vert d \Vert np_j \rangle|$  ($e\,a_0$)"</span><span class="p">)</span>
+<span class="n">ax_me</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">ax_ratio</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">ax_ratio</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"principal quantum number $n$"</span><span class="p">)</span>
+<span class="n">ax_ratio</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">"$\sqrt{S_\mathrm</span><span class="si">{calc}</span><span class="s2">} / \sqrt{S_\mathrm</span><span class="si">{NIST}</span><span class="s2">}$"</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/examples_comparisons_compare_nist_matrix_elements_7_0.png" src="../../_images/examples_comparisons_compare_nist_matrix_elements_7_0.png" />
+</div>
+</div>
+</section>
+<section id="Why-lifetimes-barely-change:-the-np-\rightarrow-low-n-d-and-s-channels">
+<h2>Why lifetimes barely change: the <span class="math notranslate nohighlight">\(np \rightarrow\)</span> low-<span class="math notranslate nohighlight">\(n\)</span> <span class="math notranslate nohighlight">\(d\)</span> and <span class="math notranslate nohighlight">\(s\)</span> channels<a class="headerlink" href="#Why-lifetimes-barely-change:-the-np-\rightarrow-low-n-d-and-s-channels" title="Link to this heading"></a></h2>
+<p>The line strengths <span class="math notranslate nohighlight">\(S\)</span> to the ground state change by up to a factor <span class="math notranslate nohighlight">\(\sim 8\)</span>, yet the <em>lifetimes</em> of Rydberg <span class="math notranslate nohighlight">\(np\)</span> states change only by a few percent. The reason becomes clear by looking at how the full operator affects the other decay channels of an <span class="math notranslate nohighlight">\(np_{3/2}\)</span> state: the dominant spontaneous channels go to the low-lying <span class="math notranslate nohighlight">\(d\)</span> states, whose radial integrals have no strong cancellation — so the shielding correction moves them only mildly. Below we first plot the bare
+and full matrix elements for the four most important channel families, and then the ratio of the full to the bare line strength for all of them in a single plot.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">low_n</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">lower_states</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="sa">rf</span><span class="s2">"$</span><span class="si">{</span><span class="n">low_n</span><span class="si">}</span><span class="s2">s_</span><span class="se">{{</span><span class="s2">1/2</span><span class="se">}}</span><span class="s2">$"</span><span class="p">:</span> <span class="n">rydstate</span><span class="o">.</span><span class="n">RydbergStateSQDTAlkali</span><span class="p">(</span><span class="s2">"Rb"</span><span class="p">,</span> <span class="n">low_n</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
+    <span class="sa">rf</span><span class="s2">"$</span><span class="si">{</span><span class="n">low_n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">s_</span><span class="se">{{</span><span class="s2">1/2</span><span class="se">}}</span><span class="s2">$"</span><span class="p">:</span> <span class="n">rydstate</span><span class="o">.</span><span class="n">RydbergStateSQDTAlkali</span><span class="p">(</span><span class="s2">"Rb"</span><span class="p">,</span> <span class="n">low_n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
+    <span class="sa">rf</span><span class="s2">"$</span><span class="si">{</span><span class="n">low_n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">d_</span><span class="se">{{</span><span class="s2">5/2</span><span class="se">}}</span><span class="s2">$"</span><span class="p">:</span> <span class="n">rydstate</span><span class="o">.</span><span class="n">RydbergStateSQDTAlkali</span><span class="p">(</span><span class="s2">"Rb"</span><span class="p">,</span> <span class="n">low_n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">j</span><span class="o">=</span><span class="mf">2.5</span><span class="p">),</span>
+    <span class="sa">rf</span><span class="s2">"$</span><span class="si">{</span><span class="n">low_n</span><span class="si">}</span><span class="s2">d_</span><span class="se">{{</span><span class="s2">5/2</span><span class="se">}}</span><span class="s2">$"</span><span class="p">:</span> <span class="n">rydstate</span><span class="o">.</span><span class="n">RydbergStateSQDTAlkali</span><span class="p">(</span><span class="s2">"Rb"</span><span class="p">,</span> <span class="n">low_n</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">j</span><span class="o">=</span><span class="mf">2.5</span><span class="p">),</span>
+<span class="p">}</span>
+<span class="n">basis_np</span> <span class="o">=</span> <span class="n">rydstate</span><span class="o">.</span><span class="n">BasisSQDT</span><span class="p">(</span><span class="s2">"Rb"</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span> <span class="n">l_r</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">f_tot</span><span class="o">=</span><span class="p">(</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">))</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span> <span class="n">lower_states</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">n_list</span> <span class="o">=</span> <span class="n">basis_np</span><span class="o">.</span><span class="n">calc_exp_qn</span><span class="p">(</span><span class="s2">"n"</span><span class="p">)</span>
+    <span class="n">me_bare_low</span> <span class="o">=</span> <span class="n">basis_np</span><span class="o">.</span><span class="n">calc_reduced_matrix_element</span><span class="p">(</span>
+        <span class="n">lower_states</span><span class="p">[</span><span class="n">label</span><span class="p">],</span> <span class="s2">"electric_dipole"</span><span class="p">,</span> <span class="n">part</span><span class="o">=</span><span class="s2">"rydberg"</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"e a0"</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">n_list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">me_bare_low</span><span class="p">),</span> <span class="s2">"C0o-"</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"bare"</span><span class="p">)</span>
+    <span class="n">me_full_low</span> <span class="o">=</span> <span class="n">basis_np</span><span class="o">.</span><span class="n">calc_reduced_matrix_element</span><span class="p">(</span><span class="n">lower_states</span><span class="p">[</span><span class="n">label</span><span class="p">],</span> <span class="s2">"electric_dipole"</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"e a0"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">n_list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">me_full_low</span><span class="p">),</span> <span class="s2">"C1s-"</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"full"</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s2">"log"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s2">"log"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mf">5e-3</span><span class="p">,</span> <span class="mf">5e1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">"5"</span><span class="p">,</span> <span class="s2">"6"</span><span class="p">,</span> <span class="s2">"8"</span><span class="p">,</span> <span class="s2">"10"</span><span class="p">,</span> <span class="s2">"15"</span><span class="p">,</span> <span class="s2">"20"</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">rf</span><span class="s2">"$np_</span><span class="se">{{</span><span class="s2">3/2</span><span class="se">}}</span><span class="s2"> \leftrightarrow$ </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"principal quantum number $n$"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">"$|\langle \mathrm</span><span class="si">{low}</span><span class="s2"> \Vert d \Vert np_{3/2} \rangle|$  ($e\,a_0$)"</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/examples_comparisons_compare_nist_matrix_elements_9_0.png" src="../../_images/examples_comparisons_compare_nist_matrix_elements_9_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lower_states</span><span class="p">):</span>
+    <span class="n">n_list</span> <span class="o">=</span> <span class="n">basis_np</span><span class="o">.</span><span class="n">calc_exp_qn</span><span class="p">(</span><span class="s2">"n"</span><span class="p">)</span>
+    <span class="n">me_bare_low</span> <span class="o">=</span> <span class="n">basis_np</span><span class="o">.</span><span class="n">calc_reduced_matrix_element</span><span class="p">(</span>
+        <span class="n">lower_states</span><span class="p">[</span><span class="n">label</span><span class="p">],</span> <span class="s2">"electric_dipole"</span><span class="p">,</span> <span class="n">part</span><span class="o">=</span><span class="s2">"rydberg"</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"e a0"</span>
+    <span class="p">)</span>
+    <span class="n">me_full_low</span> <span class="o">=</span> <span class="n">basis_np</span><span class="o">.</span><span class="n">calc_reduced_matrix_element</span><span class="p">(</span><span class="n">lower_states</span><span class="p">[</span><span class="n">label</span><span class="p">],</span> <span class="s2">"electric_dipole"</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"e a0"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">n_list</span><span class="p">,</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">me_full_low</span> <span class="o">/</span> <span class="n">me_bare_low</span><span class="p">),</span>
+        <span class="sa">f</span><span class="s2">"C</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">o-"</span><span class="p">,</span>
+        <span class="n">markersize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="sa">rf</span><span class="s2">"$np_</span><span class="se">{{</span><span class="s2">3/2</span><span class="se">}}</span><span class="s2"> \leftrightarrow$ </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"principal quantum number $n$"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">"$\sqrt{S_\mathrm</span><span class="si">{full}</span><span class="s2">} / \sqrt{S_\mathrm</span><span class="si">{bare}</span><span class="s2">}$"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/examples_comparisons_compare_nist_matrix_elements_10_0.png" src="../../_images/examples_comparisons_compare_nist_matrix_elements_10_0.png" />
+</div>
+</div>
+<p>The <span class="math notranslate nohighlight">\(np \rightarrow 5s\)</span> line strengths are suppressed down to $:nbsphinx-math:<cite>sim`$0.3 (and the :math:`np_{1/2}</cite> ones even further, cf. the plot above), but this channel carries only a modest share of the total decay rate. The dominant <span class="math notranslate nohighlight">\(np \rightarrow 4d, 5d\)</span> channels move by at most $:nbsphinx-math:<cite>sim`$15%, partly in the *opposite* direction (the full operator enhances these partially-cancelling integrals), and transitions between neighboring Rydberg states (large :math:`r</cite>, no
+cancellation) are untouched. The net effect on the <span class="math notranslate nohighlight">\(np_{3/2}\)</span> lifetimes is a few percent — worked out in detail below.</p>
+</section>
+<section id="Lifetimes-vs.-principal-quantum-number">
+<h2>Lifetimes vs. principal quantum number<a class="headerlink" href="#Lifetimes-vs.-principal-quantum-number" title="Link to this heading"></a></h2>
+<p>We compute the spontaneous (<span class="math notranslate nohighlight">\(T = 0\)</span>) lifetimes of the <span class="math notranslate nohighlight">\(ns_{1/2}\)</span>, <span class="math notranslate nohighlight">\(np_{3/2}\)</span> and <span class="math notranslate nohighlight">\(nd_{5/2}\)</span> series with the default (full) operator and with the bare operator.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">series</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"$ns_{1/2}$"</span><span class="p">:</span> <span class="n">rydstate</span><span class="o">.</span><span class="n">BasisSQDT</span><span class="p">(</span><span class="s2">"Rb"</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span> <span class="n">l_r</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">f_tot</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">m</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)),</span>
+    <span class="s2">"$np_{3/2}$"</span><span class="p">:</span> <span class="n">rydstate</span><span class="o">.</span><span class="n">BasisSQDT</span><span class="p">(</span><span class="s2">"Rb"</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span> <span class="n">l_r</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">f_tot</span><span class="o">=</span><span class="p">(</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">),</span> <span class="n">m</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)),</span>
+    <span class="s2">"$nd_{5/2}$"</span><span class="p">:</span> <span class="n">rydstate</span><span class="o">.</span><span class="n">BasisSQDT</span><span class="p">(</span><span class="s2">"Rb"</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span> <span class="n">l_r</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">f_tot</span><span class="o">=</span><span class="p">(</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">),</span> <span class="n">m</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)),</span>
+<span class="p">}</span>
+
+<span class="n">lifetimes_full</span> <span class="o">=</span> <span class="p">{</span><span class="n">label</span><span class="p">:</span> <span class="p">[</span><span class="n">state</span><span class="o">.</span><span class="n">get_lifetime</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="s2">"us"</span><span class="p">)</span> <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">basis</span><span class="o">.</span><span class="n">states</span><span class="p">]</span> <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">basis</span> <span class="ow">in</span> <span class="n">series</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+<span class="n">element_properties</span> <span class="o">=</span> <span class="n">rydstate</span><span class="o">.</span><span class="n">species</span><span class="o">.</span><span class="n">rubidium</span><span class="o">.</span><span class="n">ElementPropertiesRubidium</span>
+<span class="n">alpha_closed_shell_core</span> <span class="o">=</span> <span class="n">element_properties</span><span class="o">.</span><span class="n">alpha_closed_shell_core</span>
+<span class="n">element_properties</span><span class="o">.</span><span class="n">alpha_closed_shell_core</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># ignore core polarizability for bare lifetime</span>
+<span class="n">rydstate</span><span class="o">.</span><span class="n">radial</span><span class="o">.</span><span class="n">RadialKet</span><span class="o">.</span><span class="n">clear_cached_instances</span><span class="p">()</span>
+
+<span class="n">lifetimes_bare</span> <span class="o">=</span> <span class="p">{</span><span class="n">label</span><span class="p">:</span> <span class="p">[</span><span class="n">state</span><span class="o">.</span><span class="n">get_lifetime</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="s2">"us"</span><span class="p">)</span> <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">basis</span><span class="o">.</span><span class="n">states</span><span class="p">]</span> <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">basis</span> <span class="ow">in</span> <span class="n">series</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+<span class="n">rydstate</span><span class="o">.</span><span class="n">radial</span><span class="o">.</span><span class="n">RadialKet</span><span class="o">.</span><span class="n">clear_cached_instances</span><span class="p">()</span>
+<span class="n">element_properties</span><span class="o">.</span><span class="n">alpha_closed_shell_core</span> <span class="o">=</span> <span class="n">alpha_closed_shell_core</span>  <span class="c1"># restore core polarizability</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax_tau</span><span class="p">,</span> <span class="n">ax_ratio</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">basis</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">series</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+    <span class="n">n_list</span> <span class="o">=</span> <span class="n">basis</span><span class="o">.</span><span class="n">calc_exp_qn</span><span class="p">(</span><span class="s2">"n"</span><span class="p">)</span>
+    <span class="n">ax_tau</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">n_list</span><span class="p">,</span> <span class="n">lifetimes_full</span><span class="p">[</span><span class="n">label</span><span class="p">],</span> <span class="sa">f</span><span class="s2">"C</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">o-"</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2"> full"</span><span class="p">)</span>
+    <span class="n">ax_tau</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">n_list</span><span class="p">,</span> <span class="n">lifetimes_bare</span><span class="p">[</span><span class="n">label</span><span class="p">],</span> <span class="sa">f</span><span class="s2">"C</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">o--"</span><span class="p">,</span> <span class="n">fillstyle</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2"> bare"</span><span class="p">)</span>
+    <span class="n">ratio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lifetimes_full</span><span class="p">[</span><span class="n">label</span><span class="p">])</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lifetimes_bare</span><span class="p">[</span><span class="n">label</span><span class="p">])</span>
+    <span class="n">ax_ratio</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">n_list</span><span class="p">,</span> <span class="n">ratio</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"C</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">o-"</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+
+<span class="n">ax_tau</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s2">"log"</span><span class="p">)</span>
+<span class="n">ax_tau</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s2">"log"</span><span class="p">)</span>
+<span class="n">ax_tau</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">"10"</span><span class="p">,</span> <span class="s2">"15"</span><span class="p">,</span> <span class="s2">"20"</span><span class="p">,</span> <span class="s2">"30"</span><span class="p">,</span> <span class="s2">"40"</span><span class="p">])</span>
+<span class="n">ax_tau</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"principal quantum number $n$"</span><span class="p">)</span>
+<span class="n">ax_tau</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">"spontaneous lifetime $\tau$ ($\mu$s)"</span><span class="p">)</span>
+<span class="n">ax_tau</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="n">ax_ratio</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">ax_ratio</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"principal quantum number $n$"</span><span class="p">)</span>
+<span class="n">ax_ratio</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">"$\tau_\mathrm</span><span class="si">{full}</span><span class="s2"> / \tau_\mathrm</span><span class="si">{bare}</span><span class="s2">$"</span><span class="p">)</span>
+<span class="n">ax_ratio</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/examples_comparisons_compare_nist_matrix_elements_14_0.png" src="../../_images/examples_comparisons_compare_nist_matrix_elements_14_0.png" />
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="compare_nist_energy_levels_data.html" class="btn btn-neutral float-left" title="Compare NIST energy levels data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="compare_nist_matrix_elements_Sr88_sqdt.html" class="btn btn-neutral float-right" title="Compare Sr \(5s5s \rightarrow 5snl\) matrix elements with NIST" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, RydState Developers.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

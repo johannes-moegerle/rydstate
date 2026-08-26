@@ -1,0 +1,272 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SQDTYtterbium174 &mdash; RydState 0.12.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=f24cbf82"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="yb171_mqdt_fmodel_data" href="rydstate.species.ytterbium.yb171_mqdt_fmodel_data.html" />
+    <link rel="prev" title="PotentialFei2009Ytterbium174" href="rydstate.species.ytterbium.PotentialFei2009Ytterbium174.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            RydState
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#radialket">RadialKet</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/radial/hydrogen_wavefunction.html">Hydrogen radial wavefunction via numerov and from sympy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/radial/rubidium_wavefunction.html">Rubidium wavefunction and potential</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#angularstate">AngularState</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/angular/angular_state.html">Using AngularKets and AngularStates in different spin coupling schemes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#rydbergstate">RydbergState</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/dipole_matrix_elements.html">Calculating dipole matrix elements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/lifetimes.html">Lifetimes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#mqdt">MQDT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/mqdt/mqdt_exp_qn.html">Labeling the angular character of Yb 171</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#comparisons">Comparisons</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_z_min_cutoff.html">Comparison of the z_min values for circular states</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_nist_energy_levels_data.html">Compare NIST energy levels data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_nist_matrix_elements.html">Compare Rb <span class="math notranslate nohighlight">\(5s \rightarrow np_j\)</span> matrix elements with NIST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_nist_matrix_elements_Sr88_sqdt.html">Compare Sr <span class="math notranslate nohighlight">\(5s5s \rightarrow 5snl\)</span> matrix elements with NIST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_model_potentials.html">Compare different effective model potentials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_whittaker.html">Comparison: Numerov - Whittaker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/benchmark/benchmark_njit.html">Benchmark of Numerov integration with and without using numba.njit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api_reference.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/rydberg_state.html">Rydberg States</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.rydberg_state.RydbergStateSQDT.html">RydbergStateSQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.rydberg_state.RydbergStateSQDTAlkali.html">RydbergStateSQDTAlkali</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.rydberg_state.RydbergStateMQDT.html">RydbergStateMQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.rydberg_state.RydbergKet.html">RydbergKet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/basis.html">Rydberg Basis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.BasisSQDT.html">BasisSQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.BasisMQDT.html">BasisMQDT</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/angular.html">Angular module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.AngularKetLS.html">AngularKetLS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.AngularKetJJ.html">AngularKetJJ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.AngularKetFJ.html">AngularKetFJ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.AngularState.html">AngularState</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.CoreKet.html">CoreKet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.utils.html">utils</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/radial.html">Radial module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.radial.RadialKet.html">RadialKet</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api/species.html">Species Data</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.ElementProperties.html">ElementProperties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.PotentialCoulomb.html">PotentialCoulomb</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.PotentialMarinescu1994.html">PotentialMarinescu1994</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.PotentialFei2009.html">PotentialFei2009</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.SQDT.html">SQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.MQDT.html">MQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.cesium.html">cesium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.hydrogen.html">hydrogen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.lithium.html">lithium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.potassium.html">potassium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.rubidium.html">rubidium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.sodium.html">sodium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.strontium.html">strontium</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="rydstate.species.ytterbium.html">ytterbium</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generate_database.html">Generate Database module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.generate_database.create_tables_for_sqdt.html">create_tables_for_sqdt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.generate_database.create_tables_for_mqdt.html">create_tables_for_mqdt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.generate_database.create_tables_for_misc.html">create_tables_for_misc</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<style>
+a.gitbutton {
+  display: block;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #fff;
+  padding-top: 10px;
+  padding-left: 85px;
+  padding-right: 0px;
+  margin: 22px;
+  width: 240px;
+  height: 60px;
+  background: transparent url("../_static/buttons/github.svg") 0 0 no-repeat;
+}
+a.gitbutton small {
+  display: block;
+  font-size: 11px;
+}
+button.toctree-expand {
+  display: none;
+}
+</style>
+<a href="https://github.com/pairinteraction/rydstate" class="gitbutton">Explore<small>the GitHub repository</small></a>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RydState</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api_reference.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../api/species.html">Species Data</a></li>
+          <li class="breadcrumb-item"><a href="rydstate.species.ytterbium.html">ytterbium</a></li>
+      <li class="breadcrumb-item active">SQDTYtterbium174</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_autosummary/rydstate.species.ytterbium.SQDTYtterbium174.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sqdtytterbium174">
+<h1>SQDTYtterbium174<a class="headerlink" href="#sqdtytterbium174" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="rydstate.species.ytterbium.SQDTYtterbium174">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">rydstate.species.ytterbium.</span></span><span class="sig-name descname"><span class="pre">SQDTYtterbium174</span></span><a class="reference internal" href="../_modules/rydstate/species/ytterbium/sqdt_data.html#SQDTYtterbium174"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rydstate.species.ytterbium.SQDTYtterbium174" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<em>object</em>)</p></li>
+<li><p><strong>kwargs</strong> (<em>object</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>CachedT</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.ytterbium.SQDTYtterbium174.species">
+<span class="sig-name descname"><span class="pre">species</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Yb174'</span></span><a class="headerlink" href="#rydstate.species.ytterbium.SQDTYtterbium174.species" title="Link to this definition"></a></dt>
+<dd><p>The short name of the atomic species.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.ytterbium.SQDTYtterbium174.is_default">
+<span class="sig-name descname"><span class="pre">is_default</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></span><a class="headerlink" href="#rydstate.species.ytterbium.SQDTYtterbium174.is_default" title="Link to this definition"></a></dt>
+<dd><p>Whether this SQDT is the default SQDT for the species.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.ytterbium.SQDTYtterbium174.nist_data_file">
+<span class="sig-name descname"><span class="pre">nist_data_file</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'nist_data.txt'</span></span><a class="headerlink" href="#rydstate.species.ytterbium.SQDTYtterbium174.nist_data_file" title="Link to this definition"></a></dt>
+<dd><p>Name of the file (in the species directory) with the low-lying NIST energy levels,
+usually <code class="docutils literal notranslate"><span class="pre">&quot;nist_data.txt&quot;</span></code>. Left as None for species without a NIST data file.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.ytterbium.SQDTYtterbium174.ionization_energy">
+<span class="sig-name descname"><span class="pre">ionization_energy</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(6.25416,</span> <span class="pre">'eV')</span></span><a class="headerlink" href="#rydstate.species.ytterbium.SQDTYtterbium174.ionization_energy" title="Link to this definition"></a></dt>
+<dd><p>(value, unit).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Ionization energy and unit</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.ytterbium.SQDTYtterbium174.quantum_defects">
+<span class="sig-name descname"><span class="pre">quantum_defects</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{(0,</span> <span class="pre">0.0,</span> <span class="pre">0):</span> <span class="pre">(4.355101645,</span> <span class="pre">0.277673956,</span> <span class="pre">0.0,</span> <span class="pre">0.0,</span> <span class="pre">0.0),</span> <span class="pre">(0,</span> <span class="pre">1.0,</span> <span class="pre">1):</span> <span class="pre">(4.4382,</span> <span class="pre">4,</span> <span class="pre">-10000.0,</span> <span class="pre">8000000.0,</span> <span class="pre">-3000000000.0),</span> <span class="pre">(1,</span> <span class="pre">0.0,</span> <span class="pre">1):</span> <span class="pre">(3.953661478,</span> <span class="pre">-0.287531374,</span> <span class="pre">0.0,</span> <span class="pre">0.0,</span> <span class="pre">0.0),</span> <span class="pre">(1,</span> <span class="pre">1.0,</span> <span class="pre">0):</span> <span class="pre">(3.922709076,</span> <span class="pre">2.60055203,</span> <span class="pre">0.0,</span> <span class="pre">0.0,</span> <span class="pre">0.0),</span> <span class="pre">(1,</span> <span class="pre">1.0,</span> <span class="pre">1):</span> <span class="pre">(3.982084772,</span> <span class="pre">-5.45063476,</span> <span class="pre">0.0,</span> <span class="pre">0.0,</span> <span class="pre">0.0),</span> <span class="pre">(1,</span> <span class="pre">2.0,</span> <span class="pre">1):</span> <span class="pre">(3.925150932,</span> <span class="pre">-2.69197178,</span> <span class="pre">66.7159709,</span> <span class="pre">0.0,</span> <span class="pre">0.0),</span> <span class="pre">(2,</span> <span class="pre">1.0,</span> <span class="pre">1):</span> <span class="pre">(2.75258093,</span> <span class="pre">0.3826,</span> <span class="pre">-483.1,</span> <span class="pre">0.0,</span> <span class="pre">0.0),</span> <span class="pre">(2,</span> <span class="pre">2.0,</span> <span class="pre">0):</span> <span class="pre">(2.729513646,</span> <span class="pre">-0.0377841183,</span> <span class="pre">0.0,</span> <span class="pre">0.0,</span> <span class="pre">0.0),</span> <span class="pre">(2,</span> <span class="pre">2.0,</span> <span class="pre">1):</span> <span class="pre">(2.752292223,</span> <span class="pre">0.104072325,</span> <span class="pre">0.0,</span> <span class="pre">0.0,</span> <span class="pre">0.0),</span> <span class="pre">(2,</span> <span class="pre">3.0,</span> <span class="pre">1):</span> <span class="pre">(2.72902016,</span> <span class="pre">-0.705328923,</span> <span class="pre">829.238844,</span> <span class="pre">0.0,</span> <span class="pre">0.0),</span> <span class="pre">(3,</span> <span class="pre">2.0,</span> <span class="pre">1):</span> <span class="pre">(0.0718252326,</span> <span class="pre">-1.00091963,</span> <span class="pre">-106.291066,</span> <span class="pre">0.0,</span> <span class="pre">0.0),</span> <span class="pre">(3,</span> <span class="pre">3.0,</span> <span class="pre">0):</span> <span class="pre">(0.276158949,</span> <span class="pre">-12.7258012,</span> <span class="pre">0.0,</span> <span class="pre">0.0,</span> <span class="pre">0.0),</span> <span class="pre">(3,</span> <span class="pre">3.0,</span> <span class="pre">1):</span> <span class="pre">(0.0715123712,</span> <span class="pre">-0.768462937,</span> <span class="pre">0.0,</span> <span class="pre">0.0,</span> <span class="pre">0.0),</span> <span class="pre">(3,</span> <span class="pre">4.0,</span> <span class="pre">1):</span> <span class="pre">(0.0839027969,</span> <span class="pre">-2.91009023,</span> <span class="pre">0.0,</span> <span class="pre">0.0,</span> <span class="pre">0.0),</span> <span class="pre">(4,</span> <span class="pre">3.0,</span> <span class="pre">1):</span> <span class="pre">(0.0260964574,</span> <span class="pre">-0.14139526,</span> <span class="pre">0.0,</span> <span class="pre">0.0,</span> <span class="pre">0.0),</span> <span class="pre">(4,</span> <span class="pre">5.0,</span> <span class="pre">1):</span> <span class="pre">(0.02529201,</span> <span class="pre">-0.11588052,</span> <span class="pre">0.0,</span> <span class="pre">0.0,</span> <span class="pre">0.0)}</span></span><a class="headerlink" href="#rydstate.species.ytterbium.SQDTYtterbium174.quantum_defects" title="Link to this definition"></a></dt>
+<dd><p>Dictionary containing the quantum defects for each (l, j_tot, s_tot) combination, i.e.
+quantum_defects[(l,j_tot,s_tot)] = (d0, d2, d4, d6, d8)</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rydstate.species.ytterbium.PotentialFei2009Ytterbium174.html" class="btn btn-neutral float-left" title="PotentialFei2009Ytterbium174" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rydstate.species.ytterbium.yb171_mqdt_fmodel_data.html" class="btn btn-neutral float-right" title="yb171_mqdt_fmodel_data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, RydState Developers.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

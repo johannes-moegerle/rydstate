@@ -1,0 +1,43 @@
+﻿PotentialMarinescu1994
+======================
+
+.. currentmodule:: rydstate.species
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~PotentialMarinescu1994.__init__
+      ~PotentialMarinescu1994.calc_effective_potential_centrifugal
+      ~PotentialMarinescu1994.calc_effective_potential_sqrt
+      ~PotentialMarinescu1994.calc_hydrogen_turning_point_z
+      ~PotentialMarinescu1994.calc_model_potential
+      ~PotentialMarinescu1994.calc_potential_coulomb
+      ~PotentialMarinescu1994.calc_total_effective_potential
+      ~PotentialMarinescu1994.calc_turning_point_z
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~PotentialMarinescu1994.is_default
+   ~PotentialMarinescu1994.reference
+   ~PotentialMarinescu1994.tag
+   ~PotentialMarinescu1994.alpha_core_marinescu_1994
+   ~PotentialMarinescu1994.r_c_dict_marinescu_1994
+   ~PotentialMarinescu1994.model_potential_parameter_marinescu_1994
+   ~PotentialMarinescu1994.species
+
+
+
+.. autoclass:: rydstate.species.PotentialMarinescu1994
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

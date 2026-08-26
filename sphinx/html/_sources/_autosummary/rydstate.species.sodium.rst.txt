@@ -1,0 +1,53 @@
+﻿sodium
+======
+Full module path: rydstate.species.sodium
+
+.. workaround to ignore generic classes like AtomSQDT[int]
+
+
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+
+
+.. currentmodule:: rydstate.species.sodium
+
+
+
+
+
+
+.. rubric:: Classes
+
+.. .. inheritance-diagram:: rydstate.species.sodium
+..     :parts: 1
+
+.. autosummary::
+   :toctree: .
+   
+      ElementPropertiesSodium
+      PotentialCoulombSodium
+      PotentialFei2009Sodium
+      PotentialMarinescu1994Sodium
+      SQDTSodium
+
+
+
+
+
+
+.. rubric:: Module description
+
+.. automodule:: rydstate.species.sodium

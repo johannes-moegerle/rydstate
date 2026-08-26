@@ -1,0 +1,40 @@
+﻿BasisSQDT
+=========
+
+.. currentmodule:: rydstate
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~BasisSQDT.__init__
+      ~BasisSQDT.calc_exp_qn
+      ~BasisSQDT.calc_reduced_matrix_element
+      ~BasisSQDT.calc_reduced_matrix_elements
+      ~BasisSQDT.calc_reduced_overlap
+      ~BasisSQDT.calc_reduced_overlaps
+      ~BasisSQDT.calc_std_qn
+      ~BasisSQDT.filter_states
+      ~BasisSQDT.filter_states_label
+      ~BasisSQDT.shallow_copy
+      ~BasisSQDT.sort_states
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~BasisSQDT.states
+
+
+
+.. autoclass:: rydstate.BasisSQDT
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

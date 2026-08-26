@@ -1,0 +1,95 @@
+﻿ytterbium
+=========
+Full module path: rydstate.species.ytterbium
+
+.. workaround to ignore generic classes like AtomSQDT[int]
+
+
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+
+
+.. currentmodule:: rydstate.species.ytterbium
+
+
+
+
+
+
+.. rubric:: Classes
+
+.. .. inheritance-diagram:: rydstate.species.ytterbium
+..     :parts: 1
+
+.. autosummary::
+   :toctree: .
+   
+      ElementPropertiesYtterbium171
+      ElementPropertiesYtterbium173
+      ElementPropertiesYtterbium174
+      MQDTYtterbium171
+      MQDTYtterbium173
+      MQDTYtterbium174
+      PotentialCoulombYtterbium171
+      PotentialCoulombYtterbium173
+      PotentialCoulombYtterbium174
+      PotentialFei2009Ytterbium171
+      PotentialFei2009Ytterbium173
+      PotentialFei2009Ytterbium174
+      SQDTYtterbium174
+
+
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree: .
+   :recursive:
+   
+      yb171_mqdt_fmodel_data
+      yb173_mqdt_fmodel_data
+      yb174_mqdt_fmodel_data
+
+
+.. rubric:: Module description
+
+.. automodule:: rydstate.species.ytterbium

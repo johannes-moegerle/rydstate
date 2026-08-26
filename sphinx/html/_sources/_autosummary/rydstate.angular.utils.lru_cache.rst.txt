@@ -1,0 +1,6 @@
+lru\_cache
+==========
+
+.. currentmodule:: rydstate.angular.utils
+
+.. autofunction:: lru_cache

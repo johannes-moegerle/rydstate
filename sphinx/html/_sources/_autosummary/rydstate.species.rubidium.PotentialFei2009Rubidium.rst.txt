@@ -1,0 +1,41 @@
+PotentialFei2009Rubidium
+========================
+
+.. currentmodule:: rydstate.species.rubidium
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~PotentialFei2009Rubidium.__init__
+      ~PotentialFei2009Rubidium.calc_effective_potential_centrifugal
+      ~PotentialFei2009Rubidium.calc_effective_potential_sqrt
+      ~PotentialFei2009Rubidium.calc_hydrogen_turning_point_z
+      ~PotentialFei2009Rubidium.calc_model_potential
+      ~PotentialFei2009Rubidium.calc_potential_coulomb
+      ~PotentialFei2009Rubidium.calc_total_effective_potential
+      ~PotentialFei2009Rubidium.calc_turning_point_z
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~PotentialFei2009Rubidium.is_default
+   ~PotentialFei2009Rubidium.model_potential_parameter_fei_2009
+   ~PotentialFei2009Rubidium.reference
+   ~PotentialFei2009Rubidium.species
+   ~PotentialFei2009Rubidium.tag
+
+
+
+.. autoclass:: rydstate.species.rubidium.PotentialFei2009Rubidium
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

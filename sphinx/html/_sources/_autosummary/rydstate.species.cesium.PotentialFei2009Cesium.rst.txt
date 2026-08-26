@@ -1,0 +1,41 @@
+PotentialFei2009Cesium
+======================
+
+.. currentmodule:: rydstate.species.cesium
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~PotentialFei2009Cesium.__init__
+      ~PotentialFei2009Cesium.calc_effective_potential_centrifugal
+      ~PotentialFei2009Cesium.calc_effective_potential_sqrt
+      ~PotentialFei2009Cesium.calc_hydrogen_turning_point_z
+      ~PotentialFei2009Cesium.calc_model_potential
+      ~PotentialFei2009Cesium.calc_potential_coulomb
+      ~PotentialFei2009Cesium.calc_total_effective_potential
+      ~PotentialFei2009Cesium.calc_turning_point_z
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~PotentialFei2009Cesium.is_default
+   ~PotentialFei2009Cesium.model_potential_parameter_fei_2009
+   ~PotentialFei2009Cesium.reference
+   ~PotentialFei2009Cesium.species
+   ~PotentialFei2009Cesium.tag
+
+
+
+.. autoclass:: rydstate.species.cesium.PotentialFei2009Cesium
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

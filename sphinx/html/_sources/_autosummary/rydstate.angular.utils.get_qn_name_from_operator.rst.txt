@@ -1,0 +1,6 @@
+get\_qn\_name\_from\_operator
+=============================
+
+.. currentmodule:: rydstate.angular.utils
+
+.. autofunction:: get_qn_name_from_operator

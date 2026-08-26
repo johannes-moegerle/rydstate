@@ -1,0 +1,464 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ElementPropertiesStrontium87 &mdash; RydState 0.12.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=f24cbf82"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ElementPropertiesStrontium88" href="rydstate.species.strontium.ElementPropertiesStrontium88.html" />
+    <link rel="prev" title="strontium" href="rydstate.species.strontium.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            RydState
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#radialket">RadialKet</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/radial/hydrogen_wavefunction.html">Hydrogen radial wavefunction via numerov and from sympy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/radial/rubidium_wavefunction.html">Rubidium wavefunction and potential</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#angularstate">AngularState</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/angular/angular_state.html">Using AngularKets and AngularStates in different spin coupling schemes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#rydbergstate">RydbergState</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/dipole_matrix_elements.html">Calculating dipole matrix elements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/lifetimes.html">Lifetimes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#mqdt">MQDT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/mqdt/mqdt_exp_qn.html">Labeling the angular character of Yb 171</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#comparisons">Comparisons</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_z_min_cutoff.html">Comparison of the z_min values for circular states</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_nist_energy_levels_data.html">Compare NIST energy levels data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_nist_matrix_elements.html">Compare Rb <span class="math notranslate nohighlight">\(5s \rightarrow np_j\)</span> matrix elements with NIST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_nist_matrix_elements_Sr88_sqdt.html">Compare Sr <span class="math notranslate nohighlight">\(5s5s \rightarrow 5snl\)</span> matrix elements with NIST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_model_potentials.html">Compare different effective model potentials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_whittaker.html">Comparison: Numerov - Whittaker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/benchmark/benchmark_njit.html">Benchmark of Numerov integration with and without using numba.njit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api_reference.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/rydberg_state.html">Rydberg States</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.rydberg_state.RydbergStateSQDT.html">RydbergStateSQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.rydberg_state.RydbergStateSQDTAlkali.html">RydbergStateSQDTAlkali</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.rydberg_state.RydbergStateMQDT.html">RydbergStateMQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.rydberg_state.RydbergKet.html">RydbergKet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/basis.html">Rydberg Basis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.BasisSQDT.html">BasisSQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.BasisMQDT.html">BasisMQDT</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/angular.html">Angular module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.AngularKetLS.html">AngularKetLS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.AngularKetJJ.html">AngularKetJJ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.AngularKetFJ.html">AngularKetFJ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.AngularState.html">AngularState</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.CoreKet.html">CoreKet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.utils.html">utils</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/radial.html">Radial module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.radial.RadialKet.html">RadialKet</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api/species.html">Species Data</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.ElementProperties.html">ElementProperties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.PotentialCoulomb.html">PotentialCoulomb</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.PotentialMarinescu1994.html">PotentialMarinescu1994</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.PotentialFei2009.html">PotentialFei2009</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.SQDT.html">SQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.MQDT.html">MQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.cesium.html">cesium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.hydrogen.html">hydrogen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.lithium.html">lithium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.potassium.html">potassium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.rubidium.html">rubidium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.sodium.html">sodium</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="rydstate.species.strontium.html">strontium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.ytterbium.html">ytterbium</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generate_database.html">Generate Database module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.generate_database.create_tables_for_sqdt.html">create_tables_for_sqdt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.generate_database.create_tables_for_mqdt.html">create_tables_for_mqdt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.generate_database.create_tables_for_misc.html">create_tables_for_misc</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<style>
+a.gitbutton {
+  display: block;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #fff;
+  padding-top: 10px;
+  padding-left: 85px;
+  padding-right: 0px;
+  margin: 22px;
+  width: 240px;
+  height: 60px;
+  background: transparent url("../_static/buttons/github.svg") 0 0 no-repeat;
+}
+a.gitbutton small {
+  display: block;
+  font-size: 11px;
+}
+button.toctree-expand {
+  display: none;
+}
+</style>
+<a href="https://github.com/pairinteraction/rydstate" class="gitbutton">Explore<small>the GitHub repository</small></a>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RydState</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api_reference.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../api/species.html">Species Data</a></li>
+          <li class="breadcrumb-item"><a href="rydstate.species.strontium.html">strontium</a></li>
+      <li class="breadcrumb-item active">ElementPropertiesStrontium87</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_autosummary/rydstate.species.strontium.ElementPropertiesStrontium87.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="elementpropertiesstrontium87">
+<h1>ElementPropertiesStrontium87<a class="headerlink" href="#elementpropertiesstrontium87" title="Link to this heading"></a></h1>
+<p class="rubric">Class Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.species.strontium.ElementPropertiesStrontium87.get_corrected_rydberg_constant" title="rydstate.species.strontium.ElementPropertiesStrontium87.get_corrected_rydberg_constant"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_corrected_rydberg_constant</span></code></a>([unit])</p></td>
+<td><p>Return the corrected Rydberg constant in the desired unit.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.species.strontium.ElementPropertiesStrontium87.is_allowed_shell" title="rydstate.species.strontium.ElementPropertiesStrontium87.is_allowed_shell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_allowed_shell</span></code></a>(n, l, s_tot)</p></td>
+<td><p>Check if the quantum numbers describe an allowed shell.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Class Attributes and Properties</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.species.strontium.ElementPropertiesStrontium87.Z" title="rydstate.species.strontium.ElementPropertiesStrontium87.Z"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Z</span></code></a></p></td>
+<td><p>Atomic number of the species.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.species.strontium.ElementPropertiesStrontium87.additional_allowed_shells" title="rydstate.species.strontium.ElementPropertiesStrontium87.additional_allowed_shells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">additional_allowed_shells</span></code></a></p></td>
+<td><p>Additional allowed shells (n, l), which (n, l) is smaller than the ground state shell.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.species.strontium.ElementPropertiesStrontium87.alpha_closed_shell_core" title="rydstate.species.strontium.ElementPropertiesStrontium87.alpha_closed_shell_core"><code class="xref py py-obj docutils literal notranslate"><span class="pre">alpha_closed_shell_core</span></code></a></p></td>
+<td><p>Static dipole polarizability (a.u.) of the core including the closed-shell electrons.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.species.strontium.ElementPropertiesStrontium87.core_electron_configuration" title="rydstate.species.strontium.ElementPropertiesStrontium87.core_electron_configuration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">core_electron_configuration</span></code></a></p></td>
+<td><p>Electron configuration of the core electrons, e.g. 4p6 for Rb or 5s for Sr.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.species.strontium.ElementPropertiesStrontium87.corrected_rydberg_constant" title="rydstate.species.strontium.ElementPropertiesStrontium87.corrected_rydberg_constant"><code class="xref py py-obj docutils literal notranslate"><span class="pre">corrected_rydberg_constant</span></code></a></p></td>
+<td><p>Corrected Rydberg constant stored as a tuple of the form (value, unit) for lazy unit conversion.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.species.strontium.ElementPropertiesStrontium87.ground_state_shell" title="rydstate.species.strontium.ElementPropertiesStrontium87.ground_state_shell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ground_state_shell</span></code></a></p></td>
+<td><p>Shell (n, l) describing the electronic ground state configuration.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.species.strontium.ElementPropertiesStrontium87.i_c" title="rydstate.species.strontium.ElementPropertiesStrontium87.i_c"><code class="xref py py-obj docutils literal notranslate"><span class="pre">i_c</span></code></a></p></td>
+<td><p>Nuclear spin.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.species.strontium.ElementPropertiesStrontium87.net_charge" title="rydstate.species.strontium.ElementPropertiesStrontium87.net_charge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">net_charge</span></code></a></p></td>
+<td><p>Net charge of the ionic core seen by the Rydberg electron (1 for neutral atoms, 2 for singly-charged ions).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.species.strontium.ElementPropertiesStrontium87.nuclear_dipole" title="rydstate.species.strontium.ElementPropertiesStrontium87.nuclear_dipole"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nuclear_dipole</span></code></a></p></td>
+<td><p>Nuclear dipole moment of the species.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.species.strontium.ElementPropertiesStrontium87.number_valence_electrons" title="rydstate.species.strontium.ElementPropertiesStrontium87.number_valence_electrons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_valence_electrons</span></code></a></p></td>
+<td><p>Number of valence electrons (i.e. 1 for alkali atoms and 2 for alkaline earth atoms).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.species.strontium.ElementPropertiesStrontium87.r_c_dipole_operator" title="rydstate.species.strontium.ElementPropertiesStrontium87.r_c_dipole_operator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">r_c_dipole_operator</span></code></a></p></td>
+<td><p>Cutoff radius (a.u.) of the core-polarization corrected electric-dipole operator (see alpha_closed_shell_core).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.species.strontium.ElementPropertiesStrontium87.reduced_mass_au" title="rydstate.species.strontium.ElementPropertiesStrontium87.reduced_mass_au"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduced_mass_au</span></code></a></p></td>
+<td><p>The reduced mass mu in atomic units.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.species.strontium.ElementPropertiesStrontium87.s_c" title="rydstate.species.strontium.ElementPropertiesStrontium87.s_c"><code class="xref py py-obj docutils literal notranslate"><span class="pre">s_c</span></code></a></p></td>
+<td><p>Total spin of the core electrons (0 for alkali atoms, 0.5 for alkaline earth atoms).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.species.strontium.ElementPropertiesStrontium87.s_r" title="rydstate.species.strontium.ElementPropertiesStrontium87.s_r"><code class="xref py py-obj docutils literal notranslate"><span class="pre">s_r</span></code></a></p></td>
+<td><p>Total spin of the rydberg electron (always 0.5).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.species.strontium.ElementPropertiesStrontium87.species" title="rydstate.species.strontium.ElementPropertiesStrontium87.species"><code class="xref py py-obj docutils literal notranslate"><span class="pre">species</span></code></a></p></td>
+<td><p>The short name of the atomic species.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="rydstate.species.strontium.ElementPropertiesStrontium87">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">rydstate.species.strontium.</span></span><span class="sig-name descname"><span class="pre">ElementPropertiesStrontium87</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rydstate/species/strontium/element_properties_data.html#ElementPropertiesStrontium87"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rydstate.species.strontium.ElementPropertiesStrontium87" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<em>object</em>)</p></li>
+<li><p><strong>kwargs</strong> (<em>object</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>CachedT</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.strontium.ElementPropertiesStrontium87.species">
+<span class="sig-name descname"><span class="pre">species</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Sr87'</span></span><a class="headerlink" href="#rydstate.species.strontium.ElementPropertiesStrontium87.species" title="Link to this definition"></a></dt>
+<dd><p>The short name of the atomic species.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.strontium.ElementPropertiesStrontium87.i_c">
+<span class="sig-name descname"><span class="pre">i_c</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4.5</span></span><a class="headerlink" href="#rydstate.species.strontium.ElementPropertiesStrontium87.i_c" title="Link to this definition"></a></dt>
+<dd><p>Nuclear spin.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.strontium.ElementPropertiesStrontium87.corrected_rydberg_constant">
+<span class="sig-name descname"><span class="pre">corrected_rydberg_constant</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(0.4999968439562093,</span> <span class="pre">'hartree')</span></span><a class="headerlink" href="#rydstate.species.strontium.ElementPropertiesStrontium87.corrected_rydberg_constant" title="Link to this definition"></a></dt>
+<dd><p>Corrected Rydberg constant stored as a tuple of the form (value, unit) for lazy unit conversion.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.strontium.ElementPropertiesStrontium87.nuclear_dipole">
+<span class="sig-name descname"><span class="pre">nuclear_dipole</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">-1.09316</span></span><a class="headerlink" href="#rydstate.species.strontium.ElementPropertiesStrontium87.nuclear_dipole" title="Link to this definition"></a></dt>
+<dd><p>Nuclear dipole moment of the species.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.strontium.ElementPropertiesStrontium87.Z">
+<span class="sig-name descname"><span class="pre">Z</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">38</span></span><a class="headerlink" href="#rydstate.species.strontium.ElementPropertiesStrontium87.Z" title="Link to this definition"></a></dt>
+<dd><p>Atomic number of the species.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.strontium.ElementPropertiesStrontium87.additional_allowed_shells">
+<span class="sig-name descname"><span class="pre">additional_allowed_shells</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[(4,</span> <span class="pre">2),</span> <span class="pre">(4,</span> <span class="pre">3)]</span></span><a class="headerlink" href="#rydstate.species.strontium.ElementPropertiesStrontium87.additional_allowed_shells" title="Link to this definition"></a></dt>
+<dd><p>Additional allowed shells (n, l), which (n, l) is smaller than the ground state shell.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.strontium.ElementPropertiesStrontium87.alpha_closed_shell_core">
+<span class="sig-name descname"><span class="pre">alpha_closed_shell_core</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></span><a class="headerlink" href="#rydstate.species.strontium.ElementPropertiesStrontium87.alpha_closed_shell_core" title="Link to this definition"></a></dt>
+<dd><p>Static dipole polarizability (a.u.) of the core including the closed-shell electrons.
+It is used for the electric-dipole moment correction due to the core,
+see e.g. Weisheit Phys. Rev. A 5, 1621, 1972 (<a class="reference external" href="https://link.aps.org/doi/10.1103/PhysRevA.5.1621">https://link.aps.org/doi/10.1103/PhysRevA.5.1621</a>).
+The core-polarization corrected electric-dipole operator is d(r) = r - alpha_core/r^2 * (1 - exp(-(r/r_c)^3)).
+This is also used for model potentials including the core-polarization term,
+see e.g. <code class="xref py py-class docutils literal notranslate"><span class="pre">PotentialMarinescu1994</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.strontium.ElementPropertiesStrontium87.core_electron_configuration">
+<span class="sig-name descname"><span class="pre">core_electron_configuration</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'5s'</span></span><a class="headerlink" href="#rydstate.species.strontium.ElementPropertiesStrontium87.core_electron_configuration" title="Link to this definition"></a></dt>
+<dd><p>Electron configuration of the core electrons, e.g. 4p6 for Rb or 5s for Sr.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.species.strontium.ElementPropertiesStrontium87.get_corrected_rydberg_constant">
+<span class="sig-name descname"><span class="pre">get_corrected_rydberg_constant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.species.strontium.ElementPropertiesStrontium87.get_corrected_rydberg_constant" title="Link to this definition"></a></dt>
+<dd><p>Return the corrected Rydberg constant in the desired unit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Overloads<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong>, <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">None</span>) → <span class="sphinx_autodoc_typehints-type">PintFloat</span></p></li>
+<li><p><strong>self</strong>, <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">str</span>) → <span class="sphinx_autodoc_typehints-type">float</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>unit</strong> (<em>str</em><em> | </em><em>None</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>PlainQuantity</em>[float] | float</p>
+</dd>
+</dl>
+<p>The corrected Rydberg constant is defined as</p>
+<div class="math notranslate nohighlight">
+\[R_M = R_\infty \frac{m_{Core}}{m_{Core} + m_e}\]</div>
+<p>where <span class="math notranslate nohighlight">\(R_\infty\)</span> is the Rydberg constant for infinite nuclear mass,
+<span class="math notranslate nohighlight">\(m_{Core}\)</span> is the mass of the core,
+and <span class="math notranslate nohighlight">\(m_e\)</span> is the mass of the electron.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>unit</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span>) – Desired unit for the corrected Rydberg constant. Default None returns a Pint quantity.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Corrected Rydberg constant in the desired unit.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>PlainQuantity</em>[float] | float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.strontium.ElementPropertiesStrontium87.ground_state_shell">
+<span class="sig-name descname"><span class="pre">ground_state_shell</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(5,</span> <span class="pre">0)</span></span><a class="headerlink" href="#rydstate.species.strontium.ElementPropertiesStrontium87.ground_state_shell" title="Link to this definition"></a></dt>
+<dd><p>Shell (n, l) describing the electronic ground state configuration.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.species.strontium.ElementPropertiesStrontium87.is_allowed_shell">
+<span class="sig-name descname"><span class="pre">is_allowed_shell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_tot</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.species.strontium.ElementPropertiesStrontium87.is_allowed_shell" title="Link to this definition"></a></dt>
+<dd><p>Check if the quantum numbers describe an allowed shell.</p>
+<p>I.e. whether the shell is above the ground state shell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Principal quantum number</p></li>
+<li><p><strong>l</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Orbital angular momentum quantum number</p></li>
+<li><p><strong>s_tot</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> | <a class="reference internal" href="rydstate.angular.utils.Unknown.html#rydstate.angular.utils.Unknown" title="rydstate.angular.utils.Unknown"><code class="xref py py-class docutils literal notranslate"><span class="pre">Unknown</span></code></a></span>) – Total spin quantum number</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the quantum numbers specify a shell equal to or above the ground state shell, False otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.strontium.ElementPropertiesStrontium87.net_charge">
+<span class="sig-name descname"><span class="pre">net_charge</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></span><a class="headerlink" href="#rydstate.species.strontium.ElementPropertiesStrontium87.net_charge" title="Link to this definition"></a></dt>
+<dd><p>Net charge of the ionic core seen by the Rydberg electron
+(1 for neutral atoms, 2 for singly-charged ions).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.strontium.ElementPropertiesStrontium87.number_valence_electrons">
+<span class="sig-name descname"><span class="pre">number_valence_electrons</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></span><a class="headerlink" href="#rydstate.species.strontium.ElementPropertiesStrontium87.number_valence_electrons" title="Link to this definition"></a></dt>
+<dd><p>Number of valence electrons (i.e. 1 for alkali atoms and 2 for alkaline earth atoms).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.species.strontium.ElementPropertiesStrontium87.r_c_dipole_operator">
+<span class="sig-name descname"><span class="pre">r_c_dipole_operator</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#rydstate.species.strontium.ElementPropertiesStrontium87.r_c_dipole_operator" title="Link to this definition"></a></dt>
+<dd><p>Cutoff radius (a.u.) of the core-polarization corrected electric-dipole operator (see alpha_closed_shell_core).
+The default None means no correction is applied (i.e. the bare electric-dipole operator d(r) = r is used).
+If not said otherwise, r_c is fitted to the NIST ASD line strengths of the principal series (ground state -&gt; np_j).</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rydstate.species.strontium.ElementPropertiesStrontium87.reduced_mass_au">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">reduced_mass_au</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#rydstate.species.strontium.ElementPropertiesStrontium87.reduced_mass_au" title="Link to this definition"></a></dt>
+<dd><p>The reduced mass mu in atomic units.</p>
+<p>The reduced mass in atomic units <span class="math notranslate nohighlight">\(\mu / m_e\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[\frac{\mu}{m_e} = \frac{m_{Core}}{m_{Core} + m_e}\]</div>
+<p>We calculate the reduced mass via the corrected Rydberg constant</p>
+<div class="math notranslate nohighlight">
+\[\frac{\mu}{m_e} = \frac{R_M}{R_\infty}\]</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rydstate.species.strontium.ElementPropertiesStrontium87.s_c">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">s_c</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#rydstate.species.strontium.ElementPropertiesStrontium87.s_c" title="Link to this definition"></a></dt>
+<dd><p>Total spin of the core electrons (0 for alkali atoms, 0.5 for alkaline earth atoms).</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rydstate.species.strontium.ElementPropertiesStrontium87.s_r">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">s_r</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#rydstate.species.strontium.ElementPropertiesStrontium87.s_r" title="Link to this definition"></a></dt>
+<dd><p>Total spin of the rydberg electron (always 0.5).</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rydstate.species.strontium.html" class="btn btn-neutral float-left" title="strontium" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rydstate.species.strontium.ElementPropertiesStrontium88.html" class="btn btn-neutral float-right" title="ElementPropertiesStrontium88" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, RydState Developers.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

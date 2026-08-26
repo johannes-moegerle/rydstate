@@ -1,0 +1,46 @@
+ElementPropertiesYtterbium173
+=============================
+
+.. currentmodule:: rydstate.species.ytterbium
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~ElementPropertiesYtterbium173.__init__
+      ~ElementPropertiesYtterbium173.get_corrected_rydberg_constant
+      ~ElementPropertiesYtterbium173.is_allowed_shell
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~ElementPropertiesYtterbium173.Z
+   ~ElementPropertiesYtterbium173.additional_allowed_shells
+   ~ElementPropertiesYtterbium173.alpha_closed_shell_core
+   ~ElementPropertiesYtterbium173.core_electron_configuration
+   ~ElementPropertiesYtterbium173.corrected_rydberg_constant
+   ~ElementPropertiesYtterbium173.ground_state_shell
+   ~ElementPropertiesYtterbium173.i_c
+   ~ElementPropertiesYtterbium173.net_charge
+   ~ElementPropertiesYtterbium173.nuclear_dipole
+   ~ElementPropertiesYtterbium173.number_valence_electrons
+   ~ElementPropertiesYtterbium173.r_c_dipole_operator
+   ~ElementPropertiesYtterbium173.reduced_mass_au
+   ~ElementPropertiesYtterbium173.s_c
+   ~ElementPropertiesYtterbium173.s_r
+   ~ElementPropertiesYtterbium173.species
+
+
+
+.. autoclass:: rydstate.species.ytterbium.ElementPropertiesYtterbium173
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

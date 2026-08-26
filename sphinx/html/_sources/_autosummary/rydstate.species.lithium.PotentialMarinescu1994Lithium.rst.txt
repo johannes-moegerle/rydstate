@@ -1,0 +1,43 @@
+PotentialMarinescu1994Lithium
+=============================
+
+.. currentmodule:: rydstate.species.lithium
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~PotentialMarinescu1994Lithium.__init__
+      ~PotentialMarinescu1994Lithium.calc_effective_potential_centrifugal
+      ~PotentialMarinescu1994Lithium.calc_effective_potential_sqrt
+      ~PotentialMarinescu1994Lithium.calc_hydrogen_turning_point_z
+      ~PotentialMarinescu1994Lithium.calc_model_potential
+      ~PotentialMarinescu1994Lithium.calc_potential_coulomb
+      ~PotentialMarinescu1994Lithium.calc_total_effective_potential
+      ~PotentialMarinescu1994Lithium.calc_turning_point_z
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~PotentialMarinescu1994Lithium.alpha_core_marinescu_1994
+   ~PotentialMarinescu1994Lithium.is_default
+   ~PotentialMarinescu1994Lithium.model_potential_parameter_marinescu_1994
+   ~PotentialMarinescu1994Lithium.r_c_dict_marinescu_1994
+   ~PotentialMarinescu1994Lithium.reference
+   ~PotentialMarinescu1994Lithium.species
+   ~PotentialMarinescu1994Lithium.tag
+
+
+
+.. autoclass:: rydstate.species.lithium.PotentialMarinescu1994Lithium
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

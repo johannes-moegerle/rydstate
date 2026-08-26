@@ -1,0 +1,39 @@
+PotentialCoulombStrontium88
+===========================
+
+.. currentmodule:: rydstate.species.strontium
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~PotentialCoulombStrontium88.__init__
+      ~PotentialCoulombStrontium88.calc_effective_potential_centrifugal
+      ~PotentialCoulombStrontium88.calc_effective_potential_sqrt
+      ~PotentialCoulombStrontium88.calc_hydrogen_turning_point_z
+      ~PotentialCoulombStrontium88.calc_model_potential
+      ~PotentialCoulombStrontium88.calc_potential_coulomb
+      ~PotentialCoulombStrontium88.calc_total_effective_potential
+      ~PotentialCoulombStrontium88.calc_turning_point_z
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~PotentialCoulombStrontium88.is_default
+   ~PotentialCoulombStrontium88.species
+   ~PotentialCoulombStrontium88.tag
+
+
+
+.. autoclass:: rydstate.species.strontium.PotentialCoulombStrontium88
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

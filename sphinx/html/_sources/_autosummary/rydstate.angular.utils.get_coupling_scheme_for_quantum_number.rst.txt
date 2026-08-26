@@ -1,0 +1,6 @@
+get\_coupling\_scheme\_for\_quantum\_number
+===========================================
+
+.. currentmodule:: rydstate.angular.utils
+
+.. autofunction:: get_coupling_scheme_for_quantum_number

@@ -1,0 +1,6 @@
+get\_spectroscopic\_letter
+==========================
+
+.. currentmodule:: rydstate.angular.utils
+
+.. autofunction:: get_spectroscopic_letter

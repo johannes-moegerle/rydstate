@@ -1,0 +1,39 @@
+PotentialCoulombYtterbium173
+============================
+
+.. currentmodule:: rydstate.species.ytterbium
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~PotentialCoulombYtterbium173.__init__
+      ~PotentialCoulombYtterbium173.calc_effective_potential_centrifugal
+      ~PotentialCoulombYtterbium173.calc_effective_potential_sqrt
+      ~PotentialCoulombYtterbium173.calc_hydrogen_turning_point_z
+      ~PotentialCoulombYtterbium173.calc_model_potential
+      ~PotentialCoulombYtterbium173.calc_potential_coulomb
+      ~PotentialCoulombYtterbium173.calc_total_effective_potential
+      ~PotentialCoulombYtterbium173.calc_turning_point_z
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~PotentialCoulombYtterbium173.is_default
+   ~PotentialCoulombYtterbium173.species
+   ~PotentialCoulombYtterbium173.tag
+
+
+
+.. autoclass:: rydstate.species.ytterbium.PotentialCoulombYtterbium173
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

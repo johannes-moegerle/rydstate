@@ -1,0 +1,642 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AngularKetJJ &mdash; RydState 0.12.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=f24cbf82"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="AngularKetFJ" href="rydstate.angular.AngularKetFJ.html" />
+    <link rel="prev" title="AngularKetLS" href="rydstate.angular.AngularKetLS.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            RydState
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#radialket">RadialKet</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/radial/hydrogen_wavefunction.html">Hydrogen radial wavefunction via numerov and from sympy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/radial/rubidium_wavefunction.html">Rubidium wavefunction and potential</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#angularstate">AngularState</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/angular/angular_state.html">Using AngularKets and AngularStates in different spin coupling schemes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#rydbergstate">RydbergState</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/dipole_matrix_elements.html">Calculating dipole matrix elements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/lifetimes.html">Lifetimes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#mqdt">MQDT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/mqdt/mqdt_exp_qn.html">Labeling the angular character of Yb 171</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#comparisons">Comparisons</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_z_min_cutoff.html">Comparison of the z_min values for circular states</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_nist_energy_levels_data.html">Compare NIST energy levels data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_nist_matrix_elements.html">Compare Rb <span class="math notranslate nohighlight">\(5s \rightarrow np_j\)</span> matrix elements with NIST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_nist_matrix_elements_Sr88_sqdt.html">Compare Sr <span class="math notranslate nohighlight">\(5s5s \rightarrow 5snl\)</span> matrix elements with NIST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_model_potentials.html">Compare different effective model potentials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_whittaker.html">Comparison: Numerov - Whittaker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/benchmark/benchmark_njit.html">Benchmark of Numerov integration with and without using numba.njit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api_reference.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/rydberg_state.html">Rydberg States</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.rydberg_state.RydbergStateSQDT.html">RydbergStateSQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.rydberg_state.RydbergStateSQDTAlkali.html">RydbergStateSQDTAlkali</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.rydberg_state.RydbergStateMQDT.html">RydbergStateMQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.rydberg_state.RydbergKet.html">RydbergKet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/basis.html">Rydberg Basis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.BasisSQDT.html">BasisSQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.BasisMQDT.html">BasisMQDT</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api/angular.html">Angular module</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.AngularKetLS.html">AngularKetLS</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">AngularKetJJ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.AngularKetFJ.html">AngularKetFJ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.AngularState.html">AngularState</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.CoreKet.html">CoreKet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.utils.html">utils</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/radial.html">Radial module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.radial.RadialKet.html">RadialKet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/species.html">Species Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.ElementProperties.html">ElementProperties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.PotentialCoulomb.html">PotentialCoulomb</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.PotentialMarinescu1994.html">PotentialMarinescu1994</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.PotentialFei2009.html">PotentialFei2009</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.SQDT.html">SQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.MQDT.html">MQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.cesium.html">cesium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.hydrogen.html">hydrogen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.lithium.html">lithium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.potassium.html">potassium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.rubidium.html">rubidium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.sodium.html">sodium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.strontium.html">strontium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.ytterbium.html">ytterbium</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generate_database.html">Generate Database module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.generate_database.create_tables_for_sqdt.html">create_tables_for_sqdt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.generate_database.create_tables_for_mqdt.html">create_tables_for_mqdt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.generate_database.create_tables_for_misc.html">create_tables_for_misc</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<style>
+a.gitbutton {
+  display: block;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #fff;
+  padding-top: 10px;
+  padding-left: 85px;
+  padding-right: 0px;
+  margin: 22px;
+  width: 240px;
+  height: 60px;
+  background: transparent url("../_static/buttons/github.svg") 0 0 no-repeat;
+}
+a.gitbutton small {
+  display: block;
+  font-size: 11px;
+}
+button.toctree-expand {
+  display: none;
+}
+</style>
+<a href="https://github.com/pairinteraction/rydstate" class="gitbutton">Explore<small>the GitHub repository</small></a>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RydState</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api_reference.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../api/angular.html">Angular module</a></li>
+      <li class="breadcrumb-item active">AngularKetJJ</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_autosummary/rydstate.angular.AngularKetJJ.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="angularketjj">
+<h1>AngularKetJJ<a class="headerlink" href="#angularketjj" title="Link to this heading"></a></h1>
+<p class="rubric">Class Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>([i_c, s_c, l_c, s_r, l_r, j_c, ...])</p></td>
+<td><p>Initialize the Spin ket.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.angular.AngularKetJJ.calc_exp_qn" title="rydstate.angular.AngularKetJJ.calc_exp_qn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_exp_qn</span></code></a>(qn)</p></td>
+<td><p>Calculate the expectation value of a quantum number qn.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.angular.AngularKetJJ.calc_matrix_element" title="rydstate.angular.AngularKetJJ.calc_matrix_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_matrix_element</span></code></a>(other, operator, kappa, q)</p></td>
+<td><p>Calculate the dimensionless angular matrix element.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.angular.AngularKetJJ.calc_reduced_matrix_element" title="rydstate.angular.AngularKetJJ.calc_reduced_matrix_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_reduced_matrix_element</span></code></a>(other, operator, ...)</p></td>
+<td><p>Calculate the reduced angular matrix element.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.angular.AngularKetJJ.calc_reduced_overlap" title="rydstate.angular.AngularKetJJ.calc_reduced_overlap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_reduced_overlap</span></code></a>(other)</p></td>
+<td><p>Calculate the reduced overlap &lt;self||other&gt; (ignoring the magnetic quantum number m).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.angular.AngularKetJJ.calc_std_qn" title="rydstate.angular.AngularKetJJ.calc_std_qn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_std_qn</span></code></a>(qn)</p></td>
+<td><p>Calculate the standard deviation of a quantum number qn.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.angular.AngularKetJJ.get_core_ket" title="rydstate.angular.AngularKetJJ.get_core_ket"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_core_ket</span></code></a>()</p></td>
+<td><p>Get the core ket corresponding to this ket, j_c and f_c might be unknown dependent on the coupling scheme.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.angular.AngularKetJJ.get_qn" title="rydstate.angular.AngularKetJJ.get_qn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_qn</span></code></a>(qn, *[, allow_unknown])</p></td>
+<td><p>Get the value of a quantum number by name.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.angular.AngularKetJJ.replace_m" title="rydstate.angular.AngularKetJJ.replace_m"><code class="xref py py-obj docutils literal notranslate"><span class="pre">replace_m</span></code></a>(m)</p></td>
+<td><p>Return a copy of this ket with the given magnetic quantum number m.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.angular.AngularKetJJ.sanity_check" title="rydstate.angular.AngularKetJJ.sanity_check"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sanity_check</span></code></a>([msgs])</p></td>
+<td><p>Check that the quantum numbers are valid.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.angular.AngularKetJJ.to_state" title="rydstate.angular.AngularKetJJ.to_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_state</span></code></a>([coupling_scheme])</p></td>
+<td><p>Convert to state in the specified coupling scheme.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Class Attributes and Properties</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.angular.AngularKetJJ.j_c" title="rydstate.angular.AngularKetJJ.j_c"><code class="xref py py-obj docutils literal notranslate"><span class="pre">j_c</span></code></a></p></td>
+<td><p>Total core electron angular quantum number (s_c + l_c).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.angular.AngularKetJJ.j_r" title="rydstate.angular.AngularKetJJ.j_r"><code class="xref py py-obj docutils literal notranslate"><span class="pre">j_r</span></code></a></p></td>
+<td><p>Total rydberg electron angular quantum number (s_r + l_r).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.angular.AngularKetJJ.j_tot" title="rydstate.angular.AngularKetJJ.j_tot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">j_tot</span></code></a></p></td>
+<td><p>Total electron angular momentum quantum number (j_c + j_r).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.angular.AngularKetJJ.contains_unknown" title="rydstate.angular.AngularKetJJ.contains_unknown"><code class="xref py py-obj docutils literal notranslate"><span class="pre">contains_unknown</span></code></a></p></td>
+<td><p>Return True if any of the quantum numbers is Unknown.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.angular.AngularKetJJ.coupled_quantum_numbers" title="rydstate.angular.AngularKetJJ.coupled_quantum_numbers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coupled_quantum_numbers</span></code></a></p></td>
+<td><p>Mapping of coupled quantum numbers to their constituent quantum numbers.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.angular.AngularKetJJ.coupling_scheme" title="rydstate.angular.AngularKetJJ.coupling_scheme"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coupling_scheme</span></code></a></p></td>
+<td><p>Name of the coupling scheme, e.g. 'LS', 'JJ', or 'FJ'.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.angular.AngularKetJJ.f_tot" title="rydstate.angular.AngularKetJJ.f_tot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">f_tot</span></code></a></p></td>
+<td><p>Total atom angular quantum number (including nuclear, core electron and rydberg electron contributions).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.angular.AngularKetJJ.i_c" title="rydstate.angular.AngularKetJJ.i_c"><code class="xref py py-obj docutils literal notranslate"><span class="pre">i_c</span></code></a></p></td>
+<td><p>Nuclear spin quantum number.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.angular.AngularKetJJ.l_c" title="rydstate.angular.AngularKetJJ.l_c"><code class="xref py py-obj docutils literal notranslate"><span class="pre">l_c</span></code></a></p></td>
+<td><p>Core electron orbital quantum number (usually 0).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.angular.AngularKetJJ.l_r" title="rydstate.angular.AngularKetJJ.l_r"><code class="xref py py-obj docutils literal notranslate"><span class="pre">l_r</span></code></a></p></td>
+<td><p>Rydberg electron orbital quantum number.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.angular.AngularKetJJ.label" title="rydstate.angular.AngularKetJJ.label"><code class="xref py py-obj docutils literal notranslate"><span class="pre">label</span></code></a></p></td>
+<td><p>Optional label for this ket, should only be used, if the ket has Unknown quantum numbers.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.angular.AngularKetJJ.m" title="rydstate.angular.AngularKetJJ.m"><code class="xref py py-obj docutils literal notranslate"><span class="pre">m</span></code></a></p></td>
+<td><p>Magnetic quantum number, which is the projection of <cite>f_tot</cite> onto the quantization axis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.angular.AngularKetJJ.n_c" title="rydstate.angular.AngularKetJJ.n_c"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_c</span></code></a></p></td>
+<td><p>Principal quantum number of the core electron, None if not applicable.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.angular.AngularKetJJ.parity" title="rydstate.angular.AngularKetJJ.parity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parity</span></code></a></p></td>
+<td><p>Parity of the angular ket, which is given by (-1)^(l_c + l_r).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.angular.AngularKetJJ.quantum_number_names" title="rydstate.angular.AngularKetJJ.quantum_number_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantum_number_names</span></code></a></p></td>
+<td><p>Names of all well defined spin quantum numbers (without the magnetic quantum number m) in this class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.angular.AngularKetJJ.quantum_numbers" title="rydstate.angular.AngularKetJJ.quantum_numbers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantum_numbers</span></code></a></p></td>
+<td><p>The quantum numbers corresponding to the quantum_number_names (without the magnetic quantum number m).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.angular.AngularKetJJ.s_c" title="rydstate.angular.AngularKetJJ.s_c"><code class="xref py py-obj docutils literal notranslate"><span class="pre">s_c</span></code></a></p></td>
+<td><p>Core electron spin quantum number (0 for alkali atoms, 0.5 for alkaline earth atoms).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.angular.AngularKetJJ.s_r" title="rydstate.angular.AngularKetJJ.s_r"><code class="xref py py-obj docutils literal notranslate"><span class="pre">s_r</span></code></a></p></td>
+<td><p>Rydberg electron spin quantum number (always 0.5).</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="rydstate.angular.AngularKetJJ">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">rydstate.angular.</span></span><span class="sig-name descname"><span class="pre">AngularKetJJ</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i_c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l_c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l_r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Unknown</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j_c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j_r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j_tot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f_tot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">NotSet</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">parity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">species</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_unknown</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rydstate/angular/angular_ket.html#AngularKetJJ"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rydstate.angular.AngularKetJJ" title="Link to this definition"></a></dt>
+<dd><p>Initialize the Spin ket.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<em>object</em>)</p></li>
+<li><p><strong>kwargs</strong> (<em>object</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>CachedT</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.angular.AngularKetJJ.calc_exp_qn">
+<span class="sig-name descname"><span class="pre">calc_exp_qn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.angular.AngularKetJJ.calc_exp_qn" title="Link to this definition"></a></dt>
+<dd><p>Calculate the expectation value of a quantum number qn.</p>
+<p>If the quantum number is a good quantum number simply return it,
+otherwise calculate it, see also AngularState.calc_exp_qn for more details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>qn</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Literal</span></code>[<code class="docutils literal notranslate"><span class="pre">'i_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'s_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'l_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'s_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'l_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'s_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'l_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'j_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'j_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'j_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'f_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'f_tot'</span></code>]</span>) – The quantum number to calculate the expectation value for.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code>(<code class="docutils literal notranslate"><span class="pre">GenericT_Unknown</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Never</span></code>, <a class="reference internal" href="rydstate.angular.utils.Unknown.html#rydstate.angular.utils.Unknown" title="rydstate.angular.utils.Unknown"><code class="xref py py-class docutils literal notranslate"><span class="pre">Unknown</span></code></a>)]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.angular.AngularKetJJ.calc_matrix_element">
+<span class="sig-name descname"><span class="pre">calc_matrix_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.angular.AngularKetJJ.calc_matrix_element" title="Link to this definition"></a></dt>
+<dd><p>Calculate the dimensionless angular matrix element.</p>
+<p>Use the Wigner-Eckart theorem to calculate the angular matrix element from the reduced matrix element.
+We stick to the convention from Edmonds 1985 “Angular Momentum in Quantum Mechanics”, see equation (5.4.1).
+This means, calculate the following matrix element:</p>
+<div class="math notranslate nohighlight">
+\[\left\langle self | \hat{O}^{(\kappa)}_q | other \right\rangle
+= &lt;\alpha',f_{tot}',m'| \hat{O}^{(\kappa)}_q |\alpha,f_{tot},m&gt;
+= (-1)^{(f_{tot} - m)} \cdot \mathrm{Wigner3j}(f_{tot}', \kappa, f_{tot}, -m', q, m)
+    \cdot &lt;\alpha',f_{tot}' || \hat{O}^{(\kappa)} || \alpha,f_{tot}&gt;\]</div>
+<p>where alpha denotes all other quantum numbers
+and <span class="math notranslate nohighlight">\(&lt;\alpha',f_{tot}' || \hat{O}^{(\kappa)} || \alpha,f_{tot}&gt;\)</span> is the reduced matrix element
+(see <cite>calc_reduced_matrix_element</cite>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>other</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AngularKetBase</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</span>) – The other AngularKet <span class="math notranslate nohighlight">\(|other&gt;\)</span>.</p></li>
+<li><p><strong>operator</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Literal</span></code>[<code class="docutils literal notranslate"><span class="pre">'spherical'</span></code>, <code class="docutils literal notranslate"><span class="pre">'spherical_inner_valence'</span></code>, <code class="docutils literal notranslate"><span class="pre">'i_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'s_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'l_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'s_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'l_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'s_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'l_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'j_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'j_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'j_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'f_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'f_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_i_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_s_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_l_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_s_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_l_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_s_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_l_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_j_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_j_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_j_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_f_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_f_tot'</span></code>]</span>) – The operator type <span class="math notranslate nohighlight">\(\hat{O}^{(\kappa)}_q\)</span> for which to calculate the matrix element.
+E.g. ‘spherical’, ‘s_tot’, ‘l_r’, etc.</p></li>
+<li><p><strong>kappa</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – The rank <span class="math notranslate nohighlight">\(\kappa\)</span> of the angular momentum operator.</p></li>
+<li><p><strong>q</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – The component <span class="math notranslate nohighlight">\(q\)</span> of the angular momentum operator.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The dimensionless angular matrix element.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.angular.AngularKetJJ.calc_reduced_matrix_element">
+<span class="sig-name descname"><span class="pre">calc_reduced_matrix_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.angular.AngularKetJJ.calc_reduced_matrix_element" title="Link to this definition"></a></dt>
+<dd><p>Calculate the reduced angular matrix element.</p>
+<p>We follow equation (7.1.7) from Edmonds 1985 “Angular Momentum in Quantum Mechanics”.
+This means, calculate the following matrix element (self is the bra, other is the ket):</p>
+<div class="math notranslate nohighlight">
+\[\left\langle self || \hat{O}^{(\kappa)} || other \right\rangle\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>other</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AngularKetBase</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</span>) – The other AngularKet <span class="math notranslate nohighlight">\(|other&gt;\)</span> (used as the ket).</p></li>
+<li><p><strong>operator</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Literal</span></code>[<code class="docutils literal notranslate"><span class="pre">'spherical'</span></code>, <code class="docutils literal notranslate"><span class="pre">'spherical_inner_valence'</span></code>, <code class="docutils literal notranslate"><span class="pre">'i_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'s_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'l_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'s_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'l_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'s_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'l_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'j_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'j_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'j_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'f_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'f_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_i_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_s_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_l_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_s_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_l_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_s_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_l_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_j_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_j_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_j_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_f_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_f_tot'</span></code>]</span>) – The operator type <span class="math notranslate nohighlight">\(\hat{O}^{(\kappa)}\)</span> for which to calculate the matrix element.
+E.g. ‘spherical’, ‘s_tot’, ‘l_r’, etc.</p></li>
+<li><p><strong>kappa</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – The rank <span class="math notranslate nohighlight">\(\kappa\)</span> of the angular momentum operator.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The reduced dimensionless angular matrix element.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.angular.AngularKetJJ.calc_reduced_overlap">
+<span class="sig-name descname"><span class="pre">calc_reduced_overlap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.angular.AngularKetJJ.calc_reduced_overlap" title="Link to this definition"></a></dt>
+<dd><p>Calculate the reduced overlap &lt;self||other&gt; (ignoring the magnetic quantum number m).</p>
+<p>If both kets are of the same type (=same coupling scheme), this is just a delta function
+of all spin quantum numbers.
+If the kets are of different types, the overlap is calculated using the corresponding
+Clebsch-Gordan coefficients (/ Wigner-j symbols).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>other</strong> (<em>AngularKetBase</em><em>[</em><em>Any</em><em>]</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.angular.AngularKetJJ.calc_std_qn">
+<span class="sig-name descname"><span class="pre">calc_std_qn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.angular.AngularKetJJ.calc_std_qn" title="Link to this definition"></a></dt>
+<dd><p>Calculate the standard deviation of a quantum number qn.</p>
+<p>If the quantum number is a good quantum number return 0,
+otherwise calculate the std, see also AngularState.calc_std_qn for more details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>qn</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Literal</span></code>[<code class="docutils literal notranslate"><span class="pre">'i_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'s_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'l_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'s_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'l_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'s_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'l_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'j_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'j_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'j_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'f_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'f_tot'</span></code>]</span>) – The quantum number to calculate the standard deviation for.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code>(<code class="docutils literal notranslate"><span class="pre">GenericT_Unknown</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Never</span></code>, <a class="reference internal" href="rydstate.angular.utils.Unknown.html#rydstate.angular.utils.Unknown" title="rydstate.angular.utils.Unknown"><code class="xref py py-class docutils literal notranslate"><span class="pre">Unknown</span></code></a>)]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rydstate.angular.AngularKetJJ.contains_unknown">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">contains_unknown</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#rydstate.angular.AngularKetJJ.contains_unknown" title="Link to this definition"></a></dt>
+<dd><p>Return True if any of the quantum numbers is Unknown.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.angular.AngularKetJJ.get_core_ket">
+<span class="sig-name descname"><span class="pre">get_core_ket</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.angular.AngularKetJJ.get_core_ket" title="Link to this definition"></a></dt>
+<dd><p>Get the core ket corresponding to this ket, j_c and f_c might be unknown dependent on the coupling scheme.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="rydstate.angular.CoreKet.html#rydstate.angular.CoreKet" title="rydstate.angular.core_ket.CoreKet"><code class="xref py py-class docutils literal notranslate"><span class="pre">CoreKet</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.angular.AngularKetJJ.get_qn">
+<span class="sig-name descname"><span class="pre">get_qn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qn</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_unknown</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.angular.AngularKetJJ.get_qn" title="Link to this definition"></a></dt>
+<dd><p>Get the value of a quantum number by name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Overloads<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong>, <strong>qn</strong> (<span class="sphinx_autodoc_typehints-type">AngularMomentumQuantumNumbers</span>), <strong>allow_unknown</strong> (<span class="sphinx_autodoc_typehints-type">None</span>) → <span class="sphinx_autodoc_typehints-type">float | GenericT_Unknown</span></p></li>
+<li><p><strong>self</strong>, <strong>qn</strong> (<span class="sphinx_autodoc_typehints-type">AngularMomentumQuantumNumbers</span>), <strong>allow_unknown</strong> (<span class="sphinx_autodoc_typehints-type">Literal[False]</span>) → <span class="sphinx_autodoc_typehints-type">float</span></p></li>
+<li><p><strong>self</strong>, <strong>qn</strong> (<span class="sphinx_autodoc_typehints-type">AngularMomentumQuantumNumbers</span>), <strong>allow_unknown</strong> (<span class="sphinx_autodoc_typehints-type">bool</span>) → <span class="sphinx_autodoc_typehints-type">float | Unknown</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>qn</strong> (<em>Literal</em><em>[</em><em>'i_c'</em><em>, </em><em>'s_c'</em><em>, </em><em>'l_c'</em><em>, </em><em>'s_r'</em><em>, </em><em>'l_r'</em><em>, </em><em>'s_tot'</em><em>, </em><em>'l_tot'</em><em>, </em><em>'j_c'</em><em>, </em><em>'j_r'</em><em>, </em><em>'j_tot'</em><em>, </em><em>'f_c'</em><em>, </em><em>'f_tot'</em><em>]</em>)</p></li>
+<li><p><strong>allow_unknown</strong> (<em>bool</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float | <a class="reference internal" href="rydstate.angular.utils.Unknown.html#rydstate.angular.utils.Unknown" title="rydstate.angular.utils.Unknown"><em>Unknown</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.angular.AngularKetJJ.i_c">
+<span class="sig-name descname"><span class="pre">i_c</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#rydstate.angular.AngularKetJJ.i_c" title="Link to this definition"></a></dt>
+<dd><p>Nuclear spin quantum number.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.angular.AngularKetJJ.l_c">
+<span class="sig-name descname"><span class="pre">l_c</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">GenericT_Unknown</span></span><a class="headerlink" href="#rydstate.angular.AngularKetJJ.l_c" title="Link to this definition"></a></dt>
+<dd><p>Core electron orbital quantum number (usually 0).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.angular.AngularKetJJ.l_r">
+<span class="sig-name descname"><span class="pre">l_r</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">GenericT_Unknown</span></span><a class="headerlink" href="#rydstate.angular.AngularKetJJ.l_r" title="Link to this definition"></a></dt>
+<dd><p>Rydberg electron orbital quantum number.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.angular.AngularKetJJ.label">
+<span class="sig-name descname"><span class="pre">label</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#rydstate.angular.AngularKetJJ.label" title="Link to this definition"></a></dt>
+<dd><p>Optional label for this ket, should only be used, if the ket has Unknown quantum numbers.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.angular.AngularKetJJ.m">
+<span class="sig-name descname"><span class="pre">m</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="rydstate.angular.utils.NotSet.html#rydstate.angular.utils.NotSet" title="rydstate.angular.utils.NotSet"><span class="pre">NotSet</span></a></span><a class="headerlink" href="#rydstate.angular.AngularKetJJ.m" title="Link to this definition"></a></dt>
+<dd><p>Magnetic quantum number, which is the projection of <cite>f_tot</cite> onto the quantization axis.
+If NotSet, only reduced matrix elements can be calculated.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.angular.AngularKetJJ.n_c">
+<span class="sig-name descname"><span class="pre">n_c</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="rydstate.angular.utils.Unknown.html#rydstate.angular.utils.Unknown" title="rydstate.angular.utils.Unknown"><span class="pre">Unknown</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#rydstate.angular.AngularKetJJ.n_c" title="Link to this definition"></a></dt>
+<dd><p>Principal quantum number of the core electron, None if not applicable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.angular.AngularKetJJ.parity">
+<span class="sig-name descname"><span class="pre">parity</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">-</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#rydstate.angular.AngularKetJJ.parity" title="Link to this definition"></a></dt>
+<dd><p>Parity of the angular ket, which is given by (-1)^(l_c + l_r).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.angular.AngularKetJJ.quantum_numbers">
+<span class="sig-name descname"><span class="pre">quantum_numbers</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#rydstate.angular.AngularKetJJ.quantum_numbers" title="Link to this definition"></a></dt>
+<dd><p>The quantum numbers corresponding to the quantum_number_names (without the magnetic quantum number m).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.angular.AngularKetJJ.replace_m">
+<span class="sig-name descname"><span class="pre">replace_m</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.angular.AngularKetJJ.replace_m" title="Link to this definition"></a></dt>
+<dd><p>Return a copy of this ket with the given magnetic quantum number m.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Self</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>m</strong> (<em>float</em><em> | </em><a class="reference internal" href="rydstate.angular.utils.NotSet.html#rydstate.angular.utils.NotSet" title="rydstate.angular.utils.NotSet"><em>NotSet</em></a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.angular.AngularKetJJ.s_c">
+<span class="sig-name descname"><span class="pre">s_c</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#rydstate.angular.AngularKetJJ.s_c" title="Link to this definition"></a></dt>
+<dd><p>Core electron spin quantum number (0 for alkali atoms, 0.5 for alkaline earth atoms).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.angular.AngularKetJJ.s_r">
+<span class="sig-name descname"><span class="pre">s_r</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#rydstate.angular.AngularKetJJ.s_r" title="Link to this definition"></a></dt>
+<dd><p>Rydberg electron spin quantum number (always 0.5).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.angular.AngularKetJJ.to_state">
+<span class="sig-name descname"><span class="pre">to_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coupling_scheme</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.angular.AngularKetJJ.to_state" title="Link to this definition"></a></dt>
+<dd><p>Convert to state in the specified coupling scheme.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Overloads<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> (<span class="sphinx_autodoc_typehints-type">Self</span>), <strong>coupling_scheme</strong> (<span class="sphinx_autodoc_typehints-type">None</span>) → <span class="sphinx_autodoc_typehints-type">AngularState[Self]</span></p></li>
+<li><p><strong>self</strong> (<span class="sphinx_autodoc_typehints-type">AngularKetBase[T_Unknown]</span>), <strong>coupling_scheme</strong> (<span class="sphinx_autodoc_typehints-type">Literal[‘LS’]</span>) → <span class="sphinx_autodoc_typehints-type">AngularState[AngularKetLS[T_Unknown]]</span></p></li>
+<li><p><strong>self</strong> (<span class="sphinx_autodoc_typehints-type">AngularKetBase[T_Unknown]</span>), <strong>coupling_scheme</strong> (<span class="sphinx_autodoc_typehints-type">Literal[‘JJ’]</span>) → <span class="sphinx_autodoc_typehints-type">AngularState[AngularKetJJ[T_Unknown]]</span></p></li>
+<li><p><strong>self</strong> (<span class="sphinx_autodoc_typehints-type">AngularKetBase[T_Unknown]</span>), <strong>coupling_scheme</strong> (<span class="sphinx_autodoc_typehints-type">Literal[‘FJ’]</span>) → <span class="sphinx_autodoc_typehints-type">AngularState[AngularKetFJ[T_Unknown]]</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>coupling_scheme</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Literal</span></code>[<code class="docutils literal notranslate"><span class="pre">'LS'</span></code>, <code class="docutils literal notranslate"><span class="pre">'JJ'</span></code>, <code class="docutils literal notranslate"><span class="pre">'FJ'</span></code>]]</span>) – The coupling scheme to convert to (e.g. “LS”, “JJ”, “FJ”).
+If None, the state will be a trivial state (one component) in the current coupling scheme.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The angular state in the specified coupling scheme.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="rydstate.angular.AngularState.html#rydstate.angular.AngularState" title="rydstate.angular.angular_state.AngularState"><em>AngularState</em></a>[<em>Any</em>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.angular.AngularKetJJ.quantum_number_names">
+<span class="sig-name descname"><span class="pre">quantum_number_names</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('i_c',</span> <span class="pre">'s_c',</span> <span class="pre">'l_c',</span> <span class="pre">'s_r',</span> <span class="pre">'l_r',</span> <span class="pre">'j_c',</span> <span class="pre">'j_r',</span> <span class="pre">'j_tot',</span> <span class="pre">'f_tot')</span></span><a class="headerlink" href="#rydstate.angular.AngularKetJJ.quantum_number_names" title="Link to this definition"></a></dt>
+<dd><p>Names of all well defined spin quantum numbers (without the magnetic quantum number m) in this class.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.angular.AngularKetJJ.coupled_quantum_numbers">
+<span class="sig-name descname"><span class="pre">coupled_quantum_numbers</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'f_tot':</span> <span class="pre">('i_c',</span> <span class="pre">'j_tot'),</span> <span class="pre">'j_c':</span> <span class="pre">('s_c',</span> <span class="pre">'l_c'),</span> <span class="pre">'j_r':</span> <span class="pre">('s_r',</span> <span class="pre">'l_r'),</span> <span class="pre">'j_tot':</span> <span class="pre">('j_c',</span> <span class="pre">'j_r')}</span></span><a class="headerlink" href="#rydstate.angular.AngularKetJJ.coupled_quantum_numbers" title="Link to this definition"></a></dt>
+<dd><p>Mapping of coupled quantum numbers to their constituent quantum numbers.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.angular.AngularKetJJ.coupling_scheme">
+<span class="sig-name descname"><span class="pre">coupling_scheme</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'LS'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'JJ'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'FJ'</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'JJ'</span></span><a class="headerlink" href="#rydstate.angular.AngularKetJJ.coupling_scheme" title="Link to this definition"></a></dt>
+<dd><p>Name of the coupling scheme, e.g. ‘LS’, ‘JJ’, or ‘FJ’.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.angular.AngularKetJJ.j_c">
+<span class="sig-name descname"><span class="pre">j_c</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">GenericT_Unknown</span></span><a class="headerlink" href="#rydstate.angular.AngularKetJJ.j_c" title="Link to this definition"></a></dt>
+<dd><p>Total core electron angular quantum number (s_c + l_c).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.angular.AngularKetJJ.j_r">
+<span class="sig-name descname"><span class="pre">j_r</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">GenericT_Unknown</span></span><a class="headerlink" href="#rydstate.angular.AngularKetJJ.j_r" title="Link to this definition"></a></dt>
+<dd><p>Total rydberg electron angular quantum number (s_r + l_r).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.angular.AngularKetJJ.j_tot">
+<span class="sig-name descname"><span class="pre">j_tot</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">GenericT_Unknown</span></span><a class="headerlink" href="#rydstate.angular.AngularKetJJ.j_tot" title="Link to this definition"></a></dt>
+<dd><p>Total electron angular momentum quantum number (j_c + j_r).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.angular.AngularKetJJ.f_tot">
+<span class="sig-name descname"><span class="pre">f_tot</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#rydstate.angular.AngularKetJJ.f_tot" title="Link to this definition"></a></dt>
+<dd><p>Total atom angular quantum number (including nuclear, core electron and rydberg electron contributions).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.angular.AngularKetJJ.sanity_check">
+<span class="sig-name descname"><span class="pre">sanity_check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msgs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rydstate/angular/angular_ket.html#AngularKetJJ.sanity_check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rydstate.angular.AngularKetJJ.sanity_check" title="Link to this definition"></a></dt>
+<dd><p>Check that the quantum numbers are valid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>msgs</strong> (<em>list</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rydstate.angular.AngularKetLS.html" class="btn btn-neutral float-left" title="AngularKetLS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rydstate.angular.AngularKetFJ.html" class="btn btn-neutral float-right" title="AngularKetFJ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, RydState Developers.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

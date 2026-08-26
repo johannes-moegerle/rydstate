@@ -1,0 +1,49 @@
+﻿RydbergStateMQDT
+================
+
+.. currentmodule:: rydstate.rydberg_state
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~RydbergStateMQDT.__init__
+      ~RydbergStateMQDT.calc_exp_qn
+      ~RydbergStateMQDT.calc_matrix_element
+      ~RydbergStateMQDT.calc_reduced_matrix_element
+      ~RydbergStateMQDT.calc_reduced_overlap
+      ~RydbergStateMQDT.calc_std_qn
+      ~RydbergStateMQDT.get_black_body_transition_rates
+      ~RydbergStateMQDT.get_energy
+      ~RydbergStateMQDT.get_label
+      ~RydbergStateMQDT.get_lifetime
+      ~RydbergStateMQDT.get_spontaneous_transition_rates
+      ~RydbergStateMQDT.to_coupling_scheme
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~RydbergStateMQDT.coefficients
+   ~RydbergStateMQDT.mqdt
+   ~RydbergStateMQDT.n
+   ~RydbergStateMQDT.norm
+   ~RydbergStateMQDT.nui
+   ~RydbergStateMQDT.species
+   ~RydbergStateMQDT.rydberg_kets
+   ~RydbergStateMQDT.nu
+   ~RydbergStateMQDT.f_tot
+
+
+
+.. autoclass:: rydstate.rydberg_state.RydbergStateMQDT
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

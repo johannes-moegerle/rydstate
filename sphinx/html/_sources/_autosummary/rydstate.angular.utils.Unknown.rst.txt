@@ -1,0 +1,24 @@
+Unknown
+=======
+
+.. currentmodule:: rydstate.angular.utils
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~Unknown.__init__
+
+
+
+
+
+.. autoclass:: rydstate.angular.utils.Unknown
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

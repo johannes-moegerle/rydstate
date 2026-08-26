@@ -1,0 +1,6 @@
+is\_unknown
+===========
+
+.. currentmodule:: rydstate.angular.utils
+
+.. autofunction:: is_unknown

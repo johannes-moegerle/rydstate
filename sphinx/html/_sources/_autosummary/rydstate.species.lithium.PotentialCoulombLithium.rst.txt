@@ -1,0 +1,39 @@
+PotentialCoulombLithium
+=======================
+
+.. currentmodule:: rydstate.species.lithium
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~PotentialCoulombLithium.__init__
+      ~PotentialCoulombLithium.calc_effective_potential_centrifugal
+      ~PotentialCoulombLithium.calc_effective_potential_sqrt
+      ~PotentialCoulombLithium.calc_hydrogen_turning_point_z
+      ~PotentialCoulombLithium.calc_model_potential
+      ~PotentialCoulombLithium.calc_potential_coulomb
+      ~PotentialCoulombLithium.calc_total_effective_potential
+      ~PotentialCoulombLithium.calc_turning_point_z
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~PotentialCoulombLithium.is_default
+   ~PotentialCoulombLithium.species
+   ~PotentialCoulombLithium.tag
+
+
+
+.. autoclass:: rydstate.species.lithium.PotentialCoulombLithium
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

@@ -1,0 +1,46 @@
+ElementPropertiesStrontium88
+============================
+
+.. currentmodule:: rydstate.species.strontium
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~ElementPropertiesStrontium88.__init__
+      ~ElementPropertiesStrontium88.get_corrected_rydberg_constant
+      ~ElementPropertiesStrontium88.is_allowed_shell
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~ElementPropertiesStrontium88.Z
+   ~ElementPropertiesStrontium88.additional_allowed_shells
+   ~ElementPropertiesStrontium88.alpha_closed_shell_core
+   ~ElementPropertiesStrontium88.core_electron_configuration
+   ~ElementPropertiesStrontium88.corrected_rydberg_constant
+   ~ElementPropertiesStrontium88.ground_state_shell
+   ~ElementPropertiesStrontium88.i_c
+   ~ElementPropertiesStrontium88.net_charge
+   ~ElementPropertiesStrontium88.nuclear_dipole
+   ~ElementPropertiesStrontium88.number_valence_electrons
+   ~ElementPropertiesStrontium88.r_c_dipole_operator
+   ~ElementPropertiesStrontium88.reduced_mass_au
+   ~ElementPropertiesStrontium88.s_c
+   ~ElementPropertiesStrontium88.s_r
+   ~ElementPropertiesStrontium88.species
+
+
+
+.. autoclass:: rydstate.species.strontium.ElementPropertiesStrontium88
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

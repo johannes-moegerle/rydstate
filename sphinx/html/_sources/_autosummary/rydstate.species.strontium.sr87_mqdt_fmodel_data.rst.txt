@@ -1,0 +1,101 @@
+sr87\_mqdt\_fmodel\_data
+========================
+Full module path: rydstate.species.strontium.sr87\_mqdt\_fmodel\_data
+
+.. workaround to ignore generic classes like AtomSQDT[int]
+
+
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+
+
+.. currentmodule:: rydstate.species.strontium.sr87_mqdt_fmodel_data
+
+
+
+
+
+
+.. rubric:: Classes
+
+.. .. inheritance-diagram:: rydstate.species.strontium.sr87_mqdt_fmodel_data
+..     :parts: 1
+
+.. autosummary::
+   :toctree: .
+   
+      Sr87_D15_HighN
+      Sr87_D25_HighN
+      Sr87_D35_HighN
+      Sr87_D45_HighN
+      Sr87_D55_HighN
+      Sr87_D65_HighN
+      Sr87_D75_HighN
+      Sr87_F45_HighN
+      Sr87_P25_HighN
+      Sr87_P35_HighN
+      Sr87_P45_HighN
+      Sr87_P45_LowN
+      Sr87_P55_HighN
+      Sr87_P65_HighN
+      Sr87_S35_HighN
+      Sr87_S45_HighN
+      Sr87_S55_HighN
+
+
+
+
+
+
+.. rubric:: Module description
+
+.. automodule:: rydstate.species.strontium.sr87_mqdt_fmodel_data

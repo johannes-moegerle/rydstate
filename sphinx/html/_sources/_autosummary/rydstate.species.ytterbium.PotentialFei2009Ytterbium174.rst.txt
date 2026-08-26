@@ -1,0 +1,41 @@
+PotentialFei2009Ytterbium174
+============================
+
+.. currentmodule:: rydstate.species.ytterbium
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~PotentialFei2009Ytterbium174.__init__
+      ~PotentialFei2009Ytterbium174.calc_effective_potential_centrifugal
+      ~PotentialFei2009Ytterbium174.calc_effective_potential_sqrt
+      ~PotentialFei2009Ytterbium174.calc_hydrogen_turning_point_z
+      ~PotentialFei2009Ytterbium174.calc_model_potential
+      ~PotentialFei2009Ytterbium174.calc_potential_coulomb
+      ~PotentialFei2009Ytterbium174.calc_total_effective_potential
+      ~PotentialFei2009Ytterbium174.calc_turning_point_z
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~PotentialFei2009Ytterbium174.is_default
+   ~PotentialFei2009Ytterbium174.model_potential_parameter_fei_2009
+   ~PotentialFei2009Ytterbium174.reference
+   ~PotentialFei2009Ytterbium174.species
+   ~PotentialFei2009Ytterbium174.tag
+
+
+
+.. autoclass:: rydstate.species.ytterbium.PotentialFei2009Ytterbium174
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

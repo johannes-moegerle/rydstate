@@ -1,0 +1,6 @@
+minus\_one\_pow
+===============
+
+.. currentmodule:: rydstate.angular.utils
+
+.. autofunction:: minus_one_pow

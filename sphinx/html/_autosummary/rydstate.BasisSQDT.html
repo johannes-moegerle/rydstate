@@ -1,0 +1,469 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BasisSQDT &mdash; RydState 0.12.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=f24cbf82"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="BasisMQDT" href="rydstate.BasisMQDT.html" />
+    <link rel="prev" title="Rydberg Basis" href="../api/basis.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            RydState
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#radialket">RadialKet</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/radial/hydrogen_wavefunction.html">Hydrogen radial wavefunction via numerov and from sympy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/radial/rubidium_wavefunction.html">Rubidium wavefunction and potential</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#angularstate">AngularState</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/angular/angular_state.html">Using AngularKets and AngularStates in different spin coupling schemes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#rydbergstate">RydbergState</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/dipole_matrix_elements.html">Calculating dipole matrix elements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/lifetimes.html">Lifetimes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#mqdt">MQDT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/mqdt/mqdt_exp_qn.html">Labeling the angular character of Yb 171</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#comparisons">Comparisons</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_z_min_cutoff.html">Comparison of the z_min values for circular states</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_nist_energy_levels_data.html">Compare NIST energy levels data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_nist_matrix_elements.html">Compare Rb <span class="math notranslate nohighlight">\(5s \rightarrow np_j\)</span> matrix elements with NIST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_nist_matrix_elements_Sr88_sqdt.html">Compare Sr <span class="math notranslate nohighlight">\(5s5s \rightarrow 5snl\)</span> matrix elements with NIST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_model_potentials.html">Compare different effective model potentials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_whittaker.html">Comparison: Numerov - Whittaker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/benchmark/benchmark_njit.html">Benchmark of Numerov integration with and without using numba.njit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api_reference.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/rydberg_state.html">Rydberg States</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.rydberg_state.RydbergStateSQDT.html">RydbergStateSQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.rydberg_state.RydbergStateSQDTAlkali.html">RydbergStateSQDTAlkali</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.rydberg_state.RydbergStateMQDT.html">RydbergStateMQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.rydberg_state.RydbergKet.html">RydbergKet</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api/basis.html">Rydberg Basis</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">BasisSQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.BasisMQDT.html">BasisMQDT</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/angular.html">Angular module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.AngularKetLS.html">AngularKetLS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.AngularKetJJ.html">AngularKetJJ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.AngularKetFJ.html">AngularKetFJ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.AngularState.html">AngularState</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.CoreKet.html">CoreKet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.utils.html">utils</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/radial.html">Radial module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.radial.RadialKet.html">RadialKet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/species.html">Species Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.ElementProperties.html">ElementProperties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.PotentialCoulomb.html">PotentialCoulomb</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.PotentialMarinescu1994.html">PotentialMarinescu1994</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.PotentialFei2009.html">PotentialFei2009</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.SQDT.html">SQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.MQDT.html">MQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.cesium.html">cesium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.hydrogen.html">hydrogen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.lithium.html">lithium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.potassium.html">potassium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.rubidium.html">rubidium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.sodium.html">sodium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.strontium.html">strontium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.ytterbium.html">ytterbium</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generate_database.html">Generate Database module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.generate_database.create_tables_for_sqdt.html">create_tables_for_sqdt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.generate_database.create_tables_for_mqdt.html">create_tables_for_mqdt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.generate_database.create_tables_for_misc.html">create_tables_for_misc</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<style>
+a.gitbutton {
+  display: block;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #fff;
+  padding-top: 10px;
+  padding-left: 85px;
+  padding-right: 0px;
+  margin: 22px;
+  width: 240px;
+  height: 60px;
+  background: transparent url("../_static/buttons/github.svg") 0 0 no-repeat;
+}
+a.gitbutton small {
+  display: block;
+  font-size: 11px;
+}
+button.toctree-expand {
+  display: none;
+}
+</style>
+<a href="https://github.com/pairinteraction/rydstate" class="gitbutton">Explore<small>the GitHub repository</small></a>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RydState</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api_reference.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../api/basis.html">Rydberg Basis</a></li>
+      <li class="breadcrumb-item active">BasisSQDT</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_autosummary/rydstate.BasisSQDT.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="basissqdt">
+<h1>BasisSQDT<a class="headerlink" href="#basissqdt" title="Link to this heading"></a></h1>
+<p class="rubric">Class Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(species, n, *[, l_r, f_tot, m, ...])</p></td>
+<td><p>Initialize the SQDT basis.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.BasisSQDT.calc_exp_qn" title="rydstate.BasisSQDT.calc_exp_qn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_exp_qn</span></code></a>(qn)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.BasisSQDT.calc_reduced_matrix_element" title="rydstate.BasisSQDT.calc_reduced_matrix_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_reduced_matrix_element</span></code></a>(other, operator, *)</p></td>
+<td><p>Calculate the reduced matrix element <span class="math notranslate nohighlight">\(\langle bra || O || other \rangle\)</span> for all states of self.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.BasisSQDT.calc_reduced_matrix_elements" title="rydstate.BasisSQDT.calc_reduced_matrix_elements"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_reduced_matrix_elements</span></code></a>(other, operator, *)</p></td>
+<td><p>Calculate the reduced matrix element for all states in self and other.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.BasisSQDT.calc_reduced_overlap" title="rydstate.BasisSQDT.calc_reduced_overlap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_reduced_overlap</span></code></a>(other)</p></td>
+<td><p>Calculate the reduced overlap &lt;self|other&gt; (ignoring the magnetic quantum number m).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.BasisSQDT.calc_reduced_overlaps" title="rydstate.BasisSQDT.calc_reduced_overlaps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_reduced_overlaps</span></code></a>(other)</p></td>
+<td><p>Calculate the reduced overlap &lt;bra|ket&gt; for all states in the bases self and other.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.BasisSQDT.calc_std_qn" title="rydstate.BasisSQDT.calc_std_qn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_std_qn</span></code></a>(qn)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.BasisSQDT.filter_states" title="rydstate.BasisSQDT.filter_states"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter_states</span></code></a>(qn, value, *[, delta])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.BasisSQDT.filter_states_label" title="rydstate.BasisSQDT.filter_states_label"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter_states_label</span></code></a>(substring)</p></td>
+<td><p>Filter the basis states by a substring in their label.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.BasisSQDT.shallow_copy" title="rydstate.BasisSQDT.shallow_copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shallow_copy</span></code></a>()</p></td>
+<td><p>Return a shallow copy of the basis (with its own independent list of states).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.BasisSQDT.sort_states" title="rydstate.BasisSQDT.sort_states"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort_states</span></code></a>(*qns)</p></td>
+<td><p>Sort the basis states according to the given quantum numbers.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Class Attributes and Properties</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.BasisSQDT.states" title="rydstate.BasisSQDT.states"><code class="xref py py-obj docutils literal notranslate"><span class="pre">states</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="rydstate.BasisSQDT">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">rydstate.</span></span><span class="sig-name descname"><span class="pre">BasisSQDT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">species</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">l_r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f_tot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">NotSet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coupling_scheme</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'LS'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sqdt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">potential_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rydstate/basis/basis_sqdt.html#BasisSQDT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rydstate.BasisSQDT" title="Link to this definition"></a></dt>
+<dd><p>Initialize the SQDT basis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>species</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Atomic species.</p></li>
+<li><p><strong>n</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span>) – Tuple of (n_min, n_max) for the principal quantum number.</p></li>
+<li><p><strong>l_r</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>] | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span>) – Optional tuple of (l_r_min, l_r_max) for the Rydberg electron orbital angular momentum.
+Default None, include all l_r values.</p></li>
+<li><p><strong>f_tot</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span>) – Optional tuple of (f_tot_min, f_tot_max) for the total angular momentum.
+Default None, include all f_tot values.</p></li>
+<li><p><strong>m</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> | <a class="reference internal" href="rydstate.angular.utils.NotSet.html#rydstate.angular.utils.NotSet" title="rydstate.angular.utils.NotSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">NotSet</span></code></a></span>) – Optional tuple of (m_min, m_max) for the magnetic quantum number.
+If None, all m values are included.
+Default NotSet, m is not specified and will be set to NotSet for all states.</p></li>
+<li><p><strong>coupling_scheme</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Literal</span></code>[<code class="docutils literal notranslate"><span class="pre">'LS'</span></code>, <code class="docutils literal notranslate"><span class="pre">'JJ'</span></code>, <code class="docutils literal notranslate"><span class="pre">'FJ'</span></code>]</span>) – The coupling scheme to use for the angular kets.</p></li>
+<li><p><strong>sqdt</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="rydstate.species.SQDT.html#rydstate.species.SQDT" title="rydstate.species.sqdt.SQDT"><code class="xref py py-class docutils literal notranslate"><span class="pre">SQDT</span></code></a> | <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span>) – The SQDT data to use for the states.
+Either an instance of an SQDT class
+or a string representing the tag of the SQDT class to use.</p></li>
+<li><p><strong>potential_class</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">type</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Potential</span></code>] | <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span>) – The potential class to use for the radial ket.
+Either a a potential class
+or a string representing the tag of the potential class to use.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.BasisSQDT.states">
+<span class="sig-name descname"><span class="pre">states</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="rydstate.rydberg_state.RydbergStateSQDT.html#rydstate.rydberg_state.RydbergStateSQDT" title="rydstate.rydberg_state.rydberg_sqdt.RydbergStateSQDT"><span class="pre">RydbergStateSQDT</span></a><span class="p"><span class="pre">[</span></span><span class="pre">T_AngularKet</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#rydstate.BasisSQDT.states" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.BasisSQDT.calc_exp_qn">
+<span class="sig-name descname"><span class="pre">calc_exp_qn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.BasisSQDT.calc_exp_qn" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>qn</strong> (<em>str</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.BasisSQDT.calc_reduced_matrix_element">
+<span class="sig-name descname"><span class="pre">calc_reduced_matrix_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operator</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">part</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.BasisSQDT.calc_reduced_matrix_element" title="Link to this definition"></a></dt>
+<dd><p>Calculate the reduced matrix element <span class="math notranslate nohighlight">\(\langle bra || O || other \rangle\)</span> for all states of self.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Overloads<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong>, <strong>other</strong> (<span class="sphinx_autodoc_typehints-type">RydbergState</span>), <strong>operator</strong> (<span class="sphinx_autodoc_typehints-type">MatrixElementOperator</span>), <strong>part</strong> (<span class="sphinx_autodoc_typehints-type">MatrixElementPart</span>), <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">None</span>) → <span class="sphinx_autodoc_typehints-type">PintArray</span></p></li>
+<li><p><strong>self</strong>, <strong>other</strong> (<span class="sphinx_autodoc_typehints-type">RydbergState</span>), <strong>operator</strong> (<span class="sphinx_autodoc_typehints-type">MatrixElementOperator</span>), <strong>part</strong> (<span class="sphinx_autodoc_typehints-type">MatrixElementPart</span>), <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">str</span>) → <span class="sphinx_autodoc_typehints-type">NDArray</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>other</strong> (<em>RydbergState</em>)</p></li>
+<li><p><strong>operator</strong> (<em>Literal</em><em>[</em><em>'magnetic_dipole'</em><em>, </em><em>'electric_dipole'</em><em>, </em><em>'electric_quadrupole'</em><em>, </em><em>'electric_octupole'</em><em>, </em><em>'electric_quadrupole_zero'</em><em>, </em><em>'spherical'</em><em>, </em><em>'spherical_inner_valence'</em><em>, </em><em>'i_c'</em><em>, </em><em>'s_c'</em><em>, </em><em>'l_c'</em><em>, </em><em>'s_r'</em><em>, </em><em>'l_r'</em><em>, </em><em>'s_tot'</em><em>, </em><em>'l_tot'</em><em>, </em><em>'j_c'</em><em>, </em><em>'j_r'</em><em>, </em><em>'j_tot'</em><em>, </em><em>'f_c'</em><em>, </em><em>'f_tot'</em><em>, </em><em>'identity_i_c'</em><em>, </em><em>'identity_s_c'</em><em>, </em><em>'identity_l_c'</em><em>, </em><em>'identity_s_r'</em><em>, </em><em>'identity_l_r'</em><em>, </em><em>'identity_s_tot'</em><em>, </em><em>'identity_l_tot'</em><em>, </em><em>'identity_j_c'</em><em>, </em><em>'identity_j_r'</em><em>, </em><em>'identity_j_tot'</em><em>, </em><em>'identity_f_c'</em><em>, </em><em>'identity_f_tot'</em><em>]</em>)</p></li>
+<li><p><strong>part</strong> (<em>Literal</em><em>[</em><em>'all'</em><em>, </em><em>'rydberg'</em><em>, </em><em>'inner_valence'</em><em>, </em><em>'closed_shell_core'</em><em>]</em>)</p></li>
+<li><p><strong>unit</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>PlainQuantity</em>[<em>NDArray</em>[<em>Any</em>]] | <em>NDArray</em>[<em>Any</em>]</p>
+</dd>
+</dl>
+<p>Each state of the basis self is used as the bra and the single state other is used as the ket.</p>
+<p>Returns a 1D array values, where values[i] corresponds to the reduced matrix element
+<span class="math notranslate nohighlight">\(\langle self.states[i] || O || other \rangle\)</span>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.BasisSQDT.calc_reduced_matrix_elements">
+<span class="sig-name descname"><span class="pre">calc_reduced_matrix_elements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operator</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">part</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.BasisSQDT.calc_reduced_matrix_elements" title="Link to this definition"></a></dt>
+<dd><p>Calculate the reduced matrix element for all states in self and other.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Overloads<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong>, <strong>other</strong> (<span class="sphinx_autodoc_typehints-type">BasisBase[Any]</span>), <strong>operator</strong> (<span class="sphinx_autodoc_typehints-type">MatrixElementOperator</span>), <strong>part</strong> (<span class="sphinx_autodoc_typehints-type">MatrixElementPart</span>), <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">None</span>) → <span class="sphinx_autodoc_typehints-type">PintArray</span></p></li>
+<li><p><strong>self</strong>, <strong>other</strong> (<span class="sphinx_autodoc_typehints-type">BasisBase[Any]</span>), <strong>operator</strong> (<span class="sphinx_autodoc_typehints-type">MatrixElementOperator</span>), <strong>part</strong> (<span class="sphinx_autodoc_typehints-type">MatrixElementPart</span>), <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">str</span>) → <span class="sphinx_autodoc_typehints-type">NDArray</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>other</strong> (<em>BasisBase</em><em>[</em><em>Any</em><em>]</em>)</p></li>
+<li><p><strong>operator</strong> (<em>Literal</em><em>[</em><em>'magnetic_dipole'</em><em>, </em><em>'electric_dipole'</em><em>, </em><em>'electric_quadrupole'</em><em>, </em><em>'electric_octupole'</em><em>, </em><em>'electric_quadrupole_zero'</em><em>, </em><em>'spherical'</em><em>, </em><em>'spherical_inner_valence'</em><em>, </em><em>'i_c'</em><em>, </em><em>'s_c'</em><em>, </em><em>'l_c'</em><em>, </em><em>'s_r'</em><em>, </em><em>'l_r'</em><em>, </em><em>'s_tot'</em><em>, </em><em>'l_tot'</em><em>, </em><em>'j_c'</em><em>, </em><em>'j_r'</em><em>, </em><em>'j_tot'</em><em>, </em><em>'f_c'</em><em>, </em><em>'f_tot'</em><em>, </em><em>'identity_i_c'</em><em>, </em><em>'identity_s_c'</em><em>, </em><em>'identity_l_c'</em><em>, </em><em>'identity_s_r'</em><em>, </em><em>'identity_l_r'</em><em>, </em><em>'identity_s_tot'</em><em>, </em><em>'identity_l_tot'</em><em>, </em><em>'identity_j_c'</em><em>, </em><em>'identity_j_r'</em><em>, </em><em>'identity_j_tot'</em><em>, </em><em>'identity_f_c'</em><em>, </em><em>'identity_f_tot'</em><em>]</em>)</p></li>
+<li><p><strong>part</strong> (<em>Literal</em><em>[</em><em>'all'</em><em>, </em><em>'rydberg'</em><em>, </em><em>'inner_valence'</em><em>, </em><em>'closed_shell_core'</em><em>]</em>)</p></li>
+<li><p><strong>unit</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>PlainQuantity</em>[<em>NDArray</em>[<em>Any</em>]] | <em>NDArray</em>[<em>Any</em>]</p>
+</dd>
+</dl>
+<p>The states of the basis self are used as the bra and the states of the basis other are used as the ket.</p>
+<p>Returns a 2D array values, where values[i, j] corresponds to the reduced matrix element
+<span class="math notranslate nohighlight">\(\langle self.states[i] || O || other.states[j] \rangle\)</span>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.BasisSQDT.calc_reduced_overlap">
+<span class="sig-name descname"><span class="pre">calc_reduced_overlap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.BasisSQDT.calc_reduced_overlap" title="Link to this definition"></a></dt>
+<dd><p>Calculate the reduced overlap &lt;self|other&gt; (ignoring the magnetic quantum number m).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>other</strong> (<em>RydbergState</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.BasisSQDT.calc_reduced_overlaps">
+<span class="sig-name descname"><span class="pre">calc_reduced_overlaps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.BasisSQDT.calc_reduced_overlaps" title="Link to this definition"></a></dt>
+<dd><p>Calculate the reduced overlap &lt;bra|ket&gt; for all states in the bases self and other.</p>
+<p>Returns a numpy array overlaps, where overlaps[i,j] corresponds to the overlap of the
+i-th state of self and the j-th state of other.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>other</strong> (<em>BasisBase</em><em>[</em><em>Any</em><em>]</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.BasisSQDT.calc_std_qn">
+<span class="sig-name descname"><span class="pre">calc_std_qn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.BasisSQDT.calc_std_qn" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>qn</strong> (<em>str</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.BasisSQDT.filter_states">
+<span class="sig-name descname"><span class="pre">filter_states</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.BasisSQDT.filter_states" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Self</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>qn</strong> (<em>str</em>)</p></li>
+<li><p><strong>value</strong> (<em>float</em><em> | </em><a class="reference internal" href="rydstate.angular.utils.Unknown.html#rydstate.angular.utils.Unknown" title="rydstate.angular.utils.Unknown"><em>Unknown</em></a><em> | </em><em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>)</p></li>
+<li><p><strong>delta</strong> (<em>float</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.BasisSQDT.filter_states_label">
+<span class="sig-name descname"><span class="pre">filter_states_label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">substring</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.BasisSQDT.filter_states_label" title="Link to this definition"></a></dt>
+<dd><p>Filter the basis states by a substring in their label.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Self</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>substring</strong> (<em>str</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.BasisSQDT.shallow_copy">
+<span class="sig-name descname"><span class="pre">shallow_copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.BasisSQDT.shallow_copy" title="Link to this definition"></a></dt>
+<dd><p>Return a shallow copy of the basis (with its own independent list of states).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Self</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.BasisSQDT.sort_states">
+<span class="sig-name descname"><span class="pre">sort_states</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">qns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.BasisSQDT.sort_states" title="Link to this definition"></a></dt>
+<dd><p>Sort the basis states according to the given quantum numbers.</p>
+<p>The first quantum number given is the primary sorting key, the second quantum number
+is the secondary sorting key, and so on.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Self</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>qns</strong> (<em>str</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../api/basis.html" class="btn btn-neutral float-left" title="Rydberg Basis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rydstate.BasisMQDT.html" class="btn btn-neutral float-right" title="BasisMQDT" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, RydState Developers.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

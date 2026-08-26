@@ -1,0 +1,39 @@
+PotentialCoulombPotassium
+=========================
+
+.. currentmodule:: rydstate.species.potassium
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~PotentialCoulombPotassium.__init__
+      ~PotentialCoulombPotassium.calc_effective_potential_centrifugal
+      ~PotentialCoulombPotassium.calc_effective_potential_sqrt
+      ~PotentialCoulombPotassium.calc_hydrogen_turning_point_z
+      ~PotentialCoulombPotassium.calc_model_potential
+      ~PotentialCoulombPotassium.calc_potential_coulomb
+      ~PotentialCoulombPotassium.calc_total_effective_potential
+      ~PotentialCoulombPotassium.calc_turning_point_z
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~PotentialCoulombPotassium.is_default
+   ~PotentialCoulombPotassium.species
+   ~PotentialCoulombPotassium.tag
+
+
+
+.. autoclass:: rydstate.species.potassium.PotentialCoulombPotassium
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

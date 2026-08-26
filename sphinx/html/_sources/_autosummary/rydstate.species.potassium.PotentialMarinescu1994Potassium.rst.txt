@@ -1,0 +1,43 @@
+PotentialMarinescu1994Potassium
+===============================
+
+.. currentmodule:: rydstate.species.potassium
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~PotentialMarinescu1994Potassium.__init__
+      ~PotentialMarinescu1994Potassium.calc_effective_potential_centrifugal
+      ~PotentialMarinescu1994Potassium.calc_effective_potential_sqrt
+      ~PotentialMarinescu1994Potassium.calc_hydrogen_turning_point_z
+      ~PotentialMarinescu1994Potassium.calc_model_potential
+      ~PotentialMarinescu1994Potassium.calc_potential_coulomb
+      ~PotentialMarinescu1994Potassium.calc_total_effective_potential
+      ~PotentialMarinescu1994Potassium.calc_turning_point_z
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~PotentialMarinescu1994Potassium.alpha_core_marinescu_1994
+   ~PotentialMarinescu1994Potassium.is_default
+   ~PotentialMarinescu1994Potassium.model_potential_parameter_marinescu_1994
+   ~PotentialMarinescu1994Potassium.r_c_dict_marinescu_1994
+   ~PotentialMarinescu1994Potassium.reference
+   ~PotentialMarinescu1994Potassium.species
+   ~PotentialMarinescu1994Potassium.tag
+
+
+
+.. autoclass:: rydstate.species.potassium.PotentialMarinescu1994Potassium
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

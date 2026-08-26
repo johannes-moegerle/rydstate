@@ -1,0 +1,596 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rydstate.species.potential &mdash; RydState 0.12.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=f24cbf82"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            RydState
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.html#radialket">RadialKet</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/radial/hydrogen_wavefunction.html">Hydrogen radial wavefunction via numerov and from sympy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/radial/rubidium_wavefunction.html">Rubidium wavefunction and potential</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.html#angularstate">AngularState</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/angular/angular_state.html">Using AngularKets and AngularStates in different spin coupling schemes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.html#rydbergstate">RydbergState</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/dipole_matrix_elements.html">Calculating dipole matrix elements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/lifetimes.html">Lifetimes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.html#mqdt">MQDT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/mqdt/mqdt_exp_qn.html">Labeling the angular character of Yb 171</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.html#comparisons">Comparisons</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/comparisons/compare_z_min_cutoff.html">Comparison of the z_min values for circular states</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/comparisons/compare_nist_energy_levels_data.html">Compare NIST energy levels data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/comparisons/compare_nist_matrix_elements.html">Compare Rb <span class="math notranslate nohighlight">\(5s \rightarrow np_j\)</span> matrix elements with NIST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/comparisons/compare_nist_matrix_elements_Sr88_sqdt.html">Compare Sr <span class="math notranslate nohighlight">\(5s5s \rightarrow 5snl\)</span> matrix elements with NIST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/comparisons/compare_model_potentials.html">Compare different effective model potentials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/comparisons/compare_whittaker.html">Comparison: Numerov - Whittaker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples/benchmark/benchmark_njit.html">Benchmark of Numerov integration with and without using numba.njit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_reference.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/rydberg_state.html">Rydberg States</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.rydberg_state.RydbergStateSQDT.html">RydbergStateSQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.rydberg_state.RydbergStateSQDTAlkali.html">RydbergStateSQDTAlkali</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.rydberg_state.RydbergStateMQDT.html">RydbergStateMQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.rydberg_state.RydbergKet.html">RydbergKet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/basis.html">Rydberg Basis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.BasisSQDT.html">BasisSQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.BasisMQDT.html">BasisMQDT</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/angular.html">Angular module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.angular.AngularKetLS.html">AngularKetLS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.angular.AngularKetJJ.html">AngularKetJJ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.angular.AngularKetFJ.html">AngularKetFJ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.angular.AngularState.html">AngularState</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.angular.CoreKet.html">CoreKet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.angular.utils.html">utils</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/radial.html">Radial module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.radial.RadialKet.html">RadialKet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/species.html">Species Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.ElementProperties.html">ElementProperties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.PotentialCoulomb.html">PotentialCoulomb</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.PotentialMarinescu1994.html">PotentialMarinescu1994</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.PotentialFei2009.html">PotentialFei2009</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.SQDT.html">SQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.MQDT.html">MQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.cesium.html">cesium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.hydrogen.html">hydrogen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.lithium.html">lithium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.potassium.html">potassium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.rubidium.html">rubidium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.sodium.html">sodium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.strontium.html">strontium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.species.ytterbium.html">ytterbium</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generate_database.html">Generate Database module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.generate_database.create_tables_for_sqdt.html">create_tables_for_sqdt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.generate_database.create_tables_for_mqdt.html">create_tables_for_mqdt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/rydstate.generate_database.create_tables_for_misc.html">create_tables_for_misc</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<style>
+a.gitbutton {
+  display: block;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #fff;
+  padding-top: 10px;
+  padding-left: 85px;
+  padding-right: 0px;
+  margin: 22px;
+  width: 240px;
+  height: 60px;
+  background: transparent url("../../../_static/buttons/github.svg") 0 0 no-repeat;
+}
+a.gitbutton small {
+  display: block;
+  font-size: 11px;
+}
+button.toctree-expand {
+  display: none;
+}
+</style>
+<a href="https://github.com/pairinteraction/rydstate" class="gitbutton">Explore<small>the GitHub repository</small></a>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">RydState</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">rydstate.species.potential</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for rydstate.species.potential</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">ClassVar</span><span class="p">,</span> <span class="n">TypeVar</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.angular.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_unknown</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.metaclass_cache</span><span class="w"> </span><span class="kn">import</span> <span class="n">CachedABCMeta</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.species.element_properties</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_element_properties</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.species.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_all_subclasses</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">rydstate.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>
+
+<span class="n">XType</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">"XType"</span><span class="p">,</span> <span class="s2">"NDArray"</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Potential</span><span class="p">(</span><span class="n">ABC</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">CachedABCMeta</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Base class for all potential classes."""</span>
+
+    <span class="n">species</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">"""The short name of the atomic species."""</span>
+    <span class="n">tag</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">"""The tag for these potential parameters."""</span>
+    <span class="n">is_default</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="w">    </span><span class="sd">"""Whether this potential is the default potential for the species."""</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">l_r</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Initialize the potential.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            l_r: Orbital angular momentum of the Rydberg electron.</span>
+
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">element_properties</span> <span class="o">=</span> <span class="n">get_element_properties</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">is_unknown</span><span class="p">(</span><span class="n">l_r</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="p">((</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">l_r</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">l_r</span><span class="o">.</span><span class="n">is_integer</span><span class="p">())</span> <span class="ow">and</span> <span class="n">l_r</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"l_r must be an integer, and larger or equal 0, but </span><span class="si">{</span><span class="n">l_r</span><span class="si">=}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">l_r</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">l_r</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(l_r=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">l_r</span><span class="si">}</span><span class="s2">)"</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_potential_coulomb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">XType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">XType</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Calculate the Coulomb potential V_Col(x) in atomic units.</span>
+
+<span class="sd">        The Coulomb potential is given as</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            V_{Col}(x) = -Z / x</span>
+
+<span class="sd">        where x = r / a_0 and Z is the net charge of the ionic core seen by the Rydberg electron.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x: The dimensionless radial coordinate x = r / a_0, for which to calculate the potential.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            V_Col: The Coulomb potential V_Col(x) in atomic units.</span>
+
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">element_properties</span><span class="o">.</span><span class="n">net_charge</span> <span class="o">/</span> <span class="n">x</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_effective_potential_centrifugal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">XType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">XType</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Calculate the effective centrifugal potential V_l(x) in atomic units.</span>
+
+<span class="sd">        The effective centrifugal potential is given as</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            V_{l_r}(x) = \frac{l_r(l_r+1)}{2x^2}</span>
+
+<span class="sd">        where x = r / a_0 and l_r is the orbital angular momentum quantum number of the Rydberg electron.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x: The dimensionless radial coordinate x = r / a_0, for which to calculate the potential.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            V_{l_r}: The effective centrifugal potential V_{l_r}(x) in atomic units.</span>
+
+<span class="sd">        """</span>
+        <span class="n">x2</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_properties</span><span class="o">.</span><span class="n">reduced_mass_au</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">l_r</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l_r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">x2</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_effective_potential_sqrt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">XType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">XType</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Calculate the effective potential V_sqrt(x) from the sqrt transformation in atomic units.</span>
+
+<span class="sd">        The sqrt transformation potential arises from the transformation from the wavefunction u(x) to w(z),</span>
+<span class="sd">        where x = r / a_0 and w(z) = z^{-1/2} u(x=z^2) = (r/a_0)^{-1/4} sqrt(a_0) r R(r).</span>
+<span class="sd">        Due to the transformation, an additional term is added to the radial Schrödinger equation,</span>
+<span class="sd">        which can be written as effective potential V_{sqrt}(x) and is given by</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            V_{sqrt}(x) = \frac{3}{32x^2}</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x: The dimensionless radial coordinate x = r / a_0, for which to calculate the potential.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            V_sqrt: The sqrt transformation potential V_sqrt(x) in atomic units.</span>
+
+<span class="sd">        """</span>
+        <span class="n">x2</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_properties</span><span class="o">.</span><span class="n">reduced_mass_au</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">3</span> <span class="o">/</span> <span class="mi">32</span><span class="p">)</span> <span class="o">/</span> <span class="n">x2</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_model_potential</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">XType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">XType</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"Subclasses of Potential (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">) must implement the calc_model_potential method."</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_total_effective_potential</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">XType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">XType</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Calculate the total effective potential V_eff(x) in atomic units.</span>
+
+<span class="sd">        The total effective potential includes all physical and effective potentials:</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            V_{eff}(x) = V(x) + V_{l_r}(x) + V_{sqrt}(x)</span>
+
+<span class="sd">        where V(x) is the physical potential (either Coulomb or a model potential),</span>
+<span class="sd">        V_{l_r}(x) is the effective centrifugal potential,</span>
+<span class="sd">        and V_{sqrt}(x) is the effective potential from the sqrt transformation.</span>
+
+<span class="sd">        Note that we on purpose do not include the spin-orbit potential for several reasons:</span>
+
+<span class="sd">        i) The fine structure corrections are important for the energies of the states.</span>
+<span class="sd">           This includes a) spin-orbit coupling, b) Darwin term, and c) relativistic corrections to the kinetic energy.</span>
+<span class="sd">           Since we (obviously) can not include the latter two in the potential,</span>
+<span class="sd">           it is only consistent to not include the spin-orbit term either.</span>
+
+<span class="sd">        ii) The model potentials are generated without the spin-orbit term,</span>
+<span class="sd">            since their accuracy is not sufficient to resolve the fine structure corrections at small distances.</span>
+<span class="sd">            (This can also be seen by running Numerov for low lying states with an energy changed by e.g. 1%,</span>
+<span class="sd">            which will lead to almost no change in the wavefunction.)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x: The dimensionless radial coordinate x = r / a_0, for which to calculate potential.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            V_eff: The total potential V_eff(x) in atomic units.</span>
+
+<span class="sd">        """</span>
+        <span class="c1"># Note: we do not include the spin-orbit potential, see docstring for details.</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calc_model_potential</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">v</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calc_effective_potential_centrifugal</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">v</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calc_effective_potential_sqrt</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_hydrogen_turning_point_z</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Calculate the classical turning point z_i of the state if it would be a hydrogen atom.</span>
+
+<span class="sd">        The hydrogen turning point is defined as the point,</span>
+<span class="sd">        where for the idealized hydrogen(-like) atom the potential equals the energy,</span>
+<span class="sd">        i.e. V_Col(r_i) + V_l(r_i) = E.</span>
+<span class="sd">        This is exactly the case at</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            r_i = \frac{n^2 - n \sqrt{n^2 - l_r(l_r + 1)}}{Z}</span>
+
+<span class="sd">        and z_i = sqrt{r_i / a_0}, where Z is the net charge of the ionic core seen by the Rydberg electron.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            n: Principal quantum number of the state.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            z_i: The inner hydrogen turning point z_i in the scaled dimensionless coordinate z_i = sqrt{r_i / a_0}.</span>
+
+<span class="sd">        """</span>
+        <span class="n">net_charge</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_properties</span><span class="o">.</span><span class="n">net_charge</span>
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">n</span> <span class="o">*</span> <span class="n">n</span> <span class="o">-</span> <span class="n">n</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">n</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">l_r</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l_r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span> <span class="o">/</span> <span class="n">net_charge</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_turning_point_z</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energy_au</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">dz</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Calculate the classical inner turning point z_i for the given state.</span>
+
+<span class="sd">        The classical turning point is defined as the point,</span>
+<span class="sd">        where the total effective potential of the Rydberg model equals the energy,</span>
+<span class="sd">        i.e. V_eff(r_i) = E.</span>
+
+<span class="sd">        Note: Because we use the total effective potential, even for l=0 the turning point is not at r=0.</span>
+<span class="sd">        The advantage of this is, that this definition of the turning point should correspond to</span>
+<span class="sd">        where w(z) should have its last change of sign in the second derivative.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            energy_au: The energy, for which to calculate the classical turning point in atomic units.</span>
+<span class="sd">            dz: The precision of the turning point calculation.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            z_i: The inner turning point z_i in the scaled dimensionless coordinate z_i = sqrt{r_i / a_0}.</span>
+
+<span class="sd">        """</span>
+        <span class="c1"># for a given hydrogen turning point z_hyd, the classical turning point usually lies within z_hyd \pm 5</span>
+        <span class="c1"># for a given l, the hydrogen turning point is bound by</span>
+        <span class="c1"># z_lower = z_hyd(n=inf, l_r)  = \sqrt{l_r * (l_r+1) / (2 Z)} &lt;= z_hyd(n, l_r) &lt;= z_hyd(n=l_r+1, l_r) = z_upper</span>
+        <span class="n">z_lower</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l_r</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l_r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_properties</span><span class="o">.</span><span class="n">net_charge</span><span class="p">))</span>
+        <span class="n">z_upper</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calc_hydrogen_turning_point_z</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">l_r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">z_min_orig</span><span class="p">,</span> <span class="n">z_max_orig</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">z_lower</span> <span class="o">-</span> <span class="mi">5</span><span class="p">,</span> <span class="n">dz</span><span class="p">),</span> <span class="n">z_upper</span> <span class="o">+</span> <span class="mi">5</span>
+        <span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span> <span class="o">=</span> <span class="n">z_min_orig</span><span class="p">,</span> <span class="n">z_max_orig</span>
+
+        <span class="k">while</span> <span class="n">z_max</span> <span class="o">-</span> <span class="n">z_min</span> <span class="o">&gt;</span> <span class="n">dz</span><span class="p">:</span>
+            <span class="n">z_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="p">,</span> <span class="mi">1_000</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">v_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calc_total_effective_potential</span><span class="p">(</span><span class="n">z_list</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">energy_au</span>
+
+            <span class="n">inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">v_list</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">inds</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Effective potential is always above or below the energy, this should not happen!"</span><span class="p">)</span>
+            <span class="n">ind</span> <span class="o">=</span> <span class="n">inds</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># take the last index, where a sign change from positive to negative occurs</span>
+            <span class="c1"># because for some potentials, the potential for small distances gets negative again,</span>
+            <span class="c1"># but the classical forbidden region was already reached for a larger distance</span>
+
+            <span class="n">z_min</span> <span class="o">=</span> <span class="n">z_list</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+            <span class="n">z_max</span> <span class="o">=</span> <span class="n">z_list</span><span class="p">[</span><span class="n">ind</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">z_min</span> <span class="o">==</span> <span class="n">z_min_orig</span> <span class="ow">or</span> <span class="n">z_max</span> <span class="o">==</span> <span class="n">z_max_orig</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">"The turning point calculation did converge to the original z_min or z_max. "</span>
+                <span class="s2">"This should not happen and is probably a bug!"</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">z_min</span> <span class="o">+</span> <span class="p">(</span><span class="n">z_max</span> <span class="o">-</span> <span class="n">z_min</span><span class="p">)</span> <span class="o">*</span> <span class="n">v_list</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">v_list</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">-</span> <span class="n">v_list</span><span class="p">[</span><span class="n">ind</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>  <span class="c1"># type: ignore [no-any-return]</span>
+
+
+<div class="viewcode-block" id="PotentialCoulomb">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.species.PotentialCoulomb.html#rydstate.species.PotentialCoulomb">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PotentialCoulomb</span><span class="p">(</span><span class="n">Potential</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Simple Coulomb potential, without any additional terms."""</span>
+
+    <span class="n">tag</span> <span class="o">=</span> <span class="s2">"coulomb"</span>
+
+<div class="viewcode-block" id="PotentialCoulomb.calc_model_potential">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.species.PotentialCoulomb.html#rydstate.species.PotentialCoulomb.calc_model_potential">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_model_potential</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">XType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">XType</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Calculate the model potential V(x) in atomic units.</span>
+
+<span class="sd">        Default implementation returns the Coulomb potential, but this can be overridden by subclasses to implement</span>
+<span class="sd">        different model potentials.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x: The dimensionless radial coordinate x = r / a_0, for which to calculate the potential.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            V: The model potential V(x) in atomic units.</span>
+
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">calc_potential_coulomb</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="PotentialMarinescu1994">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.species.PotentialMarinescu1994.html#rydstate.species.PotentialMarinescu1994">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PotentialMarinescu1994</span><span class="p">(</span><span class="n">Potential</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Model potential for alkali atoms from Marinescu et al. (1994).</span>
+
+<span class="sd">    See also: Phys. Rev. A 49, 982 (1994)</span>
+<span class="sd">    """</span>
+
+    <span class="n">tag</span> <span class="o">=</span> <span class="s2">"marinescu_1994"</span>
+
+    <span class="n">alpha_core_marinescu_1994</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">"""Static dipole polarizability (a.u.) of the core, used for the parametric model potential."""</span>
+    <span class="n">r_c_dict_marinescu_1994</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span>
+<span class="w">    </span><span class="sd">"""Cutoff radius {l: r_c} to truncate the unphysical short-range contribution of the polarization potential."""</span>
+    <span class="n">model_potential_parameter_marinescu_1994</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]]</span>
+<span class="w">    </span><span class="sd">"""Parameters {l: (a_1, a_2, a_3, a_4)} for the parametric model potential."""</span>
+    <span class="n">reference</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">"M. Marinescu et al., Phys. Rev. A 49, 982 (1994), https://journals.aps.org/pra/abstract/10.1103/PhysRevA.49.982"</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="PotentialMarinescu1994.calc_model_potential">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.species.PotentialMarinescu1994.html#rydstate.species.PotentialMarinescu1994.calc_model_potential">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_model_potential</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">XType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">XType</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Calculate the model potential by Marinescu et al. (1994) in atomic units.</span>
+
+<span class="sd">        The model potential, see :attr:`~PotentialMarinescu1994.reference`, is given by</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            V_{mp,marinescu}(x) = - \frac{Z_{l}}{x} - \frac{\alpha_{core}}{2x^4} (1 - e^{-x^6/x_c**6})</span>
+
+<span class="sd">        where Z_{l} is the effective nuclear charge,</span>
+<span class="sd">        :math:`\alpha_{core}` is the static dipole polarizability of the ionic core,</span>
+<span class="sd">        and x_c is the effective core size.</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            Z_{l} = Z_{net} + (Z - Z_{net}) \exp(-a_1 x) - x (a_3 + a_4 x) \exp(-a_2 x)</span>
+
+<span class="sd">        with the nuclear charge Z and the net charge :math:`Z_{net}` of the ionic core seen by the Rydberg electron.</span>
+<span class="sd">        The effective charge interpolates from Z (at x = 0) to :math:`Z_{net}` (at x -&gt; infinity).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x: The dimensionless radial coordinate x = r / a_0, for which to calculate potential.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            V_{mp,marinescu}: The four parameter potential V_{mp,marinescu}(x) in atomic units.</span>
+
+<span class="sd">        """</span>
+        <span class="n">parameter_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_potential_parameter_marinescu_1994</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parameter_dict</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"No parametric model potential parameters defined for the species </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+        <span class="c1"># default to parameters for the maximum l</span>
+        <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">a3</span><span class="p">,</span> <span class="n">a4</span> <span class="o">=</span> <span class="n">parameter_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l_r</span><span class="p">,</span> <span class="n">parameter_dict</span><span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">parameter_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())])</span>
+        <span class="n">z_net</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_properties</span><span class="o">.</span><span class="n">net_charge</span>
+        <span class="n">exp_a1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">a1</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
+        <span class="n">exp_a2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">a2</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
+        <span class="n">z_nl</span><span class="p">:</span> <span class="n">XType</span> <span class="o">=</span> <span class="n">z_net</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">element_properties</span><span class="o">.</span><span class="n">Z</span> <span class="o">-</span> <span class="n">z_net</span><span class="p">)</span> <span class="o">*</span> <span class="n">exp_a1</span> <span class="o">-</span> <span class="n">x</span> <span class="o">*</span> <span class="p">(</span><span class="n">a3</span> <span class="o">+</span> <span class="n">a4</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">exp_a2</span>
+        <span class="n">v_c</span> <span class="o">=</span> <span class="o">-</span><span class="n">z_nl</span> <span class="o">/</span> <span class="n">x</span>
+
+        <span class="n">alpha_core</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha_core_marinescu_1994</span>
+        <span class="k">if</span> <span class="n">alpha_core</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">v_p</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">r_c_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_c_dict_marinescu_1994</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">r_c_dict</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"No parametric model potential parameters defined for the species </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+            <span class="c1"># default to x_c for the maximum l</span>
+            <span class="n">x_c</span> <span class="o">=</span> <span class="n">r_c_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l_r</span><span class="p">,</span> <span class="n">r_c_dict</span><span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">r_c_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())])</span>
+            <span class="n">x2</span><span class="p">:</span> <span class="n">XType</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
+            <span class="n">x4</span><span class="p">:</span> <span class="n">XType</span> <span class="o">=</span> <span class="n">x2</span> <span class="o">*</span> <span class="n">x2</span>
+            <span class="n">x6</span><span class="p">:</span> <span class="n">XType</span> <span class="o">=</span> <span class="n">x4</span> <span class="o">*</span> <span class="n">x2</span>
+            <span class="n">exp_x6</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">x6</span> <span class="o">/</span> <span class="n">x_c</span><span class="o">**</span><span class="mi">6</span><span class="p">))</span>
+            <span class="n">v_p</span> <span class="o">=</span> <span class="o">-</span><span class="n">alpha_core</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">x4</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">exp_x6</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">v_c</span> <span class="o">+</span> <span class="n">v_p</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="PotentialFei2009">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.species.PotentialFei2009.html#rydstate.species.PotentialFei2009">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PotentialFei2009</span><span class="p">(</span><span class="n">Potential</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Model potential for alkaline earth atoms from Fei et al. (2009).</span>
+
+<span class="sd">    See also: Phys. Rev. A 79, 052507 (2009)</span>
+<span class="sd">    """</span>
+
+    <span class="n">tag</span> <span class="o">=</span> <span class="s2">"fei_2009"</span>
+
+    <span class="n">model_potential_parameter_fei_2009</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span>
+<span class="w">    </span><span class="sd">"""Parameters (delta, alpha, beta, gamma) for the four-parameter potential used in the model potential."""</span>
+    <span class="n">reference</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">"Y. Fei et al., Chinese Phys. B 18 4234 (2009), https://iopscience.iop.org/article/10.1088/1674-1056/18/10/025"</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="PotentialFei2009.calc_model_potential">
+<a class="viewcode-back" href="../../../_autosummary/rydstate.species.PotentialFei2009.html#rydstate.species.PotentialFei2009.calc_model_potential">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_model_potential</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">XType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">XType</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Calculate the model potential by Fei et al. (2009) in atomic units.</span>
+
+<span class="sd">        The four parameter potential, see :attr:`~PotentialFei2009.reference`, is given by</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            V_{mp,fei}(x) = - \frac{1}{x}</span>
+<span class="sd">                - \frac{Z-1}{x} \cdot [1 - \alpha + \alpha e^{\beta x^\delta + \gamma x^{2\delta}}]^{-1}</span>
+
+<span class="sd">        where Z is the nuclear charge.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x: The dimensionless radial coordinate x = r / a_0, for which to calculate potential.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            V_{mp,fei}: The four parameter potential V_{mp,fei}(x) in atomic units.</span>
+
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_properties</span><span class="o">.</span><span class="n">net_charge</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"PotentialFei2009 is only valid for neutral atoms with a core net charge of 1"</span><span class="p">)</span>
+        <span class="n">delta</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_potential_parameter_fei_2009</span>
+        <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">over</span><span class="o">=</span><span class="s2">"ignore"</span><span class="p">):</span>
+            <span class="n">denom</span><span class="p">:</span> <span class="n">XType</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">beta</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="n">delta</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">x</span> <span class="o">**</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">delta</span><span class="p">))</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span> <span class="o">/</span> <span class="n">x</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">element_properties</span><span class="o">.</span><span class="n">Z</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">denom</span><span class="p">)</span></div>
+</div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_potential_class</span><span class="p">(</span><span class="n">species</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">type</span><span class="p">[</span><span class="n">Potential</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Get the subclass of Potential for the given species and tag."""</span>
+    <span class="n">subclasses</span> <span class="o">=</span> <span class="n">get_all_subclasses</span><span class="p">(</span><span class="n">Potential</span><span class="p">,</span> <span class="n">species</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">tag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">subclasses</span> <span class="o">=</span> <span class="p">[</span><span class="bp">cls</span> <span class="k">for</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="n">subclasses</span> <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">"is_default"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)]</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subclasses</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"No subclass of Potential found for </span><span class="si">{</span><span class="n">species</span><span class="si">=}</span><span class="s2"> and </span><span class="si">{</span><span class="n">tag</span><span class="si">=}</span><span class="s2">."</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subclasses</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">subclasses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Multiple subclasses of Potential found for </span><span class="si">{</span><span class="n">species</span><span class="si">=}</span><span class="s2"> and </span><span class="si">{</span><span class="n">tag</span><span class="si">=}</span><span class="s2">: </span><span class="si">{</span><span class="n">subclasses</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, RydState Developers.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

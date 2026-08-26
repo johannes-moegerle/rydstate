@@ -1,0 +1,46 @@
+ElementPropertiesHydrogen
+=========================
+
+.. currentmodule:: rydstate.species.hydrogen
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~ElementPropertiesHydrogen.__init__
+      ~ElementPropertiesHydrogen.get_corrected_rydberg_constant
+      ~ElementPropertiesHydrogen.is_allowed_shell
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~ElementPropertiesHydrogen.Z
+   ~ElementPropertiesHydrogen.additional_allowed_shells
+   ~ElementPropertiesHydrogen.alpha_closed_shell_core
+   ~ElementPropertiesHydrogen.core_electron_configuration
+   ~ElementPropertiesHydrogen.corrected_rydberg_constant
+   ~ElementPropertiesHydrogen.ground_state_shell
+   ~ElementPropertiesHydrogen.i_c
+   ~ElementPropertiesHydrogen.net_charge
+   ~ElementPropertiesHydrogen.nuclear_dipole
+   ~ElementPropertiesHydrogen.number_valence_electrons
+   ~ElementPropertiesHydrogen.r_c_dipole_operator
+   ~ElementPropertiesHydrogen.reduced_mass_au
+   ~ElementPropertiesHydrogen.s_c
+   ~ElementPropertiesHydrogen.s_r
+   ~ElementPropertiesHydrogen.species
+
+
+
+.. autoclass:: rydstate.species.hydrogen.ElementPropertiesHydrogen
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

@@ -1,0 +1,40 @@
+﻿CoreKet
+=======
+
+.. currentmodule:: rydstate.angular
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~CoreKet.__init__
+      ~CoreKet.find_matching_core_ket
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~CoreKet.i_c
+   ~CoreKet.n_c
+   ~CoreKet.s_c
+   ~CoreKet.l_c
+   ~CoreKet.j_c
+   ~CoreKet.f_c
+   ~CoreKet.label
+   ~CoreKet.quantum_numbers
+   ~CoreKet.contains_unknown
+   ~CoreKet.quantum_number_names
+
+
+
+.. autoclass:: rydstate.angular.CoreKet
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

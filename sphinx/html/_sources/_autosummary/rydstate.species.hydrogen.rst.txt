@@ -1,0 +1,57 @@
+﻿hydrogen
+========
+Full module path: rydstate.species.hydrogen
+
+.. workaround to ignore generic classes like AtomSQDT[int]
+
+
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+
+
+.. currentmodule:: rydstate.species.hydrogen
+
+
+
+
+
+
+.. rubric:: Classes
+
+.. .. inheritance-diagram:: rydstate.species.hydrogen
+..     :parts: 1
+
+.. autosummary::
+   :toctree: .
+   
+      ElementPropertiesHydrogen
+      ElementPropertiesHydrogenTextBook
+      PotentialCoulombHydrogen
+      PotentialCoulombHydrogenTextBook
+      SQDTHydrogen
+      SQDTHydrogenTextBook
+
+
+
+
+
+
+.. rubric:: Module description
+
+.. automodule:: rydstate.species.hydrogen

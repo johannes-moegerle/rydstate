@@ -1,0 +1,53 @@
+﻿potassium
+=========
+Full module path: rydstate.species.potassium
+
+.. workaround to ignore generic classes like AtomSQDT[int]
+
+
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+
+
+.. currentmodule:: rydstate.species.potassium
+
+
+
+
+
+
+.. rubric:: Classes
+
+.. .. inheritance-diagram:: rydstate.species.potassium
+..     :parts: 1
+
+.. autosummary::
+   :toctree: .
+   
+      ElementPropertiesPotassium
+      PotentialCoulombPotassium
+      PotentialFei2009Potassium
+      PotentialMarinescu1994Potassium
+      SQDTPotassium
+
+
+
+
+
+
+.. rubric:: Module description
+
+.. automodule:: rydstate.species.potassium

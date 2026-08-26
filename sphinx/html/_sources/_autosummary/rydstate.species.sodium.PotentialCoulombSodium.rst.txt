@@ -1,0 +1,39 @@
+PotentialCoulombSodium
+======================
+
+.. currentmodule:: rydstate.species.sodium
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~PotentialCoulombSodium.__init__
+      ~PotentialCoulombSodium.calc_effective_potential_centrifugal
+      ~PotentialCoulombSodium.calc_effective_potential_sqrt
+      ~PotentialCoulombSodium.calc_hydrogen_turning_point_z
+      ~PotentialCoulombSodium.calc_model_potential
+      ~PotentialCoulombSodium.calc_potential_coulomb
+      ~PotentialCoulombSodium.calc_total_effective_potential
+      ~PotentialCoulombSodium.calc_turning_point_z
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~PotentialCoulombSodium.is_default
+   ~PotentialCoulombSodium.species
+   ~PotentialCoulombSodium.tag
+
+
+
+.. autoclass:: rydstate.species.sodium.PotentialCoulombSodium
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

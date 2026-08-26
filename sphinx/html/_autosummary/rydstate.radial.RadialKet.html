@@ -1,0 +1,482 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RadialKet &mdash; RydState 0.12.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=f24cbf82"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Species Data" href="../api/species.html" />
+    <link rel="prev" title="Radial module" href="../api/radial.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            RydState
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#radialket">RadialKet</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/radial/hydrogen_wavefunction.html">Hydrogen radial wavefunction via numerov and from sympy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/radial/rubidium_wavefunction.html">Rubidium wavefunction and potential</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#angularstate">AngularState</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/angular/angular_state.html">Using AngularKets and AngularStates in different spin coupling schemes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#rydbergstate">RydbergState</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/dipole_matrix_elements.html">Calculating dipole matrix elements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/lifetimes.html">Lifetimes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#mqdt">MQDT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/mqdt/mqdt_exp_qn.html">Labeling the angular character of Yb 171</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#comparisons">Comparisons</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_z_min_cutoff.html">Comparison of the z_min values for circular states</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_nist_energy_levels_data.html">Compare NIST energy levels data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_nist_matrix_elements.html">Compare Rb <span class="math notranslate nohighlight">\(5s \rightarrow np_j\)</span> matrix elements with NIST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_nist_matrix_elements_Sr88_sqdt.html">Compare Sr <span class="math notranslate nohighlight">\(5s5s \rightarrow 5snl\)</span> matrix elements with NIST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_model_potentials.html">Compare different effective model potentials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_whittaker.html">Comparison: Numerov - Whittaker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/benchmark/benchmark_njit.html">Benchmark of Numerov integration with and without using numba.njit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api_reference.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/rydberg_state.html">Rydberg States</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.rydberg_state.RydbergStateSQDT.html">RydbergStateSQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.rydberg_state.RydbergStateSQDTAlkali.html">RydbergStateSQDTAlkali</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.rydberg_state.RydbergStateMQDT.html">RydbergStateMQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.rydberg_state.RydbergKet.html">RydbergKet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/basis.html">Rydberg Basis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.BasisSQDT.html">BasisSQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.BasisMQDT.html">BasisMQDT</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/angular.html">Angular module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.AngularKetLS.html">AngularKetLS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.AngularKetJJ.html">AngularKetJJ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.AngularKetFJ.html">AngularKetFJ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.AngularState.html">AngularState</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.CoreKet.html">CoreKet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.utils.html">utils</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api/radial.html">Radial module</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">RadialKet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/species.html">Species Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.ElementProperties.html">ElementProperties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.PotentialCoulomb.html">PotentialCoulomb</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.PotentialMarinescu1994.html">PotentialMarinescu1994</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.PotentialFei2009.html">PotentialFei2009</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.SQDT.html">SQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.MQDT.html">MQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.cesium.html">cesium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.hydrogen.html">hydrogen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.lithium.html">lithium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.potassium.html">potassium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.rubidium.html">rubidium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.sodium.html">sodium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.strontium.html">strontium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.ytterbium.html">ytterbium</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generate_database.html">Generate Database module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.generate_database.create_tables_for_sqdt.html">create_tables_for_sqdt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.generate_database.create_tables_for_mqdt.html">create_tables_for_mqdt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.generate_database.create_tables_for_misc.html">create_tables_for_misc</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<style>
+a.gitbutton {
+  display: block;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #fff;
+  padding-top: 10px;
+  padding-left: 85px;
+  padding-right: 0px;
+  margin: 22px;
+  width: 240px;
+  height: 60px;
+  background: transparent url("../_static/buttons/github.svg") 0 0 no-repeat;
+}
+a.gitbutton small {
+  display: block;
+  font-size: 11px;
+}
+button.toctree-expand {
+  display: none;
+}
+</style>
+<a href="https://github.com/pairinteraction/rydstate" class="gitbutton">Explore<small>the GitHub repository</small></a>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RydState</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api_reference.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../api/radial.html">Radial module</a></li>
+      <li class="breadcrumb-item active">RadialKet</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_autosummary/rydstate.radial.RadialKet.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="radialket">
+<h1>RadialKet<a class="headerlink" href="#radialket" title="Link to this heading"></a></h1>
+<p class="rubric">Class Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(nu, potential, *[, n_expected, dz, ...])</p></td>
+<td><p>Initialize the radial ket.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.radial.RadialKet.calc_matrix_element" title="rydstate.radial.RadialKet.calc_matrix_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_matrix_element</span></code></a>(other, k_radial[, unit, ...])</p></td>
+<td><p>Calculate the radial matrix element &lt;self | r^k_radial | other&gt;.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.radial.RadialKet.calc_overlap" title="rydstate.radial.RadialKet.calc_overlap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_overlap</span></code></a>(other, *[, integration_method])</p></td>
+<td><p>Calculate the overlap &lt;self|other&gt; of two radial kets.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.radial.RadialKet.get_outer_sign" title="rydstate.radial.RadialKet.get_outer_sign"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_outer_sign</span></code></a>()</p></td>
+<td><p>Get the sign of the outermost non-zero value of the wavefunction.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.radial.RadialKet.integrate_wavefunction" title="rydstate.radial.RadialKet.integrate_wavefunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">integrate_wavefunction</span></code></a>()</p></td>
+<td><p>Integrate the wavefunction using the method given by the <code class="docutils literal notranslate"><span class="pre">integration_method</span></code> parameter.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Class Attributes and Properties</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.radial.RadialKet.dz" title="rydstate.radial.RadialKet.dz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dz</span></code></a></p></td>
+<td><p>The grid step size in the scaled dimensionless coordinate <span class="math notranslate nohighlight">\(z = \sqrt{r/a_0}\)</span>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.radial.RadialKet.element_properties" title="rydstate.radial.RadialKet.element_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">element_properties</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.radial.RadialKet.nodes" title="rydstate.radial.RadialKet.nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nodes</span></code></a></p></td>
+<td><p>The number of nodes (i.e. zero-crossings) of the wavefunction.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.radial.RadialKet.norm" title="rydstate.radial.RadialKet.norm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">norm</span></code></a></p></td>
+<td><p>The norm of the wavefunction.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.radial.RadialKet.nu" title="rydstate.radial.RadialKet.nu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nu</span></code></a></p></td>
+<td><p>The effective principal quantum number of the wavefunction, or None if it is not well defined.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.radial.RadialKet.r_list" title="rydstate.radial.RadialKet.r_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">r_list</span></code></a></p></td>
+<td><p>The radial wavefunction in atomic units <span class="math notranslate nohighlight">\(\tilde{R}(r) = a_0^{-3/2} R(r)\)</span>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.radial.RadialKet.steps" title="rydstate.radial.RadialKet.steps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">steps</span></code></a></p></td>
+<td><p>The number of grid points.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.radial.RadialKet.u_list" title="rydstate.radial.RadialKet.u_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">u_list</span></code></a></p></td>
+<td><p>The dimensionless wavefunction <span class="math notranslate nohighlight">\(\tilde{u}(x) = \sqrt{a_0} r R(r)\)</span>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.radial.RadialKet.w_list" title="rydstate.radial.RadialKet.w_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">w_list</span></code></a></p></td>
+<td><p>The dimensionless scaled wavefunction <span class="math notranslate nohighlight">\(w(z)\)</span>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.radial.RadialKet.x_list" title="rydstate.radial.RadialKet.x_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">x_list</span></code></a></p></td>
+<td><p>The grid in the dimensionless coordinate <span class="math notranslate nohighlight">\(x = r/a_0\)</span>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.radial.RadialKet.z_list" title="rydstate.radial.RadialKet.z_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">z_list</span></code></a></p></td>
+<td><p>The grid in the scaled dimensionless coordinate <span class="math notranslate nohighlight">\(z = \sqrt{r/a_0}\)</span>.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="rydstate.radial.RadialKet">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">rydstate.radial.</span></span><span class="sig-name descname"><span class="pre">RadialKet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">potential</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_expected</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_backward</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_njit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">integration_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'numerov'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sign_convention</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'positive_at_outer_bound'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rydstate/radial/radial_ket.html#RadialKet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rydstate.radial.RadialKet" title="Link to this definition"></a></dt>
+<dd><p>Initialize the radial ket.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nu</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – Effective principal quantum number of the rydberg electron,
+which is used to calculate the energy of the state.</p></li>
+<li><p><strong>potential</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Potential</span></code></span>) – The potential object.</p></li>
+<li><p><strong>n_expected</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span>) – Optional principal quantum number of the rydberg electron, used for additional
+sanity checks of the radial wavefunction (e.g. checking that the number of nodes matches
+n - l - 1). It is also required for the “n_l_1” sign convention.</p></li>
+<li><p><strong>dz</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – The step size of the integration in the scaled dimensionless
+coordinate <span class="math notranslate nohighlight">\(z = \sqrt{r/a_0}\)</span>.</p></li>
+<li><p><strong>x_min</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span>) – The minimum value of the radial coordinate in dimensionless
+units <span class="math notranslate nohighlight">\(x = r/a_0\)</span>. None means a sensible value is calculated automatically.</p></li>
+<li><p><strong>x_max</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span>) – The maximum value of the radial coordinate in dimensionless
+units <span class="math notranslate nohighlight">\(x = r/a_0\)</span>. None means a sensible value is calculated automatically.</p></li>
+<li><p><strong>run_backward</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – Whether to integrate the radial Schrödinger equation
+“backward” or “forward”.</p></li>
+<li><p><strong>w0</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – The initial magnitude of the radial wavefunction at the boundary.</p></li>
+<li><p><strong>use_njit</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – Whether to use the fast njit version of the Numerov integration.</p></li>
+<li><p><strong>integration_method</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Literal</span></code>[<code class="docutils literal notranslate"><span class="pre">'numerov'</span></code>, <code class="docutils literal notranslate"><span class="pre">'whittaker'</span></code>]</span>) – The method used to integrate the wavefunction,
+either “numerov” or “whittaker”.</p></li>
+<li><p><strong>sign_convention</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Literal</span></code>[<code class="docutils literal notranslate"><span class="pre">'positive_at_outer_bound'</span></code>, <code class="docutils literal notranslate"><span class="pre">'n_l_1'</span></code>]]</span>) – The sign convention applied to the wavefunction after the integration.
+One of “positive_at_outer_bound”, “n_l_1” or None (see <code class="xref py py-meth docutils literal notranslate"><span class="pre">_apply_sign_convention()</span></code>).
+The “n_l_1” convention requires <code class="docutils literal notranslate"><span class="pre">n_expected</span></code> to be set.</p></li>
+<li><p><strong>args</strong> (<em>object</em>)</p></li>
+<li><p><strong>kwargs</strong> (<em>object</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>CachedT</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.radial.RadialKet.element_properties">
+<span class="sig-name descname"><span class="pre">element_properties</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="rydstate.species.ElementProperties.html#rydstate.species.ElementProperties" title="rydstate.species.element_properties.ElementProperties"><span class="pre">ElementProperties</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#rydstate.radial.RadialKet.element_properties" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.radial.RadialKet.nu">
+<span class="sig-name descname"><span class="pre">nu</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#rydstate.radial.RadialKet.nu" title="Link to this definition"></a></dt>
+<dd><p>The effective principal quantum number of the wavefunction, or None if it is not well defined.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rydstate.radial.RadialKet.n_expected">
+<span class="sig-name descname"><span class="pre">n_expected</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#rydstate.radial.RadialKet.n_expected" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rydstate.radial.RadialKet.z_list">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">z_list</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#rydstate.radial.RadialKet.z_list" title="Link to this definition"></a></dt>
+<dd><p>The grid in the scaled dimensionless coordinate <span class="math notranslate nohighlight">\(z = \sqrt{r/a_0}\)</span>.</p>
+<p>In this coordinate the grid points are chosen equidistant,
+because the nodes of the wavefunction are equally spaced in this coordinate.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rydstate.radial.RadialKet.w_list">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">w_list</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#rydstate.radial.RadialKet.w_list" title="Link to this definition"></a></dt>
+<dd><p>The dimensionless scaled wavefunction <span class="math notranslate nohighlight">\(w(z)\)</span>.</p>
+<p>The scaled wavefunction is defined as</p>
+<div class="math notranslate nohighlight">
+\[w(z) = z^{-1/2} \tilde{u}(x=z^2) = (r/a_0)^{-1/4} \sqrt{a_0} r R(r)\]</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.radial.RadialKet.integrate_wavefunction">
+<span class="sig-name descname"><span class="pre">integrate_wavefunction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rydstate/radial/radial_ket.html#RadialKet.integrate_wavefunction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rydstate.radial.RadialKet.integrate_wavefunction" title="Link to this definition"></a></dt>
+<dd><p>Integrate the wavefunction using the method given by the <code class="docutils literal notranslate"><span class="pre">integration_method</span></code> parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.radial.RadialKet.calc_matrix_element">
+<span class="sig-name descname"><span class="pre">calc_matrix_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_radial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">integration_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sum'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.radial.RadialKet.calc_matrix_element" title="Link to this definition"></a></dt>
+<dd><p>Calculate the radial matrix element &lt;self | r^k_radial | other&gt;.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Overloads<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong>, <strong>other</strong> (<span class="sphinx_autodoc_typehints-type">Radial</span>), <strong>k_radial</strong> (<span class="sphinx_autodoc_typehints-type">RadialMatrixElementOperator</span>), <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">None</span>), <strong>integration_method</strong> (<span class="sphinx_autodoc_typehints-type">INTEGRATION_METHODS</span>) → <span class="sphinx_autodoc_typehints-type">PintFloat</span></p></li>
+<li><p><strong>self</strong>, <strong>other</strong> (<span class="sphinx_autodoc_typehints-type">Radial</span>), <strong>k_radial</strong> (<span class="sphinx_autodoc_typehints-type">RadialMatrixElementOperator</span>), <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">str</span>), <strong>integration_method</strong> (<span class="sphinx_autodoc_typehints-type">INTEGRATION_METHODS</span>) → <span class="sphinx_autodoc_typehints-type">float</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>other</strong> (<em>Radial</em>)</p></li>
+<li><p><strong>k_radial</strong> (<em>int</em><em> | </em><em>Literal</em><em>[</em><em>'electric_dipole_closed_shell_core'</em><em>]</em>)</p></li>
+<li><p><strong>unit</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>integration_method</strong> (<em>Literal</em><em>[</em><em>'sum'</em><em>, </em><em>'trapezoid'</em><em>, </em><em>'scipy_simpson'</em><em>, </em><em>'scipy_trapezoid'</em><em>]</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>PlainQuantity</em>[float] | float</p>
+</dd>
+</dl>
+<p>Computes the integral</p>
+<div class="math notranslate nohighlight">
+\[\int_{0}^{\infty} dr r^2 r^k_{radial} R_1(r) R_2(r)
+= a_0^{k_{radial}} \int_{0}^{\infty} dx x^k_{radial} \tilde{u}_1(x) \tilde{u}_2(x)
+= a_0^{k_{radial}} \int_{0}^{\infty} dz 2 z^{2 + 2k_{radial}} w_1(z) w_2(z)\]</div>
+<p>where R_1 and R_2 are the radial wavefunctions of self and other,
+and w(z) = z^{-1/2} tilde{u}(z^2) = (r/_a_0)^{1/4} sqrt{a_0} r R(r).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>other</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Radial</span></code></span>) – Other radial ket</p></li>
+<li><p><strong>k_radial</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Literal</span></code>[<code class="docutils literal notranslate"><span class="pre">'electric_dipole_closed_shell_core'</span></code>]]</span>) – Power of r in the matrix element, or a string indicating a special operator
+(e.g. “electric_dipole_closed_shell_core”)</p></li>
+<li><p><strong>unit</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span>) – Unit of the returned matrix element, default None returns a Pint quantity.</p></li>
+<li><p><strong>integration_method</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Literal</span></code>[<code class="docutils literal notranslate"><span class="pre">'sum'</span></code>, <code class="docutils literal notranslate"><span class="pre">'trapezoid'</span></code>, <code class="docutils literal notranslate"><span class="pre">'scipy_simpson'</span></code>, <code class="docutils literal notranslate"><span class="pre">'scipy_trapezoid'</span></code>]</span>) – Integration method to use</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The radial matrix element in the desired unit.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>PlainQuantity</em>[float] | float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.radial.RadialKet.calc_overlap">
+<span class="sig-name descname"><span class="pre">calc_overlap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">integration_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sum'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.radial.RadialKet.calc_overlap" title="Link to this definition"></a></dt>
+<dd><p>Calculate the overlap &lt;self|other&gt; of two radial kets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>other</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Radial</span></code></span>) – Other radial ket</p></li>
+<li><p><strong>integration_method</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Literal</span></code>[<code class="docutils literal notranslate"><span class="pre">'sum'</span></code>, <code class="docutils literal notranslate"><span class="pre">'trapezoid'</span></code>, <code class="docutils literal notranslate"><span class="pre">'scipy_simpson'</span></code>, <code class="docutils literal notranslate"><span class="pre">'scipy_trapezoid'</span></code>]</span>) – Integration method to use</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The overlap integral between self and other.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rydstate.radial.RadialKet.dz">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">dz</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#rydstate.radial.RadialKet.dz" title="Link to this definition"></a></dt>
+<dd><p>The grid step size in the scaled dimensionless coordinate <span class="math notranslate nohighlight">\(z = \sqrt{r/a_0}\)</span>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.radial.RadialKet.get_outer_sign">
+<span class="sig-name descname"><span class="pre">get_outer_sign</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rydstate.radial.RadialKet.get_outer_sign" title="Link to this definition"></a></dt>
+<dd><p>Get the sign of the outermost non-zero value of the wavefunction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rydstate.radial.RadialKet.nodes">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">nodes</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#rydstate.radial.RadialKet.nodes" title="Link to this definition"></a></dt>
+<dd><p>The number of nodes (i.e. zero-crossings) of the wavefunction.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rydstate.radial.RadialKet.norm">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">norm</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#rydstate.radial.RadialKet.norm" title="Link to this definition"></a></dt>
+<dd><p>The norm of the wavefunction.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rydstate.radial.RadialKet.r_list">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">r_list</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#rydstate.radial.RadialKet.r_list" title="Link to this definition"></a></dt>
+<dd><p>The radial wavefunction in atomic units <span class="math notranslate nohighlight">\(\tilde{R}(r) = a_0^{-3/2} R(r)\)</span>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rydstate.radial.RadialKet.steps">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">steps</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#rydstate.radial.RadialKet.steps" title="Link to this definition"></a></dt>
+<dd><p>The number of grid points.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rydstate.radial.RadialKet.u_list">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">u_list</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#rydstate.radial.RadialKet.u_list" title="Link to this definition"></a></dt>
+<dd><p>The dimensionless wavefunction <span class="math notranslate nohighlight">\(\tilde{u}(x) = \sqrt{a_0} r R(r)\)</span>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rydstate.radial.RadialKet.x_list">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">x_list</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#rydstate.radial.RadialKet.x_list" title="Link to this definition"></a></dt>
+<dd><p>The grid in the dimensionless coordinate <span class="math notranslate nohighlight">\(x = r/a_0\)</span>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../api/radial.html" class="btn btn-neutral float-left" title="Radial module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../api/species.html" class="btn btn-neutral float-right" title="Species Data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, RydState Developers.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

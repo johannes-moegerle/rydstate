@@ -1,0 +1,39 @@
+PotentialCoulombHydrogen
+========================
+
+.. currentmodule:: rydstate.species.hydrogen
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~PotentialCoulombHydrogen.__init__
+      ~PotentialCoulombHydrogen.calc_effective_potential_centrifugal
+      ~PotentialCoulombHydrogen.calc_effective_potential_sqrt
+      ~PotentialCoulombHydrogen.calc_hydrogen_turning_point_z
+      ~PotentialCoulombHydrogen.calc_model_potential
+      ~PotentialCoulombHydrogen.calc_potential_coulomb
+      ~PotentialCoulombHydrogen.calc_total_effective_potential
+      ~PotentialCoulombHydrogen.calc_turning_point_z
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~PotentialCoulombHydrogen.is_default
+   ~PotentialCoulombHydrogen.species
+   ~PotentialCoulombHydrogen.tag
+
+
+
+.. autoclass:: rydstate.species.hydrogen.PotentialCoulombHydrogen
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

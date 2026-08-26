@@ -1,0 +1,39 @@
+﻿PotentialCoulomb
+================
+
+.. currentmodule:: rydstate.species
+
+
+
+
+.. rubric:: Class Methods
+
+.. autosummary::
+   
+      ~PotentialCoulomb.__init__
+      ~PotentialCoulomb.calc_effective_potential_centrifugal
+      ~PotentialCoulomb.calc_effective_potential_sqrt
+      ~PotentialCoulomb.calc_hydrogen_turning_point_z
+      ~PotentialCoulomb.calc_model_potential
+      ~PotentialCoulomb.calc_potential_coulomb
+      ~PotentialCoulomb.calc_total_effective_potential
+      ~PotentialCoulomb.calc_turning_point_z
+
+
+
+.. rubric:: Class Attributes and Properties
+
+.. autosummary::
+
+   ~PotentialCoulomb.is_default
+   ~PotentialCoulomb.tag
+   ~PotentialCoulomb.species
+
+
+
+.. autoclass:: rydstate.species.PotentialCoulomb
+   :members:
+   :member-order: bysource
+   :inherited-members:
+   :undoc-members:
+   :class-doc-from: init

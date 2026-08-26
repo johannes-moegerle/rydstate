@@ -1,0 +1,6 @@
+quantum\_numbers\_to\_angular\_ket
+==================================
+
+.. currentmodule:: rydstate.angular.utils
+
+.. autofunction:: quantum_numbers_to_angular_ket

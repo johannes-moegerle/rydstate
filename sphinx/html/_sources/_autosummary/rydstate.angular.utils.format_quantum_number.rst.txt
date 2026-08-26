@@ -1,0 +1,6 @@
+format\_quantum\_number
+=======================
+
+.. currentmodule:: rydstate.angular.utils
+
+.. autofunction:: format_quantum_number

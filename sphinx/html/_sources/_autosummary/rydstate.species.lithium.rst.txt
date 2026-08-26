@@ -1,0 +1,53 @@
+﻿lithium
+=======
+Full module path: rydstate.species.lithium
+
+.. workaround to ignore generic classes like AtomSQDT[int]
+
+
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+   
+      
+   
+
+
+.. currentmodule:: rydstate.species.lithium
+
+
+
+
+
+
+.. rubric:: Classes
+
+.. .. inheritance-diagram:: rydstate.species.lithium
+..     :parts: 1
+
+.. autosummary::
+   :toctree: .
+   
+      ElementPropertiesLithium
+      PotentialCoulombLithium
+      PotentialFei2009Lithium
+      PotentialMarinescu1994Lithium
+      SQDTLithium
+
+
+
+
+
+
+.. rubric:: Module description
+
+.. automodule:: rydstate.species.lithium

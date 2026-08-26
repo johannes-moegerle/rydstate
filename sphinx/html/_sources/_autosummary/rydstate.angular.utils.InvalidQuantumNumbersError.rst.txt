@@ -1,0 +1,6 @@
+InvalidQuantumNumbersError
+==========================
+
+.. currentmodule:: rydstate.angular.utils
+
+.. autoexception:: InvalidQuantumNumbersError

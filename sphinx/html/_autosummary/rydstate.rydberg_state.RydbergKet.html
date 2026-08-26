@@ -1,0 +1,415 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RydbergKet &mdash; RydState 0.12.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=f24cbf82"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Rydberg Basis" href="../api/basis.html" />
+    <link rel="prev" title="RydbergStateMQDT" href="rydstate.rydberg_state.RydbergStateMQDT.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            RydState
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#radialket">RadialKet</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/radial/hydrogen_wavefunction.html">Hydrogen radial wavefunction via numerov and from sympy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/radial/rubidium_wavefunction.html">Rubidium wavefunction and potential</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#angularstate">AngularState</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/angular/angular_state.html">Using AngularKets and AngularStates in different spin coupling schemes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#rydbergstate">RydbergState</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/dipole_matrix_elements.html">Calculating dipole matrix elements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/lifetimes.html">Lifetimes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#mqdt">MQDT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/mqdt/mqdt_exp_qn.html">Labeling the angular character of Yb 171</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#comparisons">Comparisons</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_z_min_cutoff.html">Comparison of the z_min values for circular states</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_nist_energy_levels_data.html">Compare NIST energy levels data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_nist_matrix_elements.html">Compare Rb <span class="math notranslate nohighlight">\(5s \rightarrow np_j\)</span> matrix elements with NIST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_nist_matrix_elements_Sr88_sqdt.html">Compare Sr <span class="math notranslate nohighlight">\(5s5s \rightarrow 5snl\)</span> matrix elements with NIST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_model_potentials.html">Compare different effective model potentials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/comparisons/compare_whittaker.html">Comparison: Numerov - Whittaker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/benchmark/benchmark_njit.html">Benchmark of Numerov integration with and without using numba.njit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api_reference.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../api/rydberg_state.html">Rydberg States</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="rydstate.rydberg_state.RydbergStateSQDT.html">RydbergStateSQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.rydberg_state.RydbergStateSQDTAlkali.html">RydbergStateSQDTAlkali</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.rydberg_state.RydbergStateMQDT.html">RydbergStateMQDT</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">RydbergKet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/basis.html">Rydberg Basis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.BasisSQDT.html">BasisSQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.BasisMQDT.html">BasisMQDT</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/angular.html">Angular module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.AngularKetLS.html">AngularKetLS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.AngularKetJJ.html">AngularKetJJ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.AngularKetFJ.html">AngularKetFJ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.AngularState.html">AngularState</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.CoreKet.html">CoreKet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.angular.utils.html">utils</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/radial.html">Radial module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.radial.RadialKet.html">RadialKet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/species.html">Species Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.ElementProperties.html">ElementProperties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.PotentialCoulomb.html">PotentialCoulomb</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.PotentialMarinescu1994.html">PotentialMarinescu1994</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.PotentialFei2009.html">PotentialFei2009</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.SQDT.html">SQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.MQDT.html">MQDT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.cesium.html">cesium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.hydrogen.html">hydrogen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.lithium.html">lithium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.potassium.html">potassium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.rubidium.html">rubidium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.sodium.html">sodium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.strontium.html">strontium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.species.ytterbium.html">ytterbium</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generate_database.html">Generate Database module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.generate_database.create_tables_for_sqdt.html">create_tables_for_sqdt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.generate_database.create_tables_for_mqdt.html">create_tables_for_mqdt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rydstate.generate_database.create_tables_for_misc.html">create_tables_for_misc</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<style>
+a.gitbutton {
+  display: block;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #fff;
+  padding-top: 10px;
+  padding-left: 85px;
+  padding-right: 0px;
+  margin: 22px;
+  width: 240px;
+  height: 60px;
+  background: transparent url("../_static/buttons/github.svg") 0 0 no-repeat;
+}
+a.gitbutton small {
+  display: block;
+  font-size: 11px;
+}
+button.toctree-expand {
+  display: none;
+}
+</style>
+<a href="https://github.com/pairinteraction/rydstate" class="gitbutton">Explore<small>the GitHub repository</small></a>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RydState</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api_reference.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../api/rydberg_state.html">Rydberg States</a></li>
+      <li class="breadcrumb-item active">RydbergKet</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_autosummary/rydstate.rydberg_state.RydbergKet.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rydbergket">
+<h1>RydbergKet<a class="headerlink" href="#rydbergket" title="Link to this heading"></a></h1>
+<p class="rubric">Class Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(species, angular, radial, *[, n])</p></td>
+<td><p>Initialize the Rydberg state.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.rydberg_state.RydbergKet.calc_matrix_element" title="rydstate.rydberg_state.RydbergKet.calc_matrix_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_matrix_element</span></code></a>(other, operator, q, *[, ...])</p></td>
+<td><p>Calculate the matrix element.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.rydberg_state.RydbergKet.calc_reduced_matrix_element" title="rydstate.rydberg_state.RydbergKet.calc_reduced_matrix_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_reduced_matrix_element</span></code></a>(other, operator, *)</p></td>
+<td><p>Calculate the reduced matrix element.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.rydberg_state.RydbergKet.calc_reduced_overlap" title="rydstate.rydberg_state.RydbergKet.calc_reduced_overlap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_reduced_overlap</span></code></a>(other)</p></td>
+<td><p>Calculate the reduced overlap &lt;self|other&gt; (ignoring the magnetic quantum number m).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.rydberg_state.RydbergKet.get_label" title="rydstate.rydberg_state.RydbergKet.get_label"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_label</span></code></a>([fmt])</p></td>
+<td><p>Return a label of the Rydberg ket in the common spectroscopic notation.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Class Attributes and Properties</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rydstate.rydberg_state.RydbergKet.core_state" title="rydstate.rydberg_state.RydbergKet.core_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">core_state</span></code></a></p></td>
+<td><p>Get the corresponding ion state of the Rydberg ket.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rydstate.rydberg_state.RydbergKet.valence_electrons_are_in_the_same_shell" title="rydstate.rydberg_state.RydbergKet.valence_electrons_are_in_the_same_shell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">valence_electrons_are_in_the_same_shell</span></code></a></p></td>
+<td><p>Whether the Rydberg electron occupies the same shell as the inner valence electron.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="rydstate.rydberg_state.RydbergKet">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">rydstate.rydberg_state.</span></span><span class="sig-name descname"><span class="pre">RydbergKet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">species</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angular</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radial</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rydstate/rydberg_state/rydberg_ket.html#RydbergKet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rydstate.rydberg_state.RydbergKet" title="Link to this definition"></a></dt>
+<dd><p>Initialize the Rydberg state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>species</strong> (<em>str</em>)</p></li>
+<li><p><strong>angular</strong> (<em>AngularKetBase</em><em>[</em><em>Any</em><em>]</em>)</p></li>
+<li><p><strong>radial</strong> (<em>Radial</em>)</p></li>
+<li><p><strong>n</strong> (<em>int</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.rydberg_state.RydbergKet.get_label">
+<span class="sig-name descname"><span class="pre">get_label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ket'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rydstate/rydberg_state/rydberg_ket.html#RydbergKet.get_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rydstate.rydberg_state.RydbergKet.get_label" title="Link to this definition"></a></dt>
+<dd><p>Return a label of the Rydberg ket in the common spectroscopic notation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fmt</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Literal</span></code>[<code class="docutils literal notranslate"><span class="pre">'raw'</span></code>, <code class="docutils literal notranslate"><span class="pre">'ket'</span></code>, <code class="docutils literal notranslate"><span class="pre">'bra'</span></code>]</span>) – The format of the label, i.e. whether to return the raw label, or the label in ket or bra notation.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The label of the Rydberg ket.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.rydberg_state.RydbergKet.calc_reduced_overlap">
+<span class="sig-name descname"><span class="pre">calc_reduced_overlap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rydstate/rydberg_state/rydberg_ket.html#RydbergKet.calc_reduced_overlap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rydstate.rydberg_state.RydbergKet.calc_reduced_overlap" title="Link to this definition"></a></dt>
+<dd><p>Calculate the reduced overlap &lt;self|other&gt; (ignoring the magnetic quantum number m).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>other</strong> (<a class="reference internal" href="#rydstate.rydberg_state.RydbergKet" title="rydstate.rydberg_state.rydberg_ket.RydbergKet"><em>RydbergKet</em></a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.rydberg_state.RydbergKet.calc_reduced_matrix_element">
+<span class="sig-name descname"><span class="pre">calc_reduced_matrix_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operator</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">part</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rydstate/rydberg_state/rydberg_ket.html#RydbergKet.calc_reduced_matrix_element"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rydstate.rydberg_state.RydbergKet.calc_reduced_matrix_element" title="Link to this definition"></a></dt>
+<dd><p>Calculate the reduced matrix element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Overloads<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong>, <strong>other</strong> (<span class="sphinx_autodoc_typehints-type">RydbergKet</span>), <strong>operator</strong> (<span class="sphinx_autodoc_typehints-type">MatrixElementOperator</span>), <strong>part</strong> (<span class="sphinx_autodoc_typehints-type">MatrixElementPart</span>), <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">None</span>) → <span class="sphinx_autodoc_typehints-type">PintFloat</span></p></li>
+<li><p><strong>self</strong>, <strong>other</strong> (<span class="sphinx_autodoc_typehints-type">RydbergKet</span>), <strong>operator</strong> (<span class="sphinx_autodoc_typehints-type">MatrixElementOperator</span>), <strong>part</strong> (<span class="sphinx_autodoc_typehints-type">MatrixElementPart</span>), <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">str</span>) → <span class="sphinx_autodoc_typehints-type">float</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>other</strong> (<a class="reference internal" href="#rydstate.rydberg_state.RydbergKet" title="rydstate.rydberg_state.rydberg_ket.RydbergKet"><em>RydbergKet</em></a>)</p></li>
+<li><p><strong>operator</strong> (<em>Literal</em><em>[</em><em>'magnetic_dipole'</em><em>, </em><em>'electric_dipole'</em><em>, </em><em>'electric_quadrupole'</em><em>, </em><em>'electric_octupole'</em><em>, </em><em>'electric_quadrupole_zero'</em><em>, </em><em>'spherical'</em><em>, </em><em>'spherical_inner_valence'</em><em>, </em><em>'i_c'</em><em>, </em><em>'s_c'</em><em>, </em><em>'l_c'</em><em>, </em><em>'s_r'</em><em>, </em><em>'l_r'</em><em>, </em><em>'s_tot'</em><em>, </em><em>'l_tot'</em><em>, </em><em>'j_c'</em><em>, </em><em>'j_r'</em><em>, </em><em>'j_tot'</em><em>, </em><em>'f_c'</em><em>, </em><em>'f_tot'</em><em>, </em><em>'identity_i_c'</em><em>, </em><em>'identity_s_c'</em><em>, </em><em>'identity_l_c'</em><em>, </em><em>'identity_s_r'</em><em>, </em><em>'identity_l_r'</em><em>, </em><em>'identity_s_tot'</em><em>, </em><em>'identity_l_tot'</em><em>, </em><em>'identity_j_c'</em><em>, </em><em>'identity_j_r'</em><em>, </em><em>'identity_j_tot'</em><em>, </em><em>'identity_f_c'</em><em>, </em><em>'identity_f_tot'</em><em>]</em>)</p></li>
+<li><p><strong>part</strong> (<em>Literal</em><em>[</em><em>'all'</em><em>, </em><em>'rydberg'</em><em>, </em><em>'inner_valence'</em><em>, </em><em>'closed_shell_core'</em><em>]</em>)</p></li>
+<li><p><strong>unit</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>PlainQuantity</em>[float] | float</p>
+</dd>
+</dl>
+<p>Calculate the reduced matrix element between self and other (ignoring m quantum numbers)</p>
+<div class="math notranslate nohighlight">
+\[\left\langle self || r^k_radial \hat{O}^{(k_{angular})} || other \right\rangle\]</div>
+<p>where hat{O}^{(k_{angular})} is the operator of rank k_angular for which to calculate the matrix element.
+k_radial and k_angular are determined from the operator automatically.</p>
+<p>For the <code class="docutils literal notranslate"><span class="pre">&quot;electric_...&quot;</span></code> operators, the matrix element of “rydberg”, “inner_valence” and “closed_shell_core”
+are calculated separately and added together
+(currently “closed_shell_core” is only supported for the “electric_dipole” operator).
+In addition, each term is multiplied by the symmetry factor sqrt(2),
+if exactly one of self and other has both its valence electrons in the same shell,
+see also <a class="reference internal" href="#rydstate.rydberg_state.RydbergKet.valence_electrons_are_in_the_same_shell" title="rydstate.rydberg_state.RydbergKet.valence_electrons_are_in_the_same_shell"><code class="xref py py-attr docutils literal notranslate"><span class="pre">valence_electrons_are_in_the_same_shell</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>other</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#rydstate.rydberg_state.RydbergKet" title="rydstate.rydberg_state.rydberg_ket.RydbergKet"><code class="xref py py-class docutils literal notranslate"><span class="pre">RydbergKet</span></code></a></span>) – The other Rydberg state for which to calculate the matrix element.</p></li>
+<li><p><strong>operator</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Literal</span></code>[<code class="docutils literal notranslate"><span class="pre">'magnetic_dipole'</span></code>, <code class="docutils literal notranslate"><span class="pre">'electric_dipole'</span></code>, <code class="docutils literal notranslate"><span class="pre">'electric_quadrupole'</span></code>, <code class="docutils literal notranslate"><span class="pre">'electric_octupole'</span></code>, <code class="docutils literal notranslate"><span class="pre">'electric_quadrupole_zero'</span></code>, <code class="docutils literal notranslate"><span class="pre">'spherical'</span></code>, <code class="docutils literal notranslate"><span class="pre">'spherical_inner_valence'</span></code>, <code class="docutils literal notranslate"><span class="pre">'i_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'s_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'l_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'s_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'l_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'s_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'l_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'j_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'j_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'j_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'f_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'f_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_i_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_s_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_l_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_s_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_l_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_s_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_l_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_j_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_j_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_j_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_f_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_f_tot'</span></code>]</span>) – The operator for which to calculate the matrix element.</p></li>
+<li><p><strong>part</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Literal</span></code>[<code class="docutils literal notranslate"><span class="pre">'all'</span></code>, <code class="docutils literal notranslate"><span class="pre">'rydberg'</span></code>, <code class="docutils literal notranslate"><span class="pre">'inner_valence'</span></code>, <code class="docutils literal notranslate"><span class="pre">'closed_shell_core'</span></code>]</span>) – The part of the matrix element to calculate.</p></li>
+<li><p><strong>unit</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span>) – The unit to which to convert the radial matrix element.
+Can be “a.u.” for atomic units (so no conversion is done), or a specific unit.
+Default None will return a pint quantity.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The reduced matrix element for the given operator.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>PlainQuantity</em>[float] | float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rydstate.rydberg_state.RydbergKet.core_state">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">core_state</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="rydstate.rydberg_state.RydbergStateSQDT.html#rydstate.rydberg_state.RydbergStateSQDT" title="rydstate.rydberg_state.rydberg_sqdt.RydbergStateSQDT"><span class="pre">RydbergStateSQDT</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#rydstate.rydberg_state.RydbergKet.core_state" title="Link to this definition"></a></dt>
+<dd><p>Get the corresponding ion state of the Rydberg ket.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rydstate.rydberg_state.RydbergKet.valence_electrons_are_in_the_same_shell">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">valence_electrons_are_in_the_same_shell</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#rydstate.rydberg_state.RydbergKet.valence_electrons_are_in_the_same_shell" title="Link to this definition"></a></dt>
+<dd><p>Whether the Rydberg electron occupies the same shell as the inner valence electron.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rydstate.rydberg_state.RydbergKet.calc_matrix_element">
+<span class="sig-name descname"><span class="pre">calc_matrix_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">part</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rydstate/rydberg_state/rydberg_ket.html#RydbergKet.calc_matrix_element"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rydstate.rydberg_state.RydbergKet.calc_matrix_element" title="Link to this definition"></a></dt>
+<dd><p>Calculate the matrix element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Overloads<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong>, <strong>other</strong> (<span class="sphinx_autodoc_typehints-type">RydbergKet</span>), <strong>operator</strong> (<span class="sphinx_autodoc_typehints-type">MatrixElementOperator</span>), <strong>q</strong> (<span class="sphinx_autodoc_typehints-type">int</span>), <strong>part</strong> (<span class="sphinx_autodoc_typehints-type">MatrixElementPart</span>), <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">None</span>) → <span class="sphinx_autodoc_typehints-type">PintFloat</span></p></li>
+<li><p><strong>self</strong>, <strong>other</strong> (<span class="sphinx_autodoc_typehints-type">RydbergKet</span>), <strong>operator</strong> (<span class="sphinx_autodoc_typehints-type">MatrixElementOperator</span>), <strong>q</strong> (<span class="sphinx_autodoc_typehints-type">int</span>), <strong>part</strong> (<span class="sphinx_autodoc_typehints-type">MatrixElementPart</span>), <strong>unit</strong> (<span class="sphinx_autodoc_typehints-type">str</span>) → <span class="sphinx_autodoc_typehints-type">float</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>other</strong> (<a class="reference internal" href="#rydstate.rydberg_state.RydbergKet" title="rydstate.rydberg_state.rydberg_ket.RydbergKet"><em>RydbergKet</em></a>)</p></li>
+<li><p><strong>operator</strong> (<em>Literal</em><em>[</em><em>'magnetic_dipole'</em><em>, </em><em>'electric_dipole'</em><em>, </em><em>'electric_quadrupole'</em><em>, </em><em>'electric_octupole'</em><em>, </em><em>'electric_quadrupole_zero'</em><em>, </em><em>'spherical'</em><em>, </em><em>'spherical_inner_valence'</em><em>, </em><em>'i_c'</em><em>, </em><em>'s_c'</em><em>, </em><em>'l_c'</em><em>, </em><em>'s_r'</em><em>, </em><em>'l_r'</em><em>, </em><em>'s_tot'</em><em>, </em><em>'l_tot'</em><em>, </em><em>'j_c'</em><em>, </em><em>'j_r'</em><em>, </em><em>'j_tot'</em><em>, </em><em>'f_c'</em><em>, </em><em>'f_tot'</em><em>, </em><em>'identity_i_c'</em><em>, </em><em>'identity_s_c'</em><em>, </em><em>'identity_l_c'</em><em>, </em><em>'identity_s_r'</em><em>, </em><em>'identity_l_r'</em><em>, </em><em>'identity_s_tot'</em><em>, </em><em>'identity_l_tot'</em><em>, </em><em>'identity_j_c'</em><em>, </em><em>'identity_j_r'</em><em>, </em><em>'identity_j_tot'</em><em>, </em><em>'identity_f_c'</em><em>, </em><em>'identity_f_tot'</em><em>]</em>)</p></li>
+<li><p><strong>q</strong> (<em>int</em>)</p></li>
+<li><p><strong>part</strong> (<em>Literal</em><em>[</em><em>'all'</em><em>, </em><em>'rydberg'</em><em>, </em><em>'inner_valence'</em><em>, </em><em>'closed_shell_core'</em><em>]</em>)</p></li>
+<li><p><strong>unit</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>PlainQuantity</em>[float] | float</p>
+</dd>
+</dl>
+<p>Calculate the full matrix element between self and other,
+also considering the magnetic quantum numbers m of self and other.</p>
+<div class="math notranslate nohighlight">
+\[\left\langle self | r^k_radial \hat{O}^{(k_{angular})}_q | other \right\rangle\]</div>
+<p>where hat{O}^{(k_{angular})}_q is the operator of rank k_angular for which to calculate the matrix element.
+k_radial and k_angular are determined from the operator automatically.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>other</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#rydstate.rydberg_state.RydbergKet" title="rydstate.rydberg_state.rydberg_ket.RydbergKet"><code class="xref py py-class docutils literal notranslate"><span class="pre">RydbergKet</span></code></a></span>) – The other Rydberg state for which to calculate the matrix element.</p></li>
+<li><p><strong>operator</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Literal</span></code>[<code class="docutils literal notranslate"><span class="pre">'magnetic_dipole'</span></code>, <code class="docutils literal notranslate"><span class="pre">'electric_dipole'</span></code>, <code class="docutils literal notranslate"><span class="pre">'electric_quadrupole'</span></code>, <code class="docutils literal notranslate"><span class="pre">'electric_octupole'</span></code>, <code class="docutils literal notranslate"><span class="pre">'electric_quadrupole_zero'</span></code>, <code class="docutils literal notranslate"><span class="pre">'spherical'</span></code>, <code class="docutils literal notranslate"><span class="pre">'spherical_inner_valence'</span></code>, <code class="docutils literal notranslate"><span class="pre">'i_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'s_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'l_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'s_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'l_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'s_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'l_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'j_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'j_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'j_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'f_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'f_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_i_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_s_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_l_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_s_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_l_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_s_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_l_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_j_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_j_r'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_j_tot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_f_c'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identity_f_tot'</span></code>]</span>) – The operator for which to calculate the matrix element.</p></li>
+<li><p><strong>q</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – The component of the operator.</p></li>
+<li><p><strong>part</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Literal</span></code>[<code class="docutils literal notranslate"><span class="pre">'all'</span></code>, <code class="docutils literal notranslate"><span class="pre">'rydberg'</span></code>, <code class="docutils literal notranslate"><span class="pre">'inner_valence'</span></code>, <code class="docutils literal notranslate"><span class="pre">'closed_shell_core'</span></code>]</span>) – The part of the matrix element to calculate.</p></li>
+<li><p><strong>unit</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span>) – The unit to which to convert the radial matrix element.
+Can be “a.u.” for atomic units (so no conversion is done), or a specific unit.
+Default None will return a pint quantity.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The matrix element for the given operator.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>PlainQuantity</em>[float] | float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rydstate.rydberg_state.RydbergStateMQDT.html" class="btn btn-neutral float-left" title="RydbergStateMQDT" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../api/basis.html" class="btn btn-neutral float-right" title="Rydberg Basis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, RydState Developers.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

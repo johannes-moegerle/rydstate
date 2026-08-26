@@ -1,0 +1,18 @@
+Yb173\_P15\_HighN
+=================
+
+.. currentmodule:: rydstate.species.ytterbium.yb173_mqdt_fmodel_data
+
+
+
+.. The species data classes (FModel / MQDT / SQDT subclasses) only store
+   parameters (class attributes) for a given species; they inherit all of their
+   behaviour (methods and computed properties) from their respective base class.
+   Here we only document the parameters that are actually defined on the
+   subclass, and hide the inherited members.
+
+.. autoclass:: rydstate.species.ytterbium.yb173_mqdt_fmodel_data.Yb173_P15_HighN
+   :members:
+   :member-order: bysource
+   :undoc-members:
+   :exclude-members: __init__
