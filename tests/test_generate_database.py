@@ -11,7 +11,7 @@ from rydstate.generate_database.generate_matrix_elements_table import (
     generate_matrix_elements_tables,
 )
 from rydstate.generate_database.generate_misc_table import generate_wigner_table
-from rydstate.generate_database.generate_states_table import generate_states_table, get_state_data
+from rydstate.generate_database.generate_states_table import COLUMNS, generate_states_table, get_state_data
 from rydstate.units import MatrixElementOperatorRanks
 
 TEST_SPECIES_SPECIFIER = [
@@ -37,11 +37,18 @@ def test_generate_wigner_table_returns_rows() -> None:
 
 def test_get_state_data_for_sqdt_alkali_state() -> None:
     state = RydbergStateSQDTAlkali("H", n=1, l=0, j=0.5)
-    row = get_state_data(7, state)
-    assert row[0] == 7
-    assert row[2:6] == (1, 1, 1.0, 0.5)
-    assert row[6:12] == (1.0, 0, 0.5, 0.5, 0, 0.5)
-    assert row[12:] == (0, 0, 0, 0, 0, 0, True, False, 0)
+    row = dict(zip(COLUMNS, get_state_data(7, state), strict=True))
+
+    assert row["id"] == 7
+    assert (row["parity"], row["n"], row["nu"], row["f"]) == (1, 1, 1.0, 0.5)
+    assert row["exp_nui"] == 1.0
+    # the hydrogen core is a bare proton, i.e. all its quantum numbers vanish
+    assert (row["exp_i_core"], row["exp_s_core"], row["exp_l_core"]) == (0, 0, 0)
+    assert (row["exp_j_core"], row["exp_f_core"]) == (0, 0)
+    assert (row["exp_s_ryd"], row["exp_l_ryd"], row["exp_j_ryd"]) == (0.5, 0, 0.5)
+    assert (row["exp_s"], row["exp_l"], row["exp_j"]) == (0.5, 0, 0.5)
+    # a single ket, so all standard deviations vanish
+    assert all(row[column] == 0 for column in COLUMNS if column.startswith("std_"))
 
 
 @pytest.mark.parametrize("species_specifier", TEST_SPECIES_SPECIFIER)
@@ -62,6 +69,9 @@ def test_generate_states_table(species_specifier: str) -> None:
     assert np.allclose(table["nu"], basis.calc_exp_qn("nu"))
     assert np.allclose(table["exp_l_ryd"], basis.calc_exp_qn("l_r"))
     assert np.allclose(table["exp_s"], basis.calc_exp_qn("s_tot"))
+    # quantum numbers that are only good in the FJ scheme
+    assert np.allclose(table["exp_j_core"], basis.calc_exp_qn("j_c"))
+    assert np.allclose(table["exp_f_core"], basis.calc_exp_qn("f_c"))
 
 
 @pytest.mark.parametrize("species_specifier", TEST_SPECIES_SPECIFIER)
