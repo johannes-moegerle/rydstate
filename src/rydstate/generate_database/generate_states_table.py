@@ -20,20 +20,29 @@ COLUMNS: dict[str, type] = {
     "nu": float,
     "f": float,
     "exp_nui": float,
-    "exp_l": float,
-    "exp_j": float,
-    "exp_s": float,
+    "exp_i_core": float,
+    "exp_s_core": float,
+    "exp_l_core": float,
+    "exp_j_core": float,
+    "exp_f_core": float,
+    "exp_s_ryd": float,
     "exp_l_ryd": float,
     "exp_j_ryd": float,
+    "exp_s": float,
+    "exp_l": float,
+    "exp_j": float,
     "std_nui": float,
-    "std_l": float,
-    "std_j": float,
-    "std_s": float,
+    "std_i_core": float,
+    "std_s_core": float,
+    "std_l_core": float,
+    "std_j_core": float,
+    "std_f_core": float,
+    "std_s_ryd": float,
     "std_l_ryd": float,
     "std_j_ryd": float,
-    "is_j_total_momentum": bool,
-    "is_calculated_with_mqdt": bool,
-    "underspecified_channel_contribution": float,
+    "std_s": float,
+    "std_l": float,
+    "std_j": float,
 }
 
 
@@ -58,8 +67,6 @@ def generate_states_table(
 
 def get_state_data(ids: int, state: RydbergState) -> tuple[float | int | str | bool, ...]:
     """Get the data for a given state as a tuple."""
-    underspecified_channel_contribution = sum(abs(coeff) ** 2 for coeff, ket in state if ket.angular.contains_unknown)
-
     state_ls = state.to_coupling_scheme("LS")
     state_fj = state.to_coupling_scheme("FJ")
 
@@ -71,19 +78,28 @@ def get_state_data(ids: int, state: RydbergState) -> tuple[float | int | str | b
         state.nu,  # nu
         state.f_tot,  # f_tot
         state.calc_exp_qn("nui"),  # exp_nui
-        state_ls.calc_exp_qn("l_tot"),  # exp_l
-        state_ls.calc_exp_qn("j_tot"),  # exp_j
-        state_ls.calc_exp_qn("s_tot"),  # exp_s
+        state.calc_exp_qn("i_c"),  # exp_i_core
+        state.calc_exp_qn("s_c"),  # exp_s_core
+        state.calc_exp_qn("l_c"),  # exp_l_core
+        state_fj.calc_exp_qn("j_c"),  # exp_j_core
+        state_fj.calc_exp_qn("f_c"),  # exp_f_core
+        state.calc_exp_qn("s_r"),  # exp_s_ryd
         state.calc_exp_qn("l_r"),  # exp_l_ryd
         state_fj.calc_exp_qn("j_r"),  # exp_j_ryd = j for sqdt only one valence electron
+        state_ls.calc_exp_qn("s_tot"),  # exp_s
+        state_ls.calc_exp_qn("l_tot"),  # exp_l
+        state_ls.calc_exp_qn("j_tot"),  # exp_j
         state.calc_std_qn("nui"),  # std_nui = 0
-        state_ls.calc_std_qn("l_tot"),  # std_l
-        state_ls.calc_std_qn("j_tot"),  # std_j
-        state_ls.calc_std_qn("s_tot"),  # std_s
+        state.calc_std_qn("i_c"),  # std_i_core = 0
+        state.calc_std_qn("s_c"),  # std_s_core = 0
+        state.calc_std_qn("l_c"),  # std_l_core
+        state_fj.calc_std_qn("j_c"),  # std_j_core
+        state_fj.calc_std_qn("f_c"),  # std_f_core
+        state.calc_std_qn("s_r"),  # std_s_ryd = 0
         state.calc_std_qn("l_r"),  # std_l_ryd
         state_fj.calc_std_qn("j_r"),  # std_j_ryd
-        bool(state.element_properties.i_c == 0),  # is_j_total_momentum
-        bool(len(state.rydberg_kets) > 1),  # is_calculated_with_mqdt
-        underspecified_channel_contribution,  # underspecified_channel_contribution = 0 for sqdt
+        state_ls.calc_std_qn("s_tot"),  # std_s
+        state_ls.calc_std_qn("l_tot"),  # std_l
+        state_ls.calc_std_qn("j_tot"),  # std_j
     )
     return tuple(x.item() if isinstance(x, np.generic) else x for x in data)
