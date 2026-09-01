@@ -128,7 +128,11 @@ class FModel:
         The channel dependent effective principal quantum numbers nui are defined via
 
         .. math::
-            E = I_i - \frac{Ry}{2 \nu_i^2} = I_{\text{ref}} - \frac{Ry}{nu^2}
+            E = I_i - \frac{Z^2 R_M}{\nu_i^2}
+              = I_{\text{ref}} - \frac{Z^2 R_M}{\nu^2}
+
+        where :math:`R_M = R_\infty \mu/m_e` is the mass corrected Rydberg constant and
+        :math:`Z` is the net charge of the ionic core seen by the Rydberg electron.
 
         Args:
             nu: Effective principal quantum number with reference to the reference ionization threshold.

@@ -96,13 +96,18 @@ class SQDT(ABC, metaclass=CachedABCMeta):
         use_nist_data: bool = True,
         nist_n_max: int = 15,
     ) -> float:
-        r"""Calculate the effective principal quantum number nu of a Rydberg state with the given n, l, j_tot and s_tot.
+        r"""Calculate the effective principal quantum number nu of a Rydberg state with the given n and angular ket.
+
+        The effective principal quantum number nu is defined with reference to the
+        :attr:`ionization_energy`, i.e. it describes the binding energy of the Rydberg electron
+        :math:`E = I - \frac{Z^2 R_M}{\nu^2}`
+        with the mass corrected Rydberg constant :math:`R_M = R_\infty \mu/m_e`.
 
         I.e. either look up the energy for low lying states in the nist data (if use_nist_data is True),
-        and calculate nu from the energy via (see also `calc_nu_from_energy`):
+        and calculate nui from the energy via (see also `calc_nu_from_energy`):
 
         .. math::
-            \nu = \sqrt{\frac{1}{2} \frac{\mu/m_e}{-E/E_H}}
+            \nu = Z \sqrt{\frac{1}{2} \frac{\mu/m_e}{-(E - I)/E_H}}
 
         Or calculate nu via the quantum defect theory,
         where nu is defined as series expansion :math:`\nu = n^* = n - \delta_{lj}(n)`

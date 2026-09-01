@@ -127,20 +127,27 @@ class RydbergStateSQDT(RydbergState, Generic[GenericT_AngularKet]):
         self.__dict__.pop("angular", None)
 
     @overload
-    def get_radial_energy(self, unit: None = None) -> PintFloat: ...
+    def get_binding_energy(self, unit: None = None) -> PintFloat: ...
 
     @overload
-    def get_radial_energy(self, unit: str) -> float: ...
+    def get_binding_energy(self, unit: str) -> float: ...
 
-    def get_radial_energy(self, unit: str | None = None) -> PintFloat | float:
-        r"""Get the energy of the radial part of the Rydberg state.
+    def get_binding_energy(self, unit: str | None = None) -> PintFloat | float:
+        r"""Get the binding energy of the Rydberg state, relative to its ionization energy.
 
-        The radial part of the energy is given by
+        The binding energy is negative by convention, so it can be added directly to the
+        ionization energy to obtain the total state energy.
+
+        The binding energy is given by
 
         .. math::
-            E = - \frac{1}{2} \frac{\mu}{\nu^2}
+            E = - \frac{Z^2 R_M}{\nu^2}
+              = - \frac{1}{2} \frac{Z^2 \mu/m_e}{\nu^2} E_H
 
-        where `\mu = R_M/R_\infty` is the reduced mass and `\nu` the effective principal quantum number.
+        where :math:`R_M = R_\infty \mu/m_e` is the mass corrected Rydberg constant,
+        :math:`Z` is the net charge of the ionic core seen by the Rydberg electron
+        (note :math:`E_H = 2 R_\infty`), :math:`\mu/m_e` the reduced mass in atomic units
+        and :math:`\nu` the effective principal quantum number.
         """
         _energy_au = calc_energy_from_nu(
             self.element_properties.reduced_mass_au, self.nu, self.element_properties.net_charge
