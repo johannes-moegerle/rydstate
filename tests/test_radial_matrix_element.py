@@ -62,7 +62,7 @@ def test_circular_expectation_value(species: str, n: int, l: int, j_tot: float) 
     """
     sqdt = get_sqdt(species)
     angular_ket = AngularKetLS(l_r=l, j_tot=j_tot, species=species)
-    nu = sqdt.calc_nu(n, angular_ket)
+    nu = sqdt.calc_nui(n, angular_ket)
 
     potential = get_potential_class(species)(l)
     state = RadialKet(nu, potential, n_expected=n)

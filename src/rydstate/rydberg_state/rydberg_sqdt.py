@@ -13,7 +13,7 @@ from rydstate.rydberg_state.rydberg_ket import RydbergKet
 from rydstate.species import get_element_properties, get_sqdt
 from rydstate.species.potential import Potential, get_potential_class
 from rydstate.species.sqdt import SQDT
-from rydstate.species.utils import calc_energy_from_nu
+from rydstate.species.utils import calc_energy_from_nu, calc_nu_from_energy
 from rydstate.units import BaseQuantities
 
 if TYPE_CHECKING:
@@ -98,20 +98,51 @@ class RydbergStateSQDT(RydbergState, Generic[GenericT_AngularKet]):
         return f"{self.__class__.__name__}({self.species}, n={self.n}, {self.angular!r})"
 
     @cached_property
+    def nui(self) -> float:
+        r"""The effective principal quantum number nui, defined with reference to the ionization energy.
+
+        nui is defined with reference to the ionization energy of the Rydberg electron
+        (see :attr:`~rydstate.species.sqdt.SQDT.ionization_energy_au`), i.e. via the binding energy
+
+        .. math::
+            E = I - \frac{R_M}{\nu_i^2} = I_{\text{ref}} - \frac{R_M}{\nu^2}
+
+        where :math:`R_M = R_\infty \mu/m_e` is the mass corrected Rydberg constant.
+
+        Therefore, nui is the quantum number that determines the radial wavefunction, see :attr:`radial`.
+        """
+        return self.sqdt.calc_nui(self.n, self.angular)
+
+    @cached_property
     def nu(self) -> float:  # type: ignore [override]
-        return self.sqdt.calc_nu(self.n, self.angular)
+        r"""The effective principal quantum number nu, defined with reference to the reference ionization energy.
+
+        In contrast to :attr:`nui`, nu is defined with reference to the reference ionization energy
+        (see :attr:`~rydstate.species.sqdt.SQDT.reference_ionization_energy_au`).
+
+        For states without hyperfine splitting, nui and nu are equal.
+        """
+        reference_shift = self.sqdt.ionization_energy_au - self.sqdt.reference_ionization_energy_au
+        if reference_shift == 0:
+            return self.nui
+        reduced_mass_au = self.element_properties.reduced_mass_au
+        net_charge = self.element_properties.net_charge
+        energy_wrt_reference_au = self.get_binding_energy("a.u.") + reference_shift
+        if energy_wrt_reference_au >= 0:
+            raise ValueError(
+                f"The energy of the state {self!r} lies above the reference ionization energy "
+                f"({self.sqdt.reference_ionization_energy_au} hartree), thus nu is not defined."
+            )
+        return calc_nu_from_energy(reduced_mass_au, energy_wrt_reference_au, net_charge)
 
     @cached_property
     def _energy_au(self) -> float:  # type: ignore [override]
-        return (
-            calc_energy_from_nu(self.element_properties.reduced_mass_au, self.nu, self.element_properties.net_charge)
-            + self.sqdt.ionization_energy_au
-        )
+        return self.get_binding_energy("a.u.") + self.sqdt.ionization_energy_au
 
     @cached_property
     def radial(self) -> RadialKet:
         """The radial part of the Rydberg electron."""
-        return RadialKet(self.nu, self.potential_class(self.angular.l_r), n_expected=self.n, sign_convention="n_l_1")
+        return RadialKet(self.nui, self.potential_class(self.angular.l_r), n_expected=self.n, sign_convention="n_l_1")
 
     @cached_property
     def _coefficients(self) -> list[float]:  # type: ignore [override]
@@ -141,16 +172,17 @@ class RydbergStateSQDT(RydbergState, Generic[GenericT_AngularKet]):
         The binding energy is given by
 
         .. math::
-            E = - \frac{Z^2 R_M}{\nu^2}
-              = - \frac{1}{2} \frac{Z^2 \mu/m_e}{\nu^2} E_H
+            E = - \frac{Z^2 R_M}{\nu_i^2}
+              = - \frac{1}{2} \frac{Z^2 \mu/m_e}{\nu_i^2} E_H
 
         where :math:`R_M = R_\infty \mu/m_e` is the mass corrected Rydberg constant,
         :math:`Z` is the net charge of the ionic core seen by the Rydberg electron
         (note :math:`E_H = 2 R_\infty`), :math:`\mu/m_e` the reduced mass in atomic units
-        and :math:`\nu` the effective principal quantum number.
+        and :math:`\nu_i` the effective principal quantum number
+        with reference to the ionization energy, see :attr:`nui`.
         """
         _energy_au = calc_energy_from_nu(
-            self.element_properties.reduced_mass_au, self.nu, self.element_properties.net_charge
+            self.element_properties.reduced_mass_au, self.nui, self.element_properties.net_charge
         )
         if unit == "a.u.":
             return _energy_au
@@ -161,7 +193,7 @@ class RydbergStateSQDT(RydbergState, Generic[GenericT_AngularKet]):
 
     def calc_exp_qn(self, qn: str) -> float:
         if qn == "nui":
-            return self.nu
+            return self.nui
 
         return super().calc_exp_qn(qn)
 

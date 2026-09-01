@@ -40,7 +40,10 @@ class SQDT(ABC, metaclass=CachedABCMeta):
     usually ``"nist_data.txt"``. Left as None for species without a NIST data file."""
 
     ionization_energy: ClassVar[tuple[float, str]]
-    """Ionization energy and unit: (value, unit)."""
+    """Ionization energy: (value, unit)."""
+    _reference_ionization_energy: ClassVar[tuple[float, str] | None] = None
+    """Reference ionization energy: (value, unit), in reference to which nu is defined.
+    If None, the ionization_energy is used as the reference and nu = nui."""
 
     quantum_defects: ClassVar[dict[tuple[int, float, float], RydbergRitzParameters] | None] = None
     """Dictionary containing the quantum defects for each (l, j_tot, s_tot) combination, i.e.
@@ -88,7 +91,26 @@ class SQDT(ABC, metaclass=CachedABCMeta):
         """Ionization energy in atomic units (Hartree)."""
         return self.get_ionization_energy("hartree")
 
-    def calc_nu(
+    @cached_property
+    def reference_ionization_energy_au(self) -> float:
+        r"""Reference ionization energy in atomic units (Hartree).
+
+        The reference ionization energy defines nu via
+
+        .. math::
+            E = I_i - \frac{Z^2 R_M}{\nu_i^2}
+              = I_{\text{ref}} - \frac{Z^2 R_M}{\nu^2}
+
+        If no :attr:`_reference_ionization_energy` is defined (as it is the case e.g. for all alkali atoms),
+        the :attr:`ionization_energy` is used as the reference and nu = nui.
+        """
+        if self._reference_ionization_energy is None:
+            return self.ionization_energy_au
+        value, unit = self._reference_ionization_energy
+        reference: PintFloat = ureg.Quantity(value, unit)
+        return float(reference.to("hartree", "spectroscopy").magnitude)
+
+    def calc_nui(
         self,
         n: int,
         angular_ket: AngularKetBase[Any],
@@ -96,21 +118,21 @@ class SQDT(ABC, metaclass=CachedABCMeta):
         use_nist_data: bool = True,
         nist_n_max: int = 15,
     ) -> float:
-        r"""Calculate the effective principal quantum number nu of a Rydberg state with the given n and angular ket.
+        r"""Calculate the effective principal quantum number nui of a Rydberg state with the given n and angular ket.
 
-        The effective principal quantum number nu is defined with reference to the
+        The effective principal quantum number nui is defined with reference to the
         :attr:`ionization_energy`, i.e. it describes the binding energy of the Rydberg electron
-        :math:`E = I - \frac{Z^2 R_M}{\nu^2}`
+        :math:`E = I_i - \frac{Z^2 R_M}{\nu_i^2}`
         with the mass corrected Rydberg constant :math:`R_M = R_\infty \mu/m_e`.
 
         I.e. either look up the energy for low lying states in the nist data (if use_nist_data is True),
         and calculate nui from the energy via (see also `calc_nu_from_energy`):
 
         .. math::
-            \nu = Z \sqrt{\frac{1}{2} \frac{\mu/m_e}{-(E - I)/E_H}}
+            \nu_i = Z \sqrt{\frac{1}{2} \frac{\mu/m_e}{-(E - I)/E_H}}
 
-        Or calculate nu via the quantum defect theory,
-        where nu is defined as series expansion :math:`\nu = n^* = n - \delta_{lj}(n)`
+        Or calculate nui via the quantum defect theory,
+        where nui is defined as series expansion :math:`\nu_i = n^* = n - \delta_{lj}(n)`
         with the quantum defect
 
         .. math::
@@ -134,14 +156,14 @@ class SQDT(ABC, metaclass=CachedABCMeta):
             if len(angular_state.kets) == 1:
                 angular_ket = angular_state.kets[0]
             else:
-                raise NotImplementedError("calc_nu is only implemented for AngularKetLS.")
+                raise NotImplementedError("calc_nui is only implemented for AngularKetLS.")
 
         l_r = angular_ket.l_r
         j_tot = angular_ket.get_qn("j_tot", allow_unknown=True)
         s_tot = angular_ket.get_qn("s_tot", allow_unknown=True)
 
         if is_unknown(j_tot) or is_unknown(s_tot):
-            raise ValueError(f"Cannot calculate nu for unknown j_tot or s_tot of {angular_ket!r}.")
+            raise ValueError(f"Cannot calculate nui for unknown j_tot or s_tot of {angular_ket!r}.")
 
         if n <= nist_n_max and use_nist_data:  # try to use NIST data
             if (n, l_r, j_tot, s_tot) in self._nist_energy_levels:

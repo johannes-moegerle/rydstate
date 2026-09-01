@@ -89,7 +89,8 @@ class BasisSQDT(BasisBase[RydbergStateSQDT[AngularKetLS[AllKnown]]]):
                         )
                         self._add_states_from_angular(angular, n_range, m_range)
 
-        self.states.sort(key=lambda state: state.nu)
+        # sort by energy (and not by nu, since nu is not always defined, see RydbergStateSQDT.nu)
+        self.states.sort(key=lambda state: state.get_energy("a.u."))
 
     def _add_states_from_angular(
         self,

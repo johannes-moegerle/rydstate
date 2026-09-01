@@ -42,11 +42,7 @@ class RydbergState:
     """The Rydberg kets that form the Rydberg state."""
 
     nu: float
-    """The effective principal quantum number nu.
-    For SQDT states, this is also sometimes called n*.
-    For MQDT nu is given in reference to the reference ionization threshold of the MQDT model,
-    see :attr:`~rydstate.species.mqdt.MQDT.reference_ionization_threshold_au`.
-    """
+    """The effective principal quantum number nu given in reference to the reference ionization threshold."""
     n: int
     """The principal quantum number n of the Rydberg state.
 
