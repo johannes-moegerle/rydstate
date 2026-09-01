@@ -68,43 +68,45 @@ class BasisSQDT(BasisBase[RydbergStateSQDT[AngularKetLS[AllKnown]]]):
         l_r_range: tuple[int, int] | None,
         m_range: tuple[float, float] | NotSet | None,
     ) -> None:
-        self.states = []
-
-        for n in range(n_range[0], n_range[1] + 1):
-            for l_r in range(n):
-                if not is_allowed_qn(l_r_range, l_r):
-                    continue
-                self._add_states_ls(n, l_r, f_tot_range, m_range)
-        self.states.sort(key=lambda state: state.nu)
-
-    def _add_states_ls(
-        self,
-        n: int,
-        l_r: int,
-        f_tot_range: tuple[float, float] | None,
-        m_range: tuple[float, float] | NotSet | None = NotSet,
-    ) -> None:
         i_c = self.element_properties.i_c
         s_r = 0.5
         s_c = self.element_properties.s_c
         s_tot_list = np.arange(s_r - s_c, s_r + s_c + 1)
+        max_l_r = n_range[1] - 1
 
-        for s_tot in s_tot_list:
-            if not self.element_properties.is_allowed_shell(n, l_r, s_tot):
+        self.states = []
+
+        for l_r in range(max_l_r + 1):
+            if not is_allowed_qn(l_r_range, l_r):
                 continue
-            for j_tot in np.arange(abs(l_r - s_tot), l_r + s_tot + 1):
-                for f_tot in np.arange(abs(j_tot - i_c), j_tot + i_c + 1):
-                    if not is_allowed_qn(f_tot_range, f_tot):
-                        continue
-                    for m in get_m_range(f_tot, m_range):
+            for s_tot in s_tot_list:
+                for j_tot in np.arange(abs(l_r - s_tot), l_r + s_tot + 1):
+                    for f_tot in np.arange(abs(j_tot - i_c), j_tot + i_c + 1):
+                        if not is_allowed_qn(f_tot_range, f_tot):
+                            continue
                         angular = AngularKetLS(
-                            l_r=l_r, s_tot=s_tot, j_tot=j_tot, f_tot=f_tot, m=m, species=self.species
+                            l_r=l_r, s_tot=s_tot, j_tot=j_tot, f_tot=f_tot, m=NotSet, species=self.species
                         )
-                        state = RydbergStateSQDT(
-                            self.species,
-                            n=n,
-                            angular=angular,
-                            sqdt=self.sqdt,
-                            potential_class=self.potential_class,
-                        )
-                        self.states.append(state)
+                        self._add_states_from_angular(angular, n_range, m_range)
+
+        self.states.sort(key=lambda state: state.nu)
+
+    def _add_states_from_angular(
+        self,
+        angular: AngularKetLS[AllKnown],
+        n_range: tuple[int, int],
+        m_range: tuple[float, float] | NotSet | None,
+    ) -> None:
+        for m in get_m_range(angular.f_tot, m_range):
+            angular_m = angular.replace_m(m)
+            for n in range(max(n_range[0], angular.l_r + 1), n_range[1] + 1):
+                if not self.element_properties.is_allowed_shell(n, angular.l_r, angular.s_tot):
+                    continue
+                state = RydbergStateSQDT(
+                    self.species,
+                    n=n,
+                    angular=angular_m,
+                    potential_class=self.potential_class,
+                    sqdt=self.sqdt,
+                )
+                self.states.append(state)
