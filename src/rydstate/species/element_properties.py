@@ -101,7 +101,7 @@ class ElementProperties(ABC, metaclass=CachedABCMeta):
         if (n, l) == self.ground_state_shell:
             return s_tot != 1  # For alkaline earth atoms, the triplet state of the ground state shell is not allowed
         if n < 1 or l < 0 or l >= n:
-            raise ValueError(f"Invalid shell: (n={n}, l={l}). Must be n >= 1 and 0 <= l <= n-1.")
+            return False
         if (n, l) >= self.ground_state_shell:
             return True
         return (n, l) in self.additional_allowed_shells
