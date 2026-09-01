@@ -7,7 +7,7 @@ import numpy as np
 from rydstate.angular.utils import NotSet, is_not_set
 
 
-def get_m_range(f_tot: float, m_range: tuple[float, float] | None | NotSet) -> list[NotSet] | list[float]:
+def get_m_range(f_tot: float, m_range: tuple[float, float] | NotSet | None) -> list[NotSet] | list[float]:
     if is_not_set(m_range):
         return [NotSet]  # type: ignore[return-value]
     if m_range is None:

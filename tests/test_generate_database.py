@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import Any
-
 import numpy as np
 import pytest
 from rydstate import RydbergStateSQDTAlkali
@@ -49,11 +47,11 @@ def test_get_state_data_for_sqdt_alkali_state() -> None:
 @pytest.mark.parametrize("species_specifier", TEST_SPECIES_SPECIFIER)
 def test_generate_states_table(species_specifier: str) -> None:
     species = species_specifier.removesuffix("_mqdt").removesuffix("_sqdt")
-    basis: BasisMQDT | BasisSQDT[Any]
+    basis: BasisMQDT | BasisSQDT
     if species_specifier.endswith("_mqdt"):
         basis = BasisMQDT(species, nu=(50, 52), l_r=(0, 2))
     else:
-        basis = BasisSQDT(species, n=(50, 52), l_r=(0, 2), coupling_scheme="LS")
+        basis = BasisSQDT(species, n=(50, 52), l_r=(0, 2))
     basis.sort_states("nu")
 
     table = generate_states_table(basis)
@@ -69,11 +67,11 @@ def test_generate_states_table(species_specifier: str) -> None:
 @pytest.mark.parametrize("species_specifier", TEST_SPECIES_SPECIFIER)
 def test_generate_matrix_elements_table(species_specifier: str) -> None:
     species = species_specifier.removesuffix("_mqdt").removesuffix("_sqdt")
-    basis: BasisMQDT | BasisSQDT[Any]
+    basis: BasisMQDT | BasisSQDT
     if species_specifier.endswith("_mqdt"):
         basis = BasisMQDT(species, nu=(50, 52), l_r=(0, 2))
     else:
-        basis = BasisSQDT(species, n=(50, 52), l_r=(0, 2), coupling_scheme="LS")
+        basis = BasisSQDT(species, n=(50, 52), l_r=(0, 2))
     basis.sort_states("nu")
 
     tables = generate_matrix_elements_tables(basis, free_memory=False)
@@ -107,12 +105,12 @@ def test_matrix_elements_table_matches_unfiltered_reference(species_specifier: s
     The mqdt species are important here, since their f_tot is not simply the j_tot of a single channel.
     """
     species = species_specifier.removesuffix("_mqdt").removesuffix("_sqdt")
-    basis: BasisMQDT | BasisSQDT[Any]
+    basis: BasisMQDT | BasisSQDT
     if species_specifier.endswith("_mqdt"):
         # Yb174 also has channels with unknown l_r, which the l_r filter assumes to never contribute
         basis = BasisMQDT(species, nu=(50, 52), l_r=(0, 5))
     else:
-        basis = BasisSQDT(species, n=(50, 51), l_r=(0, 7), coupling_scheme="LS")
+        basis = BasisSQDT(species, n=(50, 51), l_r=(0, 7))
     basis.sort_states("nu")
 
     # make sure the basis actually contains pairs that the filters skip, otherwise the test is vacuous

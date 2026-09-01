@@ -9,7 +9,8 @@ import numpy as np
 from typing_extensions import Self
 
 from rydstate.rydberg_state.rydberg_base import RydbergState
-from rydstate.species import get_element_properties
+from rydstate.species import Potential, get_element_properties
+from rydstate.species.potential import get_potential_class
 from rydstate.units import ureg
 
 if TYPE_CHECKING:
@@ -22,9 +23,22 @@ _RydbergState = TypeVar("_RydbergState", bound=RydbergState)
 class BasisBase(ABC, Generic[_RydbergState]):
     states: list[_RydbergState]
 
-    def __init__(self, species: str) -> None:
+    def __init__(
+        self,
+        species: str,
+        potential_class: type[Potential] | str | None = None,
+    ) -> None:
         self.species = species
         self.element_properties = get_element_properties(species)
+
+        if isinstance(potential_class, type) and issubclass(potential_class, Potential):
+            self.potential_class = potential_class
+        elif potential_class is None or isinstance(potential_class, str):
+            self.potential_class = get_potential_class(species, tag=potential_class)
+        else:
+            raise TypeError(
+                f"potential_class must be a subclass of Potential, a string tag or None, got {potential_class!r}."
+            )
 
     def __len__(self) -> int:
         return len(self.states)

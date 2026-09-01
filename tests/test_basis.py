@@ -6,7 +6,7 @@ from rydstate import BasisSQDT
 @pytest.mark.parametrize("species", ["Rb", "Na", "H"])
 def test_alkali_basis(species: str) -> None:
     """Test alkali basis creation."""
-    basis = BasisSQDT(species, n=(1, 20), coupling_scheme="LS")
+    basis = BasisSQDT(species, n=(1, 20))
     basis.sort_states("n", "l_r")
     lowest_n_state = {"Rb": (4, 2), "Na": (3, 0), "H": (1, 0)}[species]
     assert (basis.states[0].n, basis.states[0].angular.l_r) == lowest_n_state
@@ -33,8 +33,8 @@ def test_alkali_basis(species: str) -> None:
 
 
 def test_sqdt_basis_m_range() -> None:
-    basis = BasisSQDT("H", n=(5, 5), f_tot=(0.5, 0.5), l_r=(0, 0), m=(-0.5, 0.5), coupling_scheme="LS")
-    invalid_basis = BasisSQDT("H", n=(5, 5), f_tot=(0.5, 0.5), l_r=(0, 0), m=(0, 0), coupling_scheme="LS")
+    basis = BasisSQDT("H", n=(5, 5), f_tot=(0.5, 0.5), l_r=(0, 0), m=(-0.5, 0.5))
+    invalid_basis = BasisSQDT("H", n=(5, 5), f_tot=(0.5, 0.5), l_r=(0, 0), m=(0, 0))
 
     assert [state.angular.m for state in basis.states] == [-0.5, 0.5]
     assert len(invalid_basis.states) == 0
@@ -43,7 +43,7 @@ def test_sqdt_basis_m_range() -> None:
 @pytest.mark.parametrize("species", ["Sr88", "Yb174"])
 def test_alkaline_basis(species: str) -> None:
     """Test alkaline basis creation."""
-    basis = BasisSQDT(species, n=(30, 35), coupling_scheme="LS")
+    basis = BasisSQDT(species, n=(30, 35))
     basis.sort_states("n", "l_r")
     assert (basis.states[0].n, basis.states[0].angular.l_r) == (30, 0)
     assert (basis.states[-1].n, basis.states[-1].angular.l_r) == (35, 34)
@@ -74,7 +74,7 @@ def test_alkaline_basis(species: str) -> None:
 
 def test_shallow_copy() -> None:
     """A shallow copy has an independent states list but shares the state objects."""
-    basis = BasisSQDT("H", n=(1, 5), coupling_scheme="LS")
+    basis = BasisSQDT("H", n=(1, 5))
     copied = basis.shallow_copy()
     assert copied.states is not basis.states
     assert all(a is b for a, b in zip(copied.states, basis.states, strict=True))
@@ -87,7 +87,7 @@ def test_shallow_copy() -> None:
 
 def test_filter_states_parity() -> None:
     """filter_states("parity", ...) splits the basis into even and odd states."""
-    basis = BasisSQDT("H", n=(1, 5), coupling_scheme="LS")
+    basis = BasisSQDT("H", n=(1, 5))
     even = basis.shallow_copy().filter_states("parity", 1)
     odd = basis.shallow_copy().filter_states("parity", -1)
     assert len(even) + len(odd) == len(basis)

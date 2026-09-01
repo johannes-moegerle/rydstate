@@ -48,7 +48,7 @@ def create_tables_for_sqdt(
     logger.info("rydstate.__version__=%s", __version__)
 
     # calculate the states and matrix elements tables
-    basis = BasisSQDT(species, n=n, f_tot=f_tot, l_r=l_r, coupling_scheme="LS")
+    basis = BasisSQDT(species, n=n, f_tot=f_tot, l_r=l_r)
     write_table_to_parquet(pd.DataFrame(generate_states_table(basis)), "states")
 
     matrix_elements_tables = generate_matrix_elements_tables(basis, max_delta_nu, all_nu_up_to, free_memory=True)

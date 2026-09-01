@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 import numpy as np
 
@@ -38,7 +38,7 @@ COLUMNS: dict[str, type] = {
 
 
 def generate_states_table(
-    basis: BasisMQDT | BasisSQDT[Any],
+    basis: BasisMQDT | BasisSQDT,
 ) -> dict[str, list[float | int | str | bool]]:
     """Calculate the states table for a given Basis."""
     basis.sort_states("nu")  # sort by nu == sort by energy

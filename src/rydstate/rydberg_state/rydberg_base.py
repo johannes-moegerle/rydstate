@@ -486,7 +486,7 @@ class RydbergState:
         if is_not_set(m):
             raise RuntimeError("m quantum number must be defined to calculate transition rates.")
 
-        basis: BasisMQDT | BasisSQDT[Any]
+        basis: BasisMQDT | BasisSQDT
         if isinstance(self, RydbergStateSQDT):
             assert isinstance(self.angular, AngularKetBase)
             if self.angular.coupling_scheme != "LS":
@@ -497,9 +497,8 @@ class RydbergState:
                 n=(1, int(self.n + 35)),
                 l_r=(l_r - 1, l_r + 1),
                 m=(m - 1, m + 1),
-                coupling_scheme=self.angular.coupling_scheme,
-                sqdt=self.sqdt,
                 potential_class=self.potential_class,
+                sqdt=self.sqdt,
             )
         elif isinstance(self, RydbergStateMQDT):
             l_r_list = [
@@ -510,8 +509,8 @@ class RydbergState:
                 nu=(0, int(self.nu + 35)),
                 l_r=(min(l_r_list) - 1, max(l_r_list) + 1),
                 m=(m - 1, m + 1),
-                mqdt=self.mqdt,
                 potential_class=self.potential_class,
+                mqdt=self.mqdt,
             )
         else:
             raise NotImplementedError(f"Transition rates are not implemented for {type(self)}.")

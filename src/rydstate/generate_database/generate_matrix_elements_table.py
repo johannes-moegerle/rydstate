@@ -34,7 +34,7 @@ MATRIX_ELEMENTS_OF_INTEREST: dict[str, MatrixElementOperator] = {
 
 
 def generate_matrix_elements_tables(  # noqa: C901
-    basis: BasisMQDT | BasisSQDT[Any],
+    basis: BasisMQDT | BasisSQDT,
     max_delta_nu: float = float("inf"),
     all_nu_up_to: float = float("inf"),
     *,

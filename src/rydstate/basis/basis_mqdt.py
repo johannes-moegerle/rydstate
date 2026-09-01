@@ -12,12 +12,12 @@ from rydstate.basis.utils import get_m_range, is_allowed_qn
 from rydstate.linalg import calc_nullvector, find_roots
 from rydstate.radial import RadialDummy, RadialKet
 from rydstate.rydberg_state import RydbergKet, RydbergStateMQDT
-from rydstate.species import MQDT, Potential, get_mqdt, get_potential_class
+from rydstate.species import MQDT, get_mqdt
 
 if TYPE_CHECKING:
     from typing_extensions import Self
 
-    from rydstate.species import FModel
+    from rydstate.species import FModel, Potential
 
 
 logger = logging.getLogger(__name__)
@@ -33,10 +33,10 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
         *,
         l_r: tuple[int, int] | None = None,
         f_tot: tuple[float, float] | None = None,
-        m: tuple[float, float] | None | NotSet = NotSet,
+        m: tuple[float, float] | NotSet | None = NotSet,
         # potential and mqdt parameters
-        mqdt: MQDT | str | None = None,
         potential_class: type[Potential] | str | None = None,
+        mqdt: MQDT | str | None = None,
     ) -> None:
         """Initialize the MQDT basis.
 
@@ -52,21 +52,16 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
             m: Optional tuple of (m_min, m_max) for the magnetic quantum number range.
                 Default NotSet, only include states with m=NotSet.
                 If m is given as None, include all allowed m values.
-            mqdt: The MQDT data to use for the states.
-                Either an instance of an MQDT class
-                or a string representing the tag of the MQDT class to use.
             potential_class: The potential class to use for the radial ket.
                 Either a a potential class
                 or a string representing the tag of the potential class to use.
+            mqdt: The MQDT data to use for the states.
+                Either an instance of an MQDT class
+                or a string representing the tag of the MQDT class to use.
 
         """
-        super().__init__(species)
+        super().__init__(species, potential_class)
         self.mqdt = mqdt if isinstance(mqdt, MQDT) else get_mqdt(species, tag=mqdt)
-
-        if isinstance(potential_class, type) and issubclass(potential_class, Potential):
-            self.potential_class = potential_class
-        else:
-            self.potential_class = get_potential_class(species, tag=potential_class)
 
         # the maximum l_r is limited by the maximum nu, because l_r < n for bound states
         # and for high l_r the quantum defects are 0, so n = nu
@@ -109,7 +104,7 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
     def _init_states(
         self,
         nu_range: tuple[float, float],
-        m_range: tuple[float, float] | None | NotSet,
+        m_range: tuple[float, float] | NotSet | None,
     ) -> None:
         logger.debug("Calculating MQDT states...")
         self.states = []
@@ -134,7 +129,7 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
 def get_mqdt_states_from_fmodel(
     model: FModel,
     nu_range: tuple[float, float],
-    m_range: tuple[float, float] | None | NotSet,
+    m_range: tuple[float, float] | NotSet | None,
     potential_class: type[Potential],
 ) -> list[RydbergStateMQDT]:
     """Calculate MQDT states from an FModel by finding zeros of det(M-matrix).
