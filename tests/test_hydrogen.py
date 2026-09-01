@@ -32,7 +32,9 @@ def test_hydrogen_wavefunctions(species: str, n: int, l: int, run_backward: bool
     state = RydbergStateSQDTAlkali(species, n=n, l=l, j=l + 0.5)
 
     # Setup radial wavefunction and run the numerov integration
-    radial = RadialKet(state.nu, state.potential, n_expected=n, run_backward=run_backward, sign_convention="n_l_1")
+    radial = RadialKet(
+        state.nu, state.radial.potential, n_expected=n, run_backward=run_backward, sign_convention="n_l_1"
+    )
 
     # Get analytical solution from sympy
     if n <= 35:

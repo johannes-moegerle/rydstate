@@ -499,7 +499,7 @@ class RydbergState:
                 m=(m - 1, m + 1),
                 coupling_scheme=self.angular.coupling_scheme,
                 sqdt=self.sqdt,
-                potential_class=type(self.potential),
+                potential_class=self.potential_class,
             )
         elif isinstance(self, RydbergStateMQDT):
             l_r_list = [

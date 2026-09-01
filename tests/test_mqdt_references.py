@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 import pytest
 from rydstate import RydbergStateSQDT
+from rydstate.angular import AngularKetLS
 from rydstate.angular.utils import NotSet
 from rydstate.basis.basis_mqdt import get_mqdt_states_from_fmodel
 from rydstate.species import get_mqdt, get_potential_class
@@ -131,7 +132,8 @@ def test_mqdt_energies_match_nist(name: str, n: int, l_r: int, j_tot: float, s_t
     The models reproduce these levels to |dnu| < 3e-4, while e.g. mixing up two channels of the
     frame transformation shifts them by |dnu| ~ 1e-1, i.e. the tolerance below is not tight, but still strict.
     """
-    nu_experimental = RydbergStateSQDT("Yb174", n=n, l_r=l_r, s_tot=s_tot, j_tot=j_tot).nu
+    angular = AngularKetLS(l_r=l_r, s_tot=s_tot, j_tot=j_tot, species="Yb174")
+    nu_experimental = RydbergStateSQDT("Yb174", n=n, angular=angular).nu
 
     model = _get_model("Yb174", name)
     assert len(model.inner_channels) > 1, f"{model.full_name}: not a multi-channel model"

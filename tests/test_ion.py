@@ -2,6 +2,7 @@ import logging
 
 import pytest
 from rydstate import RydbergStateSQDT
+from rydstate.angular import AngularKetLS
 from rydstate.species import get_element_properties, get_potential_class, get_sqdt
 from rydstate.species.element_properties import ElementProperties
 from rydstate.species.utils import calc_energy_from_nu, calc_nu_from_energy, get_all_subclasses
@@ -66,7 +67,8 @@ STRONTIUM_ION_LOW_LYING_STATES = [
 def test_strontium_ion_radial_wavefunction(n: int, l_r: int, caplog: pytest.LogCaptureFixture) -> None:
     """The integrated Sr+ wavefunction is normalized, has n - l - 1 nodes and raises no warnings."""
     j_tot = l_r + 0.5
-    state = RydbergStateSQDT("Sr88_ion", n=n, l_r=l_r, j_tot=j_tot, f_tot=j_tot)
+    angular = AngularKetLS(l_r=l_r, j_tot=j_tot, f_tot=j_tot, species="Sr88_ion")
+    state = RydbergStateSQDT("Sr88_ion", n=n, angular=angular)
     radial = state.radial
 
     with caplog.at_level(logging.WARNING):

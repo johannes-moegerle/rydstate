@@ -45,21 +45,21 @@ def test_get_label_alkali(kwargs: dict[str, Any], label: str) -> None:
 
 def test_get_label_alkali_jj() -> None:
     """For alkali atoms j_tot = j_r, so the label does not depend on the coupling scheme."""
-    angular_ket = AngularKetJJ(species="Rb", l_r=1, j_r=1.5, j_tot=1.5, m=0.5)
-    assert RydbergStateSQDT("Rb", 60, angular_ket=angular_ket).get_label("raw") == "Rb:60P_3/2,m=1/2"
+    angular = AngularKetJJ(species="Rb", l_r=1, j_r=1.5, j_tot=1.5, m=0.5)
+    assert RydbergStateSQDT("Rb", 60, angular=angular).get_label("raw") == "Rb:60P_3/2,m=1/2"
 
 
 @pytest.mark.parametrize(
-    ("kwargs", "label"),
+    ("species", "n", "ket_kwargs", "label"),
     [
-        ({"species": "Sr88", "n": 60, "l_r": 0, "s_tot": 0, "j_tot": 0, "m": 0}, "Sr88:S=0,60S_0,m=0"),
-        ({"species": "Sr88", "n": 61, "l_r": 2, "s_tot": 1, "j_tot": 1, "m": 0}, "Sr88:S=1,61D_1,m=0"),
-        ({"species": "Yb174", "n": 55, "l_r": 1, "s_tot": 1, "j_tot": 2, "m": -1}, "Yb174:S=1,55P_2,m=-1"),
-        ({"species": "Yb174", "n": 55, "l_r": 3, "s_tot": 0, "j_tot": 3}, "Yb174:S=0,55F_3"),
+        ("Sr88", 60, {"l_r": 0, "s_tot": 0, "j_tot": 0, "m": 0}, "Sr88:S=0,60S_0,m=0"),
+        ("Sr88", 61, {"l_r": 2, "s_tot": 1, "j_tot": 1, "m": 0}, "Sr88:S=1,61D_1,m=0"),
+        ("Yb174", 55, {"l_r": 1, "s_tot": 1, "j_tot": 2, "m": -1}, "Yb174:S=1,55P_2,m=-1"),
+        ("Yb174", 55, {"l_r": 3, "s_tot": 0, "j_tot": 3}, "Yb174:S=0,55F_3"),
     ],
 )
-def test_get_label_divalent_ls(kwargs: dict[str, Any], label: str) -> None:
-    state = RydbergStateSQDT(**kwargs)
+def test_get_label_divalent_ls(species: str, n: int, ket_kwargs: dict[str, Any], label: str) -> None:
+    state = RydbergStateSQDT(species, n, angular=AngularKetLS(species=species, **ket_kwargs))
     assert state.get_label("raw") == label
     assert str(state) == f"|{label}⟩"
 
@@ -193,14 +193,16 @@ def test_get_label_rydberg_ket_with_rescaled_radial() -> None:
 )
 def test_get_label_after_to_coupling_scheme(coupling_scheme: CouplingScheme, label: str) -> None:
     """Changing the coupling scheme recombines the radial wavefunctions, but keeps their (common) nu."""
-    state = RydbergStateSQDT("Sr88", 60, l_r=2, s_tot=1, j_tot=1, m=0)
+    angular = AngularKetLS(l_r=2, s_tot=1, j_tot=1, m=0, species="Sr88")
+    state = RydbergStateSQDT("Sr88", 60, angular=angular)
     converted = state.to_coupling_scheme(coupling_scheme)
     assert converted.get_label("raw") == label.format(nu=state.nu)
 
 
 def test_get_label_state_and_ket_agree() -> None:
     """The label of an SQDT state and of its single rydberg ket only differ in the n / nu part."""
-    state = RydbergStateSQDT("Sr88", 60, l_r=2, s_tot=1, j_tot=1, m=0)
+    angular = AngularKetLS(l_r=2, s_tot=1, j_tot=1, m=0, species="Sr88")
+    state = RydbergStateSQDT("Sr88", 60, angular=angular)
     ket = state.rydberg_kets[0]
     assert state.get_label("raw") == "Sr88:S=1,60D_1,m=0"
     # the rydberg ket of an SQDT state knows its n, so it uses the same label as the state

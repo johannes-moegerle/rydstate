@@ -356,7 +356,7 @@ class RydbergKet:
 
         # The core electron of the neutral atom is the valence electron of the ion, with total angular momentum j_c.
         core_angular_ket = AngularKetLS(l_r=l_c, j_tot=j_c, f_tot=f_c, species=ion_species)
-        return RydbergStateSQDT(ion_species, n_c, angular_ket=core_angular_ket, sqdt=core_sqdt)
+        return RydbergStateSQDT(ion_species, n_c, angular=core_angular_ket, sqdt=core_sqdt)
 
     @cached_property
     def valence_electrons_are_in_the_same_shell(self) -> bool:

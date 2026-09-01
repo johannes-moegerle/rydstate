@@ -2,6 +2,7 @@ from typing import Any
 
 import pytest
 from rydstate import RydbergStateSQDT
+from rydstate.angular import AngularKetLS
 from rydstate.species import get_all_subclasses, get_element_properties, get_sqdt
 from rydstate.species.sqdt import SQDT
 
@@ -18,11 +19,13 @@ def test_sqdt_species(species: str) -> None:
 
     state: RydbergStateSQDT[Any]
     if element_properties.number_valence_electrons == 1:
-        state = RydbergStateSQDT(species, n=50, l_r=0, f_tot=i_c + 0.5)
+        angular = AngularKetLS(l_r=0, f_tot=i_c + 0.5, species=species)
+        state = RydbergStateSQDT(species, n=50, angular=angular)
         state.radial.integrate_wavefunction()
-        with pytest.raises(ValueError, match="Invalid combination of angular quantum numbers provided"):
-            RydbergStateSQDT(species, n=50, l_r=1)
+        with pytest.raises(ValueError, match="Unknown quantum numbers detected"):
+            AngularKetLS(l_r=1, species=species)
     elif element_properties.number_valence_electrons == 2 and sqdt.quantum_defects is not None:
         for s_tot in [0, 1]:
-            state = RydbergStateSQDT(species, n=50, l_r=1, s_tot=s_tot, j_tot=1 + s_tot, f_tot=s_tot + 1 + i_c)
+            angular = AngularKetLS(l_r=1, s_tot=s_tot, j_tot=1 + s_tot, f_tot=s_tot + 1 + i_c, species=species)
+            state = RydbergStateSQDT(species, n=50, angular=angular)
             state.radial.integrate_wavefunction()

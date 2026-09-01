@@ -33,7 +33,7 @@ class BasisSQDT(BasisBase[RydbergStateSQDT[T_AngularKet]], Generic[T_AngularKet]
         *,
         f_tot: tuple[float, float] | None = None,
         l_r: tuple[int, int] | None = None,
-        m: tuple[float, float] | None | NotSet = NotSet,
+        m: tuple[float, float] | NotSet | None = NotSet,
         coupling_scheme: Literal["LS"] = "LS",
         sqdt: SQDT | str | None = None,
         potential_class: type[Potential] | str | None = None,
@@ -47,7 +47,7 @@ class BasisSQDT(BasisBase[RydbergStateSQDT[T_AngularKet]], Generic[T_AngularKet]
         *,
         f_tot: tuple[float, float] | None = None,
         l_r: tuple[int, int] | None = None,
-        m: tuple[float, float] | None | NotSet = NotSet,
+        m: tuple[float, float] | NotSet | None = NotSet,
         coupling_scheme: Literal["JJ"],
         sqdt: SQDT | str | None = None,
         potential_class: type[Potential] | str | None = None,
@@ -61,7 +61,7 @@ class BasisSQDT(BasisBase[RydbergStateSQDT[T_AngularKet]], Generic[T_AngularKet]
         *,
         f_tot: tuple[float, float] | None = None,
         l_r: tuple[int, int] | None = None,
-        m: tuple[float, float] | None | NotSet = NotSet,
+        m: tuple[float, float] | NotSet | None = NotSet,
         coupling_scheme: Literal["FJ"],
         sqdt: SQDT | str | None = None,
         potential_class: type[Potential] | str | None = None,
@@ -74,7 +74,7 @@ class BasisSQDT(BasisBase[RydbergStateSQDT[T_AngularKet]], Generic[T_AngularKet]
         *,
         l_r: tuple[int, int] | None = None,
         f_tot: tuple[float, float] | None = None,
-        m: tuple[float, float] | None | NotSet = NotSet,
+        m: tuple[float, float] | NotSet | None = NotSet,
         coupling_scheme: CouplingScheme = "LS",
         # potential and sqdt parameters
         sqdt: SQDT | str | None = None,
@@ -116,7 +116,7 @@ class BasisSQDT(BasisBase[RydbergStateSQDT[T_AngularKet]], Generic[T_AngularKet]
         n_range: tuple[int, int],
         f_tot_range: tuple[float, float] | None,
         l_r_range: tuple[int, int] | None,
-        m_range: tuple[float, float] | None | NotSet,
+        m_range: tuple[float, float] | NotSet | None,
         coupling_scheme: CouplingScheme,
     ) -> None:
         self.coupling_scheme = coupling_scheme
@@ -143,7 +143,7 @@ class BasisSQDT(BasisBase[RydbergStateSQDT[T_AngularKet]], Generic[T_AngularKet]
         n: int,
         l_r: int,
         f_tot_range: tuple[float, float] | None,
-        m_range: tuple[float, float] | None | NotSet = NotSet,
+        m_range: tuple[float, float] | NotSet | None = NotSet,
     ) -> None:
         i_c = self.element_properties.i_c
         s_r = 0.5
@@ -158,15 +158,15 @@ class BasisSQDT(BasisBase[RydbergStateSQDT[T_AngularKet]], Generic[T_AngularKet]
                     if not is_allowed_qn(f_tot_range, f_tot):
                         continue
                     for m in get_m_range(f_tot, m_range):
-                        angular_ket = AngularKetLS(
+                        angular = AngularKetLS(
                             l_r=l_r, s_tot=s_tot, j_tot=j_tot, f_tot=f_tot, m=m, species=self.species
                         )
                         state = RydbergStateSQDT(
                             self.species,
                             n=n,
-                            angular_ket=angular_ket,
+                            angular=angular,
                             sqdt=self.sqdt,
-                            potential=self.potential_class(l_r),
+                            potential_class=self.potential_class,
                         )
                         self.states.append(state)  # type: ignore [arg-type]
 
@@ -175,7 +175,7 @@ class BasisSQDT(BasisBase[RydbergStateSQDT[T_AngularKet]], Generic[T_AngularKet]
         n: int,
         l_r: int,
         f_tot_range: tuple[float, float] | None,
-        m_range: tuple[float, float] | None | NotSet = NotSet,
+        m_range: tuple[float, float] | NotSet | None = NotSet,
     ) -> None:
         i_c = self.element_properties.i_c
         s_r = 0.5
@@ -198,15 +198,13 @@ class BasisSQDT(BasisBase[RydbergStateSQDT[T_AngularKet]], Generic[T_AngularKet]
                     if not is_allowed_qn(f_tot_range, f_tot):
                         continue
                     for m in get_m_range(f_tot, m_range):
-                        angular_ket = AngularKetJJ(
-                            l_r=l_r, j_r=j_r, j_tot=j_tot, f_tot=f_tot, m=m, species=self.species
-                        )
+                        angular = AngularKetJJ(l_r=l_r, j_r=j_r, j_tot=j_tot, f_tot=f_tot, m=m, species=self.species)
                         state = RydbergStateSQDT(
                             self.species,
                             n=n,
-                            angular_ket=angular_ket,
+                            angular=angular,
                             sqdt=self.sqdt,
-                            potential=self.potential_class(l_r),
+                            potential_class=self.potential_class,
                         )
                         self.states.append(state)  # type: ignore [arg-type]
 
@@ -215,7 +213,7 @@ class BasisSQDT(BasisBase[RydbergStateSQDT[T_AngularKet]], Generic[T_AngularKet]
         n: int,
         l_r: int,
         f_tot_range: tuple[float, float] | None,
-        m_range: tuple[float, float] | None | NotSet = NotSet,
+        m_range: tuple[float, float] | NotSet | None = NotSet,
     ) -> None:
         i_c = self.element_properties.i_c
         s_r = 0.5
@@ -238,12 +236,12 @@ class BasisSQDT(BasisBase[RydbergStateSQDT[T_AngularKet]], Generic[T_AngularKet]
                     if not is_allowed_qn(f_tot_range, f_tot):
                         continue
                     for m in get_m_range(f_tot, m_range):
-                        angular_ket = AngularKetFJ(l_r=l_r, j_r=j_r, f_c=f_c, f_tot=f_tot, m=m, species=self.species)
+                        angular = AngularKetFJ(l_r=l_r, j_r=j_r, f_c=f_c, f_tot=f_tot, m=m, species=self.species)
                         state = RydbergStateSQDT(
                             self.species,
                             n=n,
-                            angular_ket=angular_ket,
+                            angular=angular,
                             sqdt=self.sqdt,
-                            potential=self.potential_class(l_r),
+                            potential_class=self.potential_class,
                         )
                         self.states.append(state)  # type: ignore [arg-type]
