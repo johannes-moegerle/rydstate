@@ -1,7 +1,7 @@
 from typing import Any
 
 import pytest
-from rydstate import RydbergStateSQDT
+from rydstate import RydbergStateSQDT, RydbergStateSQDTDivalent
 from rydstate.angular import AngularKetLS
 from rydstate.species import get_all_subclasses, get_element_properties, get_sqdt
 from rydstate.species.sqdt import SQDT
@@ -26,8 +26,7 @@ def test_sqdt_species(species: str) -> None:
             AngularKetLS(l_r=1, species=species)
     elif element_properties.number_valence_electrons == 2 and sqdt.quantum_defects is not None:
         for s_tot in [0, 1]:
-            angular = AngularKetLS(l_r=1, s_tot=s_tot, j_tot=1 + s_tot, f_tot=s_tot + 1 + i_c, species=species)
-            state = RydbergStateSQDT(species, n=50, angular=angular)
+            state = RydbergStateSQDTDivalent(species, n=50, l=1, s=s_tot, j=1 + s_tot, f=s_tot + 1 + i_c)
             state.radial.integrate_wavefunction()
 
 

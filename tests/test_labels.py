@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, Literal
 
 import pytest
-from rydstate import RydbergStateSQDT, RydbergStateSQDTAlkali
+from rydstate import RydbergStateSQDT, RydbergStateSQDTAlkali, RydbergStateSQDTDivalent
 from rydstate.angular import AngularKetFJ, AngularKetJJ, AngularKetLS
 from rydstate.angular.utils import Unknown, format_quantum_number, get_spectroscopic_letter
 from rydstate.radial import RadialDummy, RadialKet
@@ -50,16 +50,16 @@ def test_get_label_alkali_jj() -> None:
 
 
 @pytest.mark.parametrize(
-    ("species", "n", "ket_kwargs", "label"),
+    ("kwargs", "label"),
     [
-        ("Sr88", 60, {"l_r": 0, "s_tot": 0, "j_tot": 0, "m": 0}, "Sr88:S=0,60S_0,m=0"),
-        ("Sr88", 61, {"l_r": 2, "s_tot": 1, "j_tot": 1, "m": 0}, "Sr88:S=1,61D_1,m=0"),
-        ("Yb174", 55, {"l_r": 1, "s_tot": 1, "j_tot": 2, "m": -1}, "Yb174:S=1,55P_2,m=-1"),
-        ("Yb174", 55, {"l_r": 3, "s_tot": 0, "j_tot": 3}, "Yb174:S=0,55F_3"),
+        ({"species": "Sr88", "n": 60, "l": 0, "s": 0, "j": 0, "m": 0}, "Sr88:S=0,60S_0,m=0"),
+        ({"species": "Sr88", "n": 61, "l": 2, "s": 1, "j": 1, "m": 0}, "Sr88:S=1,61D_1,m=0"),
+        ({"species": "Yb174", "n": 55, "l": 1, "s": 1, "j": 2, "m": -1}, "Yb174:S=1,55P_2,m=-1"),
+        ({"species": "Yb174", "n": 55, "l": 3, "s": 0, "j": 3}, "Yb174:S=0,55F_3"),
     ],
 )
-def test_get_label_divalent_ls(species: str, n: int, ket_kwargs: dict[str, Any], label: str) -> None:
-    state = RydbergStateSQDT(species, n, angular=AngularKetLS(species=species, **ket_kwargs))
+def test_get_label_divalent_ls(kwargs: dict[str, Any], label: str) -> None:
+    state = RydbergStateSQDTDivalent(**kwargs)
     assert state.get_label("raw") == label
     assert str(state) == f"|{label}⟩"
 
@@ -193,16 +193,14 @@ def test_get_label_rydberg_ket_with_rescaled_radial() -> None:
 )
 def test_get_label_after_to_coupling_scheme(coupling_scheme: CouplingScheme, label: str) -> None:
     """Changing the coupling scheme recombines the radial wavefunctions, but keeps their (common) nu."""
-    angular = AngularKetLS(l_r=2, s_tot=1, j_tot=1, m=0, species="Sr88")
-    state = RydbergStateSQDT("Sr88", 60, angular=angular)
+    state = RydbergStateSQDTDivalent("Sr88", 60, l=2, s=1, j=1, m=0)
     converted = state.to_coupling_scheme(coupling_scheme)
     assert converted.get_label("raw") == label.format(nu=state.nu)
 
 
 def test_get_label_state_and_ket_agree() -> None:
     """The label of an SQDT state and of its single rydberg ket only differ in the n / nu part."""
-    angular = AngularKetLS(l_r=2, s_tot=1, j_tot=1, m=0, species="Sr88")
-    state = RydbergStateSQDT("Sr88", 60, angular=angular)
+    state = RydbergStateSQDTDivalent("Sr88", 60, l=2, s=1, j=1, m=0)
     ket = state.rydberg_kets[0]
     assert state.get_label("raw") == "Sr88:S=1,60D_1,m=0"
     # the rydberg ket of an SQDT state knows its n, so it uses the same label as the state

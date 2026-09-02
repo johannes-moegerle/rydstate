@@ -5,8 +5,7 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 import pytest
-from rydstate import BasisMQDT, RydbergStateSQDT
-from rydstate.angular import AngularKetLS
+from rydstate import BasisMQDT, RydbergStateSQDTDivalent
 from rydstate.angular.utils import is_unknown
 from rydstate.species import FModelSQDT
 
@@ -91,14 +90,13 @@ def test_overlap_with_sqdt_state(basis: BasisMQDT) -> None:
     """
     mqdt_state = _find_state(basis, l_r=0, f_tot=1.0, s_tot=1.0)
 
-    angular = AngularKetLS(l_r=0, s_tot=1, l_tot=0, j_tot=1, f_tot=1, species=mqdt_state.species)
     overlaps = {}
     for n in range(30, 35):
-        sqdt_state = RydbergStateSQDT(mqdt_state.species, n=n, angular=angular)
+        sqdt_state = RydbergStateSQDTDivalent(mqdt_state.species, n=n, l=0, s=1, j=1)
         overlaps[n] = abs(mqdt_state.calc_reduced_overlap(sqdt_state))
 
     best_n = max(overlaps, key=overlaps.__getitem__)
-    best_sqdt = RydbergStateSQDT(mqdt_state.species, n=best_n, angular=angular)
+    best_sqdt = RydbergStateSQDTDivalent(mqdt_state.species, n=best_n, l=0, s=1, j=1)
 
     # The best matching SQDT state has the same nu and (almost) unit overlap.
     assert np.isclose(best_sqdt.nu, mqdt_state.nu, atol=1e-2)
@@ -130,8 +128,7 @@ def test_dipole_matrix_element_between_mqdt_states(basis: BasisMQDT) -> None:
 def test_matrix_element_between_mqdt_and_sqdt_state(basis: BasisMQDT) -> None:
     """A dipole matrix element can be computed between an MQDT and an SQDT state."""
     s_mqdt = _find_state(basis, l_r=0, f_tot=1.0, s_tot=1.0)
-    p_angular = AngularKetLS(l_r=1, s_tot=1, l_tot=1, j_tot=2, f_tot=2, species=s_mqdt.species)
-    p_sqdt = RydbergStateSQDT(s_mqdt.species, n=round(s_mqdt.nu) + 3, angular=p_angular)
+    p_sqdt = RydbergStateSQDTDivalent(s_mqdt.species, n=round(s_mqdt.nu) + 3, l=1, s=1, j=2)
 
     me = s_mqdt.calc_reduced_matrix_element(p_sqdt, "electric_dipole", unit="e a0")
     assert np.isfinite(me)

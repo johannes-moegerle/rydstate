@@ -8,5 +8,6 @@ Rydberg States
 
     RydbergStateSQDT
     RydbergStateSQDTAlkali
+    RydbergStateSQDTDivalent
     RydbergStateMQDT
     RydbergKet

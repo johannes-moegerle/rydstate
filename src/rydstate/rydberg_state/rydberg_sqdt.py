@@ -243,3 +243,49 @@ class RydbergStateSQDTAlkali(RydbergStateSQDT[AngularKetLS[AllKnown]]):
         """
         angular = AngularKetLS(l_c=0, l_r=l, j_tot=j, m=m, species=species)
         super().__init__(species, n, angular, sqdt=sqdt, potential_class=potential_class)
+
+
+class RydbergStateSQDTDivalent(RydbergStateSQDT[AngularKetLS[AllKnown]]):
+    """Create a divalent Rydberg state, including the radial and angular states.
+
+    This is a convenience wrapper around :class:`RydbergStateSQDT`,
+    which constructs the LS coupled angular ket from the divalent quantum numbers s, l, j (and f).
+    """
+
+    def __init__(
+        self,
+        species: str,
+        n: int,
+        *,
+        l: int,
+        s: int,
+        j: int | None = None,
+        f: float | None = None,
+        m: float | NotSet = NotSet,
+        # potential and sqdt parameters
+        sqdt: SQDT | str | None = None,
+        potential_class: type[Potential] | str | None = None,
+    ) -> None:
+        r"""Initialize the Rydberg state.
+
+        Args:
+            species: Atomic species.
+            n: Principal quantum number of the rydberg electron.
+            l: Orbital angular momentum quantum number of the rydberg electron.
+            s: Total electron spin quantum number, i.e. 0 for singlet and 1 for triplet states.
+            j: Total electron angular momentum quantum number.
+              Optional, if it is uniquely determined by l and s (i.e. for l = 0).
+            f: Total angular momentum quantum number, including the nuclear spin.
+              Optional, if it is uniquely determined by j (i.e. for species without nuclear spin).
+            m: Total magnetic quantum number.
+              Optional, only needed for concrete angular matrix elements.
+            sqdt: The SQDT to use for the state.
+              Either a string representing the tag of the SQDT class to use,
+              or an instance of an SQDT class.
+            potential_class: The potential class to use for the radial ket.
+                Either a string representing the tag of the potential class to use, or a potential class.
+                If None, the default potential class for the species is used.
+
+        """
+        angular = AngularKetLS(l_c=0, l_r=l, s_tot=s, j_tot=j, f_tot=f, m=m, species=species)
+        super().__init__(species, n, angular, sqdt=sqdt, potential_class=potential_class)

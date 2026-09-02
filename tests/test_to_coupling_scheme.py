@@ -4,18 +4,17 @@ from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import pytest
-from rydstate import BasisMQDT, RydbergStateSQDT
-from rydstate.angular import AngularKetLS
+from rydstate import BasisMQDT, RydbergStateSQDTDivalent
 
 if TYPE_CHECKING:
+    from rydstate import RydbergStateSQDT
     from rydstate.angular.utils import CouplingScheme
 
 
 @pytest.fixture(scope="module")
 def ls_state() -> RydbergStateSQDT[Any]:
     """Return a triplet-P (3P1) SQDT state of Sr88, given in the LS coupling scheme."""
-    angular = AngularKetLS(l_r=1, s_tot=1, l_tot=1, j_tot=1, f_tot=1, species="Sr88")
-    return RydbergStateSQDT("Sr88", n=60, angular=angular)
+    return RydbergStateSQDTDivalent("Sr88", n=60, l=1, s=1, j=1)
 
 
 @pytest.fixture(scope="module")

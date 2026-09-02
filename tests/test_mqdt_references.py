@@ -4,8 +4,7 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 import pytest
-from rydstate import RydbergStateSQDT
-from rydstate.angular import AngularKetLS
+from rydstate import RydbergStateSQDTDivalent
 from rydstate.angular.utils import NotSet
 from rydstate.basis.basis_mqdt import get_mqdt_states_from_fmodel
 from rydstate.species import get_mqdt, get_potential_class
@@ -65,10 +64,10 @@ REFERENCE_FRAME_TRANSFORMATIONS: list[tuple[str, str, NDArray]] = [
 
 # Experimentally measured Yb174 levels (from the NIST data shipped with the species),
 # which lie inside the nu range of a multi-channel MQDT model: (model name, n, l_r, j_tot, s_tot).
-NIST_LEVELS: list[tuple[str, int, int, float, float]] = [
-    ("S J=0, nu > 2", 7, 0, 0.0, 0.0),  # 6s7s 1S0
-    ("S J=0, nu > 2", 8, 0, 0.0, 0.0),  # 6s8s 1S0
-    ("D J=2, nu > 5", 8, 2, 2.0, 1.0),  # 6s8d 3D2
+NIST_LEVELS: list[tuple[str, int, int, int, int]] = [
+    ("S J=0, nu > 2", 7, 0, 0, 0),  # 6s7s 1S0
+    ("S J=0, nu > 2", 8, 0, 0, 0),  # 6s8s 1S0
+    ("D J=2, nu > 5", 8, 2, 2, 1),  # 6s8d 3D2
 ]
 
 
@@ -121,7 +120,7 @@ def test_frame_transformation_matches_reference(species: str, name: str, referen
 
 
 @pytest.mark.parametrize(("name", "n", "l_r", "j_tot", "s_tot"), NIST_LEVELS)
-def test_mqdt_energies_match_nist(name: str, n: int, l_r: int, j_tot: float, s_tot: float) -> None:
+def test_mqdt_energies_match_nist(name: str, n: int, l_r: int, j_tot: int, s_tot: int) -> None:
     """The multi-channel models must reproduce the experimentally measured Yb174 levels.
 
     This checks the whole MQDT pipeline (channel definitions, frame transformation, K-matrix, det(M) roots)
@@ -132,8 +131,7 @@ def test_mqdt_energies_match_nist(name: str, n: int, l_r: int, j_tot: float, s_t
     The models reproduce these levels to |dnu| < 3e-4, while e.g. mixing up two channels of the
     frame transformation shifts them by |dnu| ~ 1e-1, i.e. the tolerance below is not tight, but still strict.
     """
-    angular = AngularKetLS(l_r=l_r, s_tot=s_tot, j_tot=j_tot, species="Yb174")
-    nu_experimental = RydbergStateSQDT("Yb174", n=n, angular=angular).nu
+    nu_experimental = RydbergStateSQDTDivalent("Yb174", n=n, l=l_r, s=s_tot, j=j_tot).nu
 
     model = _get_model("Yb174", name)
     assert len(model.inner_channels) > 1, f"{model.full_name}: not a multi-channel model"
