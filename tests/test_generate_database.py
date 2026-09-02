@@ -2,9 +2,10 @@ from __future__ import annotations
 
 import numpy as np
 import pytest
-from rydstate import RydbergStateSQDTAlkali
+from rydstate import RydbergStateSQDT, RydbergStateSQDTAlkali
 from rydstate.angular.utils import minus_one_pow
 from rydstate.basis import BasisMQDT, BasisSQDT
+from rydstate.basis.utils import get_m_range
 from rydstate.generate_database.generate_matrix_elements_table import (
     MATRIX_ELEMENTS_OF_INTEREST,
     calc_matrix_elements_one_pair,
@@ -16,7 +17,7 @@ from rydstate.units import MatrixElementOperatorRanks
 
 TEST_SPECIES_SPECIFIER = [
     *["H", "Li", "Na", "K", "Rb", "Cs"],
-    *["Sr88_sqdt", "Yb174_sqdt"],
+    *["Sr88_sqdt", "Yb174_sqdt", "Sr88_ion"],
     *["Sr87_mqdt", "Sr88_mqdt", "Yb171_mqdt", "Yb173_mqdt", "Yb174_mqdt"],
 ]
 
@@ -80,6 +81,32 @@ def test_generate_matrix_elements_table(species_specifier: str) -> None:
         assert all(len(values) > 2 for values in table.values())
 
     states = basis.states
+    # the electric monopole table only exists for ions, where it is diagonal with the total charge (electron + core)
+    is_ion = states[0].element_properties.net_charge > 1
+    assert ("matrix_elements_m" in tables) == is_ion
+    if is_ion:
+        table = tables["matrix_elements_m"]
+        assert len(table["val"]) == len(states)
+        np.testing.assert_array_equal(table["id_initial"], table["id_final"])
+        total_charge = 1 - states[0].element_properties.net_charge
+        reference = [total_charge * np.sqrt(2 * states[int(ids)].f_tot + 1) for ids in table["id_initial"]]
+        np.testing.assert_allclose(table["val"], reference)
+
+        # the non-reduced matrix element <state, m| p_00 |state, m> is the total charge for every state and every m,
+        # independent of n, l, j, f_tot and m (the sqrt(2 f_tot + 1) of the reduced matrix element is exactly
+        # cancelled by the Wigner-Eckart prefactor of the wigner table)
+        for ids, val in zip(table["id_initial"], table["val"], strict=True):
+            state = states[int(ids)]
+            for m in get_m_range(state.f_tot, None):
+                state_m = RydbergStateSQDT(
+                    species, n=state.n, l_r=state.angular.l_r, j_tot=state.angular.j_tot, f_tot=state.f_tot, m=m
+                )
+                me = state_m.calc_matrix_element(state_m, "electric_monopole", q=0, unit="a.u.")
+                assert me == pytest.approx(total_charge), f"{state_m}: {me=} != {total_charge=}"
+                # and it is also consistent with the tabulated reduced matrix element
+                prefactor = state_m.angular._calc_wigner_eckart_prefactor(state_m.angular, 0, 0)  # noqa: SLF001
+                assert prefactor * val == pytest.approx(total_charge)
+
     table = tables["matrix_elements_d"]
     for id_initial, id_final, val in zip(table["id_initial"], table["id_final"], table["val"], strict=True):
         reference = states[int(id_final)].calc_reduced_matrix_element(
@@ -88,7 +115,7 @@ def test_generate_matrix_elements_table(species_specifier: str) -> None:
         assert np.isclose(val, reference)
 
 
-@pytest.mark.parametrize("species_specifier", ["Rb", "Sr88_sqdt", "Yb174_mqdt", "Yb171_mqdt"])
+@pytest.mark.parametrize("species_specifier", ["Rb", "Sr88_sqdt", "Sr88_ion", "Yb174_mqdt", "Yb171_mqdt"])
 def test_matrix_elements_table_matches_unfiltered_reference(species_specifier: str) -> None:
     r"""Compare the matrix element tables against an unfiltered loop over all pairs of states.
 

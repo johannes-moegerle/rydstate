@@ -115,6 +115,31 @@ def test_strontium_ion_s_state_quantum_defect() -> None:
     assert 60 - state.nu == pytest.approx(2.7062, abs=0.0005)
 
 
+def test_electric_monopole_matrix_elements() -> None:
+    """The electric monopole is the total charge (electron + core) in units of the electron charge.
+
+    It is diagonal (the states are orthonormal) and vanishes for neutral atoms.
+    """
+    ion = RydbergStateSQDT("Sr88_ion", n=46, l_r=0, j_tot=0.5, f_tot=0.5, m=0.5)
+    ion_p = RydbergStateSQDT("Sr88_ion", n=46, l_r=1, j_tot=1.5, f_tot=1.5, m=0.5)
+    ion_s47 = RydbergStateSQDT("Sr88_ion", n=47, l_r=0, j_tot=0.5, f_tot=0.5, m=0.5)
+    # the electron has charge +1 e in the convention of the electric multipole operators, the Sr2+ core -2 e
+    assert ion.calc_matrix_element(ion, "electric_monopole", q=0, unit="e") == pytest.approx(-1)
+    assert ion_p.calc_matrix_element(ion_p, "electric_monopole", q=0, unit="a.u.") == pytest.approx(-1)
+    assert ion.calc_reduced_matrix_element(ion, "electric_monopole", unit="a.u.") == pytest.approx(
+        -1 * (2 * 0.5 + 1) ** 0.5
+    )
+    assert ion_p.calc_reduced_matrix_element(ion_p, "electric_monopole", unit="a.u.") == pytest.approx(
+        -1 * (2 * 1.5 + 1) ** 0.5
+    )
+    # off-diagonal elements vanish exactly (also between states of the same l, whose numerical overlap is not exactly 0)
+    assert ion.calc_reduced_matrix_element(ion_p, "electric_monopole", unit="a.u.") == 0
+    assert ion.calc_reduced_matrix_element(ion_s47, "electric_monopole", unit="a.u.") == 0
+
+    neutral = RydbergStateSQDT("Rb", n=46, l_r=0, j_tot=0.5, f_tot=0.5, m=0.5)
+    assert neutral.calc_matrix_element(neutral, "electric_monopole", q=0, unit="a.u.") == 0
+
+
 def test_strontium_ion_nist_levels_match_quantum_defects() -> None:
     """For the highest NIST levels (n >= 9), nu from the NIST energies and from the quantum defects agree."""
     sqdt = get_sqdt("Sr88_ion")

@@ -156,7 +156,7 @@ class RydbergKet:
         unit: str,
     ) -> float: ...
 
-    def calc_reduced_matrix_element(  # noqa: C901
+    def calc_reduced_matrix_element(  # noqa: C901, PLR0912
         self,
         other: RydbergKet,
         operator: MatrixElementOperator,
@@ -197,6 +197,10 @@ class RydbergKet:
             if part != "all":
                 raise ValueError(f"Part {part} is currently not supported for magnetic dipole matrix elements.")
             matrix_element_au = self._calc_magnetic_reduced_matrix_element_au(other, operator)
+        elif operator == "electric_monopole":
+            if part != "all":
+                raise ValueError(f"Part {part} is not supported for electric monopole matrix elements.")
+            matrix_element_au = self._calc_electric_monopole_reduced_matrix_element_au(other)
         elif operator.startswith("electric_"):
             matrix_element_au = self._calc_electric_reduced_matrix_element_au(other, operator, part=part)
         elif is_angular_operator_type(operator):
@@ -281,6 +285,43 @@ class RydbergKet:
             prefactor *= SQRT_2
 
         return prefactor * angular_matrix_element * radial_matrix_element
+
+    def _calc_electric_monopole_reduced_matrix_element_au(self, other: RydbergKet) -> float:
+        r"""Calculate the reduced matrix element of the electric monopole operator in a.u.
+
+        The electric monopole operator is the total charge of the atom or ion, i.e. the charge of the ionic core plus
+        the charge of the Rydberg electron. It is given in the same convention as the other electric multipole
+        operators :math:`p_{k,q} = e r^k \sqrt{4\pi/(2k+1)} Y_{k,q}`, i.e. the charge of the (Rydberg) electron
+        is :math:`+1 e` and consequently the charge of the ionic core is :math:`-Z e`, such that
+
+        .. math::
+            p_{0,0} = e (1 - Z) \, \mathbb{1}
+
+        where Z is the net charge of the ionic core seen by the Rydberg electron.
+        Using this convention for all electric multipole operators (of the electron and the core), the multipole
+        expansion of the electrostatic interaction between two atoms/ions holds with the same prefactors for all
+        (k_1, k_2), including the monopole (k = 0) terms of ions.
+        The monopole operator thus vanishes for neutral atoms (Z = 1) and is :math:`-1 e` for singly charged ions.
+
+        Since r^0 = 1, the "radial matrix element" is the overlap of the radial wavefunctions, which is exactly a
+        delta function for the (orthonormal) eigenstates, so we use the exact delta (nu_self == nu_other) instead
+        of the numerically integrated overlap.
+        """
+        total_charge = 1 - self.element_properties.net_charge  # electron + core, in units of the electron charge
+        if total_charge == 0:
+            return 0.0
+
+        # <self.angular || sqrt(4 pi) Y_00 || other.angular> = sqrt(2 f + 1) * delta(angular quantum numbers)
+        angular_matrix_element = self.angular.calc_reduced_matrix_element(other.angular, "spherical", 0)
+        if angular_matrix_element == 0:
+            return 0.0
+        prefactor = ELECTRIC_MULTIPOLE_PREFACTORS[0]
+
+        # exact radial orthonormality of the eigenstates: <R_self|R_other> = delta(nu_self, nu_other)
+        if self.radial.nu is None or other.radial.nu is None or abs(self.radial.nu - other.radial.nu) > 1e-10:
+            return 0.0
+
+        return total_charge * prefactor * angular_matrix_element
 
     def _calc_magnetic_reduced_matrix_element_au(self, other: RydbergKet, operator: MatrixElementOperator) -> float:
         k_radial, k_angular = _get_ks(operator)
