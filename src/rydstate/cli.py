@@ -13,6 +13,8 @@ from rydstate.generate_database.generate_database import (
     create_tables_for_mqdt,
     create_tables_for_sqdt,
 )
+from rydstate.species.mqdt import MQDT
+from rydstate.species.utils import get_all_subclasses
 
 logger = logging.getLogger(__name__)
 
@@ -214,7 +216,9 @@ def prepare_directory(args: argparse.Namespace) -> Path:
         directory = Path("database") / "misc"
     elif args.mode == "sqdt":
         species = args.species.removesuffix("_sqdt")
-        folder = f"{species}_sqdt" if any(species.startswith(sp) for sp in ["Sr", "Yb"]) else species
+        # append _sqdt only if an mqdt model exists as well (e.g. Sr88_sqdt and Sr88_mqdt, but Rb and Sr88_ion)
+        has_mqdt_model = len(get_all_subclasses(MQDT, species)) > 0
+        folder = f"{species}_sqdt" if has_mqdt_model else species
         directory = Path("database") / folder
     elif args.mode == "mqdt":
         species = args.species.removesuffix("_mqdt")
