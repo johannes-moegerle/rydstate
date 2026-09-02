@@ -15,6 +15,9 @@ class _ElementPropertiesStrontiumAbstractIon(ElementProperties, ABC):
 
     # Greene, Aymar Phys. Rev. A 44, 1773, 1991 (https://doi.org/10.1103/PhysRevA.44.1773)
     alpha_closed_shell_core = 7.5
+    # fitted to the NIST ASD line strengths of Sr II with accuracy AA / A+ (5s1/2-5p1/2, 5s1/2-5p3/2, 4d3/2-5p1/2),
+    # which are reproduced within 1% (the bare dipole operator overestimates them by 7-8%)
+    r_c_dipole_operator = 3.46
 
 
 class ElementPropertiesStrontium87Ion(_ElementPropertiesStrontiumAbstractIon):
