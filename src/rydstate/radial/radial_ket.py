@@ -369,8 +369,8 @@ class RadialKet(Radial, metaclass=CachedABCMeta):
             tol = 2e-3
 
         # for divalent atoms, the wavefunction (currently) is not expected to be close to zero at the inner boundary
-        is_alkali = self.element_properties.number_valence_electrons == 1
-        if is_alkali and inner_weight_scaled_to_whole_grid > tol:
+        is_alkali_like = self.element_properties.number_valence_electrons == 1
+        if is_alkali_like and inner_weight_scaled_to_whole_grid > tol:
             warning_msgs.append(
                 f"The wavefunction is not close to zero at the inner boundary"
                 f" (inner_weight_scaled_to_whole_grid={inner_weight_scaled_to_whole_grid:.2e})"
@@ -402,7 +402,7 @@ class RadialKet(Radial, metaclass=CachedABCMeta):
         # Check that numerov stopped and did not run until z_force_stop
         if run_backward:
             z_stop = z_list[np.argwhere(w_list != 0).flatten()[0]]
-            z_tol = 0.035 if is_alkali else 0.05
+            z_tol = 0.035 if is_alkali_like else 0.05
             if self.l_r == 0 and z_stop > z_tol:  # z_stop should run almost to zero for l=0
                 warning_msgs.append(f"The integration for l=0 did stop at {z_stop} (should be close to zero).")
             if self.l_r > 0 and z_force_stop > z_stop - self.dz / 2 and inner_weight_scaled_to_whole_grid > 1e-6:
