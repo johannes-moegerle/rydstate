@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+from itertools import pairwise
 
 import numpy as np
 import pytest
@@ -235,3 +236,60 @@ def test_mqdt_get_core_kets(mqdt: MQDT) -> None:
     core_kets = mqdt.get_core_kets()
     assert len(core_kets) == len(set(core_kets))
     assert set(core_kets) == {ck for model in mqdt.models for ck in model.get_core_kets()}
+
+
+# Models that intentionally only describe an isolated nu window, i.e. no model is available
+# directly above them. The gap above these models is therefore not reported as an error.
+MODELS_WITH_ISOLATED_NU_RANGE = [
+    "Sr87 P F=9/2 (clock), 1.8 < nu < 2.2",
+    "Sr88 P J=1 (recombination), 1.8 < nu < 2.2",
+]
+
+
+def _share_channels(model_1: FModel, model_2: FModel) -> bool:
+    """Whether two models describe (at least partly) the same physical channels.
+
+    Dummy channels (channels with unknown quantum numbers) are ignored,
+    since they only stand in for unidentified perturbers and would match across unrelated models.
+    """
+    return any(
+        abs(ket_1.calc_reduced_overlap(ket_2)) > 0
+        for ket_1 in model_1.outer_channels
+        if not ket_1.contains_unknown
+        for ket_2 in model_2.outer_channels
+        if not ket_2.contains_unknown
+    )
+
+
+def _group_models_by_channels(models: list[FModel]) -> list[list[FModel]]:
+    """Group the models into sets of models that (transitively) describe the same channels."""
+    groups: list[list[FModel]] = []
+    for model in models:
+        matching = [group for group in groups if any(_share_channels(model, other) for other in group)]
+        merged = [model, *(other for group in matching for other in group)]
+        groups = [group for group in groups if group not in matching]
+        groups.append(merged)
+    return groups
+
+
+def test_nu_ranges_match_at_boundaries(mqdt: MQDT) -> None:
+    """Models describing the same channels must tile nu without gaps or overlaps.
+
+    If one model is valid up to nu = 5.7, the model describing the same channels above it must start
+    exactly at nu = 5.7 (and not at 6, which would leave a gap of states, nor at 5.5, which would
+    make the states in the overlap appear twice).
+    """
+    errors: list[str] = []
+    for group in _group_models_by_channels(mqdt.models):
+        ordered = sorted(group, key=lambda model: model.nu_range)
+        for model, next_model in pairwise(ordered):
+            if model.full_name in MODELS_WITH_ISOLATED_NU_RANGE:
+                continue
+            if model.nu_max != next_model.nu_min:
+                relation = "gap" if model.nu_max < next_model.nu_min else "overlap"
+                errors.append(
+                    f"{relation} between '{model.full_name}' (nu_max={model.nu_max}) and "
+                    f"'{next_model.full_name}' (nu_min={next_model.nu_min})"
+                )
+    msg = f"{mqdt!r}: nu ranges of models describing the same channels do not match:\n" + "\n".join(errors)
+    assert not errors, msg

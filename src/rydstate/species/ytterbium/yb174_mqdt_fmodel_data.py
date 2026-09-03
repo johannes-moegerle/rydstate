@@ -78,9 +78,9 @@ class Yb174_S1_HighN(FModel):
 
 class Yb174_P0_HighN(FModel):
     species = "Yb174"
-    name = "P J=0, nu > 6"
+    name = "P J=0, nu > 5.5"
     f_tot = 0
-    nu_range = (6.0, np.inf)
+    nu_range = (5.5, np.inf)
     reference = REFERENCE_KURODA_2025
 
     inner_channels = [
@@ -103,9 +103,9 @@ class Yb174_P0_HighN(FModel):
 
 class Yb174_P1_HighN(FModel):
     species = "Yb174"
-    name = "P J=1, nu > 6"
+    name = "P J=1, nu > 5.7"
     f_tot = 1
-    nu_range = (6.0, np.inf)
+    nu_range = (5.7, np.inf)
     reference = REFERENCE_KURODA_2025
 
     inner_channels = [
@@ -148,9 +148,9 @@ class Yb174_P1_HighN(FModel):
 
 class Yb174_P2_HighN(FModel):
     species = "Yb174"
-    name = "P J=2, nu > 5"
+    name = "P J=2, nu > 4.5"
     f_tot = 2
-    nu_range = (5.0, np.inf)
+    nu_range = (4.5, np.inf)
     reference = REFERENCE_KURODA_2025
 
     inner_channels = [

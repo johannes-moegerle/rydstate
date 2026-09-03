@@ -78,10 +78,10 @@ class Yb171_S15_HighN(FModel):
 
 class Yb171_P05_HighN(FModel):
     species = "Yb171"
-    name = "P F=1/2, nu > 5.7"
+    name = "P F=1/2, nu > 5.9"
     f_tot = 0.5
-    nu_range = (5.7, np.inf)
-    reference = (REFERENCE_KURODA_2025, "fit for nu > 28, but extrapolates nicely down for nu > 5.7)")
+    nu_range = (5.9, np.inf)
+    reference = (REFERENCE_KURODA_2025, "fit for nu > 28, but extrapolates nicely down for nu > 5.9)")
 
     inner_channels = [
         AngularKetLS(l_c=0, l_r=1, l_tot=1, s_tot=0, j_tot=1, f_tot=0.5, species="Yb171"),  # "6snp 1P1"
@@ -621,9 +621,9 @@ class Yb171_S15_LowN(FModel):
 
 class Yb171_P05_Lowest(FModel):
     species = "Yb171"
-    name = "P F=1/2, 1.5 < nu < 2.5"
+    name = "P F=1/2, 1.6 < nu < 2.6"
     f_tot = 0.5
-    nu_range = (1.5, 2.5)
+    nu_range = (1.6, 2.6)
     reference = "fit to Yb174 NIST data"
 
     inner_channels = [
@@ -649,9 +649,9 @@ class Yb171_P05_Lowest(FModel):
 
 class Yb171_P05_LowN(FModel):
     species = "Yb171"
-    name = "P F=1/2, 2.9 < nu < 5.9"
+    name = "P F=1/2, 2.6 < nu < 5.9"
     f_tot = 0.5
-    nu_range = (2.9, 5.9)
+    nu_range = (2.6, 5.9)
     reference = "fit to Yb174 NIST data"
 
     inner_channels = [
@@ -674,9 +674,9 @@ class Yb171_P05_LowN(FModel):
 
 class Yb171_P15_Lowest(FModel):
     species = "Yb171"
-    name = "P F=3/2, 1.5 < nu < 2.5"
+    name = "P F=3/2, 1.6 < nu < 2.6"
     f_tot = 1.5
-    nu_range = (1.5, 2.5)
+    nu_range = (1.6, 2.6)
     reference = "fit to Yb174 NIST data"
 
     inner_channels = [
@@ -702,9 +702,9 @@ class Yb171_P15_Lowest(FModel):
 
 class Yb171_P15_LowN(FModel):
     species = "Yb171"
-    name = "P F=3/2, 3 < nu < 10"
+    name = "P F=3/2, 2.6 < nu < 10"
     f_tot = 1.5
-    nu_range = (3.0, 10.0)
+    nu_range = (2.6, 10.0)
     reference = "fit to Yb174 NIST data"
 
     inner_channels = [
@@ -781,9 +781,9 @@ class Yb171_P25_Lowest(FModel):
 
 class Yb171_P25_LowN(FModel):
     species = "Yb171"
-    name = "P F=5/2, 5 < nu < 20"
+    name = "P F=5/2, 4.5 < nu < 20"
     f_tot = 2.5
-    nu_range = (5.0, 20.0)
+    nu_range = (4.5, 20.0)
     reference = "fit to Yb174 Phys. Rev. X 15, 011009 (2025)"
 
     inner_channels = [
