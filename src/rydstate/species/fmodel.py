@@ -261,7 +261,7 @@ class FModel:
         return self.frame_transformation_outer_inner @ self.calc_frame_transformation_inner_closecoupling(nu)
 
     def calc_k_matrix(self, nu: float) -> NDArray:
-        r"""Return the K-matrix in the collision (outer) channel frame.
+        r"""Return the K-matrix in the outer channel frame.
 
         The K-matrix is defined as
 
@@ -275,7 +275,7 @@ class FModel:
             nu: Effective principal quantum number with reference to the reference ionization threshold.
 
         Returns:
-            K-matrix in the collision (outer) channel frame, K = tan(\pi \mu).
+            K-matrix in the outer channel frame, K = tan(\pi \mu).
 
         """
         transform = self.calc_frame_transformation(nu)
@@ -283,7 +283,7 @@ class FModel:
         return transform @ kbar @ transform.T
 
     def calc_m_matrix(self, nu: float) -> NDArray:
-        r"""Return the M-matrix in the collision (outer) channel frame.
+        r"""Return the M-matrix in the outer channel frame.
 
         The M-matrix is defined as
 
@@ -294,7 +294,7 @@ class FModel:
             nu: Effective principal quantum number with reference to the reference ionization threshold.
 
         Returns:
-            M-matrix in the collision (outer) channel frame, M = tan(β) + K.
+            M-matrix in the outer channel frame, M = tan(β) + K.
 
         """
         kmat = self.calc_k_matrix(nu)
@@ -302,7 +302,7 @@ class FModel:
         return np.diag(np.tan(np.pi * nuis)) + kmat
 
     def calc_scaled_m_matrix(self, nu: float) -> NDArray:
-        r"""Return the scaled M-matrix in the collision (outer) channel frame.
+        r"""Return the scaled M-matrix in the outer channel frame.
 
         The scaled M-matrix is defined as
 

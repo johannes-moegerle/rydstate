@@ -301,7 +301,7 @@ class RydbergStateOSQDT(RydbergStateSQDT[AngularKetFJ[AllKnown]]):
 
     This is a :class:`RydbergStateSQDT`, whose quantum defects are given by an
     :class:`~rydstate.species.osqdt.OSQDT` object, i.e. by the diagonal elements of the K-matrix
-    of the MQDT models in the collision (outer) channel frame.
+    of the MQDT models in the outer channel frame.
     """
 
     sqdt: OSQDT

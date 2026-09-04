@@ -33,7 +33,7 @@ class OSQDT(SQDT):
 
     In contrast to a normal :class:`~rydstate.species.SQDT`, the quantum defects are not taken from
     tabulated Rydberg-Ritz parameters, but from the diagonal elements of the K-matrix of the
-    :class:`~rydstate.species.MQDT` models in the collision (outer) channel frame
+    :class:`~rydstate.species.MQDT` models in the outer channel frame
     (and setting the couplings of the K matrix in the outer channel basis to zero).
 
     Since one MQDT model is only valid in a limited nu range, the channel is described by one
@@ -254,7 +254,7 @@ class OSQDTModel:
             nui: The channel nui at which to evaluate the K-matrix.
 
         Returns:
-            The diagonal element of the K-matrix of the MQDT model in the collision (outer) channel
+            The diagonal element of the K-matrix of the MQDT model in the outer channel
             frame (see :meth:`~rydstate.species.fmodel.FModel.calc_k_matrix`).
             NaN for a state above the reference ionization threshold, where the K-matrix is not defined.
 
@@ -268,7 +268,7 @@ class OSQDTModel:
         r"""Calculate the condition, whose roots define the OSQDT states of this channel.
 
         This is the determinant condition of MQDT, where the K-matrix is assumed to be diagonal
-        in the collision (outer) channel frame (i.e. the off-diagonal elements are set to zero).
+        in the outer channel frame (i.e. the off-diagonal elements are set to zero).
         The determinant condition then decouples into one equation per outer channel
 
         .. math::

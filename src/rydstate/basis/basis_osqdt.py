@@ -37,7 +37,7 @@ class BasisOSQDT(BasisSQDT):
     and the states outside the requested nu range are discarded afterwards.
     In contrast to :class:`~rydstate.basis.BasisSQDT`, the quantum defects are not taken from the
     :class:`~rydstate.species.SQDT` data, but from the diagonal elements of the K-matrix of the
-    :class:`~rydstate.species.MQDT` models in the collision (outer) channel frame.
+    :class:`~rydstate.species.MQDT` models in the outer channel frame.
 
     This is the same condition one obtains from :class:`~rydstate.basis.BasisMQDT` when the coupling
     between the outer channels is switched off, i.e. when the off-diagonal elements of the K-matrix are neglected.
