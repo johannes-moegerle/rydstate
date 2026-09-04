@@ -9,3 +9,4 @@ Rydberg Basis
     BasisSQDT
     BasisMQDT
     BasisOSQDT
+    BasisTunableMQDT

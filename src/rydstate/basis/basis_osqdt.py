@@ -40,7 +40,8 @@ class BasisOSQDT(BasisSQDT):
     :class:`~rydstate.species.MQDT` models in the outer channel frame.
 
     This is the same condition one obtains from :class:`~rydstate.basis.BasisMQDT` when the coupling
-    between the outer channels is switched off, i.e. when the off-diagonal elements of the K-matrix are neglected.
+    between the outer channels is switched off, i.e. when the off-diagonal elements of the K-matrix are neglected,
+    which is the ``coupling_factor=0`` limit of :class:`~rydstate.basis.BasisTunableMQDT`.
     """
 
     states: list[RydbergStateOSQDT]  # type: ignore [assignment]
