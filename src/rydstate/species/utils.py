@@ -38,6 +38,8 @@ def calc_nu_from_energy(reduced_mass_au: float, energy_au: float, charge: int = 
         The effective principal quantum number nu.
 
     """
+    if energy_au >= 0:
+        return np.inf
     return charge * math.sqrt(0.5 * reduced_mass_au / -energy_au)
 
 
@@ -63,6 +65,10 @@ def calc_energy_from_nu(reduced_mass_au: float, nu: float, charge: int = 1) -> f
         The energy E in atomic units (hartree).
 
     """
+    if np.isinf(nu):
+        raise ValueError("Cannot calculate energy from nu=inf.")
+    if nu == 0:
+        return -np.inf
     return -0.5 * charge**2 * reduced_mass_au / nu**2
 
 

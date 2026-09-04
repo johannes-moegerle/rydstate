@@ -138,7 +138,7 @@ class FModel:
             nu: Effective principal quantum number with reference to the reference ionization threshold.
 
         Returns:
-            List of channel nui values.
+            Array of channel nui values.
 
         """
         reduced_mass_au = self.element_properties.reduced_mass_au
@@ -146,10 +146,10 @@ class FModel:
         reference_threshold_au = self.mqdt.reference_ionization_threshold_au
         # we calculate binding_energy_au here directly from nu (and dont use calc_energy_au) to avoid numerical issues
         binding_energy_au = calc_energy_from_nu(reduced_mass_au, nu, net_charge)
-        nuis = [
-            calc_nu_from_energy(reduced_mass_au, binding_energy_au - (threshold - reference_threshold_au), net_charge)
-            for threshold in self.ionization_thresholds_au
+        energies = [
+            binding_energy_au - (threshold - reference_threshold_au) for threshold in self.ionization_thresholds_au
         ]
+        nuis = [calc_nu_from_energy(reduced_mass_au, energy, net_charge) for energy in energies]
         return np.array(nuis)
 
     def calc_eigen_quantum_defects(self, nu: float) -> NDArray:
