@@ -37,8 +37,9 @@ def test_generate_wigner_table_returns_rows() -> None:
 
 def test_get_state_data_for_sqdt_alkali_state() -> None:
     state = RydbergStateSQDTAlkali("H", n=1, l=0, j=0.5)
-    row = dict(zip(COLUMNS, get_state_data(7, state), strict=True))
+    row = get_state_data(7, state)
 
+    assert list(row) == list(COLUMNS)
     assert row["id"] == 7
     assert (row["parity"], row["n"], row["nu"], row["f"]) == (1, 1, 1.0, 0.5)
     assert row["exp_nui"] == 1.0
