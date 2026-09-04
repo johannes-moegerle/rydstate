@@ -72,8 +72,8 @@ class Sr88_P1_LowN(FModel):
     ]
 
     eigen_quantum_defects = [
-        [0.87199081, 0],
-        [0.13140955, 0],
+        [2.87199081, 0],
+        [3.13140955, 0],
     ]
     mixing_angles = [
         (0, 1, [1.31169947, -4.48280597]),
@@ -181,7 +181,7 @@ class Sr88_D2_HighN(FModel):
     ]
 
     eigen_quantum_defects = [
-        [2.3847, -39.41, -1090],
+        [3.3847, -39.41, -1090],
         [2.66149, -16.77, -6656],
     ]
     mixing_angles = [
