@@ -35,6 +35,7 @@ Some MQDT related examples.
 
 .. nbgallery::
    examples/mqdt/mqdt_exp_qn.ipynb
+   examples/mqdt/spectrum_with_overlaps.ipynb
 
 Comparisons
 -----------
