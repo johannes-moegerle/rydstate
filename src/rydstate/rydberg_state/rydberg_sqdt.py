@@ -5,9 +5,10 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Generic, TypeVar, overload
 
 from rydstate.angular import NotSet
-from rydstate.angular.angular_ket import AngularKetBase, AngularKetLS
-from rydstate.angular.utils import AllKnown
+from rydstate.angular.angular_ket import AngularKetBase, AngularKetFJ, AngularKetLS
+from rydstate.angular.utils import AllKnown, is_unknown
 from rydstate.radial import RadialKet
+from rydstate.radial.radial_ket import RadialDummy
 from rydstate.rydberg_state.rydberg_base import RydbergState
 from rydstate.rydberg_state.rydberg_ket import RydbergKet
 from rydstate.species import get_element_properties, get_sqdt
@@ -17,6 +18,7 @@ from rydstate.species.utils import calc_energy_from_nu, calc_nu_from_energy
 from rydstate.units import BaseQuantities
 
 if TYPE_CHECKING:
+    from rydstate.species.osqdt import OSQDT
     from rydstate.units import PintFloat
 
 GenericT_AngularKet = TypeVar("GenericT_AngularKet", bound=AngularKetBase[AllKnown])
@@ -289,3 +291,29 @@ class RydbergStateSQDTDivalent(RydbergStateSQDT[AngularKetLS[AllKnown]]):
         """
         angular = AngularKetLS(l_c=0, l_r=l, s_tot=s, j_tot=j, f_tot=f, m=m, species=species)
         super().__init__(species, n, angular, sqdt=sqdt, potential_class=potential_class)
+
+
+class RydbergStateOSQDT(RydbergStateSQDT[AngularKetFJ[AllKnown]]):
+    """Create a Rydberg state of a single outer channel of the MQDT models.
+
+    The states of this class are not meant to be used directly.
+    They are rather used for comparison and didactic purposes.
+
+    This is a :class:`RydbergStateSQDT`, whose quantum defects are given by an
+    :class:`~rydstate.species.osqdt.OSQDT` object, i.e. by the diagonal elements of the K-matrix
+    of the MQDT models in the collision (outer) channel frame.
+    """
+
+    sqdt: OSQDT
+
+    @cached_property
+    def radial(self) -> RadialKet | RadialDummy:  # type: ignore [override]
+        """The radial part of the Rydberg electron."""
+        if is_unknown(self.angular.l_r):
+            return RadialDummy(1.0, self.nui)
+        return RadialKet(
+            self.nui,
+            self.potential_class(self.angular.l_r),
+            sign_convention="positive_at_outer_bound",
+            n_expected=self.n,
+        )

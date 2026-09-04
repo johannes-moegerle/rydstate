@@ -8,3 +8,4 @@ Rydberg Basis
 
     BasisSQDT
     BasisMQDT
+    BasisOSQDT
