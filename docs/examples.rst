@@ -37,6 +37,7 @@ Some MQDT related examples.
    examples/mqdt/mqdt_exp_qn.ipynb
    examples/mqdt/spectrum_with_overlaps.ipynb
    examples/mqdt/mqdt_radial_wavefunctions_fj_vs_ls.ipynb
+   examples/mqdt/mqdt_exp_qn_regions.ipynb
 
 Comparisons
 -----------
