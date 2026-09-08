@@ -25,6 +25,7 @@ COLUMNS: dict[str, Literal["q", "d"]] = {
 }
 
 MATRIX_ELEMENTS_OF_INTEREST: dict[str, MatrixElementOperator] = {
+    "matrix_elements_m": "electric_monopole",  # total charge of the atom/ion vanishes for neutral atoms
     "matrix_elements_d": "electric_dipole",
     "matrix_elements_q": "electric_quadrupole",
     "matrix_elements_o": "electric_octupole",
@@ -117,7 +118,12 @@ def generate_matrix_elements_tables(  # noqa: C901
     tables: dict[str, dict[str, NDArray]] = {}
     for tkey in list(matrix_elements):
         # pop the accumulated columns one table at a time, so that their memory is freed as we go
-        tables[tkey] = sort_accumulated_columns(matrix_elements.pop(tkey))
+        columns = matrix_elements.pop(tkey)
+        if len(columns["val"]) == 0:
+            # e.g. the electric monopole for neutral atoms; tables without any non-vanishing matrix element are omitted
+            logger.info("No non-vanishing matrix elements for the '%s' table, skipping it", tkey)
+            continue
+        tables[tkey] = sort_accumulated_columns(columns)
         logger.info("Created the '%s' table (%s rows)", tkey, len(tables[tkey]["val"]))
 
     return tables
