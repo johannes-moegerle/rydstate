@@ -1,7 +1,7 @@
 Rydberg Basis
 =============
 
-.. currentmodule:: rydstate
+.. currentmodule:: rydstate.basis
 
 .. autosummary::
     :toctree: ../_autosummary/

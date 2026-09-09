@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 import pytest
-from rydstate import BasisMQDT, BasisOSQDT, BasisTunableMQDT
+from rydstate.basis import BasisMQDT, BasisOSQDT, BasisTunableMQDT
 from rydstate.species import FModelScaledOffDiagonal, get_mqdt
 
 if TYPE_CHECKING:

@@ -4,8 +4,8 @@ import logging
 
 import numpy as np
 import pytest
-from rydstate import BasisMQDT, BasisOSQDT, BasisSQDT
 from rydstate.angular.utils import is_unknown
+from rydstate.basis import BasisMQDT, BasisOSQDT, BasisSQDT
 
 
 def test_osqdt_states_are_single_channel_with_definite_n() -> None:
