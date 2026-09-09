@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import logging
 import math
-from itertools import pairwise
 from typing import TYPE_CHECKING, Any, Literal
 
 import numpy as np
@@ -28,23 +27,20 @@ def find_roots(
     atol: float = 1e-9,
     xtol: float = 1e-13,
 ) -> list[float]:
-    """Find all roots of func in [x_min, x_max].
+    """Find roots of func in [x_min, x_max] by sampling and adaptive refinement.
 
-    Uses a dense uniform grid to detect sign changes, then refines each bracket with Brent's method.
-    A pair of roots lying between two adjacent grid points has no sign change on
-    the grid, but shows up as a local minimum of |func|;
-    A nearby third root can hide this dip, so we also refine cells where both endpoint values
-    are small compared with the change in neighbouring cells.
-    These intervals are searched again with a finer grid.
+    Sample a uniform grid, then refine sign changes with Brent's method. To resolve roots
+    sharing a grid cell, search again where |func| is small relative to nearby changes or
+    has a local dip. Also refine unusually steep cells, which may contain a root and a pole.
+
+    This is a heuristic search: roots can be missed if the samples give no indication of
+    them, especially near poles. Decrease min_dx to check whether a spectrum is resolved.
 
     Args:
         func: 1D scalar function to find roots of.
         x_min: Left endpoint of search interval.
         x_max: Right endpoint of search interval.
-        min_dx: Grid spacing used to detect sign changes and dips.
-            Isolated roots and pairs of roots are found even if they are closer than
-            min_dx, as long as the grid resolves the dip of |func| around them.
-            Three or more roots within one grid cell can still be missed.
+        min_dx: Initial grid spacing. Selected cells are searched with finer grids.
         atol: Absolute tolerance for root validation.
         xtol: Absolute tolerance for root refinement.
 
@@ -68,15 +64,12 @@ def find_roots(
                 logger.warning("Brent's method failed to find root in [%f, %f], skipping.", x_left, x_right)
                 continue
 
-        # the grid used in _find_approximate_roots is extended by one dx on each side, so it can also find roots
-        # at the boundary (or slightly outside) of [x_min, x_max].
-        # Points outside the interval (up to xtol) are discarded here.
+        # _find_approximate_roots extends the grid by one dx, so it also finds roots outside of the interval
         if not x_min - xtol <= root <= x_max + xtol:
             continue
 
         val = func(root)
-        if abs(val) > 1e10:
-            # found a singularity instead of a root, ignore this
+        if not np.isfinite(val) or abs(val) > 1e10:  # a singularity of func, not a root
             continue
         if abs(val) > atol:
             logger.warning("Root not close to zero: x=%f f(x)=%e. Skipping.", root, val)
@@ -85,8 +78,12 @@ def find_roots(
         roots.append(float(root))
 
     roots.sort()
-    if np.any(np.diff(roots) < 1e-8):
-        raise ValueError(f"Found roots that are very close together: {roots}, this should not happen.")
+    # brentq is only accurate to xtol plus the relative tolerance 4 * eps it uses internally, so two
+    # roots closer than the sum of these error bounds may be duplicate brackets.
+    # Reject this ambiguity rather than silently merging potentially distinct roots.
+    max_root_error = xtol + 4 * np.finfo(float).eps * np.abs(roots)
+    if np.any(np.diff(roots) < max_root_error[:-1] + max_root_error[1:]):
+        raise ValueError(f"Found roots closer than the refinement accuracy: {roots}.")
 
     return roots
 
@@ -97,7 +94,14 @@ def _find_approximate_roots(
     x_max: float,
     min_dx: float = 1e-2,
     extend_grid: bool = True,
+    *,
+    pole_refinements_left: int = 2,
 ) -> dict[float, tuple[float, float]]:
+    """Collect exact grid roots and disjoint brackets, refining selected cells recursively.
+
+    Limit refinements prompted by poles, since a genuine singularity never becomes a
+    root. Hints of close roots may still prompt further refinement down to dx < 1e-8.
+    """
     assert x_min <= x_max, "x_min must be less than or equal to x_max"
     approximate_roots: dict[float, tuple[float, float]] = {}
 
@@ -109,69 +113,29 @@ def _find_approximate_roots(
         xs = np.linspace(x_min, x_max, n_grid)
         dx = xs[1] - xs[0]
 
-    # extend the grid by one dx on each side
     # the roots this finds outside of [x_min, x_max] are discarded again by find_roots
     if extend_grid:
         xs = np.concatenate(([xs[0] - dx], xs, [xs[-1] + dx]))
 
     fs = np.array([func(x) for x in xs])
-    abs_fs = np.abs(fs)
     sign_fs = np.sign(fs)
 
-    # find roots that are exactly zero at the grid point
     zeros = fs == 0
     approximate_roots.update({x: (x, x) for x in xs[zeros]})
 
-    # find approximate roots that have a sign change between two adjacent (finite and non-zero) grid points
-    finite = np.isfinite(fs)
-    non_zeros = np.bitwise_not(zeros)
+    # np.sign is 0 for a zero and nan for a nan, so a sign change implies nonzero, non-nan endpoints
     sign_change = sign_fs[:-1] * sign_fs[1:] < 0
-    conditions = sign_change & (finite[:-1] & finite[1:]) & (non_zeros[:-1] & non_zeros[1:])
 
-    # A nearby third root can hide the dip of a close pair. Search cells where both
-    # endpoint values are small compared with the change in either neighbouring cell.
     refine = np.zeros_like(sign_change)
-    if dx >= 1e-8:
-        abs_diff_fs = np.abs(np.diff(fs))
-        neighbour_scale = np.maximum(abs_diff_fs[:-2], abs_diff_fs[2:])
-        refine[1:-1] = np.maximum(abs_fs[1:-2], abs_fs[2:-1]) < 0.25 * neighbour_scale
+    possible_poles = np.zeros_like(sign_change)
+    if dx >= 1e-8 and len(fs) >= 4:
+        close_roots, possible_poles = _root_refinement_masks(fs)
+        refine = close_roots | (possible_poles & (pole_refinements_left > 0))
 
-    # find dips in abs(func(x)) that are not detected by the sign change
-    is_dip = (
-        (abs_fs[1:-1] <= abs_fs[:-2])
-        & (abs_fs[1:-1] <= abs_fs[2:])
-        & (sign_fs[:-2] == sign_fs[1:-1])
-        & (sign_fs[1:-1] == sign_fs[2:])
-    )
+    # cells that are searched again below are skipped here, since searching them again also
+    # brackets their sign change, and the same root must not be bracketed twice
+    conditions = sign_change & np.bitwise_not(refine)
 
-    # How far (in units of the grid spacing) the roots of the local parabola may lie off the real axis,
-    # before we consider a dip of |func| to be unrelated to any root
-    max_dip_miss_in_dx = 2.0
-
-    for i, x in zip(np.where(is_dip)[0] + 1, xs[1:-1][is_dip], strict=True):
-        # Fit a parabola p(t) = a * t**2 + b * t + c through the dip and its two neighbours,
-        # where t = (x - xs[i]) / dx is the distance from the dip in units of the grid spacing
-        c = fs[i]
-        b = (fs[i + 1] - fs[i - 1]) / 2
-        a = (fs[i + 1] - 2 * fs[i] + fs[i - 1]) / 2
-        # The parabola crosses zero if its discriminant is non-negative. If it is negative, the parabola has
-        # a pair of complex roots t = -b / (2 * a) +- i * sqrt(-discriminant) / (2 * |a|), i.e. it misses the
-        # real axis by sqrt(-discriminant) / (2 * |a|) grid spacings. Only if this miss is larger than
-        # max_dip_miss_in_dx grid spacings, we assume the dip is not due to a pair of roots and skip it.
-        # Note that this condition is invariant under rescaling func
-        discriminant = b**2 - 4 * a * c
-        if discriminant < -4 * (max_dip_miss_in_dx * a) ** 2:
-            continue
-        if dx < 1e-8:
-            logger.warning(
-                "Found a dip which up to dx=%e does not cross zero, but is very close to zero: x=%f f(x)=%e. Skipping.",
-                *(dx, x, fs[i]),
-            )
-            continue
-        refine[i - 1 : i + 1] = True
-
-    # Refined intervals replace their coarse brackets, so each root is bracketed once.
-    conditions &= np.logical_not(refine)
     approximate_roots.update(
         {
             (x_left + x_right) / 2: (x_left, x_right)
@@ -179,16 +143,80 @@ def _find_approximate_roots(
         }
     )
 
-    # Merge adjacent refined cells, but split at exact zeros to avoid bracketing those roots twice.
-    # Boundaries are grid points where refinement starts/stops or func is exactly zero.
-    padded_refine = np.concatenate(([False], refine, [False]))
-    bounds = np.flatnonzero((padded_refine[:-1] != padded_refine[1:]) | zeros)
-    for left, right in pairwise(bounds):
-        if refine[left]:
-            new_roots = _find_approximate_roots(func, xs[left], xs[right], min_dx=dx * 1e-2, extend_grid=False)
-            approximate_roots.update(new_roots)
+    # Search cells separately, without padding: their interiors do not overlap, and exact
+    # endpoint roots are merged by the dictionary. Zero or infinite endpoints do not rule
+    # out other roots inside the cell.
+    for i in np.flatnonzero(refine):
+        new_roots = _find_approximate_roots(
+            func,
+            xs[i],
+            xs[i + 1],
+            min_dx=dx / 10,
+            extend_grid=False,
+            pole_refinements_left=pole_refinements_left - int(possible_poles[i]),
+        )
+        if len(new_roots) == 0 and sign_change[i]:
+            logger.warning(
+                "The finer grid resolved nothing in [%f, %f], falling back to the sign change of the whole cell.",
+                *(xs[i], xs[i + 1]),
+            )
+            new_roots = {(xs[i] + xs[i + 1]) / 2: (xs[i], xs[i + 1])}
+        approximate_roots.update(new_roots)
 
     return approximate_roots
+
+
+def _root_refinement_masks(fs: NDArray) -> tuple[NDArray, NDArray]:
+    """Mark cells that may hide close roots and cells that may contain poles.
+
+    Compare against nearby changes, so the decisions do not depend on the overall
+    scale of func. These tests suggest where to sample again; they do not prove that
+    a cell contains a root or a pole.
+    """
+    abs_fs = np.abs(fs)
+    sign_fs = np.sign(fs)
+    finite = np.isfinite(fs)
+    # Non-finite samples need refinement too, but must not dominate the local scale.
+    with np.errstate(invalid="ignore"):
+        changes = np.abs(np.diff(fs))
+    changes[~np.isfinite(changes)] = 0
+
+    window = 7
+    typical_change = np.median(_windows(changes, window), axis=-1)
+    # Treat changes far above the local median as possible poles and exclude them
+    # from the scale used to decide whether neighbouring values are near zero.
+    possible_poles = (changes > 5 * typical_change) | ~finite[:-1] | ~finite[1:]
+    local_scale = np.max(_windows(np.where(possible_poles, 0, changes), window), axis=-1)
+
+    # Both endpoints near zero can signal several unresolved roots, even if the
+    # samples are monotonic. A linear crossing has at least one endpoint >= 0.5
+    # times its change per cell, so use a smaller threshold.
+    small_ratio = 0.25
+    small_endpoints = np.maximum(abs_fs[:-1], abs_fs[1:]) < small_ratio * local_scale
+
+    # A pair near the edge of a cell may leave just one endpoint near zero.
+    # Look for a dip without a sign change and refine both neighbouring cells.
+    dips = np.zeros_like(fs, dtype=bool)
+    dips[1:-1] = (
+        (abs_fs[1:-1] <= abs_fs[:-2])
+        & (abs_fs[1:-1] <= abs_fs[2:])
+        & (sign_fs[:-2] == sign_fs[1:-1])
+        & (sign_fs[1:-1] == sign_fs[2:])
+        & (abs_fs[1:-1] < small_ratio * np.maximum(local_scale[:-1], local_scale[1:]))
+    )
+    return small_endpoints | dips[:-1] | dips[1:], possible_poles
+
+
+def _windows(values: NDArray, window: int) -> NDArray:
+    """Windows of `window` entries of values around each of its entries.
+
+    Near the boundaries the windows are shifted inwards instead of being truncated, since a truncated
+    window misjudges the scale of func exactly at the ends of the intervals searched again.
+    """
+    if len(values) <= window:
+        return np.broadcast_to(values, (len(values), len(values)))
+    starts = np.clip(np.arange(len(values)) - window // 2, 0, len(values) - window)
+    return np.lib.stride_tricks.sliding_window_view(values, window)[starts]
 
 
 def calc_nullvector(

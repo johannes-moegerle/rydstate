@@ -1,5 +1,6 @@
 import logging
 
+import numpy as np
 import pytest
 from rydstate import BasisMQDT
 from rydstate.angular import AngularKetFJ
@@ -70,6 +71,32 @@ def test_mqdt_basis_includes_states_at_the_boundaries_of_the_nu_range() -> None:
     nus = [state.nu for state in basis.states]
     assert any(abs(nu - 30) < 1e-12 for nu in nus), f"no state at the lower boundary nu=30: {sorted(nus)[:5]}"
     assert any(abs(nu - 33) < 1e-12 for nu in nus), f"no state at the upper boundary nu=33: {sorted(nus)[-5:]}"
+
+
+def test_mqdt_basis_includes_states_that_share_a_grid_cell_of_find_roots() -> None:
+    """All states must be found even if several of them lie within one grid cell of find_roots.
+
+    The Yb171 G F=9/2 model has three states within 2e-3 of each other, i.e. inside a single
+    grid cell. det(M) does change sign across that cell, so bracketing it once only yields the
+    middle state; the outer two are only found because find_roots searches the cell again.
+    """
+    basis = BasisMQDT("Yb171", nu=(79.5, 80.5), l_r=(4, 4), f_tot=(4.5, 4.5))
+
+    nus = sorted(state.nu for state in basis.states)
+    np.testing.assert_allclose(nus, [79.972790, 79.974300, 79.974543], atol=1e-5, rtol=0)
+
+
+def test_mqdt_basis_includes_states_at_the_edge_of_a_researched_grid_cell() -> None:
+    """All states must be found even if they lie at the very edge of a cell that find_roots re-searches.
+
+    The Sr87 F F=9/2 model has two pairs of states within 2e-6 of each other. The first pair sits
+    in the first tenth of the grid cell it shares, where the change of det(M) per cell may only be
+    estimated from the whole cell, and not just from the part of it next to the pair.
+    """
+    basis = BasisMQDT("Sr87", nu=(31.5, 32.0), l_r=(3, 3), f_tot=(4.5, 4.5))
+
+    nus = sorted(state.nu for state in basis.states)
+    np.testing.assert_allclose(nus, [31.8709676, 31.8709695, 31.8956052, 31.8956071], atol=1e-6, rtol=0)
 
 
 def test_mqdt_basis_sort_and_filter() -> None:
