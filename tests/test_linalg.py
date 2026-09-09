@@ -44,6 +44,34 @@ def test_find_roots_detects_nearly_degenerate_pair_within_one_grid_cell(
     np.testing.assert_allclose(roots, reference_roots, atol=1e-13, rtol=1e-13)
 
 
+@pytest.mark.parametrize("scale", [1e-6, 1, 1e6])
+@pytest.mark.parametrize("dx", [dx for dx in dx_list if dx <= 0.02])
+def test_find_roots_detects_pair_whose_dip_is_masked_by_a_neighbouring_root(dx: float, scale: float) -> None:
+    # A pair of roots within one grid cell is not always visible as a dip of |func|:
+    # if a third root sits in a neighbouring cell, |func| decreases monotonically across all grid
+    # points of the pair, so none of them is a local minimum. Such a cell is instead detected by
+    # how flat func is in it compared to how much func changes per cell.
+    # (e.g. the Sr87 D F=9/2 model with decoupled outer channels, whose roots these are)
+    reference_roots = [46.18130, 46.18792, 46.19994]
+    func = lambda nu: scale * np.prod([nu - root for root in reference_roots])  # noqa: E731
+
+    roots = find_roots(func, 46.1, 46.3, min_dx=dx)
+    np.testing.assert_allclose(roots, reference_roots, atol=1e-10, rtol=0)
+
+
+@pytest.mark.parametrize("scale", [1e-6, 1, 1e6])
+@pytest.mark.parametrize("dx", dx_list)
+def test_find_roots_detects_masked_pair_next_to_a_root_on_a_grid_sample(dx: float, scale: float) -> None:
+    # Same as above, but here one root of the masked pair sits exactly on a grid sample (for dx=0.01).
+    # Such a root is already bracketed by itself, so the refinement of the flat cells around it
+    # must not bracket it a second time.
+    reference_roots = [46.17, 46.17379862, 46.19, 46.23]
+    func = lambda nu: scale * np.prod([nu - root for root in reference_roots])  # noqa: E731
+
+    roots = find_roots(func, 46.1, 46.3, min_dx=dx)
+    np.testing.assert_allclose(roots, reference_roots, atol=1e-10, rtol=0)
+
+
 @pytest.mark.parametrize("dx", dx_list)
 def test_find_roots_at_the_endpoints_of_the_interval(dx: float) -> None:
     # Since the grid is padded by one dx on each side, the endpoints are ordinary grid points,

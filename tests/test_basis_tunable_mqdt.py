@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 import pytest
-from rydstate import BasisMQDT, BasisTunableMQDT
+from rydstate import BasisMQDT, BasisOSQDT, BasisTunableMQDT
 from rydstate.species import FModelScaledOffDiagonal, get_mqdt
 
 if TYPE_CHECKING:
@@ -49,6 +49,22 @@ def test_tunable_mqdt_reproduces_mqdt_for_full_coupling() -> None:
 
     assert len(basis_tunable_mqdt) == len(basis_mqdt)
     np.testing.assert_allclose(basis_tunable_mqdt.calc_exp_qn("nu"), basis_mqdt.calc_exp_qn("nu"), atol=1e-12)
+
+
+def test_tunable_mqdt_reproduces_osqdt_for_zero_coupling() -> None:
+    """With coupling_factor=0 the outer channels decouple, i.e. the states must be the OSQDT ones.
+
+    The Sr87 D F=9/2 model is a good test case here, because decoupling its channels moves two of
+    its states to within 7e-3 of each other, i.e. into a single grid cell of find_roots.
+    """
+    kwargs = {"nu": (44, 48), "l_r": (2, 2), "f_tot": (4.5, 4.5)}
+    basis_osqdt = BasisOSQDT("Sr87", **kwargs)  # type: ignore [arg-type]
+    basis_tunable_mqdt = BasisTunableMQDT("Sr87", **kwargs, coupling_factor=0.0)  # type: ignore [arg-type]
+
+    assert len(basis_tunable_mqdt) == len(basis_osqdt)
+    np.testing.assert_allclose(
+        np.sort(basis_tunable_mqdt.calc_exp_qn("nu")), np.sort(basis_osqdt.calc_exp_qn("nu")), atol=1e-9, rtol=0
+    )
 
 
 def test_tunable_mqdt_scaling_interpolates() -> None:

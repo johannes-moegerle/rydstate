@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 import math
+from itertools import pairwise
 from typing import TYPE_CHECKING, Any, Literal
 
 import numpy as np
@@ -32,7 +33,9 @@ def find_roots(
     Uses a dense uniform grid to detect sign changes, then refines each bracket with Brent's method.
     A pair of roots lying between two adjacent grid points has no sign change on
     the grid, but shows up as a local minimum of |func|;
-    We refine such dips by recursively calling _find_approximate_roots on a smaller interval around the dip.
+    A nearby third root can hide this dip, so we also refine cells where both endpoint values
+    are small compared with the change in neighbouring cells.
+    These intervals are searched again with a finer grid.
 
     Args:
         func: 1D scalar function to find roots of.
@@ -125,12 +128,13 @@ def _find_approximate_roots(
     sign_change = sign_fs[:-1] * sign_fs[1:] < 0
     conditions = sign_change & (finite[:-1] & finite[1:]) & (non_zeros[:-1] & non_zeros[1:])
 
-    approximate_roots.update(
-        {
-            (x_left + x_right) / 2: (x_left, x_right)
-            for x_left, x_right in zip(xs[:-1][conditions], xs[1:][conditions], strict=True)
-        }
-    )
+    # A nearby third root can hide the dip of a close pair. Search cells where both
+    # endpoint values are small compared with the change in either neighbouring cell.
+    refine = np.zeros_like(sign_change)
+    if dx >= 1e-8:
+        abs_diff_fs = np.abs(np.diff(fs))
+        neighbour_scale = np.maximum(abs_diff_fs[:-2], abs_diff_fs[2:])
+        refine[1:-1] = np.maximum(abs_fs[1:-2], abs_fs[2:-1]) < 0.25 * neighbour_scale
 
     # find dips in abs(func(x)) that are not detected by the sign change
     is_dip = (
@@ -164,8 +168,25 @@ def _find_approximate_roots(
                 *(dx, x, fs[i]),
             )
             continue
-        new_roots = _find_approximate_roots(func, x - dx, x + dx, min_dx=dx * 1e-2, extend_grid=False)
-        approximate_roots.update(new_roots)
+        refine[i - 1 : i + 1] = True
+
+    # Refined intervals replace their coarse brackets, so each root is bracketed once.
+    conditions &= np.logical_not(refine)
+    approximate_roots.update(
+        {
+            (x_left + x_right) / 2: (x_left, x_right)
+            for x_left, x_right in zip(xs[:-1][conditions], xs[1:][conditions], strict=True)
+        }
+    )
+
+    # Merge adjacent refined cells, but split at exact zeros to avoid bracketing those roots twice.
+    # Boundaries are grid points where refinement starts/stops or func is exactly zero.
+    padded_refine = np.concatenate(([False], refine, [False]))
+    bounds = np.flatnonzero((padded_refine[:-1] != padded_refine[1:]) | zeros)
+    for left, right in pairwise(bounds):
+        if refine[left]:
+            new_roots = _find_approximate_roots(func, xs[left], xs[right], min_dx=dx * 1e-2, extend_grid=False)
+            approximate_roots.update(new_roots)
 
     return approximate_roots
 
