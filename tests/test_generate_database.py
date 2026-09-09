@@ -51,6 +51,7 @@ def test_get_state_data_for_sqdt_alkali_state() -> None:
     assert (row["exp_s"], row["exp_l"], row["exp_j"]) == (0.5, 0, 0.5)
     # a single ket, so all standard deviations vanish
     assert all(row[column] == 0 for column in COLUMNS if column.startswith("std_"))
+    assert row["underspecified_contribution"] == 0
 
 
 @pytest.mark.parametrize("species_specifier", TEST_SPECIES_SPECIFIER)
@@ -74,6 +75,11 @@ def test_generate_states_table(species_specifier: str) -> None:
     # quantum numbers that are only good in the FJ scheme
     assert np.allclose(table["exp_j_core"], basis.calc_exp_qn("j_c"))
     assert np.allclose(table["exp_f_core"], basis.calc_exp_qn("f_c"))
+
+    contributions = table["underspecified_contribution"]
+    assert all(0 <= contribution <= 1 for contribution in contributions)
+    if not species_specifier.endswith("_mqdt"):
+        assert all(contribution == 0 for contribution in contributions)
 
 
 @pytest.mark.parametrize("species_specifier", TEST_SPECIES_SPECIFIER)

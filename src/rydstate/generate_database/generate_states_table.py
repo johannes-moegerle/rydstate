@@ -43,6 +43,7 @@ COLUMNS: dict[str, type] = {
     "std_s": float,
     "std_l": float,
     "std_j": float,
+    "underspecified_contribution": float,
 }
 
 
@@ -102,5 +103,6 @@ def get_state_data(ids: int, state: RydbergState) -> dict[str, float | int | str
         "std_s": state_ls.calc_std_qn("s_tot"),
         "std_l": state_ls.calc_std_qn("l_tot"),
         "std_j": state_ls.calc_std_qn("j_tot"),
+        "underspecified_contribution": sum(abs(coeff) ** 2 for coeff, ket in state if ket.angular.contains_unknown),
     }
     return {key: value.item() if isinstance(value, np.generic) else value for key, value in data.items()}
