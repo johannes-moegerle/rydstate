@@ -20,6 +20,6 @@ __all__ = [
 ]
 
 
-__version__ = "0.13.0"
+__version__ = "0.14.0"
 
 from rydstate import generate_database  # isort: skip  # must be imported last
