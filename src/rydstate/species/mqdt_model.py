@@ -223,3 +223,51 @@ def get_model_classes(module: ModuleType, species: str) -> list[type[MQDTModel]]
     if len(model_classes) == 0:
         raise ValueError(f"No MQDTModel subclasses for species {species!r} found in {module.__name__}.")
     return model_classes
+
+
+class ScaledOffDiagonalModel(MQDTModel):
+    r"""MQDT model with the off-diagonal elements of the K-matrix scaled by a constant factor.
+
+    The K-matrix in the outer channel frame describes the coupling between the outer channels,
+    which enters the M-matrix only via its off-diagonal elements
+    (:math:`M = \text{diag}(\tan(\pi \nu_i)) + K`, i.e. the off-diagonal part of M is the one of K).
+    Scaling them down therefore continuously turns the MQDT model into a set of uncoupled channels,
+    without changing the quantum defects of the individual outer channels.
+
+    This is used by :class:`~rydstate.basis.BasisTunableMQDT`.
+    """
+
+    def __init__(self, model: MQDTModel, scale_off_diagonal: float) -> None:
+        """Initialize the scaled model from an existing model.
+
+        Args:
+            model: The model to scale the off-diagonal elements of the K-matrix of.
+            scale_off_diagonal: The factor by which to scale the off-diagonal elements of the K-matrix.
+                A value of 1 reproduces the given model, a value of 0 fully decouples its outer channels.
+
+        """
+        self.model = model
+        self.scale_off_diagonal = scale_off_diagonal
+
+        self.species = model.species  # type: ignore [misc]
+        self.name = f"{model.name} (off-diagonal K scaled by {scale_off_diagonal})"  # type: ignore [misc]
+        self.reference = model.reference  # type: ignore [misc]
+        self.f_tot = model.f_tot  # type: ignore [misc]
+        self.nu_range = model.nu_range  # type: ignore [misc]
+        self.outer_channels = model.outer_channels  # type: ignore [misc]
+
+        super().__init__(model.mqdt)
+
+    def calc_approximate_quantum_defects(self, nu: float) -> NDArray:
+        """Return the approximate quantum defects of the wrapped model.
+
+        The scaling only affects the off-diagonal elements of the K-matrix,
+        i.e. the quantum defects of the individual outer channels are unchanged.
+        """
+        return self.model.calc_approximate_quantum_defects(nu)
+
+    def calc_k_matrix(self, nu: float) -> NDArray:
+        """Return the K-matrix of the model with its off-diagonal elements scaled by scale_off_diagonal."""
+        kmat = self.model.calc_k_matrix(nu)
+        kmat_diag = np.diag(np.diag(kmat))
+        return self.scale_off_diagonal * (kmat - kmat_diag) + kmat_diag
