@@ -12,6 +12,7 @@ from rydstate.species import (
 )
 from rydstate.species.eigen_channel_model import EigenChannelModel, TrivialModel
 from rydstate.species.element_properties import ElementProperties, get_element_properties
+from rydstate.species.k_matrix_model import KMatrixModel
 from rydstate.species.mqdt import MQDT, get_mqdt
 from rydstate.species.mqdt_model import MQDTModel, ScaledOffDiagonalModel
 from rydstate.species.potential import (
@@ -29,6 +30,7 @@ __all__ = [
     "SQDT",
     "EigenChannelModel",
     "ElementProperties",
+    "KMatrixModel",
     "MQDTModel",
     "Potential",
     "PotentialCoulomb",
