@@ -7,7 +7,7 @@ import numpy as np
 import pytest
 from rydstate import BasisMQDT, RydbergStateSQDTDivalent
 from rydstate.angular.utils import is_unknown
-from rydstate.species import FModelSQDT
+from rydstate.species import TrivialModel
 
 if TYPE_CHECKING:
     from rydstate import RydbergStateMQDT
@@ -170,7 +170,7 @@ def test_n_of_sqdt_fallback_model_uses_channel_nui() -> None:
 
     states_with_shifted_nu = 0
     for state in basis.states:
-        assert isinstance(state.model, FModelSQDT)
+        assert isinstance(state.model, TrivialModel)
         assert len(state.rydberg_kets) == 1
 
         nui = state.nui[0]

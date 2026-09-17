@@ -5,14 +5,14 @@ from __future__ import annotations
 import numpy as np
 
 from rydstate.angular.angular_ket import AngularKetFJ, AngularKetLS
-from rydstate.species.fmodel import FModel
+from rydstate.species.eigen_channel_model import EigenChannelModel
 
 REFERENCE_ROBICHEAUX_2019 = (
     "F. Robicheaux, J. Phys. B: At. Mol. Opt. Phys. 52 244001 (2019), https://doi.org/10.1088/1361-6455/ab4c22"
 )
 
 
-class Sr88_S0_HighN(FModel):
+class Sr88_S0_HighN(EigenChannelModel):
     species = "Sr88"
     name = "S J=0, nu > 10"
     f_tot = 0
@@ -31,7 +31,7 @@ class Sr88_S0_HighN(FModel):
     ]
 
 
-class Sr88_S1_HighN(FModel):
+class Sr88_S1_HighN(EigenChannelModel):
     species = "Sr88"
     name = "S J=1, nu > 11"
     f_tot = 1
@@ -55,7 +55,7 @@ class Sr88_S1_HighN(FModel):
 # --------------------------------------------------------
 
 
-class Sr88_P1_LowN(FModel):
+class Sr88_P1_LowN(EigenChannelModel):
     species = "Sr88"
     name = "P J=1 (recombination), 1.8 < nu < 2.2"
     f_tot = 1
@@ -85,7 +85,7 @@ class Sr88_P1_LowN(FModel):
 # --------------------------------------------------------
 
 
-class Sr88_P0_HighN(FModel):
+class Sr88_P0_HighN(EigenChannelModel):
     species = "Sr88"
     name = "P J=0, nu > 7"
     f_tot = 0
@@ -104,7 +104,7 @@ class Sr88_P0_HighN(FModel):
     ]
 
 
-class Sr88_P1_HighN(FModel):
+class Sr88_P1_HighN(EigenChannelModel):
     species = "Sr88"
     name = "P J=1, nu > 5"
     f_tot = 1
@@ -126,7 +126,7 @@ class Sr88_P1_HighN(FModel):
     ]
 
 
-class Sr88_P2_HighN(FModel):
+class Sr88_P2_HighN(EigenChannelModel):
     species = "Sr88"
     name = "P J=2, nu > 5"
     f_tot = 2
@@ -145,7 +145,7 @@ class Sr88_P2_HighN(FModel):
     ]
 
 
-class Sr88_D1_HighN(FModel):
+class Sr88_D1_HighN(EigenChannelModel):
     species = "Sr88"
     name = "D J=1, nu > 17"
     f_tot = 1
@@ -164,7 +164,7 @@ class Sr88_D1_HighN(FModel):
     ]
 
 
-class Sr88_D2_HighN(FModel):
+class Sr88_D2_HighN(EigenChannelModel):
     species = "Sr88"
     name = "D J=2, nu > 25"
     f_tot = 2
@@ -189,7 +189,7 @@ class Sr88_D2_HighN(FModel):
     ]
 
 
-class Sr88_D3_HighN(FModel):
+class Sr88_D3_HighN(EigenChannelModel):
     species = "Sr88"
     name = "D J=3, nu > 25"
     f_tot = 3
@@ -208,7 +208,7 @@ class Sr88_D3_HighN(FModel):
     ]
 
 
-class Sr88_F2_HighN(FModel):
+class Sr88_F2_HighN(EigenChannelModel):
     species = "Sr88"
     name = "F J=2, nu > 9"
     f_tot = 2
@@ -227,7 +227,7 @@ class Sr88_F2_HighN(FModel):
     ]
 
 
-class Sr88_F3_HighN(FModel):
+class Sr88_F3_HighN(EigenChannelModel):
     species = "Sr88"
     name = "F J=3, nu > 9"
     f_tot = 3
@@ -249,7 +249,7 @@ class Sr88_F3_HighN(FModel):
     ]
 
 
-class Sr88_F4_HighN(FModel):
+class Sr88_F4_HighN(EigenChannelModel):
     species = "Sr88"
     name = "F J=4, nu > 9"
     f_tot = 4

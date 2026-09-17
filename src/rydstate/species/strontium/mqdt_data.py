@@ -3,9 +3,9 @@ from __future__ import annotations
 from typing import ClassVar
 
 from rydstate.angular.core_ket import CoreKet
-from rydstate.species.fmodel import get_fmodels
+from rydstate.species.eigen_channel_model import get_model_classes
 from rydstate.species.mqdt import MQDT
-from rydstate.species.strontium import sr87_mqdt_fmodel_data, sr88_mqdt_fmodel_data
+from rydstate.species.strontium import sr87_eigen_channel_model_data, sr88_eigen_channel_model_data
 
 
 class MQDTStrontium87(MQDT):
@@ -20,7 +20,7 @@ class MQDTStrontium87(MQDT):
     # (9 * 45932.287373577 + 11 * 45932.120512528) / 20, which coincides with the Sr88
     # ionization threshold and is the reference used for the Sr87 quantum defects.
     reference_ionization_threshold_tuple = (45932.1956, "1/cm")
-    model_classes = get_fmodels(sr87_mqdt_fmodel_data, species)
+    model_classes = get_model_classes(sr87_eigen_channel_model_data, species)
 
 
 class MQDTStrontium88(MQDT):
@@ -30,4 +30,4 @@ class MQDTStrontium88(MQDT):
     ionization_threshold_dict: ClassVar = {
         CoreKet(i_c=0, n_c=5, l_c=0, j_c=0.5): (45932.1956, "1/cm"),
     }
-    model_classes = get_fmodels(sr88_mqdt_fmodel_data, species)
+    model_classes = get_model_classes(sr88_eigen_channel_model_data, species)

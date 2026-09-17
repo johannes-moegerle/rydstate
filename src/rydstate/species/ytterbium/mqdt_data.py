@@ -4,12 +4,12 @@ from typing import ClassVar
 
 from rydstate.angular.core_ket import CoreKet
 from rydstate.angular.utils import Unknown
-from rydstate.species.fmodel import get_fmodels
+from rydstate.species.eigen_channel_model import get_model_classes
 from rydstate.species.mqdt import MQDT
 from rydstate.species.ytterbium import (
-    yb171_mqdt_fmodel_data,
-    yb173_mqdt_fmodel_data,
-    yb174_mqdt_fmodel_data,
+    yb171_eigen_channel_model_data,
+    yb173_eigen_channel_model_data,
+    yb174_eigen_channel_model_data,
 )
 
 
@@ -30,7 +30,7 @@ class MQDTYtterbium171(MQDT):
     }
     # ionization threshold of the F=1 core state (the upper of the two hyperfine thresholds)
     reference_ionization_threshold_tuple = (50443.217463, "1/cm")
-    model_classes = get_fmodels(yb171_mqdt_fmodel_data, species)
+    model_classes = get_model_classes(yb171_eigen_channel_model_data, species)
 
 
 class MQDTYtterbium173(MQDT):
@@ -49,7 +49,7 @@ class MQDTYtterbium173(MQDT):
     }
     # ionization threshold of the F=2 core state (the upper of the two hyperfine thresholds)
     reference_ionization_threshold_tuple = (50443.291203, "1/cm")
-    model_classes = get_fmodels(yb173_mqdt_fmodel_data, species)
+    model_classes = get_model_classes(yb173_eigen_channel_model_data, species)
 
 
 class MQDTYtterbium174(MQDT):
@@ -63,4 +63,4 @@ class MQDTYtterbium174(MQDT):
         CoreKet(i_c=0, n_c=6, l_c=1, j_c=Unknown, label=Unknown): (79725.35, "1/cm"),
         CoreKet(i_c=0, n_c=Unknown, l_c=Unknown, j_c=Unknown, label="4f13 5d 6s"): (83967.7, "1/cm"),
     }
-    model_classes = get_fmodels(yb174_mqdt_fmodel_data, species)
+    model_classes = get_model_classes(yb174_eigen_channel_model_data, species)

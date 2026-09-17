@@ -21,7 +21,7 @@ if TYPE_CHECKING:
     from rydstate.units import NDArray
 
 
-class FModel(MQDTModel):
+class EigenChannelModel(MQDTModel):
     """MQDT model formulated in terms of eigenchannels and a frame transformation.
 
     The K-matrix is diagonal in the close-coupling (eigenchannel) frame, with the eigen quantum defects
@@ -175,34 +175,39 @@ class FModel(MQDTModel):
         return transform @ kbar @ transform.T
 
 
-def get_fmodels(module: ModuleType, species: str) -> list[type[FModel]]:
-    """Return all FModel subclasses defined in ``module`` that match the given species.
+def get_model_classes(module: ModuleType, species: str) -> list[type[EigenChannelModel]]:
+    """Return all EigenChannelModel subclasses defined in ``module`` that match the given species.
 
     Args:
-        module: The module to inspect for FModel subclasses.
-        species: The species the returned FModel subclasses must match.
+        module: The module to inspect for EigenChannelModel subclasses.
+        species: The species the returned EigenChannelModel subclasses must match.
 
     Returns:
-        List of all FModel subclasses defined in the module for the given species.
+        List of all EigenChannelModel subclasses defined in the module for the given species.
 
     """
-    fmodels = [
+    model_classes = [
         obj
         for obj in vars(module).values()
         if (
             inspect.isclass(obj)
             and obj.__module__ == module.__name__
-            and issubclass(obj, FModel)
-            and obj is not FModel
+            and issubclass(obj, EigenChannelModel)
+            and obj is not EigenChannelModel
             and getattr(obj, "species", None) == species
         )
     ]
-    if len(fmodels) == 0:
-        raise ValueError(f"No FModel subclasses for species {species!r} found in {module.__name__}.")
-    return fmodels
+    if len(model_classes) == 0:
+        raise ValueError(f"No EigenChannelModel subclasses for species {species!r} found in {module.__name__}.")
+    return model_classes
 
 
-class FModelSQDT(FModel):
+class TrivialModel(EigenChannelModel):
+    """Trivial single channel model with a vanishing quantum defect (i.e. a hydrogen-like channel).
+
+    This is used as fallback for channels for which no MQDT model is available.
+    """
+
     def __init__(self, species: str, channel: AngularKetBase[AllKnown], mqdt: MQDT) -> None:
         if not is_not_set(channel.m):
             raise ValueError("The m quantum number of the channel must be NotSet.")
@@ -217,14 +222,14 @@ class FModelSQDT(FModel):
         super().__init__(mqdt)
 
     def calc_scaled_m_matrix(self, nu: float) -> NDArray:
-        # Fast path for SQDT models: the single channel has a vanishing quantum defect, so K = 0 and the
-        # scaled M-matrix reduces to the 1x1 matrix sin(pi * nui) (see MQDTModel.calc_scaled_m_matrix).
+        # Fast path for single channel models: the single channel has a vanishing quantum defect, so K = 0 and
+        # the scaled M-matrix reduces to the 1x1 matrix sin(pi * nui) (see MQDTModel.calc_scaled_m_matrix).
         nui = self.calc_channel_nuis(nu)[0]
         return np.array([[math.sin(math.pi * nui)]])
 
 
-class FModelScaledOffDiagonal(FModel):
-    r"""FModel with the off-diagonal elements of the K-matrix scaled by a constant factor.
+class ScaledOffDiagonalModel(EigenChannelModel):
+    r"""EigenChannelModel with the off-diagonal elements of the K-matrix scaled by a constant factor.
 
     The K-matrix in the outer channel frame describes the coupling between the outer channels,
     which enters the M-matrix only via its off-diagonal elements
@@ -235,7 +240,7 @@ class FModelScaledOffDiagonal(FModel):
     This is used by :class:`~rydstate.basis.BasisTunableMQDT`.
     """
 
-    def __init__(self, model: FModel, scale_off_diagonal: float) -> None:
+    def __init__(self, model: EigenChannelModel, scale_off_diagonal: float) -> None:
         """Initialize the scaled model from an existing model.
 
         Args:

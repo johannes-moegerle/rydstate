@@ -6,13 +6,13 @@ import numpy as np
 
 from rydstate.angular.angular_ket import AngularKetFJ, AngularKetJJ, AngularKetLS
 from rydstate.angular.utils import Unknown
-from rydstate.species.fmodel import FModel
+from rydstate.species.eigen_channel_model import EigenChannelModel
 
 REFERENCE_PEPER_2025 = "M. Peper et al., Phys. Rev. X 15, 011009 (2025), https://doi.org/10.1103/PhysRevX.15.011009"
 REFERENCE_KURODA_2025 = "R. Kuroda et al., Phys. Rev. A 112, 042817 (2025), https://doi.org/10.1103/mzsv-rckx"
 
 
-class Yb171_S05_HighN(FModel):
+class Yb171_S05_HighN(EigenChannelModel):
     species = "Yb171"
     name = "S F=1/2, nu > 26"
     f_tot = 0.5
@@ -57,7 +57,7 @@ class Yb171_S05_HighN(FModel):
     ]
 
 
-class Yb171_S15_HighN(FModel):
+class Yb171_S15_HighN(EigenChannelModel):
     species = "Yb171"
     name = "S F=3/2, nu > 26"
     f_tot = 1.5
@@ -76,7 +76,7 @@ class Yb171_S15_HighN(FModel):
     ]
 
 
-class Yb171_P05_HighN(FModel):
+class Yb171_P05_HighN(EigenChannelModel):
     species = "Yb171"
     name = "P F=1/2, nu > 5.9"
     f_tot = 0.5
@@ -129,7 +129,7 @@ class Yb171_P05_HighN(FModel):
     ]
 
 
-class Yb171_P15_HighN(FModel):
+class Yb171_P15_HighN(EigenChannelModel):
     species = "Yb171"
     name = "P F=3/2, nu > 10"
     f_tot = 1.5
@@ -193,7 +193,7 @@ class Yb171_P15_HighN(FModel):
     ]
 
 
-class Yb171_D05_HighN(FModel):
+class Yb171_D05_HighN(EigenChannelModel):
     species = "Yb171"
     name = "D F=1/2, nu > 30"
     f_tot = 0.5
@@ -212,7 +212,7 @@ class Yb171_D05_HighN(FModel):
     ]
 
 
-class Yb171_D15_HighN(FModel):
+class Yb171_D15_HighN(EigenChannelModel):
     species = "Yb171"
     name = "D F=3/2, nu > 30"
     f_tot = 1.5
@@ -254,7 +254,7 @@ class Yb171_D15_HighN(FModel):
     ]
 
 
-class Yb171_D25_HighN(FModel):
+class Yb171_D25_HighN(EigenChannelModel):
     species = "Yb171"
     name = "D F=5/2, nu > 30"
     f_tot = 2.5
@@ -296,7 +296,7 @@ class Yb171_D25_HighN(FModel):
     ]
 
 
-class Yb171_D35_HighN(FModel):
+class Yb171_D35_HighN(EigenChannelModel):
     species = "Yb171"
     name = "D F=7/2, nu > 14"
     f_tot = 3.5
@@ -315,7 +315,7 @@ class Yb171_D35_HighN(FModel):
     ]
 
 
-class Yb171_F25_HighN(FModel):
+class Yb171_F25_HighN(EigenChannelModel):
     species = "Yb171"
     name = "F F=5/2, nu > 20"
     f_tot = 2.5
@@ -384,7 +384,7 @@ class Yb171_F25_HighN(FModel):
     ]
 
 
-class Yb171_F35_HighN(FModel):
+class Yb171_F35_HighN(EigenChannelModel):
     species = "Yb171"
     name = "F F=7/2, nu > 20"
     f_tot = 3.5
@@ -437,7 +437,7 @@ class Yb171_F35_HighN(FModel):
     ]
 
 
-class Yb171_F45_HighN(FModel):
+class Yb171_F45_HighN(EigenChannelModel):
     species = "Yb171"
     name = "F F=9/2, nu > 20"
     f_tot = 4.5
@@ -456,7 +456,7 @@ class Yb171_F45_HighN(FModel):
     ]
 
 
-class Yb171_G25_HighN(FModel):
+class Yb171_G25_HighN(EigenChannelModel):
     species = "Yb171"
     name = "G F=5/2, nu > 25"
     f_tot = 2.5
@@ -475,7 +475,7 @@ class Yb171_G25_HighN(FModel):
     ]
 
 
-class Yb171_G35_HighN(FModel):
+class Yb171_G35_HighN(EigenChannelModel):
     species = "Yb171"
     name = "G F=7/2, nu > 25"
     f_tot = 3.5
@@ -503,7 +503,7 @@ class Yb171_G35_HighN(FModel):
     ]
 
 
-class Yb171_G45_HighN(FModel):
+class Yb171_G45_HighN(EigenChannelModel):
     species = "Yb171"
     name = "G F=9/2, nu > 25"
     f_tot = 4.5
@@ -531,7 +531,7 @@ class Yb171_G45_HighN(FModel):
     ]
 
 
-class Yb171_G55_HighN(FModel):
+class Yb171_G55_HighN(EigenChannelModel):
     species = "Yb171"
     name = "G F=11/2, nu > 25"
     f_tot = 5.5
@@ -555,7 +555,7 @@ class Yb171_G55_HighN(FModel):
 # --------------------------------------------------------
 
 
-class Yb171_S05_LowN(FModel):
+class Yb171_S05_LowN(EigenChannelModel):
     species = "Yb171"
     name = "S F=1/2, 2 < nu < 26"
     f_tot = 0.5
@@ -600,7 +600,7 @@ class Yb171_S05_LowN(FModel):
     ]
 
 
-class Yb171_S15_LowN(FModel):
+class Yb171_S15_LowN(EigenChannelModel):
     species = "Yb171"
     name = "S F=3/2, 2 < nu < 26"
     f_tot = 1.5
@@ -619,7 +619,7 @@ class Yb171_S15_LowN(FModel):
     ]
 
 
-class Yb171_P05_Lowest(FModel):
+class Yb171_P05_Lowest(EigenChannelModel):
     species = "Yb171"
     name = "P F=1/2, 1.6 < nu < 2.6"
     f_tot = 0.5
@@ -647,7 +647,7 @@ class Yb171_P05_Lowest(FModel):
     ]
 
 
-class Yb171_P05_LowN(FModel):
+class Yb171_P05_LowN(EigenChannelModel):
     species = "Yb171"
     name = "P F=1/2, 2.6 < nu < 5.9"
     f_tot = 0.5
@@ -672,7 +672,7 @@ class Yb171_P05_LowN(FModel):
     ]
 
 
-class Yb171_P15_Lowest(FModel):
+class Yb171_P15_Lowest(EigenChannelModel):
     species = "Yb171"
     name = "P F=3/2, 1.6 < nu < 2.6"
     f_tot = 1.5
@@ -700,7 +700,7 @@ class Yb171_P15_Lowest(FModel):
     ]
 
 
-class Yb171_P15_LowN(FModel):
+class Yb171_P15_LowN(EigenChannelModel):
     species = "Yb171"
     name = "P F=3/2, 2.6 < nu < 10"
     f_tot = 1.5
@@ -760,7 +760,7 @@ class Yb171_P15_LowN(FModel):
     ]
 
 
-class Yb171_P25_Lowest(FModel):
+class Yb171_P25_Lowest(EigenChannelModel):
     species = "Yb171"
     name = "P F=5/2, 1.5 < nu < 4.5"
     f_tot = 2.5
@@ -779,7 +779,7 @@ class Yb171_P25_Lowest(FModel):
     ]
 
 
-class Yb171_P25_LowN(FModel):
+class Yb171_P25_LowN(EigenChannelModel):
     species = "Yb171"
     name = "P F=5/2, 4.5 < nu < 20"
     f_tot = 2.5
@@ -812,7 +812,7 @@ class Yb171_P25_LowN(FModel):
     ]
 
 
-class Yb171_D05_LowN(FModel):
+class Yb171_D05_LowN(EigenChannelModel):
     species = "Yb171"
     name = "D F=1/2, 2 < nu < 30"
     f_tot = 0.5
@@ -831,7 +831,7 @@ class Yb171_D05_LowN(FModel):
     ]
 
 
-class Yb171_D15_LowN(FModel):
+class Yb171_D15_LowN(EigenChannelModel):
     species = "Yb171"
     name = "D F=3/2, 2 < nu < 30"
     f_tot = 1.5
@@ -873,7 +873,7 @@ class Yb171_D15_LowN(FModel):
     ]
 
 
-class Yb171_D25_LowN(FModel):
+class Yb171_D25_LowN(EigenChannelModel):
     species = "Yb171"
     name = "D F=5/2, 2 < nu < 30"
     f_tot = 2.5
@@ -915,7 +915,7 @@ class Yb171_D25_LowN(FModel):
     ]
 
 
-class Yb171_D35_LowN(FModel):
+class Yb171_D35_LowN(EigenChannelModel):
     species = "Yb171"
     name = "D F=7/2, 2 < nu < 14"
     f_tot = 3.5

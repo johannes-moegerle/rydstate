@@ -7,14 +7,16 @@ import numpy as np
 import pytest
 from rydstate.angular import AngularKetFJ
 from rydstate.angular.utils import is_unknown
-from rydstate.species import MQDT, FModel, get_all_subclasses, get_element_properties, get_mqdt
+from rydstate.species import MQDT, EigenChannelModel, get_all_subclasses, get_element_properties, get_mqdt
 
-ALL_MODELS = [cls(get_mqdt(cls.species)) for cls in FModel.__subclasses__() if getattr(cls, "name", None) is not None]
+ALL_MODELS = [
+    cls(get_mqdt(cls.species)) for cls in EigenChannelModel.__subclasses__() if getattr(cls, "name", None) is not None
+]
 ALL_MQDTS = [cls() for cls in get_all_subclasses(MQDT)]
 
 
 @pytest.fixture(params=ALL_MODELS, ids=lambda cls: cls.full_name)
-def model(request: pytest.FixtureRequest) -> FModel:
+def model(request: pytest.FixtureRequest) -> EigenChannelModel:
     return request.param  # type: ignore[no-any-return]
 
 
@@ -24,11 +26,11 @@ def mqdt(request: pytest.FixtureRequest) -> MQDT:
 
 
 def test_all_models_discovered() -> None:
-    """Sanity check: we should find at least 80 FModel subclasses."""
+    """Sanity check: we should find at least 80 EigenChannelModel subclasses."""
     assert len(ALL_MODELS) >= 80
 
 
-def test_channel_count_consistency(model: FModel) -> None:
+def test_channel_count_consistency(model: EigenChannelModel) -> None:
     """Inner channels, outer channels, and eigen quantum defects must have the same length."""
     n_inner = len(model.inner_channels)
     n_outer = len(model.outer_channels)
@@ -37,14 +39,14 @@ def test_channel_count_consistency(model: FModel) -> None:
     assert n_inner == n_defects, f"{model.full_name}: channels ({n_inner}) != eigen_quantum_defects ({n_defects})"
 
 
-def test_nu_range_valid(model: FModel) -> None:
+def test_nu_range_valid(model: EigenChannelModel) -> None:
     """nu_range must be a 2-tuple with min < max."""
     nu_min, nu_max = model.nu_range
     assert nu_min < nu_max, f"{model.full_name}: nu_range {model.nu_range} has min >= max"
     assert nu_min > 0, f"{model.full_name}: nu_range min must be positive"
 
 
-def test_f_tot_consistency(model: FModel) -> None:
+def test_f_tot_consistency(model: EigenChannelModel) -> None:
     """All channels must have f_tot matching the model's f_tot."""
     for i, ch in enumerate(model.inner_channels):
         assert ch.f_tot == model.f_tot, (
@@ -56,14 +58,14 @@ def test_f_tot_consistency(model: FModel) -> None:
         )
 
 
-def test_parity_consistency(model: FModel) -> None:
+def test_parity_consistency(model: EigenChannelModel) -> None:
     """All channels must define the same parity, including channels with unknown orbital quantum numbers."""
     parities = [ch.parity for ch in model.inner_channels]
     parities.extend(och.parity for och in model.outer_channels)
     assert len(set(parities)) <= 1, f"{model.full_name}: channels have inconsistent parity"
 
 
-def test_all_channels_have_ionization_threshold(model: FModel) -> None:
+def test_all_channels_have_ionization_threshold(model: EigenChannelModel) -> None:
     """All channels must have ionization thresholds."""
     mqdt = model.mqdt
     try:
@@ -76,7 +78,7 @@ def test_all_channels_have_ionization_threshold(model: FModel) -> None:
         )
 
 
-def test_mixing_angles_indices_valid(model: FModel) -> None:
+def test_mixing_angles_indices_valid(model: EigenChannelModel) -> None:
     """Mixing angle indices must refer to valid channel positions."""
     if model.mixing_angles is None:
         return
@@ -88,19 +90,19 @@ def test_mixing_angles_indices_valid(model: FModel) -> None:
         assert i != j, f"{model.full_name}: mixing_angles has self-coupling ({i}, {j})"
 
 
-def test_no_unknown_class_attributes(model: FModel) -> None:
-    """Models must only define attributes known to FModel.
+def test_no_unknown_class_attributes(model: EigenChannelModel) -> None:
+    """Models must only define attributes known to EigenChannelModel.
 
-    Since all FModel fields have either a default or are only used if present (e.g. mixing_angles),
+    Since all EigenChannelModel fields have either a default or are only used if present (e.g. mixing_angles),
     a misspelled field name would otherwise be silently ignored.
     """
-    known = {key for cls in FModel.__mro__ for key in getattr(cls, "__annotations__", {})}
-    known |= set(dir(FModel))
+    known = {key for cls in EigenChannelModel.__mro__ for key in getattr(cls, "__annotations__", {})}
+    known |= set(dir(EigenChannelModel))
     unknown = {key for key in type(model).__dict__ if not key.startswith("_")} - known
     assert not unknown, f"{model.full_name}: unknown class attributes {sorted(unknown)} (misspelled field?)"
 
 
-def test_model_name_contains_quantum_number(model: FModel) -> None:
+def test_model_name_contains_quantum_number(model: EigenChannelModel) -> None:
     """Model name must contain F=X/Y or J=X matching the model's f_tot."""
     assert model.name is not None
     # Match F=X/Y or J=X patterns (integers and fractions)
@@ -115,24 +117,24 @@ def test_model_name_contains_quantum_number(model: FModel) -> None:
     assert f_val == model.f_tot, f"{model.full_name}: name says F/J={f_val} but f_tot={model.f_tot}"
 
 
-def test_reference_field_set(model: FModel) -> None:
+def test_reference_field_set(model: EigenChannelModel) -> None:
     """Every model must have an explicit reference field (str or None)."""
     assert hasattr(model, "reference"), f"{model.full_name}: missing 'reference' field"
 
 
-def test_model_name_unique(model: FModel) -> None:
+def test_model_name_unique(model: EigenChannelModel) -> None:
     """Every model must have a unique combination of species and name (full_name)."""
     full_name = model.full_name
     duplicates = [m for m in ALL_MODELS if m.full_name == full_name]
     assert len(duplicates) == 1, f"{model.full_name}: {len(duplicates)} duplicate models found"
 
 
-def test_species_field_set(model: FModel) -> None:
+def test_species_field_set(model: EigenChannelModel) -> None:
     """Every model must have a species field."""
     assert model.species is not None, f"{model.full_name}: species is None"
 
 
-def test_eigen_quantum_defects_format(model: FModel) -> None:
+def test_eigen_quantum_defects_format(model: EigenChannelModel) -> None:
     """Each eigen quantum defect entry must be a list/tuple of numeric values."""
     for i, defect in enumerate(model.eigen_quantum_defects):
         if isinstance(defect, (list, tuple)):
@@ -146,14 +148,14 @@ def test_eigen_quantum_defects_format(model: FModel) -> None:
             )
 
 
-def test_at_least_one_real_channel(model: FModel) -> None:
+def test_at_least_one_real_channel(model: EigenChannelModel) -> None:
     """Every model must have at least one non-dummy channel."""
     real_channels = [ch for ch in model.inner_channels if not ch.contains_unknown]
     assert len(real_channels) >= 1, f"{model.full_name}: no real (non-dummy) channels"
 
 
 @pytest.mark.parametrize("channel_type", ["inner", "outer"])
-def test_channels_are_orthonormal(model: FModel, channel_type: str) -> None:
+def test_channels_are_orthonormal(model: EigenChannelModel, channel_type: str) -> None:
     """The channels of a model must form an orthonormal set."""
     channels = model.inner_channels if channel_type == "inner" else model.outer_channels
     overlaps = np.array([[ket1.calc_reduced_overlap(ket2) for ket2 in channels] for ket1 in channels])
@@ -161,7 +163,7 @@ def test_channels_are_orthonormal(model: FModel, channel_type: str) -> None:
     np.testing.assert_allclose(overlaps, np.eye(len(channels)), atol=1e-10, err_msg=msg)
 
 
-def test_inner_outer_unitary(model: FModel) -> None:
+def test_inner_outer_unitary(model: EigenChannelModel) -> None:
     """The frame transformation matrix from inner to outer channels must be unitary."""
     unitary = model.calc_frame_transformation_outer_inner()
     msg = f"{model.full_name}: frame transformation (outer - inner) is not unitary"
@@ -193,7 +195,7 @@ def test_all_models_found_by_get_mqdt_models(mqdt: MQDT) -> None:
     ]
     max_l_r = max(known_l_r)
 
-    found_models: list[FModel] = []
+    found_models: list[EigenChannelModel] = []
     for l_r in range(max_l_r + 1):
         for j_r in np.arange(abs(l_r - s_r), l_r + s_r + 1):
             for f_c in np.arange(abs(j_c - i_c), j_c + i_c + 1):
@@ -205,7 +207,7 @@ def test_all_models_found_by_get_mqdt_models(mqdt: MQDT) -> None:
                         if model not in found_models:
                             found_models.append(model)
 
-    # FModel instances are not cached, so compare the models by their (unique) full_name
+    # EigenChannelModel instances are not cached, so compare the models by their (unique) full_name
     found_model_names = [model.full_name for model in found_models]
     missing = [
         model.full_name
@@ -215,7 +217,7 @@ def test_all_models_found_by_get_mqdt_models(mqdt: MQDT) -> None:
     assert not missing, f"{mqdt!r}: {len(missing)} models not reachable via get_mqdt_models: {missing}"
 
 
-def test_fj_channels(model: FModel) -> None:
+def test_fj_channels(model: EigenChannelModel) -> None:
     """fj_channels decomposes every outer channel into FJ kets with the model's f_tot."""
     fj_channels = model.fj_channels
     assert len(fj_channels) >= len(model.outer_channels)
@@ -223,7 +225,7 @@ def test_fj_channels(model: FModel) -> None:
     assert all(ket.f_tot == model.f_tot for ket in fj_channels)
 
 
-def test_fmodel_get_core_kets(model: FModel) -> None:
+def test_model_get_core_kets(model: EigenChannelModel) -> None:
     """get_core_kets returns the sorted unique core kets of the outer channels."""
     core_kets = model.get_core_kets()
     assert len(core_kets) == len(set(core_kets))
@@ -247,7 +249,7 @@ MODELS_WITH_ISOLATED_NU_RANGE = [
 ]
 
 
-def _share_channels(model_1: FModel, model_2: FModel) -> bool:
+def _share_channels(model_1: EigenChannelModel, model_2: EigenChannelModel) -> bool:
     """Whether two models describe (at least partly) the same physical channels.
 
     Dummy channels (channels with unknown quantum numbers) are ignored,
@@ -262,9 +264,9 @@ def _share_channels(model_1: FModel, model_2: FModel) -> bool:
     )
 
 
-def _group_models_by_channels(models: list[FModel]) -> list[list[FModel]]:
+def _group_models_by_channels(models: list[EigenChannelModel]) -> list[list[EigenChannelModel]]:
     """Group the models into sets of models that (transitively) describe the same channels."""
-    groups: list[list[FModel]] = []
+    groups: list[list[EigenChannelModel]] = []
     for model in models:
         matching = [group for group in groups if any(_share_channels(model, other) for other in group)]
         merged = [model, *(other for group in matching for other in group)]

@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 
 from rydstate.angular.utils import NotSet
 from rydstate.basis.basis_mqdt import BasisMQDT
-from rydstate.species import FModelScaledOffDiagonal
+from rydstate.species import ScaledOffDiagonalModel
 
 if TYPE_CHECKING:
     from rydstate.species import MQDT, Potential
@@ -14,7 +14,7 @@ class BasisTunableMQDT(BasisMQDT):
     r"""MQDT basis with a tunable coupling between the outer channels.
 
     This basis behaves exactly like :class:`~rydstate.basis.BasisMQDT`, except that all its models are
-    wrapped in a :class:`~rydstate.species.FModelScaledOffDiagonal`, which scales the off-diagonal
+    wrapped in a :class:`~rydstate.species.ScaledOffDiagonalModel`, which scales the off-diagonal
     elements of the K-matrix in the outer channel frame by ``coupling_factor``.
     This tunes how much of the coupling between the outer channels is taken into account,
     while leaving the quantum defects of the individual outer channels untouched.
@@ -73,8 +73,8 @@ class BasisTunableMQDT(BasisMQDT):
     ) -> None:
         super()._init_models(max_l_r, f_tot_range, l_r_range)
         # models with a single outer channel have no off-diagonal elements at all, so we leave them untouched
-        # (this also keeps the fast path of FModelSQDT)
+        # (this also keeps the fast path of TrivialModel)
         self.models = [
-            FModelScaledOffDiagonal(model, self.coupling_factor) if len(model.outer_channels) > 1 else model
+            ScaledOffDiagonalModel(model, self.coupling_factor) if len(model.outer_channels) > 1 else model
             for model in self.models
         ]

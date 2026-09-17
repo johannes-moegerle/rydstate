@@ -14,7 +14,11 @@ from rydstate.species.ytterbium.potential_data import (
 )
 from rydstate.species.ytterbium.sqdt_data import SQDTYtterbium174
 
-from rydstate.species.ytterbium import yb171_mqdt_fmodel_data, yb173_mqdt_fmodel_data, yb174_mqdt_fmodel_data  # isort: skip  # must be imported last
+from rydstate.species.ytterbium import (  # isort: skip  # must be imported last
+    yb171_eigen_channel_model_data,
+    yb173_eigen_channel_model_data,
+    yb174_eigen_channel_model_data,
+)
 
 __all__ = [
     "ElementPropertiesYtterbium171",
@@ -30,7 +34,7 @@ __all__ = [
     "PotentialFei2009Ytterbium173",
     "PotentialFei2009Ytterbium174",
     "SQDTYtterbium174",
-    "yb171_mqdt_fmodel_data",
-    "yb173_mqdt_fmodel_data",
-    "yb174_mqdt_fmodel_data",
+    "yb171_eigen_channel_model_data",
+    "yb173_eigen_channel_model_data",
+    "yb174_eigen_channel_model_data",
 ]

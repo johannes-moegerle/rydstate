@@ -21,7 +21,7 @@ class MQDTModel(ABC):
 
     The model defines a set of outer channels and, via :meth:`calc_k_matrix`,
     the K-matrix coupling them. How the K-matrix is parametrized is up to the subclasses, e.g.
-    :class:`~rydstate.species.fmodel.FModel` parametrizes it by eigen quantum
+    :class:`~rydstate.species.eigen_channel_model.EigenChannelModel` parametrizes it by eigen quantum
     defects together with a frame transformation to the outer channels.
     The MQDT states of the model are then given by the roots of det(M) = det(tan(\pi \nu) + K) = 0,
     see :meth:`calc_m_matrix`.

@@ -14,8 +14,7 @@ if TYPE_CHECKING:
     from collections.abc import Sequence
 
     from rydstate.rydberg_state.rydberg_ket import RydbergKet
-    from rydstate.species import MQDT, Potential
-    from rydstate.species.fmodel import FModel
+    from rydstate.species import MQDT, MQDTModel, Potential
     from rydstate.units import NDArray
 
 
@@ -30,7 +29,7 @@ class RydbergStateMQDT(RydbergState):
         rydberg_kets: Sequence[RydbergKet],
         nu: float,
         energy_au: float,
-        model: FModel,
+        model: MQDTModel,
         potential_class: type[Potential],
     ) -> None:
         self.model = model
@@ -64,7 +63,7 @@ class RydbergStateMQDT(RydbergState):
 
         We define the corresponding principal quantum number n for MQDT states via the nodes of
         the main contributing rydberg ket (nodes = n - l_r - 1).
-        For FModelSQDT states, the quantum defect is zero, so the channel dependent effective quantum number nui
+        For TrivialModel states, the quantum defect is zero, so the channel dependent effective quantum number nui
         is already an integer and we simply round it to the nearest integer.
         """
         defects = self.model.eigen_quantum_defects

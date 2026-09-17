@@ -17,7 +17,7 @@ from rydstate.species import MQDT, get_mqdt
 if TYPE_CHECKING:
     from typing_extensions import Self
 
-    from rydstate.species import FModel, Potential
+    from rydstate.species import MQDTModel, Potential
 
 
 logger = logging.getLogger(__name__)
@@ -81,7 +81,7 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
         f_tot_range: tuple[float, float] | None,
         l_r_range: tuple[int, int] | None,
     ) -> None:
-        self.models: list[FModel] = []
+        self.models: list[MQDTModel] = []
         s_r = 0.5
         i_c = self.element_properties.i_c
         s_c = self.element_properties.s_c
@@ -110,7 +110,7 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
         self.states = []
         for model in self.models:
             logger.debug("  calculating states for model %s with nu_range=%s", model.name, nu_range)
-            states = get_mqdt_states_from_fmodel(model, nu_range, m_range, self.potential_class)
+            states = get_mqdt_states_from_model(model, nu_range, m_range, self.potential_class)
             if len(states) == 0:
                 logger.debug("  no states found for model %s", model.name)
             else:
@@ -126,13 +126,13 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
         self.states.sort(key=lambda state: state.nu)
 
 
-def get_mqdt_states_from_fmodel(
-    model: FModel,
+def get_mqdt_states_from_model(
+    model: MQDTModel,
     nu_range: tuple[float, float],
     m_range: tuple[float, float] | NotSet | None,
     potential_class: type[Potential],
 ) -> list[RydbergStateMQDT]:
-    """Calculate MQDT states from an FModel by finding zeros of det(M-matrix).
+    """Calculate MQDT states from an MQDTModel by finding zeros of det(M-matrix).
 
     Args:
         model: The MQDT model to compute states for.

@@ -6,15 +6,15 @@ import numpy as np
 import pytest
 from rydstate import RydbergStateSQDTDivalent
 from rydstate.angular.utils import NotSet
-from rydstate.basis.basis_mqdt import get_mqdt_states_from_fmodel
+from rydstate.basis.basis_mqdt import get_mqdt_states_from_model
 from rydstate.species import get_mqdt, get_potential_class
 
 if TYPE_CHECKING:
-    from rydstate.species import FModel
+    from rydstate.species import MQDTModel
     from rydstate.units import NDArray
 
 
-def _get_model(species: str, name: str) -> FModel:
+def _get_model(species: str, name: str) -> MQDTModel:
     """Return the model of the given species with the given name."""
     return next(model for model in get_mqdt(species).models if model.name == name)
 
@@ -137,7 +137,7 @@ def test_mqdt_energies_match_nist(name: str, n: int, l_r: int, j_tot: int, s_tot
     assert len(model.inner_channels) > 1, f"{model.full_name}: not a multi-channel model"
 
     nu_range = (nu_experimental - 0.5, nu_experimental + 0.5)
-    states = get_mqdt_states_from_fmodel(model, nu_range, NotSet, get_potential_class("Yb174"))
+    states = get_mqdt_states_from_model(model, nu_range, NotSet, get_potential_class("Yb174"))
     assert len(states) > 0, f"{model.full_name}: no states found around nu={nu_experimental}"
 
     closest = min(states, key=lambda state: abs(state.nu - nu_experimental))

@@ -5,22 +5,22 @@ from typing import TYPE_CHECKING
 import numpy as np
 import pytest
 from rydstate.basis import BasisMQDT, BasisOSQDT, BasisTunableMQDT
-from rydstate.species import FModelScaledOffDiagonal, get_mqdt
+from rydstate.species import ScaledOffDiagonalModel, get_mqdt
 
 if TYPE_CHECKING:
-    from rydstate.species import FModel
+    from rydstate.species import EigenChannelModel
 
 
 @pytest.fixture
-def model() -> FModel:
+def model() -> EigenChannelModel:
     """Return a multi-channel model of Yb174."""
     return next(model for model in get_mqdt("Yb174").models if model.name == "S J=0, nu > 2")
 
 
-def test_scaled_off_diagonal_model_only_scales_the_coupling(model: FModel) -> None:
+def test_scaled_off_diagonal_model_only_scales_the_coupling(model: EigenChannelModel) -> None:
     """The wrapper must scale the off-diagonal elements of K (and M) and leave their diagonals alone."""
     scale = 0.3
-    scaled = FModelScaledOffDiagonal(model, scale)
+    scaled = ScaledOffDiagonalModel(model, scale)
     nu = 51.3
 
     for calc_matrix in ("calc_k_matrix", "calc_m_matrix"):
@@ -32,9 +32,9 @@ def test_scaled_off_diagonal_model_only_scales_the_coupling(model: FModel) -> No
         )
 
 
-def test_scaled_off_diagonal_model_is_transparent_for_scale_one(model: FModel) -> None:
+def test_scaled_off_diagonal_model_is_transparent_for_scale_one(model: EigenChannelModel) -> None:
     """A scaling factor of 1 must reproduce the wrapped model."""
-    scaled = FModelScaledOffDiagonal(model, 1.0)
+    scaled = ScaledOffDiagonalModel(model, 1.0)
     nu = 51.3
 
     np.testing.assert_allclose(scaled.calc_k_matrix(nu), model.calc_k_matrix(nu), atol=1e-12)

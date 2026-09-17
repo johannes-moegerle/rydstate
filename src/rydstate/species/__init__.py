@@ -10,8 +10,8 @@ from rydstate.species import (
     ytterbium,
     ytterbium_ion,
 )
+from rydstate.species.eigen_channel_model import EigenChannelModel, ScaledOffDiagonalModel, TrivialModel
 from rydstate.species.element_properties import ElementProperties, get_element_properties
-from rydstate.species.fmodel import FModel, FModelScaledOffDiagonal, FModelSQDT
 from rydstate.species.mqdt import MQDT, get_mqdt
 from rydstate.species.mqdt_model import MQDTModel
 from rydstate.species.potential import (
@@ -27,15 +27,15 @@ from rydstate.species.utils import get_all_subclasses
 __all__ = [
     "MQDT",
     "SQDT",
+    "EigenChannelModel",
     "ElementProperties",
-    "FModel",
-    "FModelSQDT",
-    "FModelScaledOffDiagonal",
     "MQDTModel",
     "Potential",
     "PotentialCoulomb",
     "PotentialFei2009",
     "PotentialMarinescu1994",
+    "ScaledOffDiagonalModel",
+    "TrivialModel",
     "cesium",
     "get_all_subclasses",
     "get_element_properties",

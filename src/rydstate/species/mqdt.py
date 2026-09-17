@@ -6,14 +6,14 @@ from typing import TYPE_CHECKING, Any, ClassVar, overload
 
 from rydstate.angular.utils import is_not_set
 from rydstate.metaclass_cache import CachedABCMeta
-from rydstate.species.fmodel import FModelSQDT
+from rydstate.species.eigen_channel_model import TrivialModel
 from rydstate.species.utils import get_all_subclasses
 from rydstate.units import ureg
 
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase
     from rydstate.angular.core_ket import CoreKet
-    from rydstate.species.fmodel import FModel
+    from rydstate.species.mqdt_model import MQDTModel
     from rydstate.units import PintFloat
 
 
@@ -35,15 +35,15 @@ class MQDT(ABC, metaclass=CachedABCMeta):
     """The reference ionization threshold, which is used to define the zero of energy for the MQDT models.
     If None, it is defined as the smallest ionization threshold in the ionization_threshold_dict."""
 
-    model_classes: ClassVar[list[type[FModel]]]
-    """List of the MQDT :class:`~rydstate.species.fmodel.FModel` models available for this species.
+    model_classes: ClassVar[list[type[MQDTModel]]]
+    """List of the MQDT :class:`~rydstate.species.mqdt_model.MQDTModel` models available for this species.
 
     :meta hide-value:
 
     """
 
     def __init__(self) -> None:
-        self.models: list[FModel] = [model_class(self) for model_class in self.model_classes]
+        self.models: list[MQDTModel] = [model_class(self) for model_class in self.model_classes]
 
     def __repr__(self) -> str:
         return f"MQDT({self.species}, {self.tag})"
@@ -96,7 +96,7 @@ class MQDT(ABC, metaclass=CachedABCMeta):
             )
         return min(self.get_ionization_threshold(core_ket, unit="a.u.") for core_ket in self.ionization_threshold_dict)
 
-    def get_mqdt_models(self, outer_channel: AngularKetBase[Any]) -> list[FModel]:
+    def get_mqdt_models(self, outer_channel: AngularKetBase[Any]) -> list[MQDTModel]:
         """Return a list of MQDT models for the outer_channel."""
         if not is_not_set(outer_channel.m):
             raise ValueError("The m quantum number of the outer_channel must be NotSet.")
@@ -106,11 +106,11 @@ class MQDT(ABC, metaclass=CachedABCMeta):
             if any(abs(outer_channel.calc_reduced_overlap(ket)) > 0 for ket in model.outer_channels)
         ]
         if len(models) == 0:
-            models = [FModelSQDT(self.species, outer_channel, mqdt=self)]
+            models = [TrivialModel(self.species, outer_channel, mqdt=self)]
         return models
 
     def get_core_kets(self) -> list[CoreKet]:
-        """Return a list of relevant core kets of all FModels."""
+        """Return a list of relevant core kets of all MQDT models."""
         core_kets = set()
         for model in self.models:
             core_kets.update(model.get_core_kets())

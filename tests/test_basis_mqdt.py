@@ -3,7 +3,7 @@ import logging
 import pytest
 from rydstate import BasisMQDT
 from rydstate.angular import AngularKetFJ
-from rydstate.species import FModelSQDT
+from rydstate.species import TrivialModel
 
 
 def test_mqdt_basis_creation() -> None:
@@ -52,7 +52,7 @@ def test_mqdt_basis_includes_all_available_sqdt_fallback_models() -> None:
         AngularKetFJ(l_r=5, j_r=5.5, f_c=5.0, f_tot=0.5, species="Sr87"),
     }
 
-    assert all(isinstance(model, FModelSQDT) for model in basis.models)
+    assert all(isinstance(model, TrivialModel) for model in basis.models)
     assert len(basis.models) == len(expected_channels)
     assert {model.outer_channels[0] for model in basis.models} == expected_channels
 
@@ -65,7 +65,7 @@ def test_mqdt_basis_includes_states_at_the_boundaries_of_the_nu_range() -> None:
     enough for find_roots to locate these roots inside of the requested range.
     """
     basis = BasisMQDT("Yb171", nu=(30, 33), l_r=(5, 5))
-    assert any(isinstance(model, FModelSQDT) for model in basis.models)
+    assert any(isinstance(model, TrivialModel) for model in basis.models)
 
     nus = [state.nu for state in basis.states]
     assert any(abs(nu - 30) < 1e-12 for nu in nus), f"no state at the lower boundary nu=30: {sorted(nus)[:5]}"

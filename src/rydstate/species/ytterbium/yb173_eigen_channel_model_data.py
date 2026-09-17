@@ -6,10 +6,10 @@ import numpy as np
 
 from rydstate.angular.angular_ket import AngularKetFJ, AngularKetJJ, AngularKetLS
 from rydstate.angular.utils import Unknown
-from rydstate.species.fmodel import FModel
+from rydstate.species.eigen_channel_model import EigenChannelModel
 
 
-class Yb173_S15_HighN(FModel):
+class Yb173_S15_HighN(EigenChannelModel):
     species = "Yb173"
     name = "S F=3/2, nu > 26"
     f_tot = 1.5
@@ -28,7 +28,7 @@ class Yb173_S15_HighN(FModel):
     ]
 
 
-class Yb173_S25_HighN(FModel):
+class Yb173_S25_HighN(EigenChannelModel):
     species = "Yb173"
     name = "S F=5/2, nu > 26"
     f_tot = 2.5
@@ -73,7 +73,7 @@ class Yb173_S25_HighN(FModel):
     ]
 
 
-class Yb173_S35_HighN(FModel):
+class Yb173_S35_HighN(EigenChannelModel):
     species = "Yb173"
     name = "S F=7/2, nu > 26"
     f_tot = 3.5
@@ -92,7 +92,7 @@ class Yb173_S35_HighN(FModel):
     ]
 
 
-class Yb173_P05_HighN(FModel):
+class Yb173_P05_HighN(EigenChannelModel):
     species = "Yb173"
     name = "P F=1/2, nu > 10"
     f_tot = 0.5
@@ -125,7 +125,7 @@ class Yb173_P05_HighN(FModel):
     ]
 
 
-class Yb173_P15_HighN(FModel):
+class Yb173_P15_HighN(EigenChannelModel):
     species = "Yb173"
     name = "P F=3/2, nu > 10"
     f_tot = 1.5
@@ -185,7 +185,7 @@ class Yb173_P15_HighN(FModel):
     ]
 
 
-class Yb173_P25_HighN(FModel):
+class Yb173_P25_HighN(EigenChannelModel):
     species = "Yb173"
     name = "P F=5/2, nu > 10"
     f_tot = 2.5
@@ -252,7 +252,7 @@ class Yb173_P25_HighN(FModel):
     ]
 
 
-class Yb173_P35_HighN(FModel):
+class Yb173_P35_HighN(EigenChannelModel):
     species = "Yb173"
     name = "P F=7/2, nu > 10"
     f_tot = 3.5
@@ -312,7 +312,7 @@ class Yb173_P35_HighN(FModel):
     ]
 
 
-class Yb173_P45_HighN(FModel):
+class Yb173_P45_HighN(EigenChannelModel):
     species = "Yb173"
     name = "P F=9/2, nu > 10"
     f_tot = 4.5

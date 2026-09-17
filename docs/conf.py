@@ -79,7 +79,7 @@ autodoc_class_signature = "mixed"  # combine class and __init__ doc
 autodoc_typehints = "both"
 
 
-# -- Render MQDT.model_classes as a clickable list of FModel classes ----------
+# -- Render MQDT.model_classes as a clickable list of MQDTModel classes ----------
 # By default autodoc prints the raw repr of the ``model_classes`` value, i.e.
 # ``[<class '...Yb171_S05_HighN'>, ...]``, which shows full dotted paths and is
 # not clickable. The base class docstring hides that raw value (``:meta
