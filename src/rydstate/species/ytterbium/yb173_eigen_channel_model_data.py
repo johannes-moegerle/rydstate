@@ -12,7 +12,7 @@ from rydstate.species.eigen_channel_model import EigenChannelModel
 class Yb173_S15_HighN(EigenChannelModel):
     species = "Yb173"
     name = "S F=3/2, nu > 26"
-    f_tot = 1.5
+    f_tot, parity = (1.5, +1)
     nu_range = (26.0, np.inf)
     reference = None
 
@@ -31,7 +31,7 @@ class Yb173_S15_HighN(EigenChannelModel):
 class Yb173_S25_HighN(EigenChannelModel):
     species = "Yb173"
     name = "S F=5/2, nu > 26"
-    f_tot = 2.5
+    f_tot, parity = (2.5, +1)
     nu_range = (26.0, np.inf)
     reference = None
 
@@ -76,7 +76,7 @@ class Yb173_S25_HighN(EigenChannelModel):
 class Yb173_S35_HighN(EigenChannelModel):
     species = "Yb173"
     name = "S F=7/2, nu > 26"
-    f_tot = 3.5
+    f_tot, parity = (3.5, +1)
     nu_range = (26.0, np.inf)
     reference = None
 
@@ -95,7 +95,7 @@ class Yb173_S35_HighN(EigenChannelModel):
 class Yb173_P05_HighN(EigenChannelModel):
     species = "Yb173"
     name = "P F=1/2, nu > 10"
-    f_tot = 0.5
+    f_tot, parity = (0.5, -1)
     nu_range = (10.0, np.inf)
     reference = None
 
@@ -128,7 +128,7 @@ class Yb173_P05_HighN(EigenChannelModel):
 class Yb173_P15_HighN(EigenChannelModel):
     species = "Yb173"
     name = "P F=3/2, nu > 10"
-    f_tot = 1.5
+    f_tot, parity = (1.5, -1)
     nu_range = (10.0, np.inf)
     reference = None
 
@@ -188,7 +188,7 @@ class Yb173_P15_HighN(EigenChannelModel):
 class Yb173_P25_HighN(EigenChannelModel):
     species = "Yb173"
     name = "P F=5/2, nu > 10"
-    f_tot = 2.5
+    f_tot, parity = (2.5, -1)
     nu_range = (10.0, np.inf)
     reference = None
 
@@ -255,7 +255,7 @@ class Yb173_P25_HighN(EigenChannelModel):
 class Yb173_P35_HighN(EigenChannelModel):
     species = "Yb173"
     name = "P F=7/2, nu > 10"
-    f_tot = 3.5
+    f_tot, parity = (3.5, -1)
     nu_range = (10.0, np.inf)
     reference = None
 
@@ -315,7 +315,7 @@ class Yb173_P35_HighN(EigenChannelModel):
 class Yb173_P45_HighN(EigenChannelModel):
     species = "Yb173"
     name = "P F=9/2, nu > 10"
-    f_tot = 4.5
+    f_tot, parity = (4.5, -1)
     nu_range = (10.0, np.inf)
     reference = None
 

@@ -41,6 +41,9 @@ class MQDTModel(ABC):
     f_tot: ClassVar[float]
     """Total angular momentum f_tot of the Rydberg state."""
 
+    parity: ClassVar[int]
+    """Parity (-1 or +1) of the Rydberg state, i.e. (-1)^(l_c + l_r) of its channels."""
+
     nu_range: ClassVar[tuple[float, float]]
     """Range of effective principal quantum numbers nu for which the MQDT model is valid."""
 
@@ -50,9 +53,32 @@ class MQDTModel(ABC):
     def __init__(self, mqdt: MQDT) -> None:
         self.mqdt = mqdt
         self.element_properties = get_element_properties(self.species)
+        self._check_channels(self.outer_channels)
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.full_name})"
+
+    def _check_channels(self, channels: list[AngularKetBase[Any]]) -> None:
+        """Check that the given channels have the f_tot and parity of the model.
+
+        Raises:
+            ValueError: If a channel has a different f_tot or parity than the model.
+
+        """
+        if all(ch.contains_unknown for ch in channels):
+            raise ValueError(f"{self.full_name}: all channels contain unknown quantum numbers")
+
+        for channel in channels:
+            if channel.f_tot != self.f_tot:
+                raise ValueError(
+                    f"{self.full_name}: channel {channel} has f_tot={channel.f_tot}, "
+                    f"but the model has f_tot={self.f_tot}."
+                )
+            if channel.parity != self.parity:
+                raise ValueError(
+                    f"{self.full_name}: channel {channel} has parity={channel.parity}, "
+                    f"but the model has parity={self.parity}."
+                )
 
     @property
     def full_name(self) -> str:
@@ -253,6 +279,7 @@ class ScaledOffDiagonalModel(MQDTModel):
         self.name = f"{model.name} (off-diagonal K scaled by {scale_off_diagonal})"  # type: ignore [misc]
         self.reference = model.reference  # type: ignore [misc]
         self.f_tot = model.f_tot  # type: ignore [misc]
+        self.parity = model.parity  # type: ignore [misc]
         self.nu_range = model.nu_range  # type: ignore [misc]
         self.outer_channels = model.outer_channels  # type: ignore [misc]
 

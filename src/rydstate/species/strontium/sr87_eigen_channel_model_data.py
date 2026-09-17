@@ -15,7 +15,7 @@ REFERENCE_ROBICHEAUX_2019 = (
 class Sr87_S35_HighN(EigenChannelModel):
     species = "Sr87"
     name = "S F=7/2, nu > 11"
-    f_tot = 3.5
+    f_tot, parity = (3.5, +1)
     nu_range = (11.0, np.inf)
     reference = REFERENCE_ROBICHEAUX_2019
 
@@ -34,7 +34,7 @@ class Sr87_S35_HighN(EigenChannelModel):
 class Sr87_S45_HighN(EigenChannelModel):
     species = "Sr87"
     name = "S F=9/2, nu > 11"
-    f_tot = 4.5
+    f_tot, parity = (4.5, +1)
     nu_range = (11.0, np.inf)
     reference = REFERENCE_ROBICHEAUX_2019
 
@@ -56,7 +56,7 @@ class Sr87_S45_HighN(EigenChannelModel):
 class Sr87_S55_HighN(EigenChannelModel):
     species = "Sr87"
     name = "S F=11/2, nu > 11"
-    f_tot = 5.5
+    f_tot, parity = (5.5, +1)
     nu_range = (11.0, np.inf)
     reference = REFERENCE_ROBICHEAUX_2019
 
@@ -80,7 +80,7 @@ class Sr87_S55_HighN(EigenChannelModel):
 class Sr87_P45_LowN(EigenChannelModel):
     species = "Sr87"
     name = "P F=9/2 (clock), 1.8 < nu < 2.2"
-    f_tot = 4.5
+    f_tot, parity = (4.5, -1)
     nu_range = (1.8, 2.2)
     reference = REFERENCE_ROBICHEAUX_2019
 
@@ -113,7 +113,7 @@ class Sr87_P45_LowN(EigenChannelModel):
 class Sr87_P25_HighN(EigenChannelModel):
     species = "Sr87"
     name = "P F=5/2, nu > 5"
-    f_tot = 2.5
+    f_tot, parity = (2.5, -1)
     nu_range = (5.0, np.inf)
     reference = REFERENCE_ROBICHEAUX_2019
 
@@ -132,7 +132,7 @@ class Sr87_P25_HighN(EigenChannelModel):
 class Sr87_P35_HighN(EigenChannelModel):
     species = "Sr87"
     name = "P F=7/2, nu > 5"
-    f_tot = 3.5
+    f_tot, parity = (3.5, -1)
     nu_range = (5.0, np.inf)
     reference = REFERENCE_ROBICHEAUX_2019
 
@@ -157,7 +157,7 @@ class Sr87_P35_HighN(EigenChannelModel):
 class Sr87_P45_HighN(EigenChannelModel):
     species = "Sr87"
     name = "P F=9/2, nu > 7"
-    f_tot = 4.5
+    f_tot, parity = (4.5, -1)
     nu_range = (7.0, np.inf)
     reference = REFERENCE_ROBICHEAUX_2019
 
@@ -185,7 +185,7 @@ class Sr87_P45_HighN(EigenChannelModel):
 class Sr87_P55_HighN(EigenChannelModel):
     species = "Sr87"
     name = "P F=11/2, nu > 5"
-    f_tot = 5.5
+    f_tot, parity = (5.5, -1)
     nu_range = (5.0, np.inf)
     reference = REFERENCE_ROBICHEAUX_2019
 
@@ -210,7 +210,7 @@ class Sr87_P55_HighN(EigenChannelModel):
 class Sr87_P65_HighN(EigenChannelModel):
     species = "Sr87"
     name = "P F=13/2, nu > 5"
-    f_tot = 6.5
+    f_tot, parity = (6.5, -1)
     nu_range = (5.0, np.inf)
     reference = REFERENCE_ROBICHEAUX_2019
 
@@ -234,7 +234,7 @@ class Sr87_P65_HighN(EigenChannelModel):
 class Sr87_D15_HighN(EigenChannelModel):
     species = "Sr87"
     name = "D F=3/2, nu > 25"
-    f_tot = 1.5
+    f_tot, parity = (1.5, +1)
     nu_range = (25.0, np.inf)
     reference = REFERENCE_ROBICHEAUX_2019
 
@@ -253,7 +253,7 @@ class Sr87_D15_HighN(EigenChannelModel):
 class Sr87_D25_HighN(EigenChannelModel):
     species = "Sr87"
     name = "D F=5/2, nu > 25"
-    f_tot = 2.5
+    f_tot, parity = (2.5, +1)
     nu_range = (25.0, np.inf)
     reference = REFERENCE_ROBICHEAUX_2019
 
@@ -281,7 +281,7 @@ class Sr87_D25_HighN(EigenChannelModel):
 class Sr87_D35_HighN(EigenChannelModel):
     species = "Sr87"
     name = "D F=7/2, nu > 25"
-    f_tot = 3.5
+    f_tot, parity = (3.5, +1)
     nu_range = (25.0, np.inf)
     reference = REFERENCE_ROBICHEAUX_2019
 
@@ -312,7 +312,7 @@ class Sr87_D35_HighN(EigenChannelModel):
 class Sr87_D45_HighN(EigenChannelModel):
     species = "Sr87"
     name = "D F=9/2, nu > 25"
-    f_tot = 4.5
+    f_tot, parity = (4.5, +1)
     nu_range = (25.0, np.inf)
     reference = REFERENCE_ROBICHEAUX_2019
 
@@ -343,7 +343,7 @@ class Sr87_D45_HighN(EigenChannelModel):
 class Sr87_D55_HighN(EigenChannelModel):
     species = "Sr87"
     name = "D F=11/2, nu > 25"
-    f_tot = 5.5
+    f_tot, parity = (5.5, +1)
     nu_range = (25.0, np.inf)
     reference = REFERENCE_ROBICHEAUX_2019
 
@@ -374,7 +374,7 @@ class Sr87_D55_HighN(EigenChannelModel):
 class Sr87_D65_HighN(EigenChannelModel):
     species = "Sr87"
     name = "D F=13/2, nu > 25"
-    f_tot = 6.5
+    f_tot, parity = (6.5, +1)
     nu_range = (25.0, np.inf)
     reference = REFERENCE_ROBICHEAUX_2019
 
@@ -402,7 +402,7 @@ class Sr87_D65_HighN(EigenChannelModel):
 class Sr87_D75_HighN(EigenChannelModel):
     species = "Sr87"
     name = "D F=15/2, nu > 25"
-    f_tot = 7.5
+    f_tot, parity = (7.5, +1)
     nu_range = (25.0, np.inf)
     reference = REFERENCE_ROBICHEAUX_2019
 
@@ -426,7 +426,7 @@ class Sr87_D75_HighN(EigenChannelModel):
 class Sr87_F45_HighN(EigenChannelModel):
     species = "Sr87"
     name = "F F=9/2, nu > 9"
-    f_tot = 4.5
+    f_tot, parity = (4.5, -1)
     nu_range = (9.0, np.inf)
     reference = REFERENCE_ROBICHEAUX_2019
 

@@ -18,7 +18,7 @@ REFERENCE_WILSON_2022 = (
 class Yb174_S0_HighN(EigenChannelModel):
     species = "Yb174"
     name = "S J=0, nu > 2"
-    f_tot = 0
+    f_tot, parity = (0, +1)
     nu_range = (2.0, np.inf)
     reference = REFERENCE_KURODA_2025
 
@@ -60,7 +60,7 @@ class Yb174_S0_HighN(EigenChannelModel):
 class Yb174_S1_HighN(EigenChannelModel):
     species = "Yb174"
     name = "S J=1, nu > 26"
-    f_tot = 1
+    f_tot, parity = (1, +1)
     nu_range = (26.0, np.inf)
     reference = REFERENCE_WILSON_2022
 
@@ -79,7 +79,7 @@ class Yb174_S1_HighN(EigenChannelModel):
 class Yb174_P0_HighN(EigenChannelModel):
     species = "Yb174"
     name = "P J=0, nu > 5.5"
-    f_tot = 0
+    f_tot, parity = (0, -1)
     nu_range = (5.5, np.inf)
     reference = REFERENCE_KURODA_2025
 
@@ -104,7 +104,7 @@ class Yb174_P0_HighN(EigenChannelModel):
 class Yb174_P1_HighN(EigenChannelModel):
     species = "Yb174"
     name = "P J=1, nu > 5.7"
-    f_tot = 1
+    f_tot, parity = (1, -1)
     nu_range = (5.7, np.inf)
     reference = REFERENCE_KURODA_2025
 
@@ -149,7 +149,7 @@ class Yb174_P1_HighN(EigenChannelModel):
 class Yb174_P2_HighN(EigenChannelModel):
     species = "Yb174"
     name = "P J=2, nu > 4.5"
-    f_tot = 2
+    f_tot, parity = (2, -1)
     nu_range = (4.5, np.inf)
     reference = REFERENCE_KURODA_2025
 
@@ -182,7 +182,7 @@ class Yb174_P2_HighN(EigenChannelModel):
 class Yb174_D1_HighN(EigenChannelModel):
     species = "Yb174"
     name = "D J=1, nu > 26"
-    f_tot = 1
+    f_tot, parity = (1, +1)
     nu_range = (26.0, np.inf)
     reference = REFERENCE_PEPER_2025
 
@@ -201,7 +201,7 @@ class Yb174_D1_HighN(EigenChannelModel):
 class Yb174_D2_HighN(EigenChannelModel):
     species = "Yb174"
     name = "D J=2, nu > 5"
-    f_tot = 2
+    f_tot, parity = (2, +1)
     nu_range = (5.0, np.inf)
     reference = REFERENCE_KURODA_2025
 
@@ -240,7 +240,7 @@ class Yb174_D2_HighN(EigenChannelModel):
 class Yb174_D3_HighN(EigenChannelModel):
     species = "Yb174"
     name = "D J=3, nu > 18"
-    f_tot = 3
+    f_tot, parity = (3, +1)
     nu_range = (18.0, np.inf)
     reference = REFERENCE_KURODA_2025
 
@@ -259,7 +259,7 @@ class Yb174_D3_HighN(EigenChannelModel):
 class Yb174_F2_HighN(EigenChannelModel):
     species = "Yb174"
     name = "F J=2, nu > 25"
-    f_tot = 2
+    f_tot, parity = (2, -1)
     nu_range = (25.0, np.inf)
     reference = REFERENCE_KURODA_2025
 
@@ -278,7 +278,7 @@ class Yb174_F2_HighN(EigenChannelModel):
 class Yb174_F3_HighN(EigenChannelModel):
     species = "Yb174"
     name = "F J=3, nu > 7"
-    f_tot = 3
+    f_tot, parity = (3, -1)
     nu_range = (7.0, np.inf)
     reference = REFERENCE_KURODA_2025
 
@@ -328,7 +328,7 @@ class Yb174_F3_HighN(EigenChannelModel):
 class Yb174_F4_HighN(EigenChannelModel):
     species = "Yb174"
     name = "F J=4, nu > 25"
-    f_tot = 4
+    f_tot, parity = (4, -1)
     nu_range = (25.0, np.inf)
     reference = REFERENCE_KURODA_2025
 
@@ -347,7 +347,7 @@ class Yb174_F4_HighN(EigenChannelModel):
 class Yb174_G3_HighN(EigenChannelModel):
     species = "Yb174"
     name = "G J=3, nu > 25"
-    f_tot = 3
+    f_tot, parity = (3, +1)
     nu_range = (25.0, np.inf)
     reference = REFERENCE_KURODA_2025
 
@@ -366,7 +366,7 @@ class Yb174_G3_HighN(EigenChannelModel):
 class Yb174_G4_HighN(EigenChannelModel):
     species = "Yb174"
     name = "G J=4, nu > 25"
-    f_tot = 4
+    f_tot, parity = (4, +1)
     nu_range = (25.0, np.inf)
     reference = REFERENCE_KURODA_2025
 
@@ -393,7 +393,7 @@ class Yb174_G4_HighN(EigenChannelModel):
 class Yb174_G5_HighN(EigenChannelModel):
     species = "Yb174"
     name = "G J=5, nu > 25"
-    f_tot = 5
+    f_tot, parity = (5, +1)
     nu_range = (25.0, np.inf)
     reference = (REFERENCE_KURODA_2025, "obtained from a fit to the 171Yb 6sng (F = 9/2) spectroscopic data")
 
@@ -417,7 +417,7 @@ class Yb174_G5_HighN(EigenChannelModel):
 class Yb174_S0_LowN(EigenChannelModel):
     species = "Yb174"
     name = "S J=0, 1 < nu < 2"
-    f_tot = 0
+    f_tot, parity = (0, +1)
     nu_range = (1.0, 2.0)
     reference = "fit to the 6s^2 ground state"
 
@@ -436,7 +436,7 @@ class Yb174_S0_LowN(EigenChannelModel):
 class Yb174_S1_LowN(EigenChannelModel):
     species = "Yb174"
     name = "S J=1, 2 < nu < 26"
-    f_tot = 1
+    f_tot, parity = (1, +1)
     nu_range = (2.0, 26.0)
     reference = "fit to NIST data between 7s and 13s, extrapolation seems good up to 30s"
 
@@ -455,7 +455,7 @@ class Yb174_S1_LowN(EigenChannelModel):
 class Yb174_P0_LowN(EigenChannelModel):
     species = "Yb174"
     name = "P J=0, 1.5 < nu < 5.5"
-    f_tot = 0
+    f_tot, parity = (0, -1)
     nu_range = (1.5, 5.5)
     reference = "fit to NIST data between 6p and 9p"
 
@@ -474,7 +474,7 @@ class Yb174_P0_LowN(EigenChannelModel):
 class Yb174_P1_Lowest(EigenChannelModel):
     species = "Yb174"
     name = "P J=1, 1.7 < nu < 2.7"
-    f_tot = 1
+    f_tot, parity = (1, -1)
     nu_range = (1.7, 2.7)
     reference = "fit to NIST data for the 6p states"
 
@@ -499,7 +499,7 @@ class Yb174_P1_Lowest(EigenChannelModel):
 class Yb174_P1_LowN(EigenChannelModel):
     species = "Yb174"
     name = "P J=1, 2.7 < nu < 5.7"
-    f_tot = 1
+    f_tot, parity = (1, -1)
     nu_range = (2.7, 5.7)
     reference = "fit to NIST data between 7p and 9p"
 
@@ -521,7 +521,7 @@ class Yb174_P1_LowN(EigenChannelModel):
 class Yb174_P2_LowN(EigenChannelModel):
     species = "Yb174"
     name = "P J=2, 1.5 < nu < 4.5"
-    f_tot = 2
+    f_tot, parity = (2, -1)
     nu_range = (1.5, 4.5)
     reference = "fit to NIST data between 6p and 8p"
 
@@ -540,7 +540,7 @@ class Yb174_P2_LowN(EigenChannelModel):
 class Yb174_D1_LowN(EigenChannelModel):
     species = "Yb174"
     name = "D J=1, 2 < nu < 26"
-    f_tot = 1
+    f_tot, parity = (1, +1)
     nu_range = (2.0, 26.0)
     reference = "fit to NIST data between 5d and 8d, causes a µ=0.005 difference at the 30d state"
 
@@ -559,7 +559,7 @@ class Yb174_D1_LowN(EigenChannelModel):
 class Yb174_D2_LowN(EigenChannelModel):
     species = "Yb174"
     name = "D J=2, 2 < nu < 5"
-    f_tot = 2
+    f_tot, parity = (2, +1)
     nu_range = (2.0, 5.0)
     reference = "fit to NIST data between 5d and 7d"
 
@@ -584,7 +584,7 @@ class Yb174_D2_LowN(EigenChannelModel):
 class Yb174_D3_LowN(EigenChannelModel):
     species = "Yb174"
     name = "D J=3, 2 < nu < 18"
-    f_tot = 3
+    f_tot, parity = (3, +1)
     nu_range = (2.0, 18.0)
     reference = "fit to NIST data between 5d and 8d, provides good match around 21d"
 

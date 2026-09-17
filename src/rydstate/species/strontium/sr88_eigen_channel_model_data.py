@@ -15,7 +15,7 @@ REFERENCE_ROBICHEAUX_2019 = (
 class Sr88_S0_HighN(EigenChannelModel):
     species = "Sr88"
     name = "S J=0, nu > 10"
-    f_tot = 0
+    f_tot, parity = (0, +1)
     nu_range = (10.0, np.inf)
     reference = REFERENCE_ROBICHEAUX_2019
 
@@ -34,7 +34,7 @@ class Sr88_S0_HighN(EigenChannelModel):
 class Sr88_S1_HighN(EigenChannelModel):
     species = "Sr88"
     name = "S J=1, nu > 11"
-    f_tot = 1
+    f_tot, parity = (1, +1)
     nu_range = (11.0, np.inf)
     reference = REFERENCE_ROBICHEAUX_2019
 
@@ -58,7 +58,7 @@ class Sr88_S1_HighN(EigenChannelModel):
 class Sr88_P1_LowN(EigenChannelModel):
     species = "Sr88"
     name = "P J=1 (recombination), 1.8 < nu < 2.2"
-    f_tot = 1
+    f_tot, parity = (1, -1)
     nu_range = (1.8, 2.2)
     reference = REFERENCE_ROBICHEAUX_2019
 
@@ -88,7 +88,7 @@ class Sr88_P1_LowN(EigenChannelModel):
 class Sr88_P0_HighN(EigenChannelModel):
     species = "Sr88"
     name = "P J=0, nu > 7"
-    f_tot = 0
+    f_tot, parity = (0, -1)
     nu_range = (7.0, np.inf)
     reference = REFERENCE_ROBICHEAUX_2019
 
@@ -107,7 +107,7 @@ class Sr88_P0_HighN(EigenChannelModel):
 class Sr88_P1_HighN(EigenChannelModel):
     species = "Sr88"
     name = "P J=1, nu > 5"
-    f_tot = 1
+    f_tot, parity = (1, -1)
     nu_range = (5.0, np.inf)
     reference = REFERENCE_ROBICHEAUX_2019
 
@@ -129,7 +129,7 @@ class Sr88_P1_HighN(EigenChannelModel):
 class Sr88_P2_HighN(EigenChannelModel):
     species = "Sr88"
     name = "P J=2, nu > 5"
-    f_tot = 2
+    f_tot, parity = (2, -1)
     nu_range = (5.0, np.inf)
     reference = REFERENCE_ROBICHEAUX_2019
 
@@ -148,7 +148,7 @@ class Sr88_P2_HighN(EigenChannelModel):
 class Sr88_D1_HighN(EigenChannelModel):
     species = "Sr88"
     name = "D J=1, nu > 17"
-    f_tot = 1
+    f_tot, parity = (1, +1)
     nu_range = (17.0, np.inf)
     reference = REFERENCE_ROBICHEAUX_2019
 
@@ -167,7 +167,7 @@ class Sr88_D1_HighN(EigenChannelModel):
 class Sr88_D2_HighN(EigenChannelModel):
     species = "Sr88"
     name = "D J=2, nu > 25"
-    f_tot = 2
+    f_tot, parity = (2, +1)
     nu_range = (25.0, np.inf)
     reference = REFERENCE_ROBICHEAUX_2019
 
@@ -192,7 +192,7 @@ class Sr88_D2_HighN(EigenChannelModel):
 class Sr88_D3_HighN(EigenChannelModel):
     species = "Sr88"
     name = "D J=3, nu > 25"
-    f_tot = 3
+    f_tot, parity = (3, +1)
     nu_range = (25.0, np.inf)
     reference = REFERENCE_ROBICHEAUX_2019
 
@@ -211,7 +211,7 @@ class Sr88_D3_HighN(EigenChannelModel):
 class Sr88_F2_HighN(EigenChannelModel):
     species = "Sr88"
     name = "F J=2, nu > 9"
-    f_tot = 2
+    f_tot, parity = (2, -1)
     nu_range = (9.0, np.inf)
     reference = REFERENCE_ROBICHEAUX_2019
 
@@ -230,7 +230,7 @@ class Sr88_F2_HighN(EigenChannelModel):
 class Sr88_F3_HighN(EigenChannelModel):
     species = "Sr88"
     name = "F J=3, nu > 9"
-    f_tot = 3
+    f_tot, parity = (3, -1)
     nu_range = (9.0, np.inf)
     reference = REFERENCE_ROBICHEAUX_2019
 
@@ -252,7 +252,7 @@ class Sr88_F3_HighN(EigenChannelModel):
 class Sr88_F4_HighN(EigenChannelModel):
     species = "Sr88"
     name = "F J=4, nu > 9"
-    f_tot = 4
+    f_tot, parity = (4, -1)
     nu_range = (9.0, np.inf)
     reference = REFERENCE_ROBICHEAUX_2019
 

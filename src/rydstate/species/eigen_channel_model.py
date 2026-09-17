@@ -41,6 +41,18 @@ class EigenChannelModel(MQDTModel):
     and params are the parameters for the energy dependence of the angle (constant or polynomial coefficients).
     The default None means no mixing between the close-coupling channels."""
 
+    def __init__(self, mqdt: MQDT) -> None:
+        super().__init__(mqdt)
+        self._check_channels(self.inner_channels)
+
+        n_outer = len(self.outer_channels)
+        n_inner = len(self.inner_channels)
+        n_defects = len(self.eigen_quantum_defects)
+        if n_inner != n_outer:
+            raise ValueError(f"{self.full_name}: inner_channels ({n_inner}) != outer_channels ({n_outer})")
+        if n_defects != n_outer:
+            raise ValueError(f"{self.full_name}: eigen_quantum_defects ({n_defects}) != outer_channels ({n_outer})")
+
     def calc_eigen_quantum_defects(self, nu: float) -> NDArray:
         r"""Return the eigen quantum defects evaluated at the channel-dependent effective principal quantum numbers nui.
 
@@ -210,6 +222,7 @@ class TrivialModel(EigenChannelModel):
         self.species = species  # type: ignore [misc]
         self.name = f"SQDT {channel}, nu >= {channel.l_r + 1}"  # type: ignore [misc]
         self.f_tot = channel.f_tot  # type: ignore [misc]
+        self.parity = channel.parity  # type: ignore [misc]
         self.nu_range = (channel.l_r + 1, math.inf)  # type: ignore [misc]
         self.inner_channels = [channel]  # type: ignore [misc]
         self.outer_channels = [channel]  # type: ignore [misc]

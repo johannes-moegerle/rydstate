@@ -15,7 +15,7 @@ REFERENCE_KURODA_2025 = "R. Kuroda et al., Phys. Rev. A 112, 042817 (2025), http
 class Yb171_S05_HighN(EigenChannelModel):
     species = "Yb171"
     name = "S F=1/2, nu > 26"
-    f_tot = 0.5
+    f_tot, parity = (0.5, +1)
     nu_range = (26.0, np.inf)
     reference = REFERENCE_KURODA_2025
 
@@ -60,7 +60,7 @@ class Yb171_S05_HighN(EigenChannelModel):
 class Yb171_S15_HighN(EigenChannelModel):
     species = "Yb171"
     name = "S F=3/2, nu > 26"
-    f_tot = 1.5
+    f_tot, parity = (1.5, +1)
     nu_range = (26.0, np.inf)
     reference = (REFERENCE_KURODA_2025, "taken from Yb171 3S1, F=1/2 data")
 
@@ -79,7 +79,7 @@ class Yb171_S15_HighN(EigenChannelModel):
 class Yb171_P05_HighN(EigenChannelModel):
     species = "Yb171"
     name = "P F=1/2, nu > 5.9"
-    f_tot = 0.5
+    f_tot, parity = (0.5, -1)
     nu_range = (5.9, np.inf)
     reference = (REFERENCE_KURODA_2025, "fit for nu > 28, but extrapolates nicely down for nu > 5.9)")
 
@@ -132,7 +132,7 @@ class Yb171_P05_HighN(EigenChannelModel):
 class Yb171_P15_HighN(EigenChannelModel):
     species = "Yb171"
     name = "P F=3/2, nu > 10"
-    f_tot = 1.5
+    f_tot, parity = (1.5, -1)
     nu_range = (10.0, np.inf)
     reference = REFERENCE_KURODA_2025
 
@@ -196,7 +196,7 @@ class Yb171_P15_HighN(EigenChannelModel):
 class Yb171_D05_HighN(EigenChannelModel):
     species = "Yb171"
     name = "D F=1/2, nu > 30"
-    f_tot = 0.5
+    f_tot, parity = (0.5, +1)
     nu_range = (30.0, np.inf)
     reference = (REFERENCE_KURODA_2025, "taken from Yb171 3D1, F=3/2 data")
 
@@ -215,7 +215,7 @@ class Yb171_D05_HighN(EigenChannelModel):
 class Yb171_D15_HighN(EigenChannelModel):
     species = "Yb171"
     name = "D F=3/2, nu > 30"
-    f_tot = 1.5
+    f_tot, parity = (1.5, +1)
     nu_range = (30.0, np.inf)
     reference = REFERENCE_KURODA_2025
 
@@ -257,7 +257,7 @@ class Yb171_D15_HighN(EigenChannelModel):
 class Yb171_D25_HighN(EigenChannelModel):
     species = "Yb171"
     name = "D F=5/2, nu > 30"
-    f_tot = 2.5
+    f_tot, parity = (2.5, +1)
     nu_range = (30.0, np.inf)
     reference = REFERENCE_KURODA_2025
 
@@ -299,7 +299,7 @@ class Yb171_D25_HighN(EigenChannelModel):
 class Yb171_D35_HighN(EigenChannelModel):
     species = "Yb171"
     name = "D F=7/2, nu > 14"
-    f_tot = 3.5
+    f_tot, parity = (3.5, +1)
     nu_range = (14.0, np.inf)
     reference = (REFERENCE_KURODA_2025, "taken from Yb171 3D3, F=5/2 data")
 
@@ -318,7 +318,7 @@ class Yb171_D35_HighN(EigenChannelModel):
 class Yb171_F25_HighN(EigenChannelModel):
     species = "Yb171"
     name = "F F=5/2, nu > 20"
-    f_tot = 2.5
+    f_tot, parity = (2.5, -1)
     nu_range = (20.0, np.inf)
     reference = REFERENCE_KURODA_2025
 
@@ -387,7 +387,7 @@ class Yb171_F25_HighN(EigenChannelModel):
 class Yb171_F35_HighN(EigenChannelModel):
     species = "Yb171"
     name = "F F=7/2, nu > 20"
-    f_tot = 3.5
+    f_tot, parity = (3.5, -1)
     nu_range = (20.0, np.inf)
     reference = REFERENCE_KURODA_2025
 
@@ -440,7 +440,7 @@ class Yb171_F35_HighN(EigenChannelModel):
 class Yb171_F45_HighN(EigenChannelModel):
     species = "Yb171"
     name = "F F=9/2, nu > 20"
-    f_tot = 4.5
+    f_tot, parity = (4.5, -1)
     nu_range = (20.0, np.inf)
     reference = (REFERENCE_KURODA_2025, "taken from Yb171 3F4, F=7/2 data")
 
@@ -459,7 +459,7 @@ class Yb171_F45_HighN(EigenChannelModel):
 class Yb171_G25_HighN(EigenChannelModel):
     species = "Yb171"
     name = "G F=5/2, nu > 25"
-    f_tot = 2.5
+    f_tot, parity = (2.5, +1)
     nu_range = (25.0, np.inf)
     reference = REFERENCE_KURODA_2025
 
@@ -478,7 +478,7 @@ class Yb171_G25_HighN(EigenChannelModel):
 class Yb171_G35_HighN(EigenChannelModel):
     species = "Yb171"
     name = "G F=7/2, nu > 25"
-    f_tot = 3.5
+    f_tot, parity = (3.5, +1)
     nu_range = (25.0, np.inf)
     reference = REFERENCE_KURODA_2025
 
@@ -506,7 +506,7 @@ class Yb171_G35_HighN(EigenChannelModel):
 class Yb171_G45_HighN(EigenChannelModel):
     species = "Yb171"
     name = "G F=9/2, nu > 25"
-    f_tot = 4.5
+    f_tot, parity = (4.5, +1)
     nu_range = (25.0, np.inf)
     reference = REFERENCE_KURODA_2025
 
@@ -534,7 +534,7 @@ class Yb171_G45_HighN(EigenChannelModel):
 class Yb171_G55_HighN(EigenChannelModel):
     species = "Yb171"
     name = "G F=11/2, nu > 25"
-    f_tot = 5.5
+    f_tot, parity = (5.5, +1)
     nu_range = (25.0, np.inf)
     reference = (REFERENCE_KURODA_2025, "taken from Yb171 3G5, F=9/2 data")
 
@@ -558,7 +558,7 @@ class Yb171_G55_HighN(EigenChannelModel):
 class Yb171_S05_LowN(EigenChannelModel):
     species = "Yb171"
     name = "S F=1/2, 2 < nu < 26"
-    f_tot = 0.5
+    f_tot, parity = (0.5, +1)
     nu_range = (2.0, 26.0)
     reference = (REFERENCE_PEPER_2025, "with modified 3S1 data taken from Yb174 fit to NIST")
 
@@ -603,7 +603,7 @@ class Yb171_S05_LowN(EigenChannelModel):
 class Yb171_S15_LowN(EigenChannelModel):
     species = "Yb171"
     name = "S F=3/2, 2 < nu < 26"
-    f_tot = 1.5
+    f_tot, parity = (1.5, +1)
     nu_range = (2.0, 26.0)
     reference = "fit to Yb174 NIST data"
 
@@ -622,7 +622,7 @@ class Yb171_S15_LowN(EigenChannelModel):
 class Yb171_P05_Lowest(EigenChannelModel):
     species = "Yb171"
     name = "P F=1/2, 1.6 < nu < 2.6"
-    f_tot = 0.5
+    f_tot, parity = (0.5, -1)
     nu_range = (1.6, 2.6)
     reference = "fit to Yb174 NIST data"
 
@@ -650,7 +650,7 @@ class Yb171_P05_Lowest(EigenChannelModel):
 class Yb171_P05_LowN(EigenChannelModel):
     species = "Yb171"
     name = "P F=1/2, 2.6 < nu < 5.9"
-    f_tot = 0.5
+    f_tot, parity = (0.5, -1)
     nu_range = (2.6, 5.9)
     reference = "fit to Yb174 NIST data"
 
@@ -675,7 +675,7 @@ class Yb171_P05_LowN(EigenChannelModel):
 class Yb171_P15_Lowest(EigenChannelModel):
     species = "Yb171"
     name = "P F=3/2, 1.6 < nu < 2.6"
-    f_tot = 1.5
+    f_tot, parity = (1.5, -1)
     nu_range = (1.6, 2.6)
     reference = "fit to Yb174 NIST data"
 
@@ -703,7 +703,7 @@ class Yb171_P15_Lowest(EigenChannelModel):
 class Yb171_P15_LowN(EigenChannelModel):
     species = "Yb171"
     name = "P F=3/2, 2.6 < nu < 10"
-    f_tot = 1.5
+    f_tot, parity = (1.5, -1)
     nu_range = (2.6, 10.0)
     reference = "fit to Yb174 NIST data"
 
@@ -763,7 +763,7 @@ class Yb171_P15_LowN(EigenChannelModel):
 class Yb171_P25_Lowest(EigenChannelModel):
     species = "Yb171"
     name = "P F=5/2, 1.5 < nu < 4.5"
-    f_tot = 2.5
+    f_tot, parity = (2.5, -1)
     nu_range = (1.5, 4.5)
     reference = "fit to Yb174 NIST data"
 
@@ -782,7 +782,7 @@ class Yb171_P25_Lowest(EigenChannelModel):
 class Yb171_P25_LowN(EigenChannelModel):
     species = "Yb171"
     name = "P F=5/2, 4.5 < nu < 20"
-    f_tot = 2.5
+    f_tot, parity = (2.5, -1)
     nu_range = (4.5, 20.0)
     reference = "fit to Yb174 Phys. Rev. X 15, 011009 (2025)"
 
@@ -815,7 +815,7 @@ class Yb171_P25_LowN(EigenChannelModel):
 class Yb171_D05_LowN(EigenChannelModel):
     species = "Yb171"
     name = "D F=1/2, 2 < nu < 30"
-    f_tot = 0.5
+    f_tot, parity = (0.5, +1)
     nu_range = (2.0, 30.0)
     reference = "fit to Yb174 NIST data for 2 < nu < 5"
 
@@ -834,7 +834,7 @@ class Yb171_D05_LowN(EigenChannelModel):
 class Yb171_D15_LowN(EigenChannelModel):
     species = "Yb171"
     name = "D F=3/2, 2 < nu < 30"
-    f_tot = 1.5
+    f_tot, parity = (1.5, +1)
     nu_range = (2.0, 30.0)
     reference = "model from [arXiv:2507.11487v1] with modified 3D1 data taken from Yb174 fit to NIST"
 
@@ -876,7 +876,7 @@ class Yb171_D15_LowN(EigenChannelModel):
 class Yb171_D25_LowN(EigenChannelModel):
     species = "Yb171"
     name = "D F=5/2, 2 < nu < 30"
-    f_tot = 2.5
+    f_tot, parity = (2.5, +1)
     nu_range = (2.0, 30.0)
     reference = "model from [arXiv:2507.11487v1] with modified 3D3 data taken from Yb174 fit to NIST"
 
@@ -918,7 +918,7 @@ class Yb171_D25_LowN(EigenChannelModel):
 class Yb171_D35_LowN(EigenChannelModel):
     species = "Yb171"
     name = "D F=7/2, 2 < nu < 14"
-    f_tot = 3.5
+    f_tot, parity = (3.5, +1)
     nu_range = (2.0, 14.0)
     reference = "data taken from Yb174 NIST fit for 2 < nu < 5, provides good match around 18d"
 
