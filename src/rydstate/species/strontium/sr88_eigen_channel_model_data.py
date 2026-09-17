@@ -185,7 +185,7 @@ class Sr88_D2_HighN(EigenChannelModel):
         [2.66149, -16.77, -6656],
     ]
     mixing_angles = [
-        (0, 1, -0.14),
+        (0, 1, [-0.14]),
     ]
 
 

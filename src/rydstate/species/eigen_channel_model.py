@@ -8,7 +8,7 @@ import numpy as np
 
 from rydstate.angular.utils import is_not_set
 from rydstate.species.mqdt_model import MQDTModel
-from rydstate.species.utils import calc_modified_ritz_formula_in_nu
+from rydstate.species.utils import calc_modified_ritz_formula_in_nu, check_ritz_parameters
 
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase
@@ -33,12 +33,13 @@ class EigenChannelModel(MQDTModel):
 
     eigen_quantum_defects: ClassVar[list[RydbergRitzParameters]]
     """List of eigen quantum defects for the close-coupling channels.
-    Each entry can be a constant or a list of polynomial coefficients."""
+    Each entry is a list of polynomial coefficients; a constant is a single element list."""
 
     mixing_angles: ClassVar[list[tuple[int, int, RydbergRitzParameters]] | None] = None
     """List of mixing angles between close-coupling channels.
     Each entry is a tuple (i_idx, j_idx, params) where i_idx and j_idx are the indices of the involved channels
-    and params are the parameters for the energy dependence of the angle (constant or polynomial coefficients).
+    and params is the list of polynomial coefficients for the energy dependence of the angle
+    (a constant angle is a single element list).
     The default None means no mixing between the close-coupling channels."""
 
     def __init__(self, mqdt: MQDT) -> None:
@@ -52,6 +53,11 @@ class EigenChannelModel(MQDTModel):
             raise ValueError(f"{self.full_name}: inner_channels ({n_inner}) != outer_channels ({n_outer})")
         if n_defects != n_outer:
             raise ValueError(f"{self.full_name}: eigen_quantum_defects ({n_defects}) != outer_channels ({n_outer})")
+
+        for i, params in enumerate(self.eigen_quantum_defects):
+            check_ritz_parameters(params, f"{self.full_name}: eigen_quantum_defects[{i}]")
+        for i_idx, j_idx, params in self.mixing_angles or []:
+            check_ritz_parameters(params, f"{self.full_name}: mixing_angles ({i_idx}, {j_idx})")
 
     def calc_eigen_quantum_defects(self, nu: float) -> NDArray:
         r"""Return the eigen quantum defects evaluated at the channel-dependent effective principal quantum numbers nui.
@@ -129,7 +135,7 @@ class EigenChannelModel(MQDTModel):
         # convention: first involved channel of first energy-dependent mixing entry
         ref_nu: float | None = None
         for i_idx, _j_idx, params in self.mixing_angles:
-            if isinstance(params, list) and len(params) > 1:
+            if len(params) > 1:
                 nuis = self.calc_channel_nuis(nu)
                 ref_nu = float(nuis[i_idx])
                 break
@@ -226,7 +232,7 @@ class TrivialModel(EigenChannelModel):
         self.nu_range = (channel.l_r + 1, math.inf)  # type: ignore [misc]
         self.inner_channels = [channel]  # type: ignore [misc]
         self.outer_channels = [channel]  # type: ignore [misc]
-        self.eigen_quantum_defects = [0]  # type: ignore [misc]
+        self.eigen_quantum_defects = [[0.0]]  # type: ignore [misc]
 
         super().__init__(mqdt)
 

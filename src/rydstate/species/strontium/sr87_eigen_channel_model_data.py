@@ -274,7 +274,7 @@ class Sr87_D25_HighN(EigenChannelModel):
         [2.655, -41.4, -15363],
     ]
     mixing_angles = [
-        (0, 1, -0.14),
+        (0, 1, [-0.14]),
     ]
 
 
@@ -305,7 +305,7 @@ class Sr87_D35_HighN(EigenChannelModel):
         [2.655, -41.4, -15363],
     ]
     mixing_angles = [
-        (0, 2, -0.14),
+        (0, 2, [-0.14]),
     ]
 
 
@@ -336,7 +336,7 @@ class Sr87_D45_HighN(EigenChannelModel):
         [2.655, -41.4, -15363],
     ]
     mixing_angles = [
-        (0, 2, -0.14),
+        (0, 2, [-0.14]),
     ]
 
 
@@ -367,7 +367,7 @@ class Sr87_D55_HighN(EigenChannelModel):
         [2.655, -41.4, -15363],
     ]
     mixing_angles = [
-        (0, 2, -0.14),
+        (0, 2, [-0.14]),
     ]
 
 
@@ -395,7 +395,7 @@ class Sr87_D65_HighN(EigenChannelModel):
         [2.655, -41.4, -15363],
     ]
     mixing_angles = [
-        (0, 1, -0.14),
+        (0, 1, [-0.14]),
     ]
 
 

@@ -12,6 +12,7 @@ from rydstate.species.nist import parse_nist_energy_levels, resolve_species_data
 from rydstate.species.utils import (
     calc_modified_ritz_formula,
     calc_nu_from_energy,
+    check_ritz_parameters,
     get_all_subclasses,
 )
 from rydstate.units import ureg
@@ -47,11 +48,14 @@ class SQDT(ABC, metaclass=CachedABCMeta):
 
     quantum_defects: ClassVar[dict[tuple[int, float, float], RydbergRitzParameters] | None] = None
     """Dictionary containing the quantum defects for each (l, j_tot, s_tot) combination, i.e.
-    quantum_defects[(l,j_tot,s_tot)] = (d0, d2, d4, d6, d8)
+    quantum_defects[(l,j_tot,s_tot)] = [d0, d2, d4, d6, d8]
     """
 
     def __init__(self) -> None:
         self.element_properties = get_element_properties(self.species)
+
+        for key, params in (self.quantum_defects or {}).items():
+            check_ritz_parameters(params, f"{self!r}: quantum_defects[{key}]")
 
         self._nist_energy_levels: NistEnergyLevels = {}
         if self.nist_data_file is not None:
@@ -180,7 +184,7 @@ class SQDT(ABC, metaclass=CachedABCMeta):
         if self.quantum_defects is None:
             raise ValueError(f"No quantum defect data available for species {self.species}.")
 
-        quantum_defects = self.quantum_defects.get((l_r, j_tot, s_tot), 0)
+        quantum_defects = self.quantum_defects.get((l_r, j_tot, s_tot), [0.0])
         delta_nlj = calc_modified_ritz_formula(n, quantum_defects)
 
         return n - delta_nlj

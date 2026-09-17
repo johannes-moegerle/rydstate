@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, TypeAlias, TypeVar
 
 import numpy as np
 
-RydbergRitzParameters: TypeAlias = tuple[float, ...] | list[float] | float
+RydbergRitzParameters: TypeAlias = list[float]
 
 
 if TYPE_CHECKING:
@@ -72,26 +72,45 @@ def calc_energy_from_nu(reduced_mass_au: float, nu: float, charge: int = 1) -> f
     return -0.5 * charge**2 * reduced_mass_au / nu**2
 
 
+def check_ritz_parameters(parameters: RydbergRitzParameters, name: str = "Rydberg-Ritz parameters") -> None:
+    """Check that the Rydberg-Ritz parameters are a non-empty list of polynomial coefficients.
+
+    This is meant to be called once when a model is constructed, so that the functions evaluating
+    the Ritz formulas can simply assume a non-empty list of coefficients.
+
+    Args:
+        name: How to refer to the checked parameters in the error message.
+        parameters: The Rydberg-Ritz parameters to check.
+
+    Raises:
+        TypeError: If the parameters are not a list.
+        ValueError: If the parameters are an empty list.
+
+    """
+    if not isinstance(parameters, list):
+        raise TypeError(
+            f"{name} must be a list of floats, got {type(parameters).__name__}. "
+            "A constant value must be given as a single element list [p₀]."
+        )
+    if len(parameters) == 0:
+        raise ValueError(f"{name} must not be an empty list.")
+
+
 def calc_modified_ritz_formula(n: int, parameters: RydbergRitzParameters) -> float:
     """Calculate the modified Ritz formula: p₀ + p₁/(n - p₀)² + p₂/(n - p₀)⁴ + ...
 
-    The parameters are given as a list [p₀, p₁, p₂, ...] or a single float (= p₀ and all other coefficients are zero).
+    The parameters are given as a non-empty list [p₀, p₁, p₂, ...]; a constant value is a single element
+    list [p₀]. They are not validated here, see :func:`check_ritz_parameters`.
     Note usually, for quantum defects, the formula is written with p₀ = δ₀, p₁ = δ₂, p₂ = δ₄, ...
 
     Args:
         n: The principal quantum number.
-        parameters: Rydberg-Ritz parameters.
-            A single float is a constant value; a list gives polynomial coefficients [p₀, p₁, p₂, ...].
+        parameters: Rydberg-Ritz parameters, the polynomial coefficients [p₀, p₁, p₂, ...].
 
     Returns:
         The value of the quantity at the given n.
 
     """
-    if isinstance(parameters, (int, float)) or np.isscalar(parameters):
-        return float(parameters)  # type: ignore [arg-type]
-    if len(parameters) == 0:
-        raise ValueError("Rydberg-Ritz parameters list cannot be empty.")
-
     p0 = parameters[0]
     result = p0
     for i, param in enumerate(parameters[1:], 1):
@@ -102,22 +121,17 @@ def calc_modified_ritz_formula(n: int, parameters: RydbergRitzParameters) -> flo
 def calc_modified_ritz_formula_in_nu(nui: float, parameters: RydbergRitzParameters) -> float:
     """Calculate the modified Ritz formula for the effective principal quantum number nu: p₀ + p₁/ν² + p₂/ν⁴ + ...
 
-    The parameters are given as a list [p₀, p₁, p₂, ...] or a single float (= p₀ and all other coefficients are zero).
+    The parameters are given as a non-empty list [p₀, p₁, p₂, ...]; a constant value is a single element
+    list [p₀]. They are not validated here, see :func:`check_ritz_parameters`.
 
     Args:
         nui: Channel-dependent effective principal quantum number.
-        parameters: Rydberg-Ritz parameters.
-            A single float is a constant value; a list gives polynomial coefficients [p₀, p₁, p₂, ...].
+        parameters: Rydberg-Ritz parameters, the polynomial coefficients [p₀, p₁, p₂, ...].
 
     Returns:
         The value of the quantity at the given nui.
 
     """
-    if isinstance(parameters, (int, float)) or np.isscalar(parameters):
-        return float(parameters)  # type: ignore [arg-type]
-    if len(parameters) == 0:
-        raise ValueError("Rydberg-Ritz parameters list cannot be empty.")
-
     result = 0.0
     for i, param in enumerate(parameters):
         result += param * 1.0 / nui ** (2 * i)
