@@ -107,9 +107,16 @@ testpaths = [
 ]
 addopts = [
     "--import-mode=importlib",
+    "--durations=0",  # show durations of tests
+    "--durations-min=0.1",  # but only include times > 0.1s
     # "--nbmake",  # only run nbmake locally and in one dedicated CI job
     "--doctest-modules",
 ]
+
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "[%(asctime)s.%(msecs)03d] [%(levelname)s] [%(filename)s:%(lineno)d] %(message)s"
+log_cli_date_format = "%H:%M:%S"
 
 
 [tool.ruff]
