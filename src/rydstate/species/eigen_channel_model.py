@@ -171,6 +171,32 @@ class EigenChannelModel(MQDTModel):
         kbar = self.calc_k_matrix_closecoupling(nu)
         return transform @ kbar @ transform.T
 
+    def calc_approximate_quantum_defects(self, nu: float) -> NDArray:
+        r"""Return approximate quantum defects of the outer channels, including their integer part.
+
+        The eigen quantum defects of the close-coupling channels are tabulated including their integer
+        part, so we recover the integer part of the outer channel quantum defects by transforming them
+        to the outer channel frame with the frame transformation U, exactly like the K-matrix
+        (see :meth:`calc_k_matrix`) but without the tangent, which is what would throw the integer part away:
+
+        .. math::
+            \mu \approx U \mu_{\alpha} U^T
+
+        Note that transforming the eigen quantum defects instead of their tangents is only an
+        approximation, which is why the result must not be used for the fractional part of the
+        quantum defects, but is good enough to determine their integer part.
+
+        Args:
+            nu: Effective principal quantum number with reference to the reference ionization threshold.
+
+        Returns:
+            Array of approximate quantum defects of the outer channels.
+
+        """
+        transform = self.calc_frame_transformation(nu)
+        eigen_quantum_defects = np.diag(self.calc_eigen_quantum_defects(nu))
+        return np.diag(transform @ eigen_quantum_defects @ transform.T)
+
 
 class TrivialModel(EigenChannelModel):
     """Trivial single channel model with a vanishing quantum defect (i.e. a hydrogen-like channel).

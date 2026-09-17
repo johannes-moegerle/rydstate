@@ -295,19 +295,10 @@ class OSQDTModel:
 
         The OSQDT condition only determines the quantum defect modulo one
         (:math:`K_{ii} = \tan(\pi \mu_i)`), which is not enough to label the states with their principal
-        quantum number n. The integer part is recovered from the eigen quantum defects of the
-        close-coupling channels, which are tabulated including their integer part, by transforming
-        them to the outer channel frame with the frame transformation U, exactly like the K-matrix
-        (see :meth:`~rydstate.species.mqdt_model.MQDTModel.calc_k_matrix`) but without the tangent, which
-        is what would throw the integer part away:
-
-        .. math::
-            \mu \approx U \mu_{\alpha} U^T
-
-        Note that transforming the eigen quantum defects instead of their tangents is only an
-        approximation, which is why the result must not be used for the fractional part of the
-        quantum defect (this one is given exactly by the OSQDT condition), but is good enough to
-        determine the integer part.
+        quantum number n. The integer part is taken from the approximate quantum defects of the model
+        (see :meth:`~rydstate.species.mqdt_model.MQDTModel.calc_approximate_quantum_defects`), which
+        must not be used for the fractional part of the quantum defect (this one is given exactly by
+        the OSQDT condition), but is good enough to determine the integer part.
 
         Args:
             nui: The channel nui at which to evaluate the quantum defect.
@@ -317,10 +308,7 @@ class OSQDTModel:
 
         """
         nu = self.calc_nu(nui)
-        transform = self.model.calc_frame_transformation(nu)
-        eigen_quantum_defects = np.diag(self.model.calc_eigen_quantum_defects(nu))
-        quantum_defects = transform @ eigen_quantum_defects @ transform.T
-        return float(quantum_defects[self.index, self.index])
+        return float(self.model.calc_approximate_quantum_defects(nu)[self.index])
 
     def calc_ns(self, nuis: Sequence[float]) -> list[int]:
         r"""Determine the principal quantum numbers of all given roots of the OSQDT condition at once.

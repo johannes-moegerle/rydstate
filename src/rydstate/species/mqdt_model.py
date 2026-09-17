@@ -159,6 +159,11 @@ class MQDTModel(ABC):
 
         """
 
+    def calc_approximate_quantum_defects(self, nu: float) -> NDArray:
+        raise NotImplementedError(
+            f"{type(self).__name__} does not provide quantum defects including their integer part."
+        )
+
     def calc_m_matrix(self, nu: float) -> NDArray:
         r"""Return the M-matrix in the outer channel frame.
 
