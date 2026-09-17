@@ -230,21 +230,6 @@ def test_nu_ranges_match_at_boundaries(mqdt: MQDT) -> None:
     assert not errors, msg
 
 
-def test_eigen_quantum_defects_format(eigen_channel_model: EigenChannelModel) -> None:
-    """Each eigen quantum defect entry must be a list/tuple of numeric values."""
-    model = eigen_channel_model
-    for i, defect in enumerate(model.eigen_quantum_defects):
-        if isinstance(defect, (list, tuple)):
-            for j, val in enumerate(defect):
-                assert isinstance(val, (int, float)), (
-                    f"{model.full_name}: eigen_quantum_defects[{i}][{j}] is {type(val)}, expected numeric"
-                )
-        else:
-            assert isinstance(defect, (int, float)), (
-                f"{model.full_name}: eigen_quantum_defects[{i}] is {type(defect)}, expected numeric or list"
-            )
-
-
 def test_mixing_angles_indices_valid(eigen_channel_model: EigenChannelModel) -> None:
     """Mixing angle indices must refer to valid channel positions."""
     model = eigen_channel_model

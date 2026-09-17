@@ -133,14 +133,12 @@ class EigenChannelModel(MQDTModel):
             return rot
         # Find reference channel nu for energy-dependent angles
         # convention: first involved channel of first energy-dependent mixing entry
-        ref_nu: float | None = None
+        ref_nu = float("inf")
         for i_idx, _j_idx, coefficients in self.mixing_angles:
             if len(coefficients) > 1:
                 nuis = self.calc_channel_nuis(nu)
                 ref_nu = float(nuis[i_idx])
                 break
-        if ref_nu is None:
-            ref_nu = 0.0  # unused; angles are constant
         for i_idx, j_idx, coefficients in self.mixing_angles:
             angle = calc_modified_ritz_formula_in_nu(ref_nu, coefficients)
             r = np.eye(n)
