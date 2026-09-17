@@ -3,8 +3,8 @@ from __future__ import annotations
 from typing import ClassVar
 
 from rydstate.angular.core_ket import CoreKet
-from rydstate.species.eigen_channel_model import get_model_classes
 from rydstate.species.mqdt import MQDT
+from rydstate.species.mqdt_model import get_model_classes
 from rydstate.species.strontium import sr87_eigen_channel_model_data, sr88_eigen_channel_model_data
 
 

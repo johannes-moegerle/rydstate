@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import inspect
 import math
 from functools import cached_property
 from typing import TYPE_CHECKING, Any, ClassVar
@@ -12,8 +11,6 @@ from rydstate.species.mqdt_model import MQDTModel
 from rydstate.species.utils import calc_modified_ritz_formula_in_nu
 
 if TYPE_CHECKING:
-    from types import ModuleType
-
     from rydstate.angular.angular_ket import AngularKetBase
     from rydstate.angular.utils import AllKnown
     from rydstate.species.mqdt import MQDT
@@ -173,33 +170,6 @@ class EigenChannelModel(MQDTModel):
         transform = self.calc_frame_transformation(nu)
         kbar = self.calc_k_matrix_closecoupling(nu)
         return transform @ kbar @ transform.T
-
-
-def get_model_classes(module: ModuleType, species: str) -> list[type[EigenChannelModel]]:
-    """Return all EigenChannelModel subclasses defined in ``module`` that match the given species.
-
-    Args:
-        module: The module to inspect for EigenChannelModel subclasses.
-        species: The species the returned EigenChannelModel subclasses must match.
-
-    Returns:
-        List of all EigenChannelModel subclasses defined in the module for the given species.
-
-    """
-    model_classes = [
-        obj
-        for obj in vars(module).values()
-        if (
-            inspect.isclass(obj)
-            and obj.__module__ == module.__name__
-            and issubclass(obj, EigenChannelModel)
-            and obj is not EigenChannelModel
-            and getattr(obj, "species", None) == species
-        )
-    ]
-    if len(model_classes) == 0:
-        raise ValueError(f"No EigenChannelModel subclasses for species {species!r} found in {module.__name__}.")
-    return model_classes
 
 
 class TrivialModel(EigenChannelModel):

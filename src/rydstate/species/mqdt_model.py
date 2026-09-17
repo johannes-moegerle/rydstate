@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import inspect
 from abc import ABC, abstractmethod
 from functools import cached_property
 from typing import TYPE_CHECKING, Any, ClassVar, overload
@@ -10,6 +11,8 @@ from rydstate.species.element_properties import get_element_properties
 from rydstate.species.utils import calc_energy_from_nu, calc_nu_from_energy
 
 if TYPE_CHECKING:
+    from types import ModuleType
+
     from rydstate.angular.angular_ket import AngularKetBase, AngularKetFJ
     from rydstate.angular.core_ket import CoreKet
     from rydstate.species.mqdt import MQDT
@@ -189,3 +192,29 @@ class MQDTModel(ABC):
         kmat = self.calc_k_matrix(nu)
         nuis = self.calc_channel_nuis(nu)
         return np.array(np.diag(np.sin(np.pi * nuis)) + np.diag(np.cos(np.pi * nuis)) @ kmat)
+
+
+def get_model_classes(module: ModuleType, species: str) -> list[type[MQDTModel]]:
+    """Return all MQDTModel subclasses defined in ``module`` that match the given species.
+
+    Args:
+        module: The module to inspect for MQDTModel subclasses.
+        species: The species the returned MQDTModel subclasses must match.
+
+    Returns:
+        List of all MQDTModel subclasses defined in the module for the given species.
+
+    """
+    model_classes = [
+        obj
+        for obj in vars(module).values()
+        if (
+            inspect.isclass(obj)
+            and obj.__module__ == module.__name__
+            and issubclass(obj, MQDTModel)
+            and getattr(obj, "species", None) == species
+        )
+    ]
+    if len(model_classes) == 0:
+        raise ValueError(f"No MQDTModel subclasses for species {species!r} found in {module.__name__}.")
+    return model_classes

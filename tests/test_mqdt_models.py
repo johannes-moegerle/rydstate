@@ -2,12 +2,16 @@ from __future__ import annotations
 
 import re
 from itertools import pairwise
+from typing import TYPE_CHECKING
 
 import numpy as np
 import pytest
 from rydstate.angular import AngularKetFJ
 from rydstate.angular.utils import is_unknown
 from rydstate.species import MQDT, EigenChannelModel, get_all_subclasses, get_element_properties, get_mqdt
+
+if TYPE_CHECKING:
+    from rydstate.species import MQDTModel
 
 ALL_MODELS = [
     cls(get_mqdt(cls.species)) for cls in EigenChannelModel.__subclasses__() if getattr(cls, "name", None) is not None
@@ -195,7 +199,7 @@ def test_all_models_found_by_get_mqdt_models(mqdt: MQDT) -> None:
     ]
     max_l_r = max(known_l_r)
 
-    found_models: list[EigenChannelModel] = []
+    found_models: list[MQDTModel] = []
     for l_r in range(max_l_r + 1):
         for j_r in np.arange(abs(l_r - s_r), l_r + s_r + 1):
             for f_c in np.arange(abs(j_c - i_c), j_c + i_c + 1):
@@ -249,7 +253,7 @@ MODELS_WITH_ISOLATED_NU_RANGE = [
 ]
 
 
-def _share_channels(model_1: EigenChannelModel, model_2: EigenChannelModel) -> bool:
+def _share_channels(model_1: MQDTModel, model_2: MQDTModel) -> bool:
     """Whether two models describe (at least partly) the same physical channels.
 
     Dummy channels (channels with unknown quantum numbers) are ignored,
@@ -264,9 +268,9 @@ def _share_channels(model_1: EigenChannelModel, model_2: EigenChannelModel) -> b
     )
 
 
-def _group_models_by_channels(models: list[EigenChannelModel]) -> list[list[EigenChannelModel]]:
+def _group_models_by_channels(models: list[MQDTModel]) -> list[list[MQDTModel]]:
     """Group the models into sets of models that (transitively) describe the same channels."""
-    groups: list[list[EigenChannelModel]] = []
+    groups: list[list[MQDTModel]] = []
     for model in models:
         matching = [group for group in groups if any(_share_channels(model, other) for other in group)]
         merged = [model, *(other for group in matching for other in group)]

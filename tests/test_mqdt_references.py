@@ -7,16 +7,17 @@ import pytest
 from rydstate import RydbergStateSQDTDivalent
 from rydstate.angular.utils import NotSet
 from rydstate.basis.basis_mqdt import get_mqdt_states_from_model
-from rydstate.species import get_mqdt, get_potential_class
+from rydstate.species import EigenChannelModel, get_mqdt, get_potential_class
 
 if TYPE_CHECKING:
-    from rydstate.species import MQDTModel
     from rydstate.units import NDArray
 
 
-def _get_model(species: str, name: str) -> MQDTModel:
+def _get_model(species: str, name: str) -> EigenChannelModel:
     """Return the model of the given species with the given name."""
-    return next(model for model in get_mqdt(species).models if model.name == name)
+    model = next(model for model in get_mqdt(species).models if model.name == name)
+    assert isinstance(model, EigenChannelModel)
+    return model
 
 
 _YB171_S05 = np.array(
