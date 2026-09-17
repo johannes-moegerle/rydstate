@@ -118,13 +118,7 @@ def test_all_models_found_by_get_mqdt_models(mqdt: MQDT) -> None:
     j_c = s_c
     s_r = 0.5
 
-    known_l_r = [
-        ch.l_r
-        for model in ALL_MODELS
-        if model.species == mqdt.species
-        for ch in model.outer_channels
-        if not is_unknown(ch.l_r)
-    ]
+    known_l_r = [ch.l_r for model in mqdt.models for ch in model.outer_channels if not is_unknown(ch.l_r)]
     max_l_r = max(known_l_r)
 
     found_models: list[MQDTModel] = []
@@ -141,11 +135,7 @@ def test_all_models_found_by_get_mqdt_models(mqdt: MQDT) -> None:
 
     # MQDTModel instances are not cached, so compare the models by their (unique) full_name
     found_model_names = [model.full_name for model in found_models]
-    missing = [
-        model.full_name
-        for model in ALL_MODELS
-        if model.species == mqdt.species and model.full_name not in found_model_names
-    ]
+    missing = [model.full_name for model in mqdt.models if model.full_name not in found_model_names]
     assert not missing, f"{mqdt!r}: {len(missing)} models not reachable via get_mqdt_models: {missing}"
 
 
@@ -218,10 +208,10 @@ def test_nu_ranges_match_at_boundaries(mqdt: MQDT) -> None:
     for group in _group_models_by_channels(mqdt.models):
         ordered = sorted(group, key=lambda model: model.nu_range)
         for model, next_model in pairwise(ordered):
-            if model.full_name in MODELS_WITH_ISOLATED_NU_RANGE:
-                continue
             if model.nu_max != next_model.nu_min:
                 relation = "gap" if model.nu_max < next_model.nu_min else "overlap"
+                if relation == "gap" and model.full_name in MODELS_WITH_ISOLATED_NU_RANGE:
+                    continue
                 errors.append(
                     f"{relation} between '{model.full_name}' (nu_max={model.nu_max}) and "
                     f"'{next_model.full_name}' (nu_min={next_model.nu_min})"
