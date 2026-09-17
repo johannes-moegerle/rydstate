@@ -13,6 +13,7 @@ from rydstate.species import (
 from rydstate.species.element_properties import ElementProperties, get_element_properties
 from rydstate.species.fmodel import FModel, FModelScaledOffDiagonal, FModelSQDT
 from rydstate.species.mqdt import MQDT, get_mqdt
+from rydstate.species.mqdt_model import MQDTModel
 from rydstate.species.potential import (
     Potential,
     PotentialCoulomb,
@@ -30,6 +31,7 @@ __all__ = [
     "FModel",
     "FModelSQDT",
     "FModelScaledOffDiagonal",
+    "MQDTModel",
     "Potential",
     "PotentialCoulomb",
     "PotentialFei2009",

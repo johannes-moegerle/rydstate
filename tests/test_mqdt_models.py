@@ -94,7 +94,8 @@ def test_no_unknown_class_attributes(model: FModel) -> None:
     Since all FModel fields have either a default or are only used if present (e.g. mixing_angles),
     a misspelled field name would otherwise be silently ignored.
     """
-    known = set(FModel.__annotations__) | set(dir(FModel))
+    known = {key for cls in FModel.__mro__ for key in getattr(cls, "__annotations__", {})}
+    known |= set(dir(FModel))
     unknown = {key for key in type(model).__dict__ if not key.startswith("_")} - known
     assert not unknown, f"{model.full_name}: unknown class attributes {sorted(unknown)} (misspelled field?)"
 

@@ -3,47 +3,36 @@ from __future__ import annotations
 import inspect
 import math
 from functools import cached_property
-from typing import TYPE_CHECKING, Any, ClassVar, overload
+from typing import TYPE_CHECKING, Any, ClassVar
 
 import numpy as np
 
 from rydstate.angular.utils import is_not_set
-from rydstate.species.element_properties import get_element_properties
-from rydstate.species.utils import calc_energy_from_nu, calc_modified_ritz_formula_in_nu, calc_nu_from_energy
+from rydstate.species.mqdt_model import MQDTModel
+from rydstate.species.utils import calc_modified_ritz_formula_in_nu
 
 if TYPE_CHECKING:
     from types import ModuleType
 
-    from rydstate.angular.angular_ket import AngularKetBase, AngularKetFJ
-    from rydstate.angular.core_ket import CoreKet
+    from rydstate.angular.angular_ket import AngularKetBase
     from rydstate.angular.utils import AllKnown
     from rydstate.species.mqdt import MQDT
     from rydstate.species.utils import RydbergRitzParameters
-    from rydstate.units import NDArray, PintFloat
+    from rydstate.units import NDArray
 
 
-class FModel:
-    """Class to store the parameters of a MQDT model for a given species."""
+class FModel(MQDTModel):
+    """MQDT model formulated in terms of eigenchannels and a frame transformation.
 
-    species: ClassVar[str]
-    """The species for which the MQDT model is defined."""
-    name: ClassVar[str]
-    """The name of the atomic species."""
-
-    reference: ClassVar[str | tuple[str, ...] | None] = None
-    """Reference for the MQDT model, e.g., a publication doi where the model is described."""
-
-    f_tot: ClassVar[float]
-    """Total angular momentum f_tot of the Rydberg state."""
-
-    nu_range: ClassVar[tuple[float, float]]
-    """Range of effective principal quantum numbers nu for which the MQDT model is valid."""
+    The K-matrix is diagonal in the close-coupling (eigenchannel) frame, with the eigen quantum defects
+    on its diagonal. It is transformed to the outer channel frame via the frame transformation
+    :math:`U = Q R`, where Q is given by the overlaps between inner and outer channels and R is the
+    rotation given by the mixing angles between the close-coupling channels,
+    see :meth:`calc_frame_transformation`.
+    """
 
     inner_channels: ClassVar[list[AngularKetBase[Any]]]
     """List of inner channels in the MQDT model."""
-
-    outer_channels: ClassVar[list[AngularKetBase[Any]]]
-    """List of outer channels in the MQDT model."""
 
     eigen_quantum_defects: ClassVar[list[RydbergRitzParameters]]
     """List of eigen quantum defects for the close-coupling channels.
@@ -54,103 +43,6 @@ class FModel:
     Each entry is a tuple (i_idx, j_idx, params) where i_idx and j_idx are the indices of the involved channels
     and params are the parameters for the energy dependence of the angle (constant or polynomial coefficients).
     The default None means no mixing between the close-coupling channels."""
-
-    def __init__(self, mqdt: MQDT) -> None:
-        self.mqdt = mqdt
-        self.element_properties = get_element_properties(self.species)
-
-    def __repr__(self) -> str:
-        return f"{self.__class__.__name__}({self.full_name})"
-
-    @property
-    def full_name(self) -> str:
-        """Return the full name of the model, combining species and model name."""
-        return f"{self.species} {self.name}"
-
-    @property
-    def nu_min(self) -> float:
-        """Minimum nu for which the model is valid."""
-        return self.nu_range[0]
-
-    @property
-    def nu_max(self) -> float:
-        """Maximum nu for which the model is valid."""
-        return self.nu_range[1]
-
-    @cached_property
-    def fj_channels(self) -> list[AngularKetFJ[Any]]:
-        """Return a list of FJ channels in the model."""
-        return [ket_fj for angular_ket in self.outer_channels for ket_fj in angular_ket.to_state("FJ").kets]
-
-    def get_core_kets(self) -> list[CoreKet]:
-        """Return a list of relevant core kets of the model."""
-        core_kets = {channel.get_core_ket() for channel in self.outer_channels}
-        return sorted(core_kets, key=lambda ket: (ket.l_c, ket.j_c, ket.f_c, str(ket.label)))
-
-    @overload
-    def get_ionization_thresholds(self, unit: None = None) -> list[PintFloat]: ...
-
-    @overload
-    def get_ionization_thresholds(self, unit: str) -> list[float]: ...
-
-    def get_ionization_thresholds(self, unit: str | None = "hartree") -> list[PintFloat] | list[float]:
-        """Return the ionization thresholds for all channels.
-
-        Args:
-            unit: Desired unit for the ionization thresholds. Default is atomic units "hartree".
-
-        Returns:
-            List of ionization thresholds in the desired unit.
-
-        """
-        return [self.mqdt.get_ionization_threshold(ket.get_core_ket(), unit=unit) for ket in self.outer_channels]  # type: ignore [return-value]
-
-    @cached_property  # don't remove this caching without benchmarking it!!!
-    def ionization_thresholds_au(self) -> list[float]:
-        """Return the ionization thresholds for all channels in atomic units."""
-        return self.get_ionization_thresholds(unit="hartree")
-
-    def calc_energy_au(self, nu: float) -> float:
-        """Calculate the energy of the Rydberg state.
-
-        The energy is calculated for an effective principal quantum number nu,
-        which is defined with reference to the reference ionization threshold of the MQDT model,
-        see :attr:`~rydstate.species.mqdt.MQDT.reference_ionization_threshold_au`.
-        """
-        return (
-            calc_energy_from_nu(self.element_properties.reduced_mass_au, nu, self.element_properties.net_charge)
-            + self.mqdt.reference_ionization_threshold_au
-        )
-
-    def calc_channel_nuis(self, nu: float) -> NDArray:
-        r"""Return the channel-dependent effective principal quantum numbers nui.
-
-        The channel dependent effective principal quantum numbers nui are defined via
-
-        .. math::
-            E = I_i - \frac{Z^2 R_M}{\nu_i^2}
-              = I_{\text{ref}} - \frac{Z^2 R_M}{\nu^2}
-
-        where :math:`R_M = R_\infty \mu/m_e` is the mass corrected Rydberg constant and
-        :math:`Z` is the net charge of the ionic core seen by the Rydberg electron.
-
-        Args:
-            nu: Effective principal quantum number with reference to the reference ionization threshold.
-
-        Returns:
-            Array of channel nui values.
-
-        """
-        reduced_mass_au = self.element_properties.reduced_mass_au
-        net_charge = self.element_properties.net_charge
-        reference_threshold_au = self.mqdt.reference_ionization_threshold_au
-        # we calculate binding_energy_au here directly from nu (and dont use calc_energy_au) to avoid numerical issues
-        binding_energy_au = calc_energy_from_nu(reduced_mass_au, nu, net_charge)
-        energies = [
-            binding_energy_au - (threshold - reference_threshold_au) for threshold in self.ionization_thresholds_au
-        ]
-        nuis = [calc_nu_from_energy(reduced_mass_au, energy, net_charge) for energy in energies]
-        return np.array(nuis)
 
     def calc_eigen_quantum_defects(self, nu: float) -> NDArray:
         r"""Return the eigen quantum defects evaluated at the channel-dependent effective principal quantum numbers nui.
@@ -282,40 +174,6 @@ class FModel:
         kbar = self.calc_k_matrix_closecoupling(nu)
         return transform @ kbar @ transform.T
 
-    def calc_m_matrix(self, nu: float) -> NDArray:
-        r"""Return the M-matrix in the outer channel frame.
-
-        The M-matrix is defined as
-
-        .. math::
-            M = tan(β) + K = tan(\pi \nu) + tan(\pi \mu)
-
-        Args:
-            nu: Effective principal quantum number with reference to the reference ionization threshold.
-
-        Returns:
-            M-matrix in the outer channel frame, M = tan(β) + K.
-
-        """
-        kmat = self.calc_k_matrix(nu)
-        nuis = self.calc_channel_nuis(nu)
-        return np.diag(np.tan(np.pi * nuis)) + kmat
-
-    def calc_scaled_m_matrix(self, nu: float) -> NDArray:
-        r"""Return the scaled M-matrix in the outer channel frame.
-
-        The scaled M-matrix is defined as
-
-        .. math::
-            M_{\text{scaled}} = \cos(\pi \nu) M = \sin(\pi \nu) + \cos(\pi \nu) K
-
-        We use this to improve numerical stability when finding roots of det(M) = 0.
-        This is especially important for states with nu close to half integer.
-        """
-        kmat = self.calc_k_matrix(nu)
-        nuis = self.calc_channel_nuis(nu)
-        return np.array(np.diag(np.sin(np.pi * nuis)) + np.diag(np.cos(np.pi * nuis)) @ kmat)
-
 
 def get_fmodels(module: ModuleType, species: str) -> list[type[FModel]]:
     """Return all FModel subclasses defined in ``module`` that match the given species.
@@ -360,7 +218,7 @@ class FModelSQDT(FModel):
 
     def calc_scaled_m_matrix(self, nu: float) -> NDArray:
         # Fast path for SQDT models: the single channel has a vanishing quantum defect, so K = 0 and the
-        # scaled M-matrix reduces to the 1x1 matrix sin(pi * nui) (see FModel.calc_scaled_m_matrix).
+        # scaled M-matrix reduces to the 1x1 matrix sin(pi * nui) (see MQDTModel.calc_scaled_m_matrix).
         nui = self.calc_channel_nuis(nu)[0]
         return np.array([[math.sin(math.pi * nui)]])
 
