@@ -9,6 +9,7 @@ import numpy as np
 
 from rydstate.angular.utils import is_unknown
 from rydstate.rydberg_state.rydberg_base import RydbergState
+from rydstate.species.eigen_channel_model import TrivialModel
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -63,13 +64,11 @@ class RydbergStateMQDT(RydbergState):
 
         We define the corresponding principal quantum number n for MQDT states via the nodes of
         the main contributing rydberg ket (nodes = n - l_r - 1).
-        For TrivialModel states, the quantum defect is zero, so the channel dependent effective quantum number nui
-        is already an integer and we simply round it to the nearest integer.
+        For :class:`~rydstate.species.eigen_channel_model.TrivialModel` states, the quantum defect is zero,
+        so the channel dependent effective quantum number nui is already an integer
+        and we simply round it to the nearest integer.
         """
-        defects = self.model.eigen_quantum_defects
-        if (
-            len(defects) == 1 and np.isscalar(defects[0]) and abs(defects[0]) < 1e-10  # type: ignore [arg-type]
-        ):
+        if isinstance(self.model, TrivialModel):
             return round(float(self.nui[0]))
 
         main_ket = max(
