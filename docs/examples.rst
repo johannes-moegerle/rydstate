@@ -49,6 +49,7 @@ Some comparisons to old versions of pairinteraction, ARC and NIST data.
    examples/comparisons/compare_nist_matrix_elements_Sr88_sqdt.ipynb
    examples/comparisons/compare_model_potentials.ipynb
    examples/comparisons/compare_whittaker.ipynb
+   examples/comparisons/compare_sr88_mqdt_models.ipynb
 
 
 .. rubric:: Benchmark
