@@ -320,14 +320,10 @@ class RadialKet(Radial, metaclass=CachedABCMeta):
         w_list_abs = np.abs(self.w_list)
         idmax = np.argmax(w_list_abs)
         w_abs_max = w_list_abs[idmax]
-        outer_max = next(
-            (
-                w_list_abs[i]
-                for i in range(len(w_list_abs) - 2, 0, -1)
-                if w_list_abs[i] > w_list_abs[i - 1] and w_list_abs[i] > w_list_abs[i + 1]
-            ),
-            0,
-        )
+        # the outermost local maximum of |w|, i.e. the last i in 1 <= i <= len - 2 with w[i] > w[i-1] and w[i] > w[i+1]
+        is_local_max = (w_list_abs[1:-1] > w_list_abs[:-2]) & (w_list_abs[1:-1] > w_list_abs[2:])
+        local_max_ids = np.flatnonzero(is_local_max)
+        outer_max = w_list_abs[local_max_ids[-1] + 1] if len(local_max_ids) > 0 else 0
         if outer_max == 0:
             warning_msgs.append("Could not find a local maximum of the wavefunction at the outer boundary.")
         elif idmax <= start_id + 5 and w_abs_max / outer_max > 5:
