@@ -12,7 +12,7 @@ from rydstate.species.nist import parse_nist_energy_levels, resolve_species_data
 from rydstate.species.utils import (
     calc_modified_ritz_formula,
     calc_nu_from_energy,
-    check_ritz_parameters,
+    check_expansion_coefficients,
     get_all_subclasses,
 )
 from rydstate.units import ureg
@@ -20,7 +20,7 @@ from rydstate.units import ureg
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase
     from rydstate.species.nist import NistEnergyLevels
-    from rydstate.species.utils import RydbergRitzParameters
+    from rydstate.species.utils import ExpansionCoefficients
     from rydstate.units import PintFloat
 
 
@@ -46,7 +46,7 @@ class SQDT(ABC, metaclass=CachedABCMeta):
     """Reference ionization energy: (value, unit), in reference to which nu is defined.
     If None, the ionization_energy is used as the reference and nu = nui."""
 
-    quantum_defects: ClassVar[dict[tuple[int, float, float], RydbergRitzParameters] | None] = None
+    quantum_defects: ClassVar[dict[tuple[int, float, float], ExpansionCoefficients] | None] = None
     """Dictionary containing the quantum defects for each (l, j_tot, s_tot) combination, i.e.
     quantum_defects[(l,j_tot,s_tot)] = [d0, d2, d4, d6, d8]
     """
@@ -54,8 +54,8 @@ class SQDT(ABC, metaclass=CachedABCMeta):
     def __init__(self) -> None:
         self.element_properties = get_element_properties(self.species)
 
-        for key, params in (self.quantum_defects or {}).items():
-            check_ritz_parameters(params, f"{self!r}: quantum_defects[{key}]")
+        for key, coefficients in (self.quantum_defects or {}).items():
+            check_expansion_coefficients(coefficients, f"{self!r}: quantum_defects[{key}]")
 
         self._nist_energy_levels: NistEnergyLevels = {}
         if self.nist_data_file is not None:

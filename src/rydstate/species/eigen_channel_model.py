@@ -8,13 +8,13 @@ import numpy as np
 
 from rydstate.angular.utils import is_not_set
 from rydstate.species.mqdt_model import MQDTModel
-from rydstate.species.utils import calc_modified_ritz_formula_in_nu, check_ritz_parameters
+from rydstate.species.utils import calc_modified_ritz_formula_in_nu, check_expansion_coefficients
 
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase
     from rydstate.angular.utils import AllKnown
     from rydstate.species.mqdt import MQDT
-    from rydstate.species.utils import RydbergRitzParameters
+    from rydstate.species.utils import ExpansionCoefficients
     from rydstate.units import NDArray
 
 
@@ -31,14 +31,14 @@ class EigenChannelModel(MQDTModel):
     inner_channels: ClassVar[list[AngularKetBase[Any]]]
     """List of inner channels in the MQDT model."""
 
-    eigen_quantum_defects: ClassVar[list[RydbergRitzParameters]]
+    eigen_quantum_defects: ClassVar[list[ExpansionCoefficients]]
     """List of eigen quantum defects for the close-coupling channels.
     Each entry is a list of polynomial coefficients; a constant is a single element list."""
 
-    mixing_angles: ClassVar[list[tuple[int, int, RydbergRitzParameters]] | None] = None
+    mixing_angles: ClassVar[list[tuple[int, int, ExpansionCoefficients]] | None] = None
     """List of mixing angles between close-coupling channels.
-    Each entry is a tuple (i_idx, j_idx, params) where i_idx and j_idx are the indices of the involved channels
-    and params is the list of polynomial coefficients for the energy dependence of the angle
+    Each entry is a tuple (i_idx, j_idx, coefficients) where i_idx and j_idx are the indices of the involved
+    channels and coefficients is the list of expansion coefficients for the energy dependence of the angle
     (a constant angle is a single element list).
     The default None means no mixing between the close-coupling channels."""
 
@@ -54,10 +54,10 @@ class EigenChannelModel(MQDTModel):
         if n_defects != n_outer:
             raise ValueError(f"{self.full_name}: eigen_quantum_defects ({n_defects}) != outer_channels ({n_outer})")
 
-        for i, params in enumerate(self.eigen_quantum_defects):
-            check_ritz_parameters(params, f"{self.full_name}: eigen_quantum_defects[{i}]")
-        for i_idx, j_idx, params in self.mixing_angles or []:
-            check_ritz_parameters(params, f"{self.full_name}: mixing_angles ({i_idx}, {j_idx})")
+        for i, coefficients in enumerate(self.eigen_quantum_defects):
+            check_expansion_coefficients(coefficients, f"{self.full_name}: eigen_quantum_defects[{i}]")
+        for i_idx, j_idx, coefficients in self.mixing_angles or []:
+            check_expansion_coefficients(coefficients, f"{self.full_name}: mixing_angles ({i_idx}, {j_idx})")
 
     def calc_eigen_quantum_defects(self, nu: float) -> NDArray:
         r"""Return the eigen quantum defects evaluated at the channel-dependent effective principal quantum numbers nui.
@@ -71,8 +71,8 @@ class EigenChannelModel(MQDTModel):
         """
         nuis = self.calc_channel_nuis(nu)
         eigen_quantum_defects = [
-            calc_modified_ritz_formula_in_nu(nui, params)
-            for nui, params in zip(nuis, self.eigen_quantum_defects, strict=True)
+            calc_modified_ritz_formula_in_nu(nui, coefficients)
+            for nui, coefficients in zip(nuis, self.eigen_quantum_defects, strict=True)
         ]
         return np.array(eigen_quantum_defects)
 
@@ -134,15 +134,15 @@ class EigenChannelModel(MQDTModel):
         # Find reference channel nu for energy-dependent angles
         # convention: first involved channel of first energy-dependent mixing entry
         ref_nu: float | None = None
-        for i_idx, _j_idx, params in self.mixing_angles:
-            if len(params) > 1:
+        for i_idx, _j_idx, coefficients in self.mixing_angles:
+            if len(coefficients) > 1:
                 nuis = self.calc_channel_nuis(nu)
                 ref_nu = float(nuis[i_idx])
                 break
         if ref_nu is None:
             ref_nu = 0.0  # unused; angles are constant
-        for i_idx, j_idx, params in self.mixing_angles:
-            angle = calc_modified_ritz_formula_in_nu(ref_nu, params)
+        for i_idx, j_idx, coefficients in self.mixing_angles:
+            angle = calc_modified_ritz_formula_in_nu(ref_nu, coefficients)
             r = np.eye(n)
             r[i_idx, i_idx] = np.cos(angle)
             r[i_idx, j_idx] = -np.sin(angle)

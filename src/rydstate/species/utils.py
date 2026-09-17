@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, TypeAlias, TypeVar
 
 import numpy as np
 
-RydbergRitzParameters: TypeAlias = list[float]
+ExpansionCoefficients: TypeAlias = list[float]
 
 
 if TYPE_CHECKING:
@@ -72,69 +72,69 @@ def calc_energy_from_nu(reduced_mass_au: float, nu: float, charge: int = 1) -> f
     return -0.5 * charge**2 * reduced_mass_au / nu**2
 
 
-def check_ritz_parameters(parameters: RydbergRitzParameters, name: str = "Rydberg-Ritz parameters") -> None:
-    """Check that the Rydberg-Ritz parameters are a non-empty list of polynomial coefficients.
+def check_expansion_coefficients(coefficients: ExpansionCoefficients, name: str = "Expansion coefficients") -> None:
+    """Check that the expansion coefficients are a non-empty list of floats.
 
     This is meant to be called once when a model is constructed, so that the functions evaluating
-    the Ritz formulas can simply assume a non-empty list of coefficients.
+    the expansions can simply assume a non-empty list of coefficients.
 
     Args:
-        name: How to refer to the checked parameters in the error message.
-        parameters: The Rydberg-Ritz parameters to check.
+        coefficients: The expansion coefficients to check.
+        name: How to refer to the checked coefficients in the error message.
 
     Raises:
-        TypeError: If the parameters are not a list.
-        ValueError: If the parameters are an empty list.
+        TypeError: If the coefficients are not a list.
+        ValueError: If the coefficients are an empty list.
 
     """
-    if not isinstance(parameters, list):
+    if not isinstance(coefficients, list):
         raise TypeError(
-            f"{name} must be a list of floats, got {type(parameters).__name__}. "
+            f"{name} must be a list of floats, got {type(coefficients).__name__}. "
             "A constant value must be given as a single element list [p₀]."
         )
-    if len(parameters) == 0:
+    if len(coefficients) == 0:
         raise ValueError(f"{name} must not be an empty list.")
 
 
-def calc_modified_ritz_formula(n: int, parameters: RydbergRitzParameters) -> float:
+def calc_modified_ritz_formula(n: int, coefficients: ExpansionCoefficients) -> float:
     """Calculate the modified Ritz formula: p₀ + p₁/(n - p₀)² + p₂/(n - p₀)⁴ + ...
 
-    The parameters are given as a non-empty list [p₀, p₁, p₂, ...]; a constant value is a single element
-    list [p₀]. They are not validated here, see :func:`check_ritz_parameters`.
+    The coefficients are given as a non-empty list [p₀, p₁, p₂, ...]; a constant value is a single element
+    list [p₀]. They are not validated here, see :func:`check_expansion_coefficients`.
     Note usually, for quantum defects, the formula is written with p₀ = δ₀, p₁ = δ₂, p₂ = δ₄, ...
 
     Args:
         n: The principal quantum number.
-        parameters: Rydberg-Ritz parameters, the polynomial coefficients [p₀, p₁, p₂, ...].
+        coefficients: The expansion coefficients [p₀, p₁, p₂, ...].
 
     Returns:
         The value of the quantity at the given n.
 
     """
-    p0 = parameters[0]
+    p0 = coefficients[0]
     result = p0
-    for i, param in enumerate(parameters[1:], 1):
-        result += param * 1.0 / (n - p0) ** (2 * i)
+    for i, coefficient in enumerate(coefficients[1:], 1):
+        result += coefficient * 1.0 / (n - p0) ** (2 * i)
     return result
 
 
-def calc_modified_ritz_formula_in_nu(nui: float, parameters: RydbergRitzParameters) -> float:
+def calc_modified_ritz_formula_in_nu(nui: float, coefficients: ExpansionCoefficients) -> float:
     """Calculate the modified Ritz formula for the effective principal quantum number nu: p₀ + p₁/ν² + p₂/ν⁴ + ...
 
-    The parameters are given as a non-empty list [p₀, p₁, p₂, ...]; a constant value is a single element
-    list [p₀]. They are not validated here, see :func:`check_ritz_parameters`.
+    The coefficients are given as a non-empty list [p₀, p₁, p₂, ...]; a constant value is a single element
+    list [p₀]. They are not validated here, see :func:`check_expansion_coefficients`.
 
     Args:
         nui: Channel-dependent effective principal quantum number.
-        parameters: Rydberg-Ritz parameters, the polynomial coefficients [p₀, p₁, p₂, ...].
+        coefficients: The expansion coefficients [p₀, p₁, p₂, ...].
 
     Returns:
         The value of the quantity at the given nui.
 
     """
     result = 0.0
-    for i, param in enumerate(parameters):
-        result += param * 1.0 / nui ** (2 * i)
+    for i, coefficient in enumerate(coefficients):
+        result += coefficient * 1.0 / nui ** (2 * i)
     return result
 
 
