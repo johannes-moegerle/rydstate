@@ -7,9 +7,13 @@ import pytest
 from rydstate import RydbergStateSQDTDivalent
 from rydstate.angular.utils import NotSet
 from rydstate.basis.basis_mqdt import get_mqdt_states_from_model
-from rydstate.species import EigenChannelModel, get_mqdt, get_potential_class
+from rydstate.species import EigenChannelModel, KMatrixModel, get_mqdt, get_potential_class
+from rydstate.species.utils import calc_nu_from_energy
+from rydstate.units import ureg
 
 if TYPE_CHECKING:
+    from rydstate.rydberg_state import RydbergStateMQDT
+    from rydstate.species import MQDTModel
     from rydstate.units import NDArray
 
 
@@ -146,3 +150,127 @@ def test_mqdt_energies_match_nist(name: str, n: int, l_r: int, j_tot: int, s_tot
         f"{model.full_name}: the calculated nu={closest.nu} does not match "
         f"the experimental nu={nu_experimental} of the {n=}, {l_r=}, {j_tot=}, {s_tot=} level"
     )
+
+
+def _get_k_matrix_model(name: str) -> KMatrixModel:
+    """Return the Sr88 model of Vaillant 2024 (MQDT tag vaillant2024) with the given name."""
+    model = next(model for model in get_mqdt("Sr88", "vaillant2024").models if model.name == name)
+    assert isinstance(model, KMatrixModel)
+    return model
+
+
+# Theoretical term energies (in 1/cm) of the Sr88 models of Vaillant, Jones and Potvliege 2024, taken from the
+# supplementary material of the Addendum (J. Phys. B 57, 199401 (2024), files tables_*.txt, column (c)).
+# For each model we check the lowest fitted state, the perturber (if any) and the highest fitted states:
+# (model name, [(experimental energy, theoretical energy of the paper), ...])
+VAILLANT_REFERENCE_ENERGIES: list[tuple[str, list[tuple[float, float]]]] = [
+    ("S J=0, nu > 3.7", [(38444.013, 38444.012512), (44525.838, 44525.837524), (45778.6257, 45778.627021)]),
+    ("S J=1, nu > 3.4", [(37424.675, 37424.674450), (44747.64060, 44747.625509), (45647.36527, 45647.359319)]),
+    ("P J=1 singlet, nu > 2.8", [(34098.404, 34098.403791), (41172.054, 41172.058686), (45773.14, 45773.255794)]),
+    ("P J=0, nu > 2.8", [(33853.490, 33853.489518), (37292.074, 37292.073288), (45183.93, 45183.963970)]),
+    ("P J=1 triplet, nu > 2.8", [(33868.317, 33868.316522), (37302.731, 37302.730312), (45184.54, 45184.525966)]),
+    ("P J=2, nu > 2.8", [(33973.065, 33973.064509), (37336.591, 37336.590249), (45185.79, 45185.804491)]),
+    (
+        "D J=2, nu > 5.7",
+        [
+            (43021.058, 43021.073073),  # 5s8d 1D2
+            (43070.268, 43070.274672),  # 5s8d 3D2
+            (44729.56, 44730.546738),  # 4d2 3P2 perturber
+            (45153.28988, 45153.290438),  # 5s14d 1D2
+            (45171.49569, 45171.496996),  # 5s14d 3D2
+            (45785.74337, 45785.743140),  # 5s30d 3D2
+            (45788.8895, 45788.894714),  # 5s30d 1D2
+        ],
+    ),
+    ("D J=1, nu > 9.5", [(44853.97363, 44853.972136), (45883.21692, 45883.216067)]),
+    ("D J=3, nu > 3.9", [(39703.109, 39703.108783), (44865.22, 44865.221482), (45775.60, 45775.601314)]),
+    ("F J=3 singlet, nu > 3.5", [(38007.742, 38007.741506), (39539.013, 39539.012578), (45801.03, 45800.940167)]),
+]
+
+
+def _get_states_around_energy(model: MQDTModel, energy: float, delta_nu: float = 0.3) -> list[RydbergStateMQDT]:
+    """Return the MQDT states of the model within +- delta_nu around the given term energy (in 1/cm)."""
+    energy_au = ureg.Quantity(energy, "1/cm").to("hartree", "spectroscopy").magnitude
+    reference_au = model.mqdt.reference_ionization_threshold_au
+    nu = calc_nu_from_energy(model.element_properties.reduced_mass_au, energy_au - reference_au)
+    nu_range = (max(nu - delta_nu, model.nu_min), nu + delta_nu)
+    return get_mqdt_states_from_model(model, nu_range, NotSet, get_potential_class(model.species))
+
+
+@pytest.mark.parametrize(
+    ("name", "energies"), VAILLANT_REFERENCE_ENERGIES, ids=[name for name, _ in VAILLANT_REFERENCE_ENERGIES]
+)
+def test_vaillant2024_energies_match_publication(name: str, energies: list[tuple[float, float]]) -> None:
+    """The Sr88 K-matrix models reproduce the theoretical energies published with them.
+
+    This checks the K-matrix formulation (KMatrixModel, including the energy dependence of the K-matrix via
+    epsilon = (I_s - E) / I_s), the channel definitions and the ionization thresholds of the models against the
+    supplementary material of the Addendum, which we reproduce to ~1e-5 1/cm (the remaining difference comes from
+    the slightly different mass corrected Rydberg constant, 109736.631 1/cm in the paper vs. 109736.6309 1/cm here).
+    For comparison: the deviation of the theoretical energies from experiment is > 1e-3 1/cm for most states.
+    """
+    model = _get_k_matrix_model(name)
+    for energy_experiment, energy_theory in energies:
+        states = _get_states_around_energy(model, energy_theory)
+        assert len(states) > 0, f"{model.full_name}: no states found around E={energy_theory} 1/cm"
+        closest = min(states, key=lambda state: abs(state.get_energy("1/cm") - energy_theory))
+        assert closest.get_energy("1/cm") == pytest.approx(energy_theory, abs=2e-4), (
+            f"{model.full_name}: the calculated energy {closest.get_energy('1/cm')} 1/cm does not match "
+            f"the published theoretical energy {energy_theory} 1/cm (experiment: {energy_experiment} 1/cm)"
+        )
+
+
+# Expected spin character <s_tot> (= triplet fraction) of some 5snd J=2 states of the Vaillant 2024 model:
+# (experimental energy, expected <s_tot>, tolerance). The values follow from the LS coupled channel fractions
+# shown in Figs. 1 and 2 of the supplementary material of the Addendum.
+VAILLANT_D2_SPIN_CHARACTER: list[tuple[float, float, float]] = [
+    (45788.8895, 0.0, 0.03),  # 5s30d 1D2: almost pure singlet
+    (45785.74337, 1.0, 0.03),  # 5s30d 3D2: almost pure triplet
+    (45153.28988, 0.18, 0.05),  # 5s14d 1D2: ~0.8 singlet
+    (45171.49569, 0.82, 0.05),  # 5s14d 3D2: ~0.8 triplet
+    (44829.6648, 0.07, 0.05),  # 5s12d 1D2: ~0.9 singlet
+    (44860.06382, 0.93, 0.05),  # 5s12d 3D2: ~0.9 triplet
+]
+
+
+@pytest.mark.parametrize(("energy", "expected", "tolerance"), VAILLANT_D2_SPIN_CHARACTER)
+def test_vaillant2024_d2_singlet_triplet_character(energy: float, expected: float, tolerance: float) -> None:
+    """The 5snd J=2 states of the K-matrix model have the correct singlet/triplet character.
+
+    The K-matrix of the paper is given in the frame of the jj-coupled channels 5s_1/2 nd_5/2 and 5s_1/2 nd_3/2,
+    whose relative phase differs between rydstate and the paper. The corresponding off-diagonal K-matrix elements
+    are therefore sign flipped in the model data, which does not change the energies (checked above), but is
+    necessary for the correct singlet/triplet character. With the wrong sign, the states of the singlet series
+    would come out as mostly triplet (<s_tot> ~ 0.98 instead of 0.003 for 5s30d 1D2).
+    """
+    model = _get_k_matrix_model("D J=2, nu > 5.7")
+    states = _get_states_around_energy(model, energy)
+    closest = min(states, key=lambda state: abs(state.get_energy("1/cm") - energy))
+    assert abs(closest.get_energy("1/cm") - energy) < 0.01
+    assert closest.calc_exp_qn("s_tot") == pytest.approx(expected, abs=tolerance)
+
+
+def test_vaillant2024_ionization_thresholds() -> None:
+    """The channels of the Vaillant 2024 models use the ionization thresholds of Table I of the Addendum.
+
+    In particular, the LS coupled 4dnl channels must use the averaged 4d threshold (60628.26 1/cm) also if their
+    core j_c is fixed by the angular momentum coupling (e.g. 4dns 3D1 is purely 4d_3/2 ns_1/2), while the
+    jj coupled channels use the fine structure resolved 4d_3/2 (60488.09 1/cm) and 4d_5/2 (60768.43 1/cm) thresholds.
+    """
+    expected = {
+        "S J=0, nu > 3.7": [45932.2002, 60768.43, 60488.09],
+        "S J=1, nu > 3.4": [45932.2002, 70048.11],
+        "P J=1 singlet, nu > 2.8": [45932.2002, 60628.26],
+        "P J=0, nu > 2.8": [45932.2002, 60628.26],
+        "P J=1 triplet, nu > 2.8": [45932.2002, 60628.26],
+        "P J=2, nu > 2.8": [45932.2002, 60628.26],
+        "D J=2, nu > 5.7": [45932.2002, 45932.2002, 60768.43, 60488.09, 70048.11, 60628.26],
+        "D J=1, nu > 9.5": [45932.2002, 60628.26],
+        "D J=3, nu > 3.9": [45932.2002, 60628.26, 60628.26],
+        "F J=3 singlet, nu > 3.5": [45932.2002, 60628.26],
+    }
+    mqdt = get_mqdt("Sr88", "vaillant2024")
+    assert {model.name for model in mqdt.models} == set(expected)
+    for model in mqdt.models:
+        thresholds = model.get_ionization_thresholds(unit="1/cm")
+        np.testing.assert_allclose(thresholds, expected[model.name], atol=1e-6, err_msg=model.full_name)
