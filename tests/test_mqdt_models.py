@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import re
-from itertools import pairwise
+from itertools import combinations, pairwise
 
 import numpy as np
 import pytest
@@ -118,13 +118,7 @@ def test_all_models_found_by_get_mqdt_models(mqdt: MQDT) -> None:
     j_c = s_c
     s_r = 0.5
 
-    known_l_r = [
-        ch.l_r
-        for model in ALL_MODELS
-        if model.species == mqdt.species
-        for ch in model.outer_channels
-        if not is_unknown(ch.l_r)
-    ]
+    known_l_r = [ch.l_r for model in mqdt.models for ch in model.outer_channels if not is_unknown(ch.l_r)]
     max_l_r = max(known_l_r)
 
     found_models: list[MQDTModel] = []
@@ -141,11 +135,7 @@ def test_all_models_found_by_get_mqdt_models(mqdt: MQDT) -> None:
 
     # MQDTModel instances are not cached, so compare the models by their (unique) full_name
     found_model_names = [model.full_name for model in found_models]
-    missing = [
-        model.full_name
-        for model in ALL_MODELS
-        if model.species == mqdt.species and model.full_name not in found_model_names
-    ]
+    missing = [model.full_name for model in mqdt.models if model.full_name not in found_model_names]
     assert not missing, f"{mqdt!r}: {len(missing)} models not reachable via get_mqdt_models: {missing}"
 
 
@@ -227,6 +217,26 @@ def test_nu_ranges_match_at_boundaries(mqdt: MQDT) -> None:
                     f"'{next_model.full_name}' (nu_min={next_model.nu_min})"
                 )
     msg = f"{mqdt!r}: nu ranges of models describing the same channels do not match:\n" + "\n".join(errors)
+    assert not errors, msg
+
+
+def test_overlapping_models_have_disjoint_nu_ranges(mqdt: MQDT) -> None:
+    """Two models of one MQDT object whose outer channels overlap must not be valid for the same nu.
+
+    A basis (e.g. BasisMQDT) collects the states of every model that has an overlap with the requested channel,
+    so two such models with a common nu range would contribute the same states twice.
+    This is a direct pairwise check, complementing the transitive tiling check of test_nu_ranges_match_at_boundaries.
+    """
+    errors: list[str] = []
+    for model_1, model_2 in combinations(mqdt.models, 2):
+        if not _share_channels(model_1, model_2):
+            continue
+        if model_1.nu_min < model_2.nu_max and model_2.nu_min < model_1.nu_max:
+            errors.append(
+                f"'{model_1.full_name}' (nu_range={model_1.nu_range}) and "
+                f"'{model_2.full_name}' (nu_range={model_2.nu_range})"
+            )
+    msg = f"{mqdt!r}: models with overlapping channels are valid for the same nu:\n" + "\n".join(errors)
     assert not errors, msg
 
 
