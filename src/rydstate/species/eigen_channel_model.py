@@ -39,7 +39,8 @@ class EigenChannelModel(MQDTModel):
     """List of mixing angles between close-coupling channels.
     Each entry is a tuple (i_idx, j_idx, coefficients) where i_idx and j_idx are the indices of the involved
     channels and coefficients is the list of expansion coefficients for the energy dependence of the angle
-    (a constant angle is a single element list).
+    (a constant angle is a single element list). The energy dependence is expanded in the nui of the first
+    channel of the model, see :meth:`calc_frame_transformation_inner_closecoupling`.
     The default None means no mixing between the close-coupling channels."""
 
     def __init__(self, mqdt: MQDT) -> None:
@@ -115,10 +116,23 @@ class EigenChannelModel(MQDTModel):
         return self.calc_frame_transformation_outer_inner()
 
     def calc_frame_transformation_inner_closecoupling(self, nu: float) -> NDArray:
-        """Return the frame transformation matrix R mapping close-coupling to inner channels.
+        r"""Return the frame transformation matrix R mapping close-coupling to inner channels.
 
         Computed as rotation matrix from the mixing angles.
         Applies successive 2x2 rotations between the channels specified by mixing_angles.
+
+        The energy dependence of the angles is expanded as
+
+        .. math::
+            \theta_{ij}(\nu_0) = \theta_{ij}^{(0)} + \theta_{ij}^{(2)} / \nu_0^2 + \dots
+
+        where :math:`\nu_0` is the effective principal quantum number of the *first* channel of the model,
+        for **all** angles, no matter which pair of channels the rotation mixes.
+        Referencing the expansion to a fixed channel (instead of to the reference ionization threshold)
+        keeps the choice of the reference ionization threshold a pure energy offset without any effect on the physics.
+
+        This requires the first channel to belong to the Rydberg series described by the model and not to be
+        a perturber channel, whose nui would be smaller by more than an order of magnitude.
 
         Args:
             nu: Effective principal quantum number with reference to the reference ionization threshold.
@@ -131,16 +145,14 @@ class EigenChannelModel(MQDTModel):
         rot = np.eye(n)
         if self.mixing_angles is None:
             return rot
-        # Find reference channel nu for energy-dependent angles
-        # convention: first involved channel of first energy-dependent mixing entry
-        ref_nu = float("inf")
-        for i_idx, _j_idx, coefficients in self.mixing_angles:
-            if len(coefficients) > 1:
-                nuis = self.calc_channel_nuis(nu)
-                ref_nu = float(nuis[i_idx])
-                break
+
+        # nui of the first channel, only needed (and calculated) if any angle is energy dependent;
+        nui_0 = float("inf")
+        if any(len(coefficients) > 1 for _i_idx, _j_idx, coefficients in self.mixing_angles):
+            nui_0 = float(self.calc_channel_nuis(nu)[0])
+
         for i_idx, j_idx, coefficients in self.mixing_angles:
-            angle = calc_modified_ritz_formula_in_nu(ref_nu, coefficients)
+            angle = calc_modified_ritz_formula_in_nu(nui_0, coefficients)
             r = np.eye(n)
             r[i_idx, i_idx] = np.cos(angle)
             r[i_idx, j_idx] = -np.sin(angle)
