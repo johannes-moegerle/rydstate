@@ -11,7 +11,6 @@ from rydstate.angular import NotSet
 from rydstate.angular.utils import is_unknown
 from rydstate.linalg import find_roots
 from rydstate.species.sqdt import SQDT
-from rydstate.species.utils import calc_energy_from_nu, calc_nu_from_energy
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -227,7 +226,7 @@ class OSQDTModel:
         return self.model.ionization_thresholds_au[self.index]
 
     def calc_nu(self, nui: float) -> float:
-        """Convert the channel nui into the nu of the state, i.e. change the reference ionization threshold.
+        """Convert the channel nui into the nu of the state.
 
         Args:
             nui: Effective principal quantum number with reference to the ionization threshold
@@ -235,19 +234,10 @@ class OSQDTModel:
 
         Returns:
             Effective principal quantum number with reference to the reference ionization threshold
-            of the MQDT model, which is infinity for a state above that threshold.
+            of the MQDT model.
 
         """
-        element_properties = self.model.element_properties
-        mqdt = self.model.mqdt
-
-        reduced_mass_au = element_properties.reduced_mass_au
-        net_charge = element_properties.net_charge
-        reference_threshold_au = mqdt.reference_ionization_threshold_au
-        binding_energy_au = calc_energy_from_nu(reduced_mass_au, nui, net_charge) + (
-            self.ionization_energy_au - reference_threshold_au
-        )
-        return calc_nu_from_energy(reduced_mass_au, binding_energy_au, net_charge)
+        return self.model.calc_nu_from_channel_nui(nui, self.index)
 
     def calc_k_ii(self, nui: float) -> float:
         """Return the diagonal element K_ii of the K-matrix belonging to this channel.

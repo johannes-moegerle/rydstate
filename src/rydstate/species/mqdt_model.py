@@ -170,6 +170,27 @@ class MQDTModel(ABC):
         nuis = [calc_nu_from_energy(reduced_mass_au, energy, net_charge) for energy in energies]
         return np.array(nuis)
 
+    def calc_nu_from_channel_nui(self, nui: float, index: int) -> float:
+        """Convert the nui of one channel back into nu.
+
+        This is the inverse of :meth:`calc_channel_nuis` for a single channel.
+
+        Args:
+            nui: Effective principal quantum number with reference to the ionization threshold of the channel.
+            index: Index of the channel the given nui belongs to.
+
+        Returns:
+            Effective principal quantum number with reference to the reference ionization threshold.
+
+        """
+        reduced_mass_au = self.element_properties.reduced_mass_au
+        net_charge = self.element_properties.net_charge
+        reference_threshold_au = self.mqdt.reference_ionization_threshold_au
+        binding_energy_au = calc_energy_from_nu(reduced_mass_au, nui, net_charge) + (
+            self.ionization_thresholds_au[index] - reference_threshold_au
+        )
+        return calc_nu_from_energy(reduced_mass_au, binding_energy_au, net_charge)
+
     @abstractmethod
     def calc_k_matrix(self, nu: float) -> NDArray:
         r"""Return the K-matrix in the outer channel frame.
