@@ -1,10 +1,11 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import pytest
 from rydstate import RydbergStateSQDTDivalent
+from rydstate.angular.angular_ket import AngularKetJJ, AngularKetLS
 from rydstate.angular.utils import NotSet
 from rydstate.basis.basis_mqdt import get_mqdt_states_from_model
 from rydstate.species import EigenChannelModel, KMatrixModel, get_mqdt, get_potential_class
@@ -12,6 +13,7 @@ from rydstate.species.utils import calc_nu_from_energy
 from rydstate.units import ureg
 
 if TYPE_CHECKING:
+    from rydstate.angular.angular_ket import AngularKetBase
     from rydstate.rydberg_state import RydbergStateMQDT
     from rydstate.species import MQDTModel
     from rydstate.units import NDArray
@@ -248,6 +250,107 @@ def test_vaillant2024_d2_singlet_triplet_character(energy: float, expected: floa
     closest = min(states, key=lambda state: abs(state.get_energy("1/cm") - energy))
     assert abs(closest.get_energy("1/cm") - energy) < 0.01
     assert closest.calc_exp_qn("s_tot") == pytest.approx(expected, abs=tolerance)
+
+
+def _vaillant2024_ket_phase(ket: AngularKetBase[Any]) -> int:
+    """Phase d_i of a channel ket of Vaillant 2024 relative to the rydstate ket (see the model data docstring)."""
+    if isinstance(ket, AngularKetJJ):
+        return (-1) ** round(ket.j_c + ket.j_r - ket.j_tot)
+    assert isinstance(ket, AngularKetLS)
+    return (-1) ** round(ket.l_c + ket.l_r - ket.l_tot) * (-1) ** round(1 - ket.s_tot)
+
+
+# jj->LS recoupling matrices U_{i alphabar} of the mqdtfit driver scripts (folder strontium, driver1and3D2.py and
+# driver1S0.py) as (model name, [LS kets], U) with U[i, alphabar] = <jj channel i | LS ket alphabar> in the phase
+# convention of the paper (the jj channels are the outer channels of the model, LS channels of the model are skipped).
+_SQRT35, _SQRT25 = np.sqrt(3 / 5), np.sqrt(2 / 5)
+VAILLANT_RECOUPLING_MATRICES: list[tuple[str, list[AngularKetLS[Any]], NDArray]] = [
+    (
+        "D J=2, nu > 5.7",
+        [
+            AngularKetLS(l_c=0, l_r=2, l_tot=2, s_tot=0, j_tot=2, species="Sr88"),  # 5snd 1D2
+            AngularKetLS(l_c=0, l_r=2, l_tot=2, s_tot=1, j_tot=2, species="Sr88"),  # 5snd 3D2
+            AngularKetLS(l_c=2, l_r=0, l_tot=2, s_tot=0, j_tot=2, species="Sr88"),  # 4dns 1D2
+            AngularKetLS(l_c=2, l_r=0, l_tot=2, s_tot=1, j_tot=2, species="Sr88"),  # 4dns 3D2
+        ],
+        np.array(
+            [
+                [_SQRT35, -_SQRT25, 0, 0],  # 5s_1/2 nd_5/2
+                [_SQRT25, _SQRT35, 0, 0],  # 5s_1/2 nd_3/2
+                [0, 0, _SQRT35, _SQRT25],  # 4d_5/2 ns_1/2
+                [0, 0, -_SQRT25, _SQRT35],  # 4d_3/2 ns_1/2
+            ]
+        ),
+    ),
+    (
+        "S J=0, nu > 3.7",
+        [
+            AngularKetLS(l_c=0, l_r=0, l_tot=0, s_tot=0, j_tot=0, species="Sr88"),  # 5sns 1S0
+            AngularKetLS(l_c=2, l_r=2, l_tot=0, s_tot=0, j_tot=0, species="Sr88"),  # 4dnd 1S0
+            AngularKetLS(l_c=2, l_r=2, l_tot=1, s_tot=1, j_tot=0, species="Sr88"),  # 4dnd 3P0
+        ],
+        np.array(
+            [
+                [1, 0, 0],  # 5s_1/2 ns_1/2
+                [0, _SQRT35, -_SQRT25],  # 4d_5/2 nd_5/2
+                [0, _SQRT25, _SQRT35],  # 4d_3/2 nd_3/2
+            ]
+        ),
+    ),
+]
+
+
+@pytest.mark.parametrize(("name", "ls_kets", "u_paper"), VAILLANT_RECOUPLING_MATRICES)
+def test_vaillant2024_recoupling_phase_convention(
+    name: str, ls_kets: list[AngularKetLS[Any]], u_paper: NDArray
+) -> None:
+    """The channel kets of the paper are d_i times the rydstate kets (d_i given in the docstring of the model data).
+
+    The paper couples the core electron first, rydstate the Rydberg electron first, which leads to the channel
+    dependent phases d_i. Multiplying the rydstate overlaps <jj|LS> by d_jj * d_LS must reproduce the recoupling
+    matrices U_{i alphabar} of the mqdtfit drivers exactly.
+    """
+    model = _get_k_matrix_model(name)
+    u_rydstate = np.array(
+        [
+            [_vaillant2024_ket_phase(jj) * _vaillant2024_ket_phase(ls) * jj.calc_reduced_overlap(ls) for ls in ls_kets]
+            for jj in model.outer_channels
+            if isinstance(jj, AngularKetJJ)
+        ]
+    )
+    np.testing.assert_allclose(u_rydstate, u_paper, atol=1e-12)
+
+
+# Off-diagonal K-matrix elements K_ij^(0) of Table III of the Addendum (values with 9 digits from the mqdtfit drivers)
+# for the models, in which some signs differ from the paper: (model name, {(i, j): value of the paper})
+VAILLANT_PAPER_OFF_DIAGONAL_K: list[tuple[str, dict[tuple[int, int], float]]] = [
+    ("S J=1, nu > 3.4", {(0, 1): -1.33451654e2}),
+    (
+        "D J=2, nu > 5.7",
+        {
+            (0, 1): 2.30810347e-1,
+            (0, 2): -2.99689799e-1,
+            (0, 3): 6.24839129e-1,
+            (0, 4): -2.38162135e-1,
+            (0, 5): -8.94462406e-2,
+            (1, 2): -6.41169781e-1,
+            (1, 3): 8.10126226e-6,
+            (1, 4): -4.84958202e-1,
+            (1, 5): 2.42734982e-3,
+            (2, 3): 2.07880487e-1,
+        },
+    ),
+]
+
+
+@pytest.mark.parametrize(("name", "k_paper"), VAILLANT_PAPER_OFF_DIAGONAL_K)
+def test_vaillant2024_k_matrix_signs(name: str, k_paper: dict[tuple[int, int], float]) -> None:
+    """The K-matrix of the model is D K_paper D with D = diag(d_i) the phases of the channel kets."""
+    model = _get_k_matrix_model(name)
+    d = [_vaillant2024_ket_phase(ket) for ket in model.outer_channels]
+    k_model = {(i, j): coefficients[0] for i, j, coefficients in model.k_matrix}
+    for (i, j), value in k_paper.items():
+        assert k_model[i, j] == pytest.approx(d[i] * d[j] * value), f"{name}: K-matrix element ({i}, {j})"
 
 
 def test_vaillant2024_ionization_thresholds() -> None:

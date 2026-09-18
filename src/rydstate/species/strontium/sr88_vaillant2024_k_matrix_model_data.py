@@ -19,16 +19,35 @@ with the first ionization threshold I_s = 45932.2002 1/cm (see :class:`~rydstate
 
 Sign convention of the off-diagonal elements
 --------------------------------------------
-The relative phases of the jj-coupled channel kets in rydstate differ from the ones used in the paper
-for the pairs (5s_1/2 nd_5/2, 5s_1/2 nd_3/2) and (4d_5/2 ns_1/2, 4d_3/2 ns_1/2):
-the jj->LS recoupling matrices of the paper (U_{i alphabar} in the mqdtfit drivers) are reproduced by the
-overlaps of the rydstate kets up to a sign flip of one ket of each pair.
-The corresponding off-diagonal K-matrix elements of the D J=2 model are therefore multiplied by -1
-compared to Table III of the Addendum (marked in the comments below).
-This does not change any energy, but is necessary to get the correct singlet/triplet character of the states.
-For the pair (4d_5/2 nd_5/2, 4d_3/2 nd_3/2) of the S J=0 model the phases agree and no sign is changed.
-The relative phases between channels of different configurations (e.g. 5snd and 4dns) are not fixed by
-angular momentum algebra and thus taken as in the paper.
+The channel kets of the paper and of rydstate differ by channel dependent signs, because the two valence electrons
+are coupled in the opposite order. The paper couples the core electron (1) first and the Rydberg electron (2)
+second, see the jj->LS recoupling formula in Sec. 2 of the 2014 paper (matrix U_{i alphabar} of the mqdtfit drivers):
+
+    <(l_c s_c) j_c, (l_r s_r) j_r; J | (l_c l_r) L, (s_c s_r) S; J>
+        = sqrt((2 j_c + 1) (2 j_r + 1) (2 L + 1) (2 S + 1)) * 9j{l_c s_c j_c; l_r s_r j_r; L S J}
+
+whereas the rydstate kets couple the Rydberg electron first, see :meth:`AngularKetBase.calc_reduced_overlap`
+(note the order of the arguments of the 9j symbol):
+
+    <(l_r s_r) j_r, (l_c s_c) j_c; J | (l_r l_c) L, (s_r s_c) S; J>
+        = sqrt((2 j_r + 1) (2 j_c + 1) (2 L + 1) (2 S + 1)) * 9j{l_r s_r j_r; l_c s_c j_c; L S J}
+
+Exchanging the coupling order of two angular momenta j_1, j_2 -> j_12 multiplies the coupled ket by
+(-1)^(j_1 + j_2 - j_12), so the kets of the paper are related to the rydstate kets by
+
+    |i>_paper = d_i |i>_rydstate,  with  d_i = (-1)^(j_c + j_r - J)                   for jj-coupled channels,
+                                           d_i = (-1)^(l_c + l_r - L) * (-1)^(1 - S)   for LS-coupled channels.
+
+Consequently the K-matrix in the rydstate frame is K_rydstate = D K_paper D with D = diag(d_i), i.e. the off-diagonal
+elements between two channels with different d_i are multiplied by -1 compared to Table III of the Addendum
+(marked with (*) in the comments below). This reproduces the recoupling matrices U_{i alphabar} of the mqdtfit
+drivers exactly (see the test test_vaillant2024_recoupling_phase_convention), and is necessary to get the correct
+singlet/triplet character of the 5snd J=2 states (with the signs of the paper, the 1D2 series would come out as
+mostly triplet). The energies of all states are independent of these signs, since det(D M D) = det(M).
+
+The signs of the off-diagonal elements between channels of different configurations (e.g. 5sns 3S1 and 5pnp 3P1)
+are not determined by the fit of the models to the energies (K -> D K D is a symmetry of the energies), they
+only affect the relative sign of the perturber admixture. For consistency, the above rule is applied to all channels.
 
 Validity ranges
 ---------------
@@ -84,6 +103,7 @@ class Sr88_S0_Vaillant2024(KMatrixModel):
         AngularKetJJ(l_c=2, l_r=2, j_c=1.5, j_r=1.5, j_tot=0, species="Sr88"),  # 4d_3/2 nd_3/2
     ]
 
+    # All channels have the same phase d_i = -1 (see the module docstring), so no sign is changed.
     k_matrix = [
         (0, 0, [1.05126086e0, 8.76391110e-1]),
         (0, 1, [3.75986417e-1]),
@@ -111,9 +131,12 @@ class Sr88_S1_Vaillant2024(KMatrixModel):
         AngularKetLS(l_c=1, l_r=1, l_tot=1, s_tot=1, j_tot=1, species="Sr88"),  # 5pnp 3P1
     ]
 
+    # The element marked with (*) has the opposite sign compared to Table III of the Addendum,
+    # due to the different phase convention of the kets (d_i = +1 for 5sns 3S1, -1 for 5pnp 3P1),
+    # see the module docstring.
     k_matrix = [
         (0, 0, [-1.03924403e2, -2.76691239e1]),
-        (0, 1, [-1.33451654e2]),
+        (0, 1, [1.33451654e2]),  # (*)
         (1, 1, [-1.68045201e2, 5.51718438e1]),
     ]
 
@@ -223,7 +246,7 @@ class Sr88_D2_Vaillant2024(KMatrixModel):
     ]
 
     # The elements marked with (*) have the opposite sign compared to Table III of the Addendum,
-    # due to the different phase convention of the jj-coupled kets, see the module docstring.
+    # due to the different phase convention of the kets (d_i = -1, +1, -1, +1, -1, -1), see the module docstring.
     k_matrix = [
         (0, 0, [-3.85388310e-1, -1.77532611e0]),
         (0, 1, [-2.30810347e-1]),  # (*)
