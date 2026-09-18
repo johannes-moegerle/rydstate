@@ -268,6 +268,10 @@ def test_vaillant2024_ionization_thresholds() -> None:
         "D J=1, nu > 9.5": [45932.2002, 60628.26],
         "D J=3, nu > 3.9": [45932.2002, 60628.26, 60628.26],
         "F J=3 singlet, nu > 3.5": [45932.2002, 60628.26],
+        # the triplet F models are single channel models converging to the first ionization threshold
+        "F J=2 (Rydberg-Ritz), nu > 9": [45932.2002],
+        "F J=3 triplet (Rydberg-Ritz), nu > 9": [45932.2002],
+        "F J=4 (Rydberg-Ritz), nu > 9": [45932.2002],
     }
     mqdt = get_mqdt("Sr88", "vaillant2024")
     assert {model.name for model in mqdt.models} == set(expected)

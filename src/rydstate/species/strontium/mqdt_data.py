@@ -44,7 +44,8 @@ class MQDTStrontium88Vaillant2024(MQDT):
     See :mod:`~rydstate.species.strontium.sr88_vaillant2024_k_matrix_model_data` for the models and references.
     Compared to the default models (:class:`MQDTStrontium88`, based on Robicheaux 2019), these models include
     the doubly excited perturber channels (4dnl, 5pnp) explicitly and are therefore valid down to much lower
-    principal quantum numbers, but they do not cover the triplet F series.
+    principal quantum numbers. The only series not covered by Vaillant 2024 are the 5snf 3FJ series, for which
+    single channel models with the Rydberg-Ritz quantum defects of Connerade 1992 are used instead.
     """
 
     species = "Sr88"
