@@ -8,8 +8,9 @@ class SQDTYtterbium174(SQDT):
     is_default = True
     nist_data_file = "nist_data.txt"
 
-    # https://webbook.nist.gov/cgi/inchi?ID=C7440644&Mask=20
-    ionization_energy = (6.25416, "eV")
+    # The ionization threshold the MQDT models of this species are referenced to,
+    # see MQDTYtterbium174.ionization_threshold_dict (the MQDT analysis of [3] below)
+    ionization_energy = (50443.070393, "1/cm")
 
     # -- [1] Peper 2024, http://arxiv.org/abs/2406.01482
     #        Spectroscopy and modeling of 171Yb Rydberg states for high-fidelity two-qubit gates

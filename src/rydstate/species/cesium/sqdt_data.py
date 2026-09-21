@@ -8,8 +8,10 @@ class SQDTCesium(SQDT):
     is_default = True
     nist_data_file = "nist_data.txt"
 
-    # https://webbook.nist.gov/cgi/inchi?ID=C7440462&Mask=20
-    ionization_energy = (3.893_90, "eV")
+    # Phys. Rev. A 93, 013424 (2016) (https://doi.org/10.1103/PhysRevA.93.013424),
+    # as corrected by the Erratum Phys. Rev. A 112, 049902 (2025) (https://doi.org/10.1103/5v5y-8m53)
+    # I = 31406.4677482(10)stat(34)syst 1/cm.
+    ionization_energy = (31406.4677482, "1/cm")
 
     # -- [1] Phys. Rev. A 93, 013424 (2016)
     # -- [2] Phys. Rev. A 26, 2733 (1982)

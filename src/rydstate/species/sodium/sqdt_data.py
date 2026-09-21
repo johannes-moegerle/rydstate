@@ -8,8 +8,10 @@ class SQDTSodium(SQDT):
     is_default = True
     nist_data_file = "nist_data.txt"
 
-    # https://webbook.nist.gov/cgi/inchi?ID=C7440235&Mask=20
-    ionization_energy = (5.139_08, "eV")
+    # Phys. Rev. A 45, 4720 (1992) (https://doi.org/10.1103/PhysRevA.45.4720)
+    # Precision Stark spectroscopy of sodium: improved values for the ionization limit and bound states
+    # I = 41449.451(2) 1/cm (the same reference as [1] below, which the quantum defects are taken from)
+    ionization_energy = (41449.451, "1/cm")
 
     # -- [1] Phys. Rev. A 45, 4720 (1992)
     # -- [2] Quantum Electron. 25 914 (1995)

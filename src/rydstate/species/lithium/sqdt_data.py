@@ -8,8 +8,9 @@ class SQDTLithium(SQDT):
     is_default = True
     nist_data_file = "nist_data.txt"
 
-    # https://webbook.nist.gov/cgi/inchi?ID=C7439932&Mask=20
-    ionization_energy = (5.391_72, "eV")
+    # Bushaw 2007, Phys. Rev. A 75, 052503 (https://doi.org/10.1103/PhysRevA.75.052503)
+    # Ionization energy of 7Li determined by triple-resonance laser spectroscopy
+    ionization_energy = (43487.15940, "1/cm")
 
     # -- [1] Phys. Rev. A 34, 2889 (1986) (Li 7)
     # -- [2] T. F. Gallagher, ``Rydberg Atoms'', Cambridge University Press (2005), ISBN: 978-0-52-102166-1

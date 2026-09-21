@@ -8,8 +8,9 @@ class SQDTStrontium88(SQDT):
     is_default = True
     nist_data_file = "nist_data.txt"
 
-    # https://webbook.nist.gov/cgi/inchi?ID=C7440246&Mask=20
-    ionization_energy = (5.694_84, "eV")
+    # Couturier 2019, Phys. Rev. A 99, 022503 (https://doi.org/10.1103/PhysRevA.99.022503)
+    # I = 1_377_012_721(10) MHz (= 45932.2002 1/cm, same value as used for MQDTStrontium88)
+    ionization_energy = (1_377_012_721, "MHz")
 
     # -- [1] Brienza 2023, Phys. Rev. A 108, 022815
     #        Microwave spectroscopy of low-l singlet strontium Rydberg states at intermediate n
