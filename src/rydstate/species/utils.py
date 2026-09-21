@@ -31,7 +31,7 @@ def calc_nu_from_energy(reduced_mass_au: float, energy_au: float, charge: int = 
 
     Args:
         reduced_mass_au: The reduced mass in atomic units (electron mass).
-        energy_au: The energy in atomic units (hartree).
+        energy_au: The energy in atomic units (Hartree).
         charge: The net charge of the ionic core seen by the Rydberg electron. Default 1 (neutral atom).
 
     Returns:
@@ -62,7 +62,7 @@ def calc_energy_from_nu(reduced_mass_au: float, nu: float, charge: int = 1) -> f
         charge: The net charge of the ionic core seen by the Rydberg electron. Default 1 (neutral atom).
 
     Returns:
-        The energy E in atomic units (hartree).
+        The energy E in atomic units (Hartree).
 
     """
     if np.isinf(nu):

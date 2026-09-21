@@ -1,7 +1,7 @@
 from typing import ClassVar
 
 from rydstate.species.sqdt import SQDT
-from rydstate.units import rydberg_constant
+from rydstate.units import rydberg_constant_au
 
 
 class SQDTHydrogen(SQDT):
@@ -18,6 +18,6 @@ class SQDTHydrogenTextBook(SQDT):
     species = "H_textbook"
     is_default = True
 
-    ionization_energy = (rydberg_constant.m, str(rydberg_constant.u))
+    ionization_energy = (rydberg_constant_au, "a.u.")
 
     quantum_defects: ClassVar = {}

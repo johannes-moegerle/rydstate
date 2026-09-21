@@ -4,10 +4,11 @@ from abc import ABC
 from functools import cached_property
 from typing import TYPE_CHECKING, ClassVar, overload
 
+from rydstate import units
 from rydstate.angular.utils import check_spin_addition_rule, get_possible_quantum_number_values, is_unknown
 from rydstate.metaclass_cache import CachedABCMeta
 from rydstate.species.utils import get_all_subclasses
-from rydstate.units import rydberg_constant, ureg
+from rydstate.units import rydberg_constant_au
 
 if TYPE_CHECKING:
     from rydstate.angular.utils import Unknown
@@ -136,15 +137,10 @@ class ElementProperties(ABC, metaclass=CachedABCMeta):
             Corrected Rydberg constant in the desired unit.
 
         """
-        corrected_rydberg_constant: PintFloat = ureg.Quantity(
-            self.corrected_rydberg_constant[0], self.corrected_rydberg_constant[1]
+        corrected_rydberg_constant_au = units.user_to_au(
+            self.corrected_rydberg_constant[0], self.corrected_rydberg_constant[1], "energy"
         )
-        corrected_rydberg_constant = corrected_rydberg_constant.to("hartree", "spectroscopy")
-        if unit is None:
-            return corrected_rydberg_constant
-        if unit == "a.u.":
-            return corrected_rydberg_constant.magnitude
-        return corrected_rydberg_constant.to(unit, "spectroscopy").magnitude
+        return units.au_to_user(corrected_rydberg_constant_au, "energy", unit)
 
     @cached_property  # don't remove this caching without benchmarking it!!!
     def reduced_mass_au(self) -> float:
@@ -161,7 +157,7 @@ class ElementProperties(ABC, metaclass=CachedABCMeta):
             \frac{\mu}{m_e} = \frac{R_M}{R_\infty}
 
         """
-        return self.get_corrected_rydberg_constant("hartree") / rydberg_constant.to("hartree").m
+        return self.get_corrected_rydberg_constant("a.u.") / rydberg_constant_au
 
 
 def get_element_properties(species: str) -> ElementProperties:

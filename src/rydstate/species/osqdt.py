@@ -72,9 +72,9 @@ class OSQDT(SQDT):
         thresholds = {osqdt_model.ionization_energy_au for osqdt_model in self.osqdt_models}
         if len(thresholds) > 1:
             raise ValueError(f"The models do not agree on the ionization threshold of the channel {channel}.")
-        self.ionization_energy = (thresholds.pop(), "hartree")  # type: ignore [misc]
+        self.ionization_energy = (thresholds.pop(), "a.u.")  # type: ignore [misc]
         # nu is defined with respect to the reference ionization threshold of the MQDT models
-        self._reference_ionization_energy = (self.mqdt.reference_ionization_threshold_au, "hartree")  # type: ignore [misc]
+        self._reference_ionization_energy = (self.mqdt.reference_ionization_threshold_au, "a.u.")  # type: ignore [misc]
 
         self.n_min = min(
             min(osqdt_model.solutions.keys(), default=int(nu_range[1]) + 100) for osqdt_model in self.osqdt_models

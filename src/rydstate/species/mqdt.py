@@ -4,11 +4,11 @@ from abc import ABC
 from functools import cached_property
 from typing import TYPE_CHECKING, Any, ClassVar, overload
 
+from rydstate import units
 from rydstate.angular.utils import is_not_set
 from rydstate.metaclass_cache import CachedABCMeta
 from rydstate.species.eigen_channel_model import TrivialModel
 from rydstate.species.utils import get_all_subclasses
-from rydstate.units import ureg
 
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase
@@ -54,12 +54,12 @@ class MQDT(ABC, metaclass=CachedABCMeta):
     @overload
     def get_ionization_threshold(self, core_ket: CoreKet, unit: str) -> float: ...
 
-    def get_ionization_threshold(self, core_ket: CoreKet, unit: str | None = "hartree") -> PintFloat | float:
+    def get_ionization_threshold(self, core_ket: CoreKet, unit: str | None = None) -> PintFloat | float:
         """Return the ionization threshold of the channel given by the core_ket in the desired unit.
 
         Args:
             core_ket: The core ket for which to return the ionization threshold.
-            unit: Desired unit for the ionization threshold. Default is atomic units "hartree".
+            unit: Desired unit for the ionization threshold. Default None will return a pint.Quantity.
 
         Returns:
             Ionization threshold in the desired unit.
@@ -71,13 +71,8 @@ class MQDT(ABC, metaclass=CachedABCMeta):
             raise ValueError(f"Ionization threshold for core ket {core_ket} is not defined.") from e
 
         ionization_threshold_tuple = self.ionization_threshold_dict[matching_core_ket]
-        ionization_threshold: PintFloat = ureg.Quantity(ionization_threshold_tuple[0], ionization_threshold_tuple[1])
-        ionization_threshold = ionization_threshold.to("hartree", "spectroscopy")
-        if unit is None:
-            return ionization_threshold
-        if unit == "a.u.":
-            return ionization_threshold.magnitude
-        return ionization_threshold.to(unit, "spectroscopy").magnitude
+        ionization_threshold_au = units.user_to_au(*ionization_threshold_tuple, "energy")
+        return units.au_to_user(ionization_threshold_au, "energy", unit)
 
     @cached_property
     def reference_ionization_threshold_au(self) -> float:
@@ -87,13 +82,7 @@ class MQDT(ABC, metaclass=CachedABCMeta):
         the smallest ionization threshold in the ionization_threshold_dict.
         """
         if self.reference_ionization_threshold_tuple is not None:
-            return (
-                ureg.Quantity(
-                    self.reference_ionization_threshold_tuple[0], self.reference_ionization_threshold_tuple[1]
-                )
-                .to("hartree", "spectroscopy")
-                .magnitude
-            )
+            return units.user_to_au(*self.reference_ionization_threshold_tuple, "energy")
         return min(self.get_ionization_threshold(core_ket, unit="a.u.") for core_ket in self.ionization_threshold_dict)
 
     def get_mqdt_models(self, outer_channel: AngularKetBase[Any]) -> list[MQDTModel]:

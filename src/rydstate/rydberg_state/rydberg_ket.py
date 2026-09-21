@@ -5,6 +5,7 @@ import math
 from functools import cache, cached_property
 from typing import TYPE_CHECKING, Any, Literal, overload
 
+from rydstate import units
 from rydstate.angular.angular_ket import AngularKetFJ, AngularKetJJ, AngularKetLS
 from rydstate.angular.utils import (
     format_quantum_number,
@@ -16,7 +17,7 @@ from rydstate.angular.utils import (
 )
 from rydstate.species.element_properties import get_element_properties
 from rydstate.species.sqdt import get_sqdt
-from rydstate.units import MatrixElementOperatorRanks, ureg
+from rydstate.units import MatrixElementOperatorRanks
 
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase
@@ -156,7 +157,7 @@ class RydbergKet:
         unit: str,
     ) -> float: ...
 
-    def calc_reduced_matrix_element(  # noqa: C901, PLR0912
+    def calc_reduced_matrix_element(
         self,
         other: RydbergKet,
         operator: MatrixElementOperator,
@@ -210,24 +211,7 @@ class RydbergKet:
         else:
             raise NotImplementedError(f"Operator {operator} not implemented.")
 
-        if unit == "a.u.":
-            return matrix_element_au
-
-        k_radial, _k_angular = _get_ks(operator)
-        radial_unit: PintFloat = ureg.Quantity(1, "bohr_radius") ** k_radial
-        matrix_element_unit: PintFloat
-        if operator == "magnetic_dipole":
-            matrix_element_unit = radial_unit * ureg.Quantity(2, "bohr_magneton")
-        elif operator.startswith("electric_"):
-            matrix_element_unit = radial_unit * ureg.Quantity(1, "e")
-        elif is_angular_operator_type(operator):
-            matrix_element_unit = ureg.Quantity(1, "dimensionless")
-        else:
-            raise NotImplementedError(f"Operator {operator} not implemented.")
-
-        if unit is None:
-            return matrix_element_au * matrix_element_unit.to_base_units()  # type: ignore [no-any-return]
-        return matrix_element_au * matrix_element_unit.to(unit).magnitude
+        return units.au_to_user(matrix_element_au, operator, unit)
 
     def _calc_electric_reduced_matrix_element_au(  # noqa: C901
         self, other: RydbergKet, operator: MatrixElementOperator, part: MatrixElementPart

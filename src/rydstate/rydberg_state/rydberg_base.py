@@ -5,9 +5,9 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Any, Literal, overload
 
 import numpy as np
-from pint.facets.plain import PlainQuantity
 from scipy.special import exprel
 
+from rydstate import units
 from rydstate.angular.angular_ket import AngularKetBase
 from rydstate.angular.angular_state import AngularState
 from rydstate.angular.utils import (
@@ -18,7 +18,6 @@ from rydstate.angular.utils import (
 )
 from rydstate.rydberg_state.rydberg_ket import RydbergKet
 from rydstate.species.element_properties import get_element_properties
-from rydstate.units import BaseQuantities, ureg
 
 if TYPE_CHECKING:
     from collections.abc import Iterator, Sequence
@@ -53,7 +52,7 @@ class RydbergState:
     f_tot: float
     """The total angular momentum quantum number f_tot of the Rydberg state."""
     _energy_au: float
-    """The energy of the Rydberg state in atomic units (Hartree)."""
+    """The energy of the Rydberg state in atomic units."""
 
     def __init__(
         self,
@@ -209,12 +208,7 @@ class RydbergState:
         where `\mu = R_M/R_\infty` is the reduced mass and `\nu` the effective principal quantum number,
         and `E_{ionization}` is the reference ionization threshold of the species.
         """
-        if unit == "a.u.":
-            return self._energy_au
-        energy: PintFloat = self._energy_au * BaseQuantities["energy"]
-        if unit is None:
-            return energy
-        return energy.to(unit, "spectroscopy").magnitude
+        return units.au_to_user(self._energy_au, "energy", unit)
 
     def calc_reduced_overlap(self, other: RydbergState) -> float:
         """Calculate the reduced overlap <self|other> (ignoring the magnetic quantum number m)."""
@@ -397,21 +391,21 @@ class RydbergState:
         """
         relevant_states_masked, transition_rates_au = self._get_transition_rates_au(only_spontaneous=True)
 
-        if unit == "a.u.":
-            return relevant_states_masked, transition_rates_au
-        transition_rates = ureg.Quantity(transition_rates_au, "1/atomic_unit_of_time")
-        if unit is None:
-            return relevant_states_masked, transition_rates
-        return relevant_states_masked, transition_rates.to(unit).magnitude
+        return relevant_states_masked, units.au_to_user(transition_rates_au, "transition_rate", unit)
 
     @overload
     def get_black_body_transition_rates(
-        self: Self, temperature: float | PintFloat, temperature_unit: str | None = None, unit: None = None
+        self: Self, temperature: PintFloat, temperature_unit: None = None, unit: None = None
     ) -> tuple[list[Self], PintArray]: ...
 
     @overload
     def get_black_body_transition_rates(
-        self: Self, temperature: PintFloat, *, unit: str
+        self: Self, temperature: float, temperature_unit: str, unit: None = None
+    ) -> tuple[list[Self], PintArray]: ...
+
+    @overload
+    def get_black_body_transition_rates(
+        self: Self, temperature: PintFloat, temperature_unit: None = None, *, unit: str
     ) -> tuple[list[Self], NDArray]: ...
 
     @overload
@@ -438,21 +432,13 @@ class RydbergState:
             The relevant states and the transition rates.
 
         """
-        if isinstance(temperature, PlainQuantity):
-            temperature_au: float = temperature.to_base_units().magnitude
-        else:
-            temperature_au = ureg.Quantity(temperature, temperature_unit).to_base_units().magnitude
+        temperature_au = units.user_to_au(temperature, temperature_unit, "temperature")
 
         relevant_states_masked, transition_rates_au = self._get_transition_rates_au(
             temperature_au, only_spontaneous=False
         )
 
-        if unit == "a.u.":
-            return relevant_states_masked, transition_rates_au
-        transition_rates = ureg.Quantity(transition_rates_au, "1/atomic_unit_of_time")
-        if unit is None:
-            return relevant_states_masked, transition_rates
-        return relevant_states_masked, transition_rates.to(unit).magnitude
+        return relevant_states_masked, units.au_to_user(transition_rates_au, "transition_rate", unit)
 
     def _get_transition_rates_au(
         self: Self,
@@ -530,9 +516,7 @@ class RydbergState:
             )
             electric_dipole_moments_au += np.abs(el_di_m) ** 2
 
-        transition_rates_au = (
-            (4 / 3) * electric_dipole_moments_au / ureg.Quantity(1, "speed_of_light").to_base_units().magnitude ** 3
-        )
+        transition_rates_au = (4 / 3) * electric_dipole_moments_au / units.user_to_au(1, "speed_of_light") ** 3
 
         if only_spontaneous:
             transition_rates_au *= energy_differences_au**3
@@ -555,12 +539,13 @@ class RydbergState:
         return relevant_states_masked, transition_rates_au  # type: ignore [return-value]
 
     @overload
-    def get_lifetime(
-        self,
-        temperature: float | PintFloat | None = None,
-        temperature_unit: str | None = None,
-        unit: None = None,
-    ) -> PintFloat: ...
+    def get_lifetime(self) -> PintFloat: ...
+
+    @overload
+    def get_lifetime(self, temperature: PintFloat) -> PintFloat: ...
+
+    @overload
+    def get_lifetime(self, temperature: float, temperature_unit: str) -> PintFloat: ...
 
     @overload
     def get_lifetime(self, *, unit: str) -> float: ...
@@ -593,17 +578,12 @@ class RydbergState:
             The lifetime of the state.
 
         """
-        _, transition_rates = self.get_spontaneous_transition_rates()
-        transition_rates_au = transition_rates.to_base_units().magnitude
+        _, transition_rates_au = self._get_transition_rates_au(only_spontaneous=True)
         if temperature is not None:
-            _, black_body_transition_rates = self.get_black_body_transition_rates(temperature, temperature_unit)
-            transition_rates_au = np.append(transition_rates_au, black_body_transition_rates.to_base_units().magnitude)
+            temperature_au = units.user_to_au(temperature, temperature_unit, "temperature")
+            _, black_body_transition_rates_au = self._get_transition_rates_au(temperature_au, only_spontaneous=False)
+            transition_rates_au = np.append(transition_rates_au, black_body_transition_rates_au)
 
         lifetime_au: float = 1 / np.sum(transition_rates_au)
 
-        if unit == "a.u.":
-            return lifetime_au
-        lifetime = ureg.Quantity(lifetime_au, "atomic_unit_of_time")
-        if unit is None:
-            return lifetime
-        return lifetime.to(unit).magnitude
+        return units.au_to_user(lifetime_au, "time", unit)

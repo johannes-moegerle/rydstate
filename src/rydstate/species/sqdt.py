@@ -5,6 +5,7 @@ from abc import ABC
 from functools import cached_property
 from typing import TYPE_CHECKING, Any, ClassVar, overload
 
+from rydstate import units
 from rydstate.angular.utils import is_unknown
 from rydstate.metaclass_cache import CachedABCMeta
 from rydstate.species.element_properties import get_element_properties
@@ -15,7 +16,6 @@ from rydstate.species.utils import (
     check_expansion_coefficients,
     get_all_subclasses,
 )
-from rydstate.units import ureg
 
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase
@@ -82,18 +82,13 @@ class SQDT(ABC, metaclass=CachedABCMeta):
             Ionization energy in the desired unit.
 
         """
-        ionization_energy: PintFloat = ureg.Quantity(self.ionization_energy[0], self.ionization_energy[1])
-        ionization_energy = ionization_energy.to("hartree", "spectroscopy")
-        if unit is None:
-            return ionization_energy
-        if unit == "a.u.":
-            return ionization_energy.magnitude
-        return ionization_energy.to(unit, "spectroscopy").magnitude
+        ionization_energy_au = units.user_to_au(self.ionization_energy[0], self.ionization_energy[1], "energy")
+        return units.au_to_user(ionization_energy_au, "energy", unit)
 
     @cached_property
     def ionization_energy_au(self) -> float:
         """Ionization energy in atomic units (Hartree)."""
-        return self.get_ionization_energy("hartree")
+        return self.get_ionization_energy("a.u.")
 
     @cached_property
     def reference_ionization_energy_au(self) -> float:
@@ -111,8 +106,7 @@ class SQDT(ABC, metaclass=CachedABCMeta):
         if self._reference_ionization_energy is None:
             return self.ionization_energy_au
         value, unit = self._reference_ionization_energy
-        reference: PintFloat = ureg.Quantity(value, unit)
-        return float(reference.to("hartree", "spectroscopy").magnitude)
+        return units.user_to_au(value, unit, "energy")
 
     def calc_nui(
         self,

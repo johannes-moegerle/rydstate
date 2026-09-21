@@ -111,11 +111,11 @@ class MQDTModel(ABC):
     @overload
     def get_ionization_thresholds(self, unit: str) -> list[float]: ...
 
-    def get_ionization_thresholds(self, unit: str | None = "hartree") -> list[PintFloat] | list[float]:
+    def get_ionization_thresholds(self, unit: str | None = None) -> list[PintFloat] | list[float]:
         """Return the ionization thresholds for all channels.
 
         Args:
-            unit: Desired unit for the ionization thresholds. Default is atomic units "hartree".
+            unit: Desired unit for the ionization thresholds. Default None will return a list of pint.Quantity.
 
         Returns:
             List of ionization thresholds in the desired unit.
@@ -126,7 +126,7 @@ class MQDTModel(ABC):
     @cached_property  # don't remove this caching without benchmarking it!!!
     def ionization_thresholds_au(self) -> list[float]:
         """Return the ionization thresholds for all channels in atomic units."""
-        return self.get_ionization_thresholds(unit="hartree")
+        return self.get_ionization_thresholds(unit="a.u.")
 
     def calc_energy_au(self, nu: float) -> float:
         """Calculate the energy of the Rydberg state.

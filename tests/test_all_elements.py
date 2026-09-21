@@ -36,7 +36,7 @@ def test_sqdt_total_energy_does_not_require_nu_below_reference(monkeypatch: pyte
     sqdt = get_sqdt(species)  # note: this is a process wide cached instance, so we have to clean up carefully
     try:
         with monkeypatch.context() as patch:
-            patch.setattr(sqdt, "_reference_ionization_energy", (sqdt.ionization_energy_au - 1e-3, "hartree"))
+            patch.setattr(sqdt, "_reference_ionization_energy", (sqdt.ionization_energy_au - 1e-3, "a.u."))
             sqdt.__dict__.pop("reference_ionization_energy_au", None)  # clear the cached_property
             angular = AngularKetLS(l_r=0, f_tot=0.5, species=species)
             state = RydbergStateSQDT(species, n=60, angular=angular, sqdt=sqdt)

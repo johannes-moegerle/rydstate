@@ -2,7 +2,7 @@ from abc import ABC
 from typing import ClassVar
 
 from rydstate.species.element_properties import ElementProperties
-from rydstate.units import electron_mass, rydberg_constant
+from rydstate.units import electron_mass_u, rydberg_constant_au
 
 
 class _ElementPropertiesYtterbiumAbstractIon(ElementProperties, ABC):
@@ -20,8 +20,8 @@ class ElementPropertiesYtterbium171Ion(_ElementPropertiesYtterbiumAbstractIon):
 
     _isotope_mass_u = 170.9363258
     corrected_rydberg_constant = (
-        rydberg_constant.m / (1 + electron_mass.to("u").m / _isotope_mass_u),
-        str(rydberg_constant.u),
+        rydberg_constant_au / (1 + electron_mass_u / _isotope_mass_u),
+        "a.u.",
     )
 
     # https://nds.iaea.org/nuclearmoments/isotope_measurement_results.php?A=171&Z=70
@@ -34,8 +34,8 @@ class ElementPropertiesYtterbium173Ion(_ElementPropertiesYtterbiumAbstractIon):
 
     _isotope_mass_u = 172.938216212
     corrected_rydberg_constant = (
-        rydberg_constant.m / (1 + electron_mass.to("u").m / _isotope_mass_u),
-        str(rydberg_constant.u),
+        rydberg_constant_au / (1 + electron_mass_u / _isotope_mass_u),
+        "a.u.",
     )
 
     # https://nds.iaea.org/nuclearmoments/isotope_measurement_results.php?A=173&Z=70
@@ -48,6 +48,6 @@ class ElementPropertiesYtterbium174Ion(_ElementPropertiesYtterbiumAbstractIon):
 
     _isotope_mass_u = 173.938859
     corrected_rydberg_constant = (
-        rydberg_constant.m / (1 + electron_mass.to("u").m / _isotope_mass_u),
-        str(rydberg_constant.u),
+        rydberg_constant_au / (1 + electron_mass_u / _isotope_mass_u),
+        "a.u.",
     )

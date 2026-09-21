@@ -4,6 +4,7 @@ import logging
 from functools import cached_property
 from typing import TYPE_CHECKING, Generic, TypeVar, overload
 
+from rydstate import units
 from rydstate.angular import NotSet
 from rydstate.angular.angular_ket import AngularKetBase, AngularKetFJ, AngularKetLS
 from rydstate.angular.utils import AllKnown, is_unknown
@@ -15,7 +16,6 @@ from rydstate.species import get_element_properties, get_sqdt
 from rydstate.species.potential import Potential, get_potential_class
 from rydstate.species.sqdt import SQDT
 from rydstate.species.utils import calc_energy_from_nu, calc_nu_from_energy
-from rydstate.units import BaseQuantities
 
 if TYPE_CHECKING:
     from rydstate.species.osqdt import OSQDT
@@ -183,15 +183,10 @@ class RydbergStateSQDT(RydbergState, Generic[GenericT_AngularKet]):
         and :math:`\nu_i` the effective principal quantum number
         with reference to the ionization energy, see :attr:`nui`.
         """
-        _energy_au = calc_energy_from_nu(
+        energy_au = calc_energy_from_nu(
             self.element_properties.reduced_mass_au, self.nui, self.element_properties.net_charge
         )
-        if unit == "a.u.":
-            return _energy_au
-        energy: PintFloat = _energy_au * BaseQuantities["energy"]
-        if unit is None:
-            return energy
-        return energy.to(unit, "spectroscopy").magnitude
+        return units.au_to_user(energy_au, "energy", unit)
 
     def calc_exp_qn(self, qn: str) -> float:
         if qn == "nui":
