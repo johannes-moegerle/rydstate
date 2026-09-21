@@ -1,7 +1,12 @@
+from typing import TYPE_CHECKING
+
 import numpy as np
 import pytest
 from rydstate import RydbergStateSQDTAlkali
 from rydstate.units import BaseUnits, ureg
+
+if TYPE_CHECKING:
+    from rydstate.units import PintFloat
 
 
 @pytest.mark.parametrize("l", [0, 1, 20])
@@ -19,7 +24,7 @@ def test_magnetic(l: int) -> None:
 
     # Check dimensionality
     magnetic_field = ureg.Quantity(1, "T")
-    zeeman_energy = -mu * magnetic_field
+    zeeman_energy: PintFloat = -mu * magnetic_field
     assert zeeman_energy.dimensionality == BaseUnits["energy"].dimensionality, (
         f"{zeeman_energy.dimensionality} != {BaseUnits['energy'].dimensionality}"
     )

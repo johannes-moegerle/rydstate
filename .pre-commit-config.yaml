@@ -25,5 +25,5 @@ repos:
     rev: v2.1.0
     hooks:
       - id: mypy
-        additional_dependencies: ["numpy >= 2.0", "pint >= 0.25.1"]
+        additional_dependencies: ["numpy >= 2.0", "pint >= 0.25.1", "pytest >= 8.0"]
         args: ["--ignore-missing-imports"]

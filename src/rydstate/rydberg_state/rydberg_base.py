@@ -5,6 +5,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Any, Literal, overload
 
 import numpy as np
+from pint.facets.plain import PlainQuantity
 from scipy.special import exprel
 
 from rydstate.angular.angular_ket import AngularKetBase
@@ -278,7 +279,7 @@ class RydbergState:
             me = self.rydberg_kets[0].calc_reduced_matrix_element(other.rydberg_kets[0], operator, part=part, unit=unit)
             return me * self._coefficients_conjugate[0] * other._coefficients[0]
 
-        value = 0.0
+        value: float | PintFloat = 0.0
         for coeff1, ket1 in zip(self._coefficients_conjugate, self.rydberg_kets, strict=True):
             for coeff2, ket2 in zip(other._coefficients, other.rydberg_kets, strict=True):
                 value += coeff1 * coeff2 * ket1.calc_reduced_matrix_element(ket2, operator, part=part, unit=unit)
@@ -339,7 +340,7 @@ class RydbergState:
             The matrix element for the given operator.
 
         """
-        value = 0.0
+        value: float | PintFloat = 0.0
         for coeff1, ket1 in zip(self._coefficients_conjugate, self.rydberg_kets, strict=True):
             for coeff2, ket2 in zip(other._coefficients, other.rydberg_kets, strict=True):
                 value += coeff1 * coeff2 * ket1.calc_matrix_element(ket2, operator, q=q, part=part, unit=unit)
@@ -437,7 +438,11 @@ class RydbergState:
             The relevant states and the transition rates.
 
         """
-        temperature_au = ureg.Quantity(temperature, temperature_unit).to_base_units().magnitude
+        if isinstance(temperature, PlainQuantity):
+            temperature_au: float = temperature.to_base_units().magnitude
+        else:
+            temperature_au = ureg.Quantity(temperature, temperature_unit).to_base_units().magnitude
+
         relevant_states_masked, transition_rates_au = self._get_transition_rates_au(
             temperature_au, only_spontaneous=False
         )
