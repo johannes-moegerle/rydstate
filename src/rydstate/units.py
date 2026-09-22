@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import Iterable
+from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, Literal, get_args, overload
 
 from pint import UnitRegistry
@@ -60,7 +60,7 @@ Dimension = Literal[
     "dimensionless",
     "zero",
 ]
-DimensionLike = Dimension | Iterable[Dimension]
+DimensionLike = Dimension | Sequence[Dimension]
 
 # some abbreviations: au_time: atomic_unit_of_time; au_current: atomic_unit_of_current; m_e: electron_mass
 _CommonUnits: dict[Dimension, str] = {
@@ -109,10 +109,13 @@ def _contexts(dimension: DimensionLike | None) -> tuple[Context, ...]:
     """Return the pint contexts needed to convert the given dimension (e.g. "spectroscopy" for energies)."""
     if dimension is None:
         return ()
-    if not isinstance(dimension, str):
-        return ()
-    context = BaseContexts.get(dimension)
-    return () if context is None else (context,)
+    dimensions = (dimension,) if isinstance(dimension, str) else dimension
+    contexts: list[Context] = []
+    for dim in dimensions:
+        context = BaseContexts.get(dim)
+        if context is not None and context not in contexts:
+            contexts.append(context)
+    return tuple(contexts)
 
 
 def user_to_au(value: PintFloat | float, unit: str | None, dimension: Dimension | None = None) -> float:

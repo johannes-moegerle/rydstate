@@ -7,7 +7,7 @@ from rydstate.radial import Radial, RadialDummy
 
 def _make_radial(*, dz: float = 0.01, zmax: float = 6.0, center: float = 3.0, width: float = 0.5) -> Radial:
     """Build a normalized gaussian-shaped radial wavefunction on the standard grid [0, dz, 2*dz, ...]."""
-    z = np.arange(0, zmax + dz / 2, dz)
+    z = np.arange(dz, zmax + dz / 2, dz)
     w = np.exp(-0.5 * ((z - center) / width) ** 2)
     radial = Radial(z, w)
     return radial / radial.norm
@@ -20,7 +20,7 @@ def _make_radial(*, dz: float = 0.01, zmax: float = 6.0, center: float = 3.0, wi
 
 def test_grid_properties() -> None:
     dz = 0.1
-    z = np.arange(0, 2 + dz / 2, dz)
+    z = np.arange(dz, 2 + dz / 2, dz)
     radial = Radial(z, np.ones_like(z))
 
     assert radial.steps == len(z)
@@ -31,7 +31,7 @@ def test_grid_properties() -> None:
 
 def test_norm_matches_manual_formula() -> None:
     dz = 0.1
-    z = np.arange(0, 3 + dz / 2, dz)
+    z = np.arange(dz, 3 + dz / 2, dz)
     w = np.exp(-0.5 * (z - 1.5) ** 2)
     radial = Radial(z, w)
 
@@ -50,7 +50,7 @@ def test_normalization_yields_unit_norm() -> None:
 
 def test_add_on_shared_grid() -> None:
     dz = 0.1
-    z = np.arange(0, 1 + dz / 2, dz)
+    z = np.arange(dz, 1 + dz / 2, dz)
     a = Radial(z, np.ones_like(z))
     b = Radial(z, 2 * np.ones_like(z))
 
@@ -62,14 +62,14 @@ def test_add_on_shared_grid() -> None:
 def test_add_zero_pads_onto_common_grid() -> None:
     """Two states on offset (but lattice-aligned) grids are zero-padded onto a common grid."""
     dz = 0.1
-    za = np.arange(0, 1 + dz / 2, dz)  # covers [0.0, 1.0]
+    za = np.arange(dz, 1 + dz / 2, dz)  # covers [0.0, 1.0]
     zb = np.arange(0.5, 1.5 + dz / 2, dz)  # covers [0.5, 1.5]
     a = Radial(za, np.ones_like(za))
     b = Radial(zb, np.ones_like(zb))
 
     result = a + b
     # common grid spans the union of both grids
-    assert np.isclose(result.z_list[0], 0.0)
+    assert np.isclose(result.z_list[0], dz)
     assert np.isclose(result.z_list[-1], 1.5)
 
     # where only `a` lives (z < 0.5) -> 1, in the overlap (0.5 <= z <= 1.0) -> 2, only `b` (z > 1.0) -> 1
@@ -84,7 +84,7 @@ def test_add_zero_pads_onto_common_grid() -> None:
 
 def test_add_is_commutative() -> None:
     dz = 0.1
-    za = np.arange(0, 1 + dz / 2, dz)
+    za = np.arange(dz, 1 + dz / 2, dz)
     zb = np.arange(0.5, 1.5 + dz / 2, dz)
     a = Radial(za, np.ones_like(za))
     b = Radial(zb, 2 * np.ones_like(zb))
@@ -94,7 +94,7 @@ def test_add_is_commutative() -> None:
 
 def test_neg_and_sub() -> None:
     dz = 0.1
-    z = np.arange(0, 1 + dz / 2, dz)
+    z = np.arange(dz, 1 + dz / 2, dz)
     a = Radial(z, np.full_like(z, 3.0))
     b = Radial(z, np.full_like(z, 1.0))
 
@@ -106,7 +106,7 @@ def test_neg_and_sub() -> None:
 
 def test_add_returns_not_implemented_for_non_radial() -> None:
     dz = 0.1
-    z = np.arange(0, 1 + dz / 2, dz)
+    z = np.arange(dz, 1 + dz / 2, dz)
     a = Radial(z, np.ones_like(z))
     with pytest.raises(TypeError):
         _ = a + 5  # type: ignore[operator]
@@ -119,7 +119,7 @@ def test_add_returns_not_implemented_for_non_radial() -> None:
 
 def test_scalar_multiplication() -> None:
     dz = 0.1
-    z = np.arange(0, 1 + dz / 2, dz)
+    z = np.arange(dz, 1 + dz / 2, dz)
     a = Radial(z, np.full_like(z, 2.0))
 
     assert np.allclose((a * 3).w_list, 6.0)
@@ -131,7 +131,7 @@ def test_scalar_multiplication() -> None:
 
 def test_mul_returns_not_implemented_for_non_number() -> None:
     dz = 0.1
-    z = np.arange(0, 1 + dz / 2, dz)
+    z = np.arange(dz, 1 + dz / 2, dz)
     a = Radial(z, np.ones_like(z))
     with pytest.raises(TypeError):
         _ = a * "x"  # type: ignore[operator]
@@ -149,8 +149,8 @@ def test_norm_scales_linearly_with_scalar() -> None:
 
 
 def test_align_rejects_different_dz() -> None:
-    a = Radial(np.arange(0, 1 + 0.05, 0.1), np.ones(11))
-    b = Radial(np.arange(0, 1 + 0.1, 0.2), np.ones(6))
+    a = Radial(np.arange(0.2, 1 + 0.05, 0.1), np.ones(9))
+    b = Radial(np.arange(0.2, 1 + 0.1, 0.2), np.ones(5))
     with pytest.raises(ValueError, match="different dz"):
         _ = a + b
 

@@ -78,3 +78,49 @@ def test_circular_expectation_value(species: str, n: int, l: int, j_tot: float) 
         assert np.isclose(exp_value_numerov[i], exp_value_analytic[i], rtol=1e-2), (
             f"Expectation value of r^{i} is not correct."
         )
+
+
+@pytest.mark.parametrize(
+    ("n", "l", "j_tot"),
+    [
+        (2, 1, 1.5),
+        (10, 3, 3.5),
+        (60, 30, 29.5),
+    ],
+)
+def test_expectation_value_of_powers_of_r(n: int, l: int, j_tot: float) -> None:
+    r"""For hydrogen the expectation values of r^k are known analytically, for both positive and negative k.
+
+    .. math::
+        <r^{-3}>_{nl} = 1 / (n^3 l (l + 1/2) (l + 1))
+        <r^{-2}>_{nl} = 1 / (n^3 (l + 1/2))
+        <r^{-1}>_{nl} = 1 / n^2
+        <r^{1}>_{nl} = 1/2 (3 n^2 - l(l+1))
+        <r^{2}>_{nl} = n^2/2 (5 n^2 + 1 - 3 l(l+1))
+        <r^{3}>_{nl} = n^2/8 (35 n^4 - 5 n^2 (6 l(l+1) - 5) + 3 (l+2)(l+1)l(l-1))
+    """
+    sqdt = get_sqdt("H")
+    angular_ket = AngularKetLS(l_r=l, j_tot=j_tot, species="H")
+    nu = sqdt.calc_nui(n, angular_ket)
+
+    potential = get_potential_class("H")(l)
+    state = RadialKet(nu, potential, n_expected=n)
+
+    # note: pint cannot parse "bohr^0", so the dimensionless k = 0 case uses an empty unit
+    exp_value_numerov = {
+        k: state.calc_matrix_element(state, k, unit=f"bohr^{k}" if k != 0 else "") for k in range(-3, 4)
+    }
+    exp_value_analytic = {
+        -3: 1 / (n**3 * l * (l + 0.5) * (l + 1)),
+        -2: 1 / (n**3 * (l + 0.5)),
+        -1: 1 / n**2,
+        0: 1,
+        1: 0.5 * (3 * n**2 - l * (l + 1)),
+        2: n**2 / 2 * (5 * n**2 + 1 - 3 * l * (l + 1)),
+        3: n**2 / 8 * (35 * n**4 - 5 * n**2 * (6 * l * (l + 1) - 5) + 3 * (l + 2) * (l + 1) * l * (l - 1)),
+    }
+
+    for k in range(-3, 4):
+        assert np.isclose(exp_value_numerov[k], exp_value_analytic[k], rtol=1e-2), (
+            f"Expectation value of r^{k} is not correct."
+        )

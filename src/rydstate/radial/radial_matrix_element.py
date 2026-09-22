@@ -73,10 +73,13 @@ def calc_radial_matrix_element_electric_dipole_closed_shell_core(
 
 def _multiply_by_powers(result: NDArray, base: NDArray, exponent: int) -> NDArray:
     """Calculate result * base**(exponent) in an optimized way."""
+    # for negative exponents divide by the corresponding positive power of base
+    apply = np.divide if exponent < 0 else np.multiply
+    exponent = abs(exponent)
     base_powers = {0: base}
     for i in range(exponent):
         if (exponent // 2**i) % 2 == 1:
-            result *= base_powers[i]
+            apply(result, base_powers[i], out=result)
             exponent -= 2**i
         if exponent == 0:
             break

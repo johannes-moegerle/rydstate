@@ -44,8 +44,8 @@ class Radial:
 
         if len(z_list) < 2:
             raise ValueError("z_list must have at least 2 elements")
-        if z_list[0] < 0 or self.dz < 0:
-            raise ValueError("z_list must be non-negative and increasing")
+        if z_list[0] <= 0 or self.dz < 0:
+            raise ValueError("z_list must be positive and increasing")
         if len(w_list) != len(z_list):
             raise ValueError("w_list must have the same length as z_list")
         if not np.all(np.abs(np.diff(self.z_list) - self.dz) < 1e-10):
