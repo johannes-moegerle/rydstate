@@ -8,14 +8,14 @@ from typing import TYPE_CHECKING, Any, Generic, TypeVar, overload
 import numpy as np
 from typing_extensions import Self
 
+from rydstate import units
 from rydstate.rydberg_state.rydberg_base import RydbergState
 from rydstate.species import Potential, get_element_properties
 from rydstate.species.potential import get_potential_class
-from rydstate.units import ureg
 
 if TYPE_CHECKING:
     from rydstate.angular.utils import Unknown
-    from rydstate.units import MatrixElementOperator, MatrixElementPart, NDArray, PintArray, PintFloat
+    from rydstate.units import MatrixElementOperator, MatrixElementPart, NDArray, PintArray
 
 _RydbergState = TypeVar("_RydbergState", bound=RydbergState)
 
@@ -133,14 +133,10 @@ class BasisBase(ABC, Generic[_RydbergState]):
         Returns a 1D array values, where values[i] corresponds to the reduced matrix element
         :math:`\langle self.states[i] || O || other \rangle`.
         """
-        values_list = [bra.calc_reduced_matrix_element(other, operator, part=part, unit=unit) for bra in self.states]
-        if unit is not None:
-            return np.array(values_list)
-
-        values: list[PintFloat] = values_list  # type: ignore[assignment]
-        _unit = values[0].units
-        _values = np.array([v.magnitude for v in values])
-        return ureg.Quantity(_values, _unit)
+        values = np.array(
+            [bra.calc_reduced_matrix_element(other, operator, part=part, unit="a.u.") for bra in self.states]
+        )
+        return units.au_to_user(values, operator, unit)
 
     @overload
     def calc_reduced_matrix_elements(
@@ -177,14 +173,10 @@ class BasisBase(ABC, Generic[_RydbergState]):
         Returns a 2D array values, where values[i, j] corresponds to the reduced matrix element
         :math:`\langle self.states[i] || O || other.states[j] \rangle`.
         """
-        values_list = [
-            [bra.calc_reduced_matrix_element(ket, operator, part=part, unit=unit) for ket in other.states]
-            for bra in self.states
-        ]
-        if unit is not None:
-            return np.array(values_list)
-
-        values: list[list[PintFloat]] = values_list  # type: ignore[assignment]
-        _unit = values[0][0].units
-        _values = np.array([[v.magnitude for v in vs] for vs in values])
-        return ureg.Quantity(_values, _unit)
+        values = np.array(
+            [
+                [bra.calc_reduced_matrix_element(ket, operator, part=part, unit="a.u.") for ket in other.states]
+                for bra in self.states
+            ]
+        )
+        return units.au_to_user(values, operator, unit)

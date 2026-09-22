@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Iterable
 from typing import TYPE_CHECKING, Any, Literal, get_args, overload
 
 from pint import UnitRegistry
@@ -46,6 +47,7 @@ Dimension = Literal[
     "electric_field",
     "magnetic_field",
     "distance",
+    "inverse_distance",
     "energy",
     "mass",
     "transition_rate",
@@ -55,16 +57,17 @@ Dimension = Literal[
     "time",
     "radial_matrix_element",
     "angular_matrix_element",
-    "arbitrary",
+    "dimensionless",
     "zero",
 ]
-DimensionLike = Dimension | tuple[Dimension, Dimension]
+DimensionLike = Dimension | Iterable[Dimension]
 
 # some abbreviations: au_time: atomic_unit_of_time; au_current: atomic_unit_of_current; m_e: electron_mass
 _CommonUnits: dict[Dimension, str] = {
     "electric_field": "V/cm",  # 1 V/cm ~ 1.94469e-10 bohr * m_e / au_current / au_time ** 3
     "magnetic_field": "T",  # 1 T ~ 4.25438e-06 m_e / au_current / au_time ** 2
     "distance": "micrometer",  # 1 mum ~ 1.88973e+04 bohr
+    "inverse_distance": "1/micrometer",  # 1 /mum ~ 5.29177e-05 / bohr
     "energy": "hartree",  # 1 hartree = 1 bohr ** 2 * m_e / au_time ** 2
     "mass": "m_e",  # 1 m_e
     "charge": "e",  # 1 e = 1 au_current * au_time
@@ -80,7 +83,7 @@ _CommonUnits: dict[Dimension, str] = {
     "electric_quadrupole_zero": "e * a0^2",  # 1 e * a0^2 = 1 au_current * au_time * bohr ** 2
     "electric_octupole": "e * a0^3",  # 1 e * a0^3 = 1 au_current * au_time * bohr ** 3
     "magnetic_dipole": "bohr_magneton",  # 1 bohr_magneton = 0.5 au_current * bohr ** 2'
-    "arbitrary": "",  # 1 dimensionless
+    "dimensionless": "",  # 1 dimensionless
     "zero": "",  # 1 dimensionless
 }
 # all angular operators are dimensionless
@@ -102,9 +105,11 @@ rydberg_constant_au = ureg.Quantity(1, "rydberg_constant").to(BaseUnits["energy"
 electron_mass_u = ureg.Quantity(1, "electron_mass").to("u").m
 
 
-def _contexts(dimension: Dimension | None) -> tuple[Context, ...]:
+def _contexts(dimension: DimensionLike | None) -> tuple[Context, ...]:
     """Return the pint contexts needed to convert the given dimension (e.g. "spectroscopy" for energies)."""
     if dimension is None:
+        return ()
+    if not isinstance(dimension, str):
         return ()
     context = BaseContexts.get(dimension)
     return () if context is None else (context,)
@@ -140,23 +145,23 @@ def user_to_au(value: PintFloat | float, unit: str | None, dimension: Dimension 
 
 
 @overload
-def au_to_user(value_au: float, dimension: Dimension, unit: str) -> float: ...
+def au_to_user(value_au: float, dimension: DimensionLike, unit: str) -> float: ...
 
 
 @overload
-def au_to_user(value_au: float, dimension: Dimension, unit: None) -> PintFloat: ...
+def au_to_user(value_au: float, dimension: DimensionLike, unit: None) -> PintFloat: ...
 
 
 @overload
-def au_to_user(value_au: NDArray, dimension: Dimension, unit: str) -> NDArray: ...
+def au_to_user(value_au: NDArray, dimension: DimensionLike, unit: str) -> NDArray: ...
 
 
 @overload
-def au_to_user(value_au: NDArray, dimension: Dimension, unit: None) -> PintArray: ...
+def au_to_user(value_au: NDArray, dimension: DimensionLike, unit: None) -> PintArray: ...
 
 
 def au_to_user(
-    value_au: float | NDArray, dimension: Dimension, unit: str | None
+    value_au: float | NDArray, dimension: DimensionLike, unit: str | None
 ) -> PintFloat | PintArray | float | NDArray:
     """Convert a value in atomic units to a user-defined unit.
 
@@ -173,7 +178,13 @@ def au_to_user(
     if unit == "a.u.":
         return value_au
 
-    quantity: PintFloat | PintArray = value_au * BaseQuantities[dimension]
+    if isinstance(dimension, str):
+        quantity: PintFloat | PintArray = value_au * BaseQuantities[dimension]
+    else:
+        quantity = value_au * BaseQuantities["dimensionless"]
+        for dim in dimension:
+            quantity = quantity * BaseQuantities[dim]
+
     if unit is None:
         return quantity
     return quantity.to(unit, *_contexts(dimension)).magnitude

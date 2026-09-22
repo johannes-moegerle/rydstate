@@ -7,16 +7,16 @@ from typing import TYPE_CHECKING, overload
 
 import numpy as np
 
+from rydstate import units
 from rydstate.radial.radial_matrix_element import (
     calc_radial_matrix_element,
     calc_radial_matrix_element_electric_dipole_closed_shell_core,
 )
-from rydstate.units import ureg
 
 if TYPE_CHECKING:
     from rydstate.radial.radial_matrix_element import INTEGRATION_METHODS, RadialMatrixElementOperator
     from rydstate.species.element_properties import ElementProperties
-    from rydstate.units import NDArray, PintFloat
+    from rydstate.units import Dimension, NDArray, PintFloat
 
 logger = logging.getLogger(__name__)
 
@@ -243,17 +243,9 @@ class Radial:
 
         """
         radial_matrix_element_au = self._calc_matrix_element_au(other, k_radial, integration_method=integration_method)
-
-        if unit == "a.u.":
-            return radial_matrix_element_au
-        radial_matrix_element: PintFloat
-        if k_radial == "electric_dipole_closed_shell_core":
-            radial_matrix_element = radial_matrix_element_au * ureg.Quantity(1, "a0") ** 1
-        else:
-            radial_matrix_element = radial_matrix_element_au * ureg.Quantity(1, "a0") ** k_radial
-        if unit is None:
-            return radial_matrix_element
-        return radial_matrix_element.to(unit).magnitude
+        kappa = 1 if k_radial == "electric_dipole_closed_shell_core" else k_radial
+        dimension: list[Dimension] = ["distance"] * kappa if kappa > 0 else ["inverse_distance"] * -kappa
+        return units.au_to_user(radial_matrix_element_au, dimension, unit)
 
     def _calc_matrix_element_au(
         self,
