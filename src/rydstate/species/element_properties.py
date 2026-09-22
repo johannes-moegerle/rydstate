@@ -8,7 +8,7 @@ from rydstate import units
 from rydstate.angular.utils import check_spin_addition_rule, get_possible_quantum_number_values, is_unknown
 from rydstate.metaclass_cache import CachedABCMeta
 from rydstate.species.utils import get_all_subclasses
-from rydstate.units import rydberg_constant_au
+from rydstate.units import electron_mass_u, rydberg_constant_au
 
 if TYPE_CHECKING:
     from rydstate.angular.utils import Unknown
@@ -35,8 +35,19 @@ class ElementProperties(ABC, metaclass=CachedABCMeta):
     number_valence_electrons: ClassVar[int]
     """Number of valence electrons (i.e. 1 for alkali atoms and 2 for alkaline earth atoms)."""
 
-    corrected_rydberg_constant: ClassVar[tuple[float, str]]
-    r"""Corrected Rydberg constant stored as a tuple of the form (value, unit) for lazy unit conversion."""
+    mass_number: ClassVar[int]
+    """Mass number A (i.e. number of nucleons) of the isotope."""
+    atomic_mass_u: ClassVar[float]
+    """Relative atomic mass of the *neutral* atom in unified atomic mass units (u).
+
+    I.e. the mass including all Z electrons and their binding energies.
+
+    If not said otherwise, the values are taken from Table I (the atomic mass table)
+    of the AME2020 atomic mass evaluation
+    (M. Wang et al., Chin. Phys. C 45, 030003 (2021), https://doi.org/10.1088/1674-1137/abddaf).
+    Concretely, we use the unrounded version of that table, which is published as the text file
+    https://www-nds.iaea.org/amdc/ame2020/mass_1.mas20.txt, where the last column holds the atomic mass.
+    """
 
     ground_state_shell: ClassVar[tuple[int, int]]
     """Shell (n, l) describing the electronic ground state configuration."""
@@ -137,10 +148,19 @@ class ElementProperties(ABC, metaclass=CachedABCMeta):
             Corrected Rydberg constant in the desired unit.
 
         """
-        corrected_rydberg_constant_au = units.user_to_au(
-            self.corrected_rydberg_constant[0], self.corrected_rydberg_constant[1], "energy"
-        )
+        corrected_rydberg_constant_au = self.reduced_mass_au * rydberg_constant_au
         return units.au_to_user(corrected_rydberg_constant_au, "energy", unit)
+
+    @cached_property
+    def mass_core_u(self) -> float:
+        """The mass of the ionic core in unified atomic mass units (u).
+
+        The core is the neutral atom stripped of the Rydberg electron and of all further
+        electrons that are missing for an ion, i.e. of ``net_charge`` electrons in total.
+        (The binding energies of these electrons are neglected, they only contribute
+        on the order of 1e-8 u.)
+        """
+        return self.atomic_mass_u - self.net_charge * electron_mass_u
 
     @cached_property  # don't remove this caching without benchmarking it!!!
     def reduced_mass_au(self) -> float:
@@ -150,14 +170,12 @@ class ElementProperties(ABC, metaclass=CachedABCMeta):
 
         .. math::
             \frac{\mu}{m_e} = \frac{m_{Core}}{m_{Core} + m_e}
+                              = \frac{1}{1 + m_e / m_{Core}}
 
-        We calculate the reduced mass via the corrected Rydberg constant
-
-        .. math::
-            \frac{\mu}{m_e} = \frac{R_M}{R_\infty}
+        where :math:`m_{Core}` is given by :attr:`mass_core_u`.
 
         """
-        return self.get_corrected_rydberg_constant("a.u.") / rydberg_constant_au
+        return 1 / (1 + electron_mass_u / self.mass_core_u)
 
 
 def get_element_properties(species: str) -> ElementProperties:

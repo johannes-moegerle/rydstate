@@ -2,7 +2,6 @@ from abc import ABC
 from typing import ClassVar
 
 from rydstate.species.element_properties import ElementProperties
-from rydstate.units import electron_mass_u, rydberg_constant_au
 
 
 class _ElementPropertiesStrontiumAbstractIon(ElementProperties, ABC):
@@ -24,11 +23,8 @@ class ElementPropertiesStrontium87Ion(_ElementPropertiesStrontiumAbstractIon):
     species = "Sr87_ion"
     i_c = 9 / 2
 
-    _isotope_mass_u = 86.9088774970
-    corrected_rydberg_constant = (
-        rydberg_constant_au / (1 + electron_mass_u / _isotope_mass_u),
-        "a.u.",
-    )
+    mass_number = 87
+    atomic_mass_u = 86.90887749454
 
     # https://nds.iaea.org/nuclearmoments/isotope_measurement_results.php?A=87&Z=38
     nuclear_dipole = -1.09316
@@ -38,8 +34,5 @@ class ElementPropertiesStrontium88Ion(_ElementPropertiesStrontiumAbstractIon):
     species = "Sr88_ion"
     i_c = 0
 
-    _isotope_mass_u = 87.9056122571
-    corrected_rydberg_constant = (
-        rydberg_constant_au / (1 + electron_mass_u / _isotope_mass_u),
-        "a.u.",
-    )
+    mass_number = 88
+    atomic_mass_u = 87.905612253
