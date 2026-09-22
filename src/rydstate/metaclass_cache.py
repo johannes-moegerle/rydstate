@@ -4,12 +4,12 @@ import threading
 import weakref
 from abc import ABCMeta
 from inspect import Parameter, signature
-from typing import TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING, TypeVar, cast
 
 if TYPE_CHECKING:
     from inspect import Signature
 
-CachedT = TypeVar("CachedT", bound="CachedABCMeta")
+CachedT = TypeVar("CachedT")
 
 
 class CachedABCMeta(ABCMeta):
@@ -33,16 +33,20 @@ class CachedABCMeta(ABCMeta):
         with cls._instances_lock:
             cls._instances.clear()
 
-    def __call__(cls: type[CachedT], *args: object, **kwargs: object) -> CachedT:  # type: ignore [misc]
-        with cls._instances_lock:
-            if cls._signature is None:
-                cls._signature = signature(cls.__init__)
+    def __call__(cls: type[CachedT], *args: object, **kwargs: object) -> CachedT:
+        # The `type[CachedT]` annotation above is only used to tell type checkers that calling a
+        # cached class returns an instance of that class. Inside the body `cls` is what it always
+        # is for a metaclass `__call__`: the class object, i.e. an instance of `CachedABCMeta`.
+        mcs = cast("CachedABCMeta", cls)
+        with mcs._instances_lock:
+            if mcs._signature is None:
+                mcs._signature = signature(cls.__init__)
 
-            bound_arguments = cls._signature.bind(None, *args, **kwargs)
+            bound_arguments = mcs._signature.bind(None, *args, **kwargs)
             bound_arguments.apply_defaults()
             constructor_arguments_list: list[tuple[str, object]] = []
             for name, value in list(bound_arguments.arguments.items())[1:]:
-                parameter_kind = cls._signature.parameters[name].kind
+                parameter_kind = mcs._signature.parameters[name].kind
                 normalized_value = value
                 if parameter_kind is Parameter.VAR_POSITIONAL:
                     normalized_value = tuple(value)
@@ -54,11 +58,11 @@ class CachedABCMeta(ABCMeta):
                 hash(key)
             except TypeError as exc:
                 raise TypeError(
-                    f"Arguments to cached class {cls.__name__} must be hashable, but received {key!r}."
+                    f"Arguments to cached class {mcs.__name__} must be hashable, but received {key!r}."
                 ) from exc
 
-            instance = cls._instances.get(key)
+            instance = mcs._instances.get(key)
             if instance is None:
-                instance = ABCMeta.__call__(cls, *args, **kwargs)
-                cls._instances[key] = instance
-            return instance  # type: ignore [return-value]
+                instance = ABCMeta.__call__(mcs, *args, **kwargs)
+                mcs._instances[key] = instance
+            return cast("CachedT", instance)
