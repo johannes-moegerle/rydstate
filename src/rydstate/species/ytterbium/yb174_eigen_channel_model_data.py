@@ -380,8 +380,7 @@ class Yb174_G4_HighN(EigenChannelModel):
     ]
 
     eigen_quantum_defects = [
-        # TODO is this correct? In the paper the "matrix" is transposed
-        # but Fig 7 suggests that this interpretation is correct
+        # In the paper the "matrix" is transposed but Fig 7 shows that this interpretation is correct
         [0.0262659964, -0.148808463],
         [0.0254568575, -0.134219071],
     ]
