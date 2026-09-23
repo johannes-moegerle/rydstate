@@ -116,7 +116,9 @@ class Yb171_P05_HighN(EigenChannelModel):
     ]
     mixing_angles = [
         (0, 1, [-0.102285383, 153.521338, -15393.2283]),
-        (1, 6, [-0.00168607392]),
+        # opposite sign than theta_27 of the publication, since the kets 6snp 3P1 and 3P0 of the publication differ
+        # by a relative sign from the rydstate kets (see test_kuroda2025_mixing_angle_phase_convention)
+        (1, 6, [0.00168607392]),
         (0, 2, [-0.0719467433]),
         (0, 3, [-0.0673315968]),
         (0, 4, [-0.0221077377]),
