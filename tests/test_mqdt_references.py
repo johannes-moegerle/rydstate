@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from typing import TYPE_CHECKING
 
 import numpy as np
@@ -9,6 +10,7 @@ from rydstate.angular.angular_ket import AngularKetJJ, AngularKetLS
 from rydstate.angular.utils import NotSet
 from rydstate.basis.basis_mqdt import get_mqdt_states_from_model
 from rydstate.species import EigenChannelModel, get_mqdt, get_potential_class
+from rydstate.species.utils import calc_modified_ritz_formula_in_nu
 
 if TYPE_CHECKING:
     from rydstate.units import NDArray
@@ -215,3 +217,35 @@ def test_yb_d2_singlet_triplet_relative_sign(species: str, name: str, nu_range: 
         n_checked += 1
         assert (c_s * c_t < 0) == (c_t**2 > c_s**2), f"{model.full_name}: {state.nu=}, {c_s=}, {c_t=}"
     assert n_checked > 0
+
+
+def _get_nist_fit_models() -> list[EigenChannelModel]:
+    """Return the eigenchannel models of all species, which were fitted to NIST data (instead of taken from papers)."""
+    models = []
+    for species in ("Sr87", "Sr88", "Yb171", "Yb173", "Yb174"):
+        for model in get_mqdt(species).models:
+            reference = " ".join(model.reference) if isinstance(model.reference, tuple) else str(model.reference)
+            if (
+                isinstance(model, EigenChannelModel)
+                and model.mixing_angles
+                and re.search("fit to .*NIST data", reference)
+            ):
+                models.append(model)
+    return models
+
+
+@pytest.mark.parametrize("model", _get_nist_fit_models(), ids=lambda model: model.full_name)
+def test_nist_fit_mixing_angles_smaller_than_pi_half(model: EigenChannelModel) -> None:
+    """The mixing angles of the models fitted to NIST data stay within (-pi/2, pi/2) in the whole nu range.
+
+    A rotation by pi/2 just swaps the two eigenchannels, so larger angles are equivalent to smaller angles
+    with the eigen quantum defects swapped, but they make the sign of the angle (i.e. the singlet-triplet mixing)
+    hard to interpret and compare between models. The angles are evaluated like in the model,
+    i.e. with the nui of the first channel, see
+    :meth:`~rydstate.species.eigen_channel_model.EigenChannelModel.calc_frame_transformation_inner_closecoupling`.
+    """
+    for nu in np.linspace(model.nu_min, model.nu_max, 200):
+        nui_0 = float(model.calc_channel_nuis(nu)[0])
+        for i, j, coefficients in model.mixing_angles or []:
+            angle = calc_modified_ritz_formula_in_nu(nui_0, coefficients)
+            assert abs(angle) < np.pi / 2, f"{model.full_name}: mixing angle ({i}, {j}) = {angle} at {nu=}"
