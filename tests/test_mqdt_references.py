@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 import pytest
 from rydstate import RydbergStateSQDTDivalent
+from rydstate.angular.angular_ket import AngularKetJJ, AngularKetLS
 from rydstate.angular.utils import NotSet
 from rydstate.basis.basis_mqdt import get_mqdt_states_from_model
 from rydstate.species import EigenChannelModel, get_mqdt, get_potential_class
@@ -146,3 +147,71 @@ def test_mqdt_energies_match_nist(name: str, n: int, l_r: int, j_tot: int, s_tot
         f"{model.full_name}: the calculated nu={closest.nu} does not match "
         f"the experimental nu={nu_experimental} of the {n=}, {l_r=}, {j_tot=}, {s_tot=} level"
     )
+
+
+# Low lying states, whose singlet-triplet mixing angle is not determined by the energies the models were fitted to:
+# (species, model name, nu range containing the state, l_r). The listed state is the lowest state in the nu range.
+SPIN_ORBIT_MIXED_STATES: list[tuple[str, str, tuple[float, float], int]] = [
+    ("Sr88", "P J=1 (recombination), 1.8 < nu < 2.2", (1.8, 2.2), 1),  # 5s5p 3P1
+    ("Yb174", "P J=1, 1.7 < nu < 2.7", (1.7, 2.7), 1),  # 6s6p 3P1
+    ("Yb174", "D J=2, 2 < nu < 5", (2.0, 3.2), 2),  # 6s5d 3D2
+]
+
+
+@pytest.mark.parametrize(("species", "name", "nu_range", "l_r"), SPIN_ORBIT_MIXED_STATES)
+def test_singlet_triplet_mixing_towards_jj_coupling(
+    species: str, name: str, nu_range: tuple[float, float], l_r: int
+) -> None:
+    """The singlet-triplet mixing of the low lying states has the sign expected from the spin-orbit interaction.
+
+    The spin-orbit interaction of the valence electron (with normal fine structure, j = l_r - 1/2 below
+    j = l_r + 1/2) mixes the lower of the two LS states with the same J towards the jj coupled state with
+    j_r = l_r - 1/2. So the lower state must have a larger weight of j_r = l_r - 1/2 than the pure LS state.
+    With the opposite sign of the mixing angle, the state is rotated away from it.
+    """
+    model = _get_model(species, name)
+    states = get_mqdt_states_from_model(model, nu_range, NotSet, get_potential_class(species))
+    state = min(states, key=lambda state: state.get_energy("1/cm"))
+    j_tot = model.f_tot
+    s_tot = round(state.calc_exp_qn("s_tot"))
+    ls_ket = AngularKetLS(l_c=0, l_r=l_r, l_tot=l_r, s_tot=s_tot, j_tot=j_tot, species=species)
+    jj_ket = AngularKetJJ(l_c=0, l_r=l_r, j_c=0.5, j_r=l_r - 0.5, j_tot=j_tot, species=species)
+    weight_ls = jj_ket.calc_reduced_overlap(ls_ket) ** 2
+    weight = sum(coeff**2 for coeff, ket in state if ket.angular.calc_reduced_overlap(jj_ket) != 0) / state.norm**2
+    assert weight > weight_ls, f"{model.full_name}: weight of j_r = l_r - 1/2 {weight} < {weight_ls} of the LS state"
+
+
+# Yb D J=2 models and nu ranges, in which the relative sign of the 6snd 1D2 and 3D2 components is checked
+YB_D2_MODELS: list[tuple[str, str, tuple[float, float]]] = [
+    ("Yb174", "D J=2, 2 < nu < 5", (2, 5)),
+    ("Yb174", "D J=2, nu > 5", (5, 40)),
+    ("Yb171", "D F=3/2, 2 < nu < 30", (2, 30)),
+    ("Yb171", "D F=5/2, 2 < nu < 30", (2, 30)),
+    ("Yb171", "D F=3/2, nu > 30", (30, 40)),
+    ("Yb171", "D F=5/2, nu > 30", (30, 40)),
+]
+
+
+@pytest.mark.parametrize(("species", "name", "nu_range"), YB_D2_MODELS)
+def test_yb_d2_singlet_triplet_relative_sign(species: str, name: str, nu_range: tuple[float, float]) -> None:
+    """The relative sign of the 6snd 1D2 and 3D2 components is the same in all Yb D J=2 models.
+
+    The sign of the singlet-triplet mixing is fixed by the 171Yb energies of the Rydberg states (hyperfine
+    interaction) and, for the low lying states (2 < nu < 5), by the spin-orbit interaction
+    (see test_singlet_triplet_mixing_towards_jj_coupling). In all models, the states with dominant triplet character
+    have c_S * c_T < 0 and the states with dominant singlet character c_S * c_T > 0
+    (c_S, c_T: amplitudes of 6snd 1D2 and 3D2). The mixing angles of the different models (with very different
+    parametrizations) are therefore consistent and there is no jump of the relative sign between the models.
+    States with a small singlet-triplet mixing (< 1%) or an almost equal mixing are ignored.
+    """
+    model = _get_model(species, name)
+    f_tot = model.f_tot
+    ls_kets = [AngularKetLS(l_c=0, l_r=2, l_tot=2, s_tot=s, j_tot=2, f_tot=f_tot, species=species) for s in (0, 1)]
+    n_checked = 0
+    for state in get_mqdt_states_from_model(model, nu_range, NotSet, get_potential_class(species)):
+        c_s, c_t = (sum(c * ket.angular.calc_reduced_overlap(ls) for c, ket in state) / state.norm for ls in ls_kets)
+        if c_s**2 + c_t**2 < 0.5 or min(c_s**2, c_t**2) < 0.01 or abs(c_t**2 - c_s**2) < 0.2:
+            continue
+        n_checked += 1
+        assert (c_s * c_t < 0) == (c_t**2 > c_s**2), f"{model.full_name}: {state.nu=}, {c_s=}, {c_t=}"
+    assert n_checked > 0
