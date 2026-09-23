@@ -1,18 +1,23 @@
 from __future__ import annotations
 
+import itertools
 import re
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import pytest
 from rydstate import RydbergStateSQDTDivalent
-from rydstate.angular.angular_ket import AngularKetJJ, AngularKetLS
-from rydstate.angular.utils import NotSet
+from rydstate.angular.angular_ket import AngularKetFJ, AngularKetJJ, AngularKetLS
+from rydstate.angular.utils import NotSet, is_unknown
 from rydstate.basis.basis_mqdt import get_mqdt_states_from_model
 from rydstate.species import EigenChannelModel, get_mqdt, get_potential_class
-from rydstate.species.utils import calc_modified_ritz_formula_in_nu
+from rydstate.species.utils import calc_modified_ritz_formula_in_nu, calc_nu_from_energy
+from rydstate.units import ureg
 
 if TYPE_CHECKING:
+    from rydstate.angular.angular_ket import AngularKetBase
+    from rydstate.rydberg_state import RydbergStateMQDT
+    from rydstate.species import MQDTModel
     from rydstate.units import NDArray
 
 
@@ -44,6 +49,19 @@ _YB171_D25 = np.array(
         [1 / 2, np.sqrt(1 / 6), 0, 0, 0, np.sqrt(7 / 3) / 2],
     ]
 )
+# Table S10 of R. Kuroda et al., Phys. Rev. A 112, 042817 (2025) (arXiv:2507.11487)
+_YB171_P05 = np.array(
+    [
+        [-np.sqrt(2 / 3), -np.sqrt(1 / 3), 0, 0, 0, 0, 0, 0],
+        [1 / (2 * np.sqrt(3)), -np.sqrt(1 / 6), 0, 0, 0, 0, np.sqrt(3) / 2, 0],
+        [0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 0, 0, 0],
+        [0, 0, 0, 0, 0, 1, 0, 0],
+        [-1 / 2, 1 / np.sqrt(2), 0, 0, 0, 0, 1 / 2, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1],
+    ]
+)
 _YB174_D2 = np.array(
     [
         [np.sqrt(3 / 5), np.sqrt(2 / 5), 0, 0, 0],
@@ -63,6 +81,7 @@ REFERENCE_FRAME_TRANSFORMATIONS: list[tuple[str, str, NDArray]] = [
     ("Yb171", "S F=1/2, 2 < nu < 26", _YB171_S05),
     ("Yb171", "D F=5/2, nu > 30", _YB171_D25),
     ("Yb171", "D F=5/2, 2 < nu < 30", _YB171_D25),
+    ("Yb171", "P F=1/2, nu > 5.9", _YB171_P05),
     ("Yb174", "D J=2, nu > 5", _YB174_D2),
 ]
 
@@ -78,9 +97,10 @@ NIST_LEVELS: list[tuple[str, int, int, int, int]] = [
 def _equal_up_to_channel_signs(a: NDArray, b: NDArray, atol: float = 1e-10) -> bool:
     """Check whether a = diag(row_signs) @ b @ diag(col_signs) for some sign vectors row_signs, col_signs.
 
-    Such sign flips only correspond to a different phase convention of the individual inner and outer channel kets.
-    The signs of the columns (inner channels) drop out of K = U Kbar U^T,
-    the signs of the rows (outer channels) only flip the sign of the corresponding channel coefficients.
+    Such sign flips correspond to a different phase convention of the individual inner and outer channel kets.
+    Note that the signs of the columns (inner channels) only drop out of K = U Kbar U^T if there are no mixing angles,
+    otherwise the mixing angles have to be given in the same phase convention as the frame transformation,
+    see test_frame_transformation_phase_convention.
     """
     if not np.allclose(np.abs(a), np.abs(b), atol=atol):
         return False
@@ -149,6 +169,222 @@ def test_mqdt_energies_match_nist(name: str, n: int, l_r: int, j_tot: int, s_tot
         f"{model.full_name}: the calculated nu={closest.nu} does not match "
         f"the experimental nu={nu_experimental} of the {n=}, {l_r=}, {j_tot=}, {s_tot=} level"
     )
+
+
+def _get_states_around_energy(model: MQDTModel, energy: float, delta_nu: float = 0.3) -> list[RydbergStateMQDT]:
+    """Return the MQDT states of the model within +- delta_nu around the given term energy (in 1/cm)."""
+    energy_au = ureg.Quantity(energy, "1/cm").to("hartree", "spectroscopy").magnitude
+    reference_au = model.mqdt.reference_ionization_threshold_au
+    nu = calc_nu_from_energy(model.element_properties.reduced_mass_au, energy_au - reference_au)
+    nu_range = (max(nu - delta_nu, model.nu_min), nu + delta_nu)
+    return get_mqdt_states_from_model(model, nu_range, NotSet, get_potential_class(model.species))
+
+
+# The sign of a mixing angle between two channels converging to the same ionization threshold, like the
+# singlet-triplet mixing angles of 6snl 1L_J and 3L_J (or of the jj coupled 6sng +G4 and -G4), cannot be determined
+# from the energies of the isotopes without hyperfine structure (the energies are invariant under the sign flip),
+# although it changes the singlet/triplet character of the states. For the isotopes with hyperfine structure,
+# the hyperfine interaction couples these channels to channels with different ionization thresholds, so that the
+# energies fix the sign (except for the 6sng series, see test_yb174_g4_g_factors). The models of both isotopes must
+# therefore use the same sign, which also ensures that the angles are given in the same phase convention.
+ISOTOPE_PAIRS = [("Yb174", "Yb171"), ("Yb174", "Yb173"), ("Sr88", "Sr87")]
+
+
+def _channel_key(ket: AngularKetBase[Any]) -> tuple[Any, ...] | None:
+    """Return the quantum numbers of a channel ket without i_c and f_tot (None for kets with unknown values)."""
+    if not isinstance(ket, AngularKetLS | AngularKetJJ):
+        return None
+    qns = zip(ket.quantum_number_names, ket.quantum_numbers, strict=True)
+    return (type(ket).__name__, *(value for qn, value in qns if qn not in ("i_c", "f_tot")))
+
+
+def _get_mixing_angles_by_channels(model: EigenChannelModel, nu: float) -> dict[tuple[Any, Any], float]:
+    """Return the mixing angles of the model at nu, keyed by the channel keys of the mixed channels.
+
+    The angles are reduced to the interval (-pi/2, pi/2], since theta and theta + pi only differ by the sign of the
+    eigenchannels. The energy dependence is evaluated with nu instead of the nui of the first channel,
+    which is good enough to determine the sign.
+    """
+    angles = {}
+    for i, j, coefficients in model.mixing_angles or []:
+        key_i, key_j = _channel_key(model.inner_channels[i]), _channel_key(model.inner_channels[j])
+        if key_i is not None and key_j is not None:
+            angle = calc_modified_ritz_formula_in_nu(nu, coefficients)
+            angle = angle - np.pi * np.ceil(angle / np.pi - 0.5)
+            angles[(key_i, key_j)] = angle
+            angles[(key_j, key_i)] = -angle  # R_ij(theta) = R_ji(-theta)
+    return angles
+
+
+@pytest.mark.parametrize(("species", "species_hfs"), ISOTOPE_PAIRS)
+def test_mixing_angle_signs_consistent_between_isotopes(species: str, species_hfs: str) -> None:
+    """Mixing angles between the same channels have the same sign for the isotopes with and without hyperfine structure.
+
+    Only models whose nu ranges overlap by at least 0.5 are compared, at a nu in the middle of the overlap.
+    Angles with |theta| > pi/4 are not compared, since a rotation by theta ~ pi/2 mainly swaps the two eigenchannels,
+    such that its sign can only be compared together with the eigen quantum defects
+    (see test_yb_d2_singlet_triplet_relative_sign for a comparison of the resulting states).
+    """
+    models = [model for model in get_mqdt(species).models if isinstance(model, EigenChannelModel)]
+    models_hfs = [model for model in get_mqdt(species_hfs).models if isinstance(model, EigenChannelModel)]
+    n_compared = 0
+    for model in models:
+        for model_hfs in models_hfs:
+            nu_min = max(model.nu_min, model_hfs.nu_min)
+            nu_max = min(model.nu_max, model_hfs.nu_max, nu_min + 20)
+            if nu_max - nu_min < 0.5:
+                continue
+            nu = (nu_min + nu_max) / 2
+            angles = _get_mixing_angles_by_channels(model, nu)
+            for channels, angle_hfs in _get_mixing_angles_by_channels(model_hfs, nu).items():
+                if channels not in angles or max(abs(angles[channels]), abs(angle_hfs)) > np.pi / 4:
+                    continue
+                n_compared += 1
+                assert np.sign(angles[channels]) == np.sign(angle_hfs), (
+                    f"The mixing angle between the channels {channels} at {nu=} has a different sign in "
+                    f"{model.full_name} ({angles[channels]}) and {model_hfs.full_name} ({angle_hfs})"
+                )
+    assert n_compared > 0, f"No mixing angles of {species} and {species_hfs} were compared"
+
+
+# Experimental energies (in 1/cm, Table S27) and theoretical g-factors (Table S28) of the 174Yb 6sng +-G4 states of
+# R. Kuroda et al., Phys. Rev. A 112, 042817 (2025) (arXiv:2507.11487). The theoretical g-factors agree with the
+# measured ones (1.012(9) to 1.018(4) for +G4, 1.021(4) to 1.031(4) for -G4).
+KURODA_G4_G_FACTORS: list[tuple[str, float, float]] = [
+    ("6s34g +G4", 50347.996116, 1.0174),
+    ("6s34g -G4", 50348.000559, 1.0327),
+    ("6s37g +G4", 50362.798462, 1.0174),
+    ("6s37g -G4", 50362.801915, 1.0327),
+    ("6s41g +G4", 50377.706198, 1.0174),
+    ("6s41g -G4", 50377.708743, 1.0327),
+]
+
+
+@pytest.mark.parametrize(("label", "energy", "g_factor"), KURODA_G4_G_FACTORS)
+def test_yb174_g4_g_factors(label: str, energy: float, g_factor: float) -> None:
+    """The 6sng J=4 states of 174Yb have the published g-factors, which fixes the sign of the +G4/-G4 mixing angle.
+
+    The two J=4 channels 6s_1/2 ng_9/2 and 6s_1/2 ng_7/2 converge to the same ionization threshold, and also in 171Yb
+    each of them is part of only a single hyperfine channel, so the sign of the mixing angle between them cannot be
+    determined from the energies. As in the publication, it is fixed by the g-factors
+    g = (1 - <s_tot>) g(1G4) + <s_tot> g(3G4). With the opposite sign of the mixing angle,
+    the g-factors would come out as 1.0267 (+G4) and 1.0234 (-G4).
+    """
+    g_s = 2.00231930436  # electron spin g-factor
+    g_singlet, g_triplet = 1.0, 1 + (g_s - 1) * 2 / 40  # g_J of 1G4 and 3G4 (L = 4, J = 4)
+
+    model = _get_model("Yb174", "G J=4, nu > 25")
+    states = _get_states_around_energy(model, energy)
+    closest = min(states, key=lambda state: abs(state.get_energy("1/cm") - energy))
+    assert abs(closest.get_energy("1/cm") - energy) < 5e-4, f"no state found for {label}"
+    triplet_fraction = closest.calc_exp_qn("s_tot")
+    assert (1 - triplet_fraction) * g_singlet + triplet_fraction * g_triplet == pytest.approx(g_factor, abs=2e-3)
+
+
+def _kuroda2025_ket_phase(ket: AngularKetBase[Any]) -> int | None:
+    """Phase d of a channel ket of the Yb publications relative to the rydstate ket (None for unknown kets).
+
+    The publications of the Thompson group (M. Peper et al., Phys. Rev. X 15, 011009 (2025) and
+    R. Kuroda et al., Phys. Rev. A 112, 042817 (2025)) couple all angular momenta in the opposite order
+    than rydstate, i.e. the core electron before the Rydberg electron and the spin before the orbital angular momentum,
+    ((s_c s_r)S, (l_c l_r)L)J and ((s_c l_c)j_c, (s_r l_r)j_r)J, with the exception of the nuclear spin (J i_c)F and
+    (j_c i_c)f_c. Reversing the coupling order of j_1 + j_2 -> j_12 gives a phase (-1)^(j_1 + j_2 - j_12).
+    """
+    if any(is_unknown(qn) for qn in ket.quantum_numbers):
+        return None
+    if isinstance(ket, AngularKetLS):
+        exponents = [ket.l_c + ket.l_r - ket.l_tot, ket.s_c + ket.s_r - ket.s_tot, ket.l_tot + ket.s_tot - ket.j_tot]
+    elif isinstance(ket, AngularKetJJ):
+        exponents = [ket.j_c + ket.j_r - ket.j_tot, ket.l_c + ket.s_c - ket.j_c, ket.l_r + ket.s_r - ket.j_r]
+    else:
+        assert isinstance(ket, AngularKetFJ)
+        exponents = [ket.f_c + ket.j_r - ket.f_tot, ket.l_c + ket.s_c - ket.j_c, ket.l_r + ket.s_r - ket.j_r]
+    return int((-1) ** round(sum(exponents)))
+
+
+@pytest.mark.parametrize(("species", "name", "reference"), REFERENCE_FRAME_TRANSFORMATIONS)
+def test_frame_transformation_phase_convention(species: str, name: str, reference: NDArray) -> None:
+    """The published frame transformations are reproduced exactly with the phases of _kuroda2025_ket_phase.
+
+    Contrary to test_frame_transformation_matches_reference, this also checks the signs of the individual channels,
+    which determine whether the mixing angles of the publications can be used unchanged,
+    see test_kuroda2025_mixing_angle_phase_convention.
+    """
+    model = _get_model(species, name)
+    d_outer = np.array([_kuroda2025_ket_phase(ket) or 1 for ket in model.outer_channels])
+    d_inner = np.array([_kuroda2025_ket_phase(ket) or 1 for ket in model.inner_channels])
+    calculated = d_outer[:, None] * model.calc_frame_transformation_outer_inner() * d_inner[None, :]
+    np.testing.assert_allclose(calculated, reference, atol=1e-10, err_msg=model.full_name)
+
+
+def _get_sign_flipped_mixing_angles(model: EigenChannelModel) -> set[tuple[int, int]]:
+    """Return the mixing angles, which have the opposite sign in rydstate than in the publications.
+
+    The kets of the publications are related to the rydstate kets by |i>_paper = d_i |i>_rydstate,
+    so the frame transformation of the publications is U_paper = D_outer Q D_inner (with Q the frame transformation
+    calculated by rydstate) and the rotation matrix of the mixing angles must be transformed as
+    R_rydstate = D_inner R_paper D_inner, i.e. theta_ij changes its sign if d_i d_j = -1.
+    The phase of the perturber channels (with unknown quantum numbers) is arbitrary, it is chosen such that as few
+    angles as possible change their sign.
+    """
+    phases = [_kuroda2025_ket_phase(ket) for ket in model.inner_channels]
+    angles = [(i, j) for i, j, _coefficients in model.mixing_angles or []]
+    unknown = sorted({k for angle in angles for k in angle if phases[k] is None})
+    best: set[tuple[int, int]] | None = None
+    for choice in itertools.product([1, -1], repeat=len(unknown)):
+        phases_choice = list(phases)
+        for k, phase in zip(unknown, choice, strict=True):
+            phases_choice[k] = phase
+        flipped = {(i, j) for i, j in angles if phases_choice[i] * phases_choice[j] == -1}  # type: ignore [operator]
+        if best is None or len(flipped) < len(best):
+            best = flipped
+    return best or set()
+
+
+# Mixing angles of the Yb models, which are given with the opposite sign than in the publications
+# (all other mixing angles are taken over unchanged from the publications):
+# (species, model name, (i, j)) -> constant part of the mixing angle in the publication
+YB_SIGN_FLIPPED_MIXING_ANGLES: dict[tuple[str, str, tuple[int, int]], float] = {
+    # theta_27 of Table S10 of Kuroda 2025 (Phys. Rev. A 112, 042817), between 6snp 3P1 and 3P0
+    ("Yb171", "P F=1/2, nu > 5.9", (1, 6)): -0.00168607392,
+}
+
+
+def test_kuroda2025_mixing_angle_phase_convention() -> None:
+    """The mixing angles of the Yb models are given in the phase convention of the rydstate kets.
+
+    The mixing angles of the publications refer to their kets, see _kuroda2025_ket_phase. For most mixing angles,
+    both involved channels have the same phase, so the angle can be taken over unchanged. The remaining ones must
+    have the opposite sign than in the publication and are listed in YB_SIGN_FLIPPED_MIXING_ANGLES.
+    This test fails, if a model with such an angle is added, to make sure that its sign is adapted.
+    """
+    flipped = set()
+    for species in ("Yb171", "Yb173", "Yb174"):
+        for model in get_mqdt(species).models:
+            if isinstance(model, EigenChannelModel):
+                flipped |= {(species, model.name, angle) for angle in _get_sign_flipped_mixing_angles(model)}
+    assert flipped == set(YB_SIGN_FLIPPED_MIXING_ANGLES)
+
+    for (species, name, angle), angle_paper in YB_SIGN_FLIPPED_MIXING_ANGLES.items():
+        coefficients = next(c for i, j, c in _get_model(species, name).mixing_angles or [] if (i, j) == angle)
+        assert np.sign(coefficients[0]) == -np.sign(angle_paper), f"{species} {name} {angle}: sign not flipped"
+
+
+def test_yb171_3p1_hyperfine_splitting() -> None:
+    """The low lying 171Yb P models reproduce the hyperfine splitting of the 6s6p 3P1 state.
+
+    The splitting E(F=3/2) - E(F=1/2) = 3/2 A(3P1) ~ 5.94 GHz (A(3P1) ~ 3958 MHz,
+    e.g. K. Pandey et al., Phys. Rev. A 80, 022518 (2009)) depends on the sign of the 6snp 1P1 - 3P1 mixing angle,
+    which is not determined by the 174Yb energies the models were fitted to. With the correct sign, the models give
+    ~6.5 GHz, with the opposite sign ~2.8 GHz.
+    """
+    energies = {}
+    for name in ("P F=1/2, 1.6 < nu < 2.6", "P F=3/2, 1.6 < nu < 2.6"):
+        model = _get_model("Yb171", name)
+        states = get_mqdt_states_from_model(model, (1.6, 2.6), NotSet, get_potential_class("Yb171"))
+        energies[model.f_tot] = min((state.get_energy("1/cm") for state in states), key=lambda e: abs(e - 17992))
+    splitting = ureg.Quantity(energies[1.5] - energies[0.5], "1/cm").to("MHz", "spectroscopy").magnitude
+    assert splitting == pytest.approx(5937, rel=0.15)
 
 
 # Low lying states, whose singlet-triplet mixing angle is not determined by the energies the models were fitted to:
