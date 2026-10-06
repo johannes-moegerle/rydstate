@@ -1,3 +1,7 @@
+# Generated-by: Anthropic Claude Opus 5.5
+# Human-review: Functionality and results cross-checked; code not reviewed line by line.
+# If any of the tests in this file fail review the corresponding test in more detail!
+
 from __future__ import annotations
 
 import itertools
