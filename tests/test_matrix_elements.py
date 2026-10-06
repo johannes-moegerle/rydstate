@@ -23,7 +23,7 @@ def test_magnetic(l: int) -> None:
     assert np.isclose(mu.magnitude, -(g_l * l + g_s * 0.5)), f"{mu.magnitude} != {-(g_l * l + g_s * 0.5)}"
 
     # Check dimensionality
-    magnetic_field = ureg.Quantity(1, "T")
+    magnetic_field = ureg.Quantity(1.0, "T")
     zeeman_energy: PintFloat = -mu * magnetic_field
     assert zeeman_energy.dimensionality == BaseUnits["energy"].dimensionality, (
         f"{zeeman_energy.dimensionality} != {BaseUnits['energy'].dimensionality}"

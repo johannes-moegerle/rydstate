@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import inspect
 import math
-from typing import TYPE_CHECKING, TypeAlias, TypeVar
+from typing import TYPE_CHECKING, Any, TypeAlias, TypeVar
 
 import numpy as np
 
@@ -156,7 +156,8 @@ def calc_modified_ritz_formula_in_nu(nui: float, coefficients: ExpansionCoeffici
 def get_all_subclasses(cls: T, species: str | None = None, tag: str | None = None) -> list[T]:
     """Get all subclasses of cls for the given species (and tag)."""
     subclasses: list[T] = []
-    for subclass in cls.__subclasses__():
+    direct_subclasses: list[Any] = cls.__subclasses__()
+    for subclass in direct_subclasses:
         subclasses.extend(get_all_subclasses(subclass, species, tag))
         if inspect.isabstract(subclass) or getattr(subclass, "species", None) is None:
             continue
