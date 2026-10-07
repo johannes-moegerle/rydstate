@@ -42,6 +42,11 @@ This reproduces the recoupling matrices U_{i alphabar} of mqdtfit exactly
 and is necessary to get the correct singlet/triplet character and matrix elements.
 The energies of all states are independent of these signs, since det(D M D) = det(M).
 
+Note that the K-matrices of the paper are defined with the usual phase beta_i = pi (nu_i - l_i) of the Coulomb
+functions (the Z-coefficients of mqdtfit contain the factor (-1)^(l_i + 1)), which is taken into account
+when calculating the channel coefficients of the MQDT states (see get_mqdt_states_from_model), so no additional
+sign change of the K-matrix elements is necessary here.
+
 Validity ranges
 ---------------
 The lower bound of nu_range of each model is chosen such that all states used in the fit are included,

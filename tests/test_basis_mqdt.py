@@ -1,9 +1,18 @@
-import logging
+from __future__ import annotations
 
+import logging
+from typing import TYPE_CHECKING
+
+import numpy as np
 import pytest
 from rydstate import BasisMQDT
 from rydstate.angular import AngularKetFJ
-from rydstate.species import TrivialModel
+from rydstate.angular.utils import NotSet, is_unknown
+from rydstate.basis.basis_mqdt import get_mqdt_states_from_model
+from rydstate.species import TrivialModel, get_mqdt, get_potential_class
+
+if TYPE_CHECKING:
+    from rydstate.species import MQDTModel
 
 
 def test_mqdt_basis_creation() -> None:
@@ -113,3 +122,53 @@ def test_difficult_yb174_g4_highn_states(nu: float, caplog: pytest.LogCaptureFix
     assert len(warnings) == 0, "Unexpected warnings were logged: " + "; ".join(
         record.getMessage() for record in warnings
     )
+
+
+def _channel_coefficients_mqdt_jl(model: MQDTModel, nu: float) -> np.ndarray:
+    """Channel coefficients of the MQDT state at nu, calculated as in MQDT.jl (Peper et al.).
+
+    MQDT.jl uses M = diag(sin(beta)) + K diag(cos(beta)) with beta_i = pi (nu_i - l_i) (l_i = 0 for channels with
+    unknown l_r) and the coefficients nu_i^(3/2) x_i, where x is the null vector of M.
+    """
+    nuis = model.calc_channel_nuis(nu)
+    l_r = np.array([0 if is_unknown(ket.l_r) else ket.l_r for ket in model.outer_channels])
+    beta = np.pi * (nuis - l_r)
+    m_matrix = np.diag(np.sin(beta)) + model.calc_k_matrix(nu) @ np.diag(np.cos(beta))
+    _u, _s, vt = np.linalg.svd(m_matrix)
+    coefficients = vt[-1] * nuis ** (3 / 2)
+    coefficients /= np.linalg.norm(coefficients)
+    return coefficients * np.sign(coefficients[np.argmax(np.abs(coefficients))])  # type: ignore [no-any-return]
+
+
+@pytest.mark.parametrize(
+    ("species", "tag", "model_name", "nu_range"),
+    [
+        ("Yb174", None, "S J=0, nu > 2", (5.0, 12.0)),
+        ("Yb174", None, "D J=2, nu > 5", (6.0, 12.0)),
+        ("Sr88", "vaillant2024", "S J=1, nu > 3.4", (3.4, 12.0)),
+        ("Sr88", "vaillant2024", "D J=2, nu > 5.7", (5.7, 12.0)),
+    ],
+)
+def test_mqdt_channel_coefficients_coulomb_phase_convention(
+    species: str, tag: str | None, model_name: str, nu_range: tuple[float, float]
+) -> None:
+    """The channel coefficients follow the usual Coulomb phase convention beta_i = pi (nu_i - l_i).
+
+    This matters for models whose channels have Rydberg electrons with different parity (e.g. 6sns and 6pnp),
+    where it determines the relative sign of the channel coefficients and thereby the interference of the Rydberg
+    and inner valence electron contributions to electric multipole matrix elements.
+    The coefficients must agree with those of MQDT.jl and mqdtfit (Vaillant et al.), with which the models were fitted.
+    """
+    model = next(model for model in get_mqdt(species, tag).models if model.name == model_name)
+    l_r_parities = {round(ket.l_r) % 2 for ket in model.outer_channels if not is_unknown(ket.l_r)}
+    assert len(l_r_parities) == 2, "the test requires a model with channels of different l_r parity"
+
+    # expansion of each outer channel into the FJ kets, in the same order as in the states
+    n_fj = [len(list(ket.to_state("FJ"))) for ket in model.outer_channels]
+    coefficients_fj = np.array([coeff for ket in model.outer_channels for coeff, _ in ket.to_state("FJ")])
+
+    states = get_mqdt_states_from_model(model, nu_range, NotSet, get_potential_class(species))
+    assert len(states) > 3
+    for state in states:
+        expected = np.repeat(_channel_coefficients_mqdt_jl(model, state.nu), n_fj) * coefficients_fj
+        np.testing.assert_allclose(state.coefficients, expected, atol=1e-8, err_msg=f"{model.full_name} {state.nu=}")

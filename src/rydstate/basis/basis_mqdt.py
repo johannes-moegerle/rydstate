@@ -167,13 +167,23 @@ def get_mqdt_states_from_model(
             angular_kets_fj.append(ket_fj)
             number_kets_fj[i] += 1
 
+    # The K-matrix is defined w.r.t. the regular and irregular Coulomb functions f_i and g_i, where f_i is positive
+    # close to the origin. Asymptotically, f_i ~ u_i sin(beta_i) - v_i cos(beta_i) with beta_i = pi (nu_i - l_i)
+    # and v_i the decaying Whittaker function (positive at large r, like our radial kets).
+    # Hence, the coefficient of the bound state in channel i (w.r.t. v_i) is proportional to
+    # nu_i^(3/2) A_i / cos(beta_i) = (-1)^l_i nu_i^(3/2) A_i / cos(pi nu_i), where A is the null vector of
+    # tan(pi nu) + K (see e.g. Aymar, Greene, Luc-Koenig, Rev. Mod. Phys. 68, 1015 (1996)).
+    # This (-1)^l_i is the same convention as in mqdtfit (Vaillant et al.) and MQDT.jl (Peper et al.).
+    # Channels with unknown l_r are treated as l_r = 0.
+    channel_signs = np.array(
+        [1 if is_unknown(ket.l_r) else (-1) ** round(ket.l_r) for ket in model.outer_channels], dtype=float
+    )
+
     states: list[RydbergStateMQDT] = []
     for nu in nu_list:
         nuis = model.calc_channel_nuis(nu)
         coefficients = calc_nullvector(model.calc_scaled_m_matrix(nu))
-        coefficients = np.array(
-            [coeff * (nui ** (3 / 2)) / np.cos(np.pi * nui) for coeff, nui in zip(coefficients, nuis, strict=True)]
-        )
+        coefficients = channel_signs * coefficients * nuis ** (3 / 2) / np.cos(np.pi * nuis)
         coefficients /= np.linalg.norm(coefficients)
         arg_max = np.argmax(np.abs(coefficients))
         coefficients *= np.sign(coefficients[arg_max])
