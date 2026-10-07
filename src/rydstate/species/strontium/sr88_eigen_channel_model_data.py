@@ -60,7 +60,7 @@ class Sr88_P1_LowN(EigenChannelModel):
     name = "P J=1 (recombination), 1.8 < nu < 2.2"
     f_tot, parity = (1, -1)
     nu_range = (1.8, 2.2)
-    reference = REFERENCE_ROBICHEAUX_2019
+    reference = "fit to NIST data of the 5s5p 1P1 and 3P1 states"
 
     inner_channels = [
         AngularKetLS(l_c=0, l_r=1, l_tot=1, s_tot=0, j_tot=1, species="Sr88"),  # "5snp 1P1"
@@ -100,7 +100,7 @@ class Sr88_P0_HighN(EigenChannelModel):
     ]
 
     eigen_quantum_defects = [
-        [2.8867, 0.44, -1.9],
+        [2.8866, 0.44, -1.9],
     ]
 
 
@@ -121,8 +121,8 @@ class Sr88_P1_HighN(EigenChannelModel):
     ]
 
     eigen_quantum_defects = [
-        [2.724, -4.67, -157],
-        [2.8826, 0.407, -1.3],
+        [2.7295, -4.67, -157],
+        [2.8824, 0.407, -1.3],
     ]
 
 
@@ -141,7 +141,7 @@ class Sr88_P2_HighN(EigenChannelModel):
     ]
 
     eigen_quantum_defects = [
-        [2.882, 0.446, -1.9],
+        [2.8719, 0.446, -1.9],
     ]
 
 
@@ -160,7 +160,7 @@ class Sr88_D1_HighN(EigenChannelModel):
     ]
 
     eigen_quantum_defects = [
-        [2.67524, -13.15, -4444],
+        [2.67517, -13.15, -4444],
     ]
 
 
@@ -181,8 +181,8 @@ class Sr88_D2_HighN(EigenChannelModel):
     ]
 
     eigen_quantum_defects = [
-        [3.3847, -39.41, -1090],
-        [2.66149, -16.77, -6656],
+        [2.3807, -39.41, -1090],
+        [2.66142, -16.77, -6656],
     ]
     mixing_angles = [
         (0, 1, [-0.14]),
@@ -204,7 +204,7 @@ class Sr88_D3_HighN(EigenChannelModel):
     ]
 
     eigen_quantum_defects = [
-        [2.655, -41.4, -15363],
+        [2.612, -41.4, -15363],
     ]
 
 
@@ -264,5 +264,5 @@ class Sr88_F4_HighN(EigenChannelModel):
     ]
 
     eigen_quantum_defects = [
-        [0.12, -2.2, 120],
+        [0.12, -2.4, 120],
     ]

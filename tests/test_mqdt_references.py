@@ -423,6 +423,32 @@ def test_singlet_triplet_mixing_towards_jj_coupling(
     assert weight > weight_ls, f"{model.full_name}: weight of j_r = l_r - 1/2 {weight} < {weight_ls} of the LS state"
 
 
+def test_sr87_5s5p_singlet_admixture() -> None:
+    """The 87Sr 5s5p F=9/2 states have the singlet admixture expected from the intercombination and clock lines.
+
+    The singlet fraction of a state decaying to 5s2 1S0 is approximately A / A(1P1) * (omega(1P1) / omega)^3.
+    - 5s5p 3P1: A ~ 4.7e4 1/s (7.4 kHz linewidth), A(1P1) ~ 1.9e8 1/s, i.e. singlet fraction ~ 8e-4,
+      the same as for the 88Sr 5s5p 3P1 state.
+    - 5s5p 3P0 (87Sr clock state): hyperfine quenched lifetime of the order of 150 s, i.e. singlet fraction ~ 1e-10.
+      With the opposite sign of the 1P1 - 3P1 mixing angle the singlet fraction is ~ 8e-12, without mixing ~ 3e-11.
+    """
+    singlet_fractions = {}
+    for species, name in [
+        ("Sr88", "P J=1 (recombination), 1.8 < nu < 2.2"),
+        ("Sr87", "P F=9/2 (clock), 1.8 < nu < 2.2"),
+    ]:
+        model = _get_model(species, name)
+        states = get_mqdt_states_from_model(model, (1.8, 2.2), NotSet, get_potential_class(species))
+        for state in states:
+            j_tot = round(state.calc_exp_qn("j_tot"))
+            if round(state.calc_exp_qn("s_tot")) == 1:
+                singlet_fractions[species, j_tot] = 1 - state.calc_exp_qn("s_tot")
+
+    assert singlet_fractions["Sr87", 1] == pytest.approx(singlet_fractions["Sr88", 1], rel=0.01)
+    assert singlet_fractions["Sr88", 1] == pytest.approx(8e-4, rel=0.2)
+    assert 0.5e-10 < singlet_fractions["Sr87", 0] < 3e-10
+
+
 # Yb D J=2 models and nu ranges, in which the relative sign of the 6snd 1D2 and 3D2 components is checked
 YB_D2_MODELS: list[tuple[str, str, tuple[float, float]]] = [
     ("Yb174", "D J=2, 2 < nu < 5", (2, 5)),
