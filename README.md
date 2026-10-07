@@ -14,8 +14,10 @@
 [docs-svg]: https://img.shields.io/badge/Documentation-rydstate-blue.svg?style=flat
 [docs-link]: https://www.pairinteraction.org/rydstate/sphinx/html/
 
-The *RydState* software calculates properties of Rydberg states.
-We especially focus on the calculation of the radial wavefunction of Rydberg states via the Numerov method.
+The *RydState* software calculates properties of Rydberg states of alkali and alkaline-earth-like atoms.
+Rydberg states are described by single-channel (SQDT) or multi-channel quantum defect theory (MQDT).
+Based on this, the software calculates the radial wavefunctions via the Numerov method,
+as well as energies and matrix elements of Rydberg states.
 The software can be installed via pip (requires Python >= 3.10):
 
 ```bash
@@ -33,9 +35,6 @@ pip install git+https://github.com/pairinteraction/rydstate
 
 This package relies on quantum defects provided by the community. Consider citing relevant publications for your atomic species.
 
-<p><details>
-<summary><b>Click to expand for quantum defect references</b></summary>
-
 | Element | Model | Identifier     | References                                                                                                                                                   |
 |---------|-------|----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | H       | SQDT  | `H`            | Schrödinger equation for hydrogen                                                                                                                            |
@@ -45,14 +44,13 @@ This package relies on quantum defects provided by the community. Consider citin
 | Rb      | SQDT  | `Rb`           | [10.1103/PhysRevA.83.052515] (2011)<br>[10.1103/PhysRevA.74.054502] (2006)<br>[10.1103/PhysRevA.74.062712] (2006)<br>[10.1103/PhysRevA.67.052502] (2003)     |
 | Cs      | SQDT  | `Cs`           | [10.1103/PhysRevA.93.013424] (2016)<br>[10.1103/PhysRevA.35.4650] (1987)<br>[10.1103/PhysRevA.26.2733] (1982)                                                |
 | Sr88    | SQDT  | `Sr88_sqdt`    | [10.1103/PhysRevA.108.022815] (2023)<br>[10.17169/refubium-34581] (2022)<br>[10.1016/j.cpc.2020.107814] (2021)                                               |
-| Sr87    | MQDT  | `Sr87_mqdt`    | [10.1088/1361-6455/ab4c22] (2019)                                                                                                                            |
-| Sr88    | MQDT  | `Sr88_mqdt`    | [10.1088/1361-6455/ab4c22] (2019)                                                                                                                            |
+| Sr87    | MQDT  | `Sr87_mqdt` (tag `robicheaux2019`) | [10.1088/1361-6455/ab4c22] (2019)                                                                                                        |
+| Sr88    | MQDT  | `Sr88_mqdt` (tag `robicheaux2019`) | [10.1088/1361-6455/ab4c22] (2019)                                                                                                        |
 | Sr88    | MQDT  | `Sr88_mqdt` (tag `vaillant2024`) | [10.1088/1361-6455/ad76f0] (2024)<br>[10.1088/0953-4075/47/15/155001] (2014)<br>[10.1016/j.cpc.2020.107814] (2021)                         |
 | Sr88+   | SQDT  | `Sr88_ion`     | [urn:nbn:se:su:diva-184811] (2020)<br>[10.1007/978-3-030-33770-4] (2019)<br>[10.1007/BF01426593] (1991)                                                      |
 | Yb171   | MQDT  | `Yb171_mqdt`   | [10.1103/PhysRevX.15.011009] (2025)<br>[10.1103/mzsv-rckx] (2025)                                                                                            |
 | Yb173   | MQDT  | `Yb173_mqdt`   | MQDT model formulated by [Frederic Hummel]                                                                                                                   |
 | Yb174   | MQDT  | `Yb174_mqdt`   | [10.1103/PhysRevX.15.011009] (2025)<br>[10.1103/mzsv-rckx] (2025)                                                                                            |
-</details></p>
 
 [10.1103/PhysRevA.34.2889]: https://doi.org/10.1103/PhysRevA.34.2889
 [10.1017/CBO9780511524530]: https://doi.org/10.1017/CBO9780511524530
