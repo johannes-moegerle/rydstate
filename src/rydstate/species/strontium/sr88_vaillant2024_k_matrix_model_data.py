@@ -46,6 +46,20 @@ Validity ranges
 ---------------
 The lower bound of nu_range of each model is chosen such that all states used in the fit are included,
 but no lower lying states, which the models do not reproduce (e.g. 5s6s 1S0 or 5s5d 1D2).
+
+Triplet F series
+----------------
+The triplet F series are not covered by the Addendum,
+which revisited only the singlet and triplet S, P and D series and the singlet F series.
+The three-channel models of the original 2014 paper (table IX, with the 5snf 3FJ, 4dnp 3FJ and 4dnf 3FJ channels)
+are not usable instead: they are among the parameters affected by the sign error of the fitting program
+(they give quantum defects of ~0.19 instead of the measured ~0.12 for n = 10-25) and were not refitted.
+We therefore describe the triplet F series by single channel models with the Rydberg-Ritz quantum defects of
+Robertson 2021 (ARC 3.0, table B.1), fitted to the 5snf 3FJ levels of Rubbmark 1978 and Sansonetti 2010 (NIST)
+with the same ionization threshold I_s = 45932.2002 1/cm as used here.
+We use the unrounded values of the ARC source code.
+These quantum defects reproduce the NIST levels with n = 10-20
+to < 0.15 1/cm (rms 0.04-0.06 1/cm, i.e. the NIST uncertainty), see test_vaillant2024_triplet_f_energies_match_nist.
 """
 
 from __future__ import annotations
@@ -53,12 +67,19 @@ from __future__ import annotations
 import numpy as np
 
 from rydstate.angular.angular_ket import AngularKetJJ, AngularKetLS
+from rydstate.species.eigen_channel_model import EigenChannelModel
 from rydstate.species.k_matrix_model import KMatrixModel
 
 REFERENCE_VAILLANT_2024 = (
     "C. L. Vaillant, M. P. A. Jones and R. M. Potvliege, "
     "J. Phys. B: At. Mol. Opt. Phys. 57, 199401 (2024), https://doi.org/10.1088/1361-6455/ad76f0 "
     "(Addendum to J. Phys. B: At. Mol. Opt. Phys. 47, 155001 (2014), https://doi.org/10.1088/0953-4075/47/15/155001)"
+)
+REFERENCE_ROBERTSON_2021 = (
+    "E. J. Robertson, N. Šibalić, R. M. Potvliege and M. P. A. Jones, "
+    "Comput. Phys. Commun. 261, 107814 (2021), https://doi.org/10.1016/j.cpc.2020.107814 "
+    "(Rydberg-Ritz fit to the data of J. R. Rubbmark and S. A. Borgström, Phys. Scr. 18, 196 (1978) "
+    "and J. E. Sansonetti and G. Nave, J. Phys. Chem. Ref. Data 39, 033103 (2010))"
 )
 
 # LS-coupled channels with a 4d core, whose j_c is fixed by the angular momentum coupling (e.g. 4dns 3D1 is purely
@@ -313,4 +334,72 @@ class Sr88_F3_Singlet_Vaillant2024(KMatrixModel):
         (0, 0, [1.71163074e-1, -3.53036781e-1]),
         (0, 1, [4.50595126e-1]),
         (1, 1, [-6.97829350e-1, -1.31850526e0]),
+    ]
+
+
+class Sr88_F2_Robertson2021(EigenChannelModel):
+    """5snf 3F2 series, described by its Rydberg-Ritz quantum defects, since Vaillant 2024 has no triplet F models."""
+
+    species = "Sr88"
+    name = "F J=2 (Rydberg-Ritz), nu > 9"
+    f_tot, parity = (2, -1)
+    nu_range = (9.0, np.inf)  # quantum defects fitted to 5snf 3F2, n = 10-24
+    reference = REFERENCE_ROBERTSON_2021
+
+    inner_channels = [
+        AngularKetLS(l_c=0, l_r=3, l_tot=3, s_tot=1, j_tot=2, species="Sr88"),  # 5snf 3F2
+    ]
+    outer_channels = [
+        AngularKetLS(l_c=0, l_r=3, l_tot=3, s_tot=1, j_tot=2, species="Sr88"),  # 5snf 3F2
+    ]
+
+    eigen_quantum_defects = [
+        [0.120588, -2.1847, 102.98],
+    ]
+
+
+class Sr88_F3_Triplet_Robertson2021(EigenChannelModel):
+    """5snf 3F3 series, described by its Rydberg-Ritz quantum defects, since Vaillant 2024 has no triplet F models.
+
+    The singlet 5snf 1F3 series of the same symmetry is described by :class:`Sr88_F3_Singlet_Vaillant2024`.
+    Both series are treated as independent here, which is the same approximation as in the default Sr88 models
+    (there, the 1F3 and 3F3 channels are the two uncoupled eigen channels of a single F J=3 model).
+    """
+
+    species = "Sr88"
+    name = "F J=3 triplet (Rydberg-Ritz), nu > 9"
+    f_tot, parity = (3, -1)
+    nu_range = (9.0, np.inf)  # quantum defects fitted to 5snf 3F3, n = 10-24
+    reference = REFERENCE_ROBERTSON_2021
+
+    inner_channels = [
+        AngularKetLS(l_c=0, l_r=3, l_tot=3, s_tot=1, j_tot=3, species="Sr88"),  # 5snf 3F3
+    ]
+    outer_channels = [
+        AngularKetLS(l_c=0, l_r=3, l_tot=3, s_tot=1, j_tot=3, species="Sr88"),  # 5snf 3F3
+    ]
+
+    eigen_quantum_defects = [
+        [0.11899, -2.0446, 103.26],
+    ]
+
+
+class Sr88_F4_Robertson2021(EigenChannelModel):
+    """5snf 3F4 series, described by its Rydberg-Ritz quantum defects, since Vaillant 2024 has no triplet F models."""
+
+    species = "Sr88"
+    name = "F J=4 (Rydberg-Ritz), nu > 9"
+    f_tot, parity = (4, -1)
+    nu_range = (9.0, np.inf)  # quantum defects fitted to 5snf 3F4, n = 10-28
+    reference = REFERENCE_ROBERTSON_2021
+
+    inner_channels = [
+        AngularKetLS(l_c=0, l_r=3, l_tot=3, s_tot=1, j_tot=4, species="Sr88"),  # 5snf 3F4
+    ]
+    outer_channels = [
+        AngularKetLS(l_c=0, l_r=3, l_tot=3, s_tot=1, j_tot=4, species="Sr88"),  # 5snf 3F4
+    ]
+
+    eigen_quantum_defects = [
+        [0.12000, -2.37716, 118.97],
     ]

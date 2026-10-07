@@ -14,7 +14,7 @@ from rydstate import RydbergStateSQDTDivalent
 from rydstate.angular.angular_ket import AngularKetFJ, AngularKetJJ, AngularKetLS
 from rydstate.angular.utils import NotSet, is_unknown
 from rydstate.basis.basis_mqdt import get_mqdt_states_from_model
-from rydstate.species import EigenChannelModel, KMatrixModel, get_mqdt, get_potential_class
+from rydstate.species import EigenChannelModel, KMatrixModel, get_mqdt, get_potential_class, get_sqdt
 from rydstate.species.utils import calc_modified_ritz_formula_in_nu, calc_nu_from_energy
 from rydstate.units import ureg
 
@@ -608,6 +608,48 @@ def test_vaillant2024_d2_singlet_triplet_character(energy: float, expected: floa
     assert closest.calc_exp_qn("s_tot") == pytest.approx(expected, abs=tolerance)
 
 
+TRIPLET_F_MODEL_NAMES = {
+    2: "F J=2 (Rydberg-Ritz), nu > 9",
+    3: "F J=3 triplet (Rydberg-Ritz), nu > 9",
+    4: "F J=4 (Rydberg-Ritz), nu > 9",
+}
+
+
+def _get_nist_triplet_f_levels(j_tot: int) -> list[tuple[int, float]]:
+    """Return (n, NIST term energy in 1/cm) of the Sr88 5snf 3F_J levels with 10 <= n <= 20."""
+    sqdt = get_sqdt("Sr88")
+    hartree_to_inverse_cm = ureg.Quantity(1, "hartree").to("1/cm", "spectroscopy").magnitude
+    return [
+        (n, energy_au * hartree_to_inverse_cm)
+        for (n, l_r, j, s_tot), energy_au in sorted(sqdt._nist_energy_levels.items())  # noqa: SLF001
+        if l_r == 3 and j == j_tot and s_tot == 1 and 10 <= n <= 20
+    ]
+
+
+@pytest.mark.parametrize("j_tot", [2, 3, 4])
+def test_vaillant2024_triplet_f_energies_match_nist(j_tot: int) -> None:
+    """The single channel models of the 5snf 3F_J series reproduce the NIST levels with n = 10-20.
+
+    The Rydberg-Ritz quantum defects of Robertson 2021 (ARC 3.0) reproduce these levels to < 0.15 1/cm
+    (rms 0.04-0.06 1/cm, comparable to the NIST uncertainty of 0.04 1/cm). The older quantum defects of
+    Vaillant 2012 (same parameters for 3F2 and 3F3) and the rounded values of table B.1 of Robertson 2021
+    deviate by 0.22-0.28 1/cm at n = 10 for the 3F2 or 3F3 series and fail this test.
+    """
+    model = next(
+        model for model in get_mqdt("Sr88", "vaillant2024").models if model.name == TRIPLET_F_MODEL_NAMES[j_tot]
+    )
+    levels = _get_nist_triplet_f_levels(j_tot)
+    assert len(levels) >= 10, f"only {len(levels)} NIST levels found for 5snf 3F{j_tot}"
+    for n, energy_nist in levels:
+        states = _get_states_around_energy(model, energy_nist)
+        assert len(states) > 0, f"{model.full_name}: no states found around E={energy_nist} 1/cm"
+        closest = min(states, key=lambda state: abs(state.get_energy("1/cm") - energy_nist))
+        assert closest.get_energy("1/cm") == pytest.approx(energy_nist, abs=0.15), (
+            f"{model.full_name}: the calculated energy {closest.get_energy('1/cm')} 1/cm of 5s{n}f 3F{j_tot} "
+            f"does not match the NIST energy {energy_nist} 1/cm"
+        )
+
+
 def _vaillant2024_ket_phase(ket: AngularKetBase[Any]) -> int:
     """Phase d_i of a channel ket of Vaillant 2024 relative to the rydstate ket (see the model data docstring)."""
     if isinstance(ket, AngularKetJJ):
@@ -727,6 +769,10 @@ def test_vaillant2024_ionization_thresholds() -> None:
         "D J=1, nu > 9.5": [45932.2002, 60628.26],
         "D J=3, nu > 3.9": [45932.2002, 60628.26, 60628.26],
         "F J=3 singlet, nu > 3.5": [45932.2002, 60628.26],
+        # the triplet F models are single channel models converging to the first ionization threshold
+        "F J=2 (Rydberg-Ritz), nu > 9": [45932.2002],
+        "F J=3 triplet (Rydberg-Ritz), nu > 9": [45932.2002],
+        "F J=4 (Rydberg-Ritz), nu > 9": [45932.2002],
     }
     mqdt = get_mqdt("Sr88", "vaillant2024")
     assert {model.name for model in mqdt.models} == set(expected)
