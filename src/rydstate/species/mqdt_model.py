@@ -33,7 +33,7 @@ class MQDTModel(ABC):
     species: ClassVar[str]
     """The species for which the MQDT model is defined."""
     name: ClassVar[str]
-    """The name of the atomic species."""
+    """The name of the MQDT model."""
 
     reference: ClassVar[str | tuple[str, ...] | None] = None
     """Reference for the MQDT model, e.g., a publication doi where the model is described."""
@@ -217,13 +217,15 @@ class MQDTModel(ABC):
         The M-matrix is defined as
 
         .. math::
-            M = tan(β) + K = tan(\pi \nu) + tan(\pi \mu)
+            M = \mathrm{diag}(\tan(\pi \nu_i)) + K, \quad K = \tan(\pi \mu)
+
+        where :math:`\nu_i` are the channel-dependent effective principal quantum numbers.
 
         Args:
             nu: Effective principal quantum number with reference to the reference ionization threshold.
 
         Returns:
-            M-matrix in the outer channel frame, M = tan(β) + K.
+            M-matrix in the outer channel frame.
 
         """
         kmat = self.calc_k_matrix(nu)
@@ -236,7 +238,8 @@ class MQDTModel(ABC):
         The scaled M-matrix is defined as
 
         .. math::
-            M_{\text{scaled}} = \cos(\pi \nu) M = \sin(\pi \nu) + \cos(\pi \nu) K
+            M_{\text{scaled}} = \mathrm{diag}(\cos(\pi \nu_i)) M
+            = \mathrm{diag}(\sin(\pi \nu_i)) + \mathrm{diag}(\cos(\pi \nu_i)) K
 
         We use this to improve numerical stability when finding roots of det(M) = 0.
         This is especially important for states with nu close to half integer.
