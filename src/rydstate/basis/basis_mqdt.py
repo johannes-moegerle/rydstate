@@ -167,12 +167,21 @@ def get_mqdt_states_from_model(
             angular_kets_fj.append(ket_fj)
             number_kets_fj[i] += 1
 
+    # Normalization of the channel coefficients to the radial kets (positive at the outer bound), including the sign:
+    # c_i = nu_i^(3/2) b_i / cos(pi (nu_i - l_i)), with pi (nu_i - l_i) the asymptotic phase of the Coulomb functions.
+    # Channels with unknown l_r are described by radial dummies without a wavefunction, so their sign is a pure
+    # convention, for which we simply use l_i = 0.
+    channel_ls = [0 if is_unknown(ket.l_r) else int(ket.l_r) for ket in model.outer_channels]
+
     states: list[RydbergStateMQDT] = []
     for nu in nu_list:
         nuis = model.calc_channel_nuis(nu)
         coefficients = calc_nullvector(model.calc_scaled_m_matrix(nu))
         coefficients = np.array(
-            [coeff * (nui ** (3 / 2)) / np.cos(np.pi * nui) for coeff, nui in zip(coefficients, nuis, strict=True)]
+            [
+                coeff * (nui ** (3 / 2)) / np.cos(np.pi * (nui - l))
+                for coeff, nui, l in zip(coefficients, nuis, channel_ls, strict=True)
+            ]
         )
         coefficients /= np.linalg.norm(coefficients)
         arg_max = np.argmax(np.abs(coefficients))

@@ -1,9 +1,18 @@
-import logging
+from __future__ import annotations
 
+import logging
+from typing import TYPE_CHECKING
+
+import numpy as np
 import pytest
-from rydstate import BasisMQDT
+from rydstate import BasisMQDT, RydbergStateSQDTAlkali
 from rydstate.angular import AngularKetFJ
+from rydstate.angular.utils import is_unknown
+from rydstate.radial import RadialKet
 from rydstate.species import TrivialModel
+
+if TYPE_CHECKING:
+    from rydstate.species import MQDTModel
 
 
 def test_mqdt_basis_creation() -> None:
@@ -113,3 +122,92 @@ def test_difficult_yb174_g4_highn_states(nu: float, caplog: pytest.LogCaptureFix
     assert len(warnings) == 0, "Unexpected warnings were logged: " + "; ".join(
         record.getMessage() for record in warnings
     )
+
+
+@pytest.mark.parametrize(("n", "l"), [(1, 0), (2, 1), (3, 0), (3, 1), (3, 2), (6, 2), (7, 3), (10, 4)])
+def test_coulomb_sign_near_origin_vs_outer_bound(n: int, l: int) -> None:
+    """A hydrogen wavefunction positive at the outer bound has the sign (-1)^(n - l - 1) near the origin.
+
+    The regular Coulomb function (positive near the origin) has the decaying part -cos(beta) u_- at large r with
+    beta = pi (nu - l), i.e. the sign -cos(pi (n - l)) = (-1)^(n - l - 1) for nu = n.
+    This checks the -l in beta, see test_mqdt_channel_coefficients_match_coulomb_asymptotics.
+    """
+    state = RydbergStateSQDTAlkali("H_textbook", n=n, l=l, j=l + 0.5)
+    radial = RadialKet(state.nu, state.radial.potential, sign_convention="positive_at_outer_bound")
+    assert radial.nodes == n - l - 1
+    u_inner = radial.u_list[np.flatnonzero(np.abs(radial.u_list) > 1e-6 * np.max(np.abs(radial.u_list)))[0]]
+    assert np.sign(u_inner) == (-1) ** (n - l - 1)
+
+
+def _calc_expected_channel_coefficients(model: MQDTModel, nu: float) -> np.ndarray:
+    r"""Calculate the expected channel coefficients of an MQDT state from the Coulomb asymptotics.
+
+    In the outer channel frame the state is psi_i = f_i b_i - g_i (K b)_i, where f_i (regular, positive near the
+    origin) and g_i are the Coulomb functions in which K = tan(pi mu) is defined. For r -> infinity
+
+        f -> sin(beta) u_+ - cos(beta) u_-,    g -> -cos(beta) u_+ - sin(beta) u_-,    beta = pi (nu - l)
+
+    with the growing / decaying functions u_+ / u_- both positive and beta the phase f accumulates up to the outer
+    turning point (the centrifugal barrier removes l half-periods, see test_coulomb_sign_near_origin_vs_outer_bound).
+    Hence
+
+        growing coefficient:   sin(beta_i) b_i + cos(beta_i) (K b)_i = 0   (bound state condition),
+        decaying coefficient:  -cos(beta_i) b_i + sin(beta_i) (K b)_i,
+
+    and the coefficient of the normalized radial ket (positive at the outer bound) is the decaying coefficient
+    times nu_i^(3/2). Channels with unknown l_r get l = 0 (same convention as BasisMQDT).
+    """
+    nuis = model.calc_channel_nuis(nu)
+    kmat = model.calc_k_matrix(nu)
+    # the scaled M-matrix has the same nullspace as M = tan(pi nu) + K, but is better conditioned
+    b = np.linalg.svd(model.calc_scaled_m_matrix(nu))[2][-1]
+    ls = np.array([0 if is_unknown(ket.l_r) else int(ket.l_r) for ket in model.outer_channels])
+    beta = np.pi * (nuis - ls)
+
+    growing = np.sin(beta) * b + np.cos(beta) * (kmat @ b)
+    decaying = -np.cos(beta) * b + np.sin(beta) * (kmat @ b)
+    np.testing.assert_allclose(growing / np.linalg.norm(decaying), 0, atol=1e-6)
+
+    expected: np.ndarray = nuis ** (3 / 2) * decaying
+    expected /= np.linalg.norm(expected)
+    return expected
+
+
+@pytest.mark.parametrize(
+    ("species", "tag", "f_tot", "model_name", "nu_range"),
+    [
+        ("Sr88", "vaillant2024", 1, "S J=1, nu > 3.4", (4, 15)),
+        ("Sr88", "vaillant2024", 2, "D J=2, nu > 5.7", (6, 15)),
+        ("Yb171", None, 0.5, "S F=1/2, 2 < nu < 26", (8, 20)),
+        ("Yb171", None, 1.5, "D F=3/2, 2 < nu < 30", (20, 29)),
+        ("Yb174", None, 0, "S J=0, nu > 2", (8, 20)),
+    ],
+)
+def test_mqdt_channel_coefficients_match_coulomb_asymptotics(
+    species: str, tag: str | None, f_tot: float, model_name: str, nu_range: tuple[float, float]
+) -> None:
+    """The channel coefficients must agree with the decaying part of the Coulomb asymptotics, incl. its (-1)^l_r.
+
+    The tested models couple channels whose l_r differ in parity, so the (-1)^l_r phase between the
+    Coulomb functions (positive near the origin) and the radial kets (positive at the outer bound) matters.
+    """
+    basis = BasisMQDT(species, nu=nu_range, mqdt=tag, f_tot=(f_tot, f_tot))
+    states = [state for state in basis.states if state.model.name == model_name]
+    assert len(states) > 3
+
+    for state in states:
+        model = state.model
+        # project the state onto the (orthonormal) outer channels to collapse the FJ kets back to the outer channels
+        channel_coefficients = np.array(
+            [
+                sum(coeff * channel.calc_reduced_overlap(ket.angular) for coeff, ket in state)
+                for channel in model.outer_channels
+            ]
+        )
+
+        expected = _calc_expected_channel_coefficients(model, state.nu)
+        # the global sign of a state is arbitrary, so we fix it via the largest component,
+        # all relative signs between the channels must then agree
+        i_max = np.argmax(np.abs(expected))
+        global_sign = np.sign(channel_coefficients[i_max] * expected[i_max])
+        np.testing.assert_allclose(channel_coefficients, global_sign * expected, atol=1e-6, err_msg=f"{state}")
