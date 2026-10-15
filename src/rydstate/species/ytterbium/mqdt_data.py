@@ -23,7 +23,7 @@ class MQDTYtterbium171(MQDT):
         CoreKet(i_c=0.5, n_c=6, l_c=1, j_c=0.5, f_c=Unknown, label=Unknown): (77504.98, "1/cm"),
         CoreKet(i_c=0.5, n_c=6, l_c=1, j_c=Unknown, f_c=Unknown, label=Unknown): (79725.35, "1/cm"),
         CoreKet(i_c=0.5, n_c=6, l_c=1, j_c=1.5, f_c=Unknown, label=Unknown): (80835.39, "1/cm"),
-        CoreKet(i_c=0.5, n_c=Unknown, l_c=Unknown, j_c=Unknown, f_c=Unknown, label="4f13 5d 6s"): (
+        CoreKet(i_c=0.5, n_c=Unknown, l_c=Unknown, j_c=Unknown, f_c=Unknown, label="4f13"): (
             83967.7,
             "1/cm",
         ),
@@ -42,7 +42,7 @@ class MQDTYtterbium173(MQDT):
         CoreKet(i_c=2.5, n_c=6, l_c=0, j_c=0.5, f_c=2): (50443.291203, "1/cm"),
         CoreKet(i_c=2.5, n_c=6, l_c=1, j_c=0.5, f_c=Unknown, label=Unknown): (77504.98, "1/cm"),
         CoreKet(i_c=2.5, n_c=6, l_c=1, j_c=1.5, f_c=Unknown, label=Unknown): (80835.39, "1/cm"),
-        CoreKet(i_c=2.5, n_c=Unknown, l_c=Unknown, j_c=Unknown, f_c=Unknown, label="4f13 5d 6s"): (
+        CoreKet(i_c=2.5, n_c=Unknown, l_c=Unknown, j_c=Unknown, f_c=Unknown, label="4f13"): (
             83967.7,
             "1/cm",
         ),
@@ -61,6 +61,6 @@ class MQDTYtterbium174(MQDT):
         CoreKet(i_c=0, n_c=6, l_c=1, j_c=0.5): (77504.98, "1/cm"),
         CoreKet(i_c=0, n_c=6, l_c=1, j_c=1.5): (80835.39, "1/cm"),
         CoreKet(i_c=0, n_c=6, l_c=1, j_c=Unknown, label=Unknown): (79725.35, "1/cm"),
-        CoreKet(i_c=0, n_c=Unknown, l_c=Unknown, j_c=Unknown, label="4f13 5d 6s"): (83967.7, "1/cm"),
+        CoreKet(i_c=0, n_c=Unknown, l_c=Unknown, j_c=Unknown, label="4f13"): (83967.7, "1/cm"),
     }
     model_classes = get_model_classes(yb174_eigen_channel_model_data, species)

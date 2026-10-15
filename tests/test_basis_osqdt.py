@@ -67,7 +67,7 @@ def test_osqdt_contains_perturber_states_with_definite_n(species: str) -> None:
     of the other channels.
     """
     basis = BasisOSQDT(species, nu=(1, 60), f_tot=(0.5, 0.5) if species == "Yb171" else (1, 1))
-    perturbers = basis.shallow_copy().filter_states_label("4f13 5d 6snl")
+    perturbers = basis.shallow_copy().filter_states_label("4f13")
     assert len(perturbers) > 0
     for state in perturbers.states:
         assert len(state.rydberg_kets) == 1

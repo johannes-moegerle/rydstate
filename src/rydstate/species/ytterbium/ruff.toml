@@ -1,0 +1,4 @@
+extend = "../../../../pyproject.toml"
+
+# the MQDT model data files contain one channel per line, including the long labels of the 4f13 perturber channels
+line-length = 145

@@ -21,20 +21,20 @@ class Yb171_S05_HighN(EigenChannelModel):
 
     inner_channels = [
         AngularKetLS(l_c=0, l_r=0, l_tot=0, s_tot=0, j_tot=0, f_tot=0.5, species="Yb171"),  # "6sns 1S0"
-        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6snl a", species="Yb171"),
+        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6s 6p J=0 A", species="Yb171"),
         AngularKetLS(l_c=1, l_r=1, l_tot=0, s_tot=0, j_tot=0, f_tot=0.5, species="Yb171"),  # "6pnp 1S0"
-        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6snl b", species="Yb171"),
+        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6s 6p J=0 B", species="Yb171"),
         AngularKetLS(l_c=1, l_r=1, l_tot=1, s_tot=1, j_tot=0, f_tot=0.5, species="Yb171"),  # "6pnp 3P0"
-        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6snl c", species="Yb171"),
+        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6s np J=0 (above I1)", species="Yb171"),
         AngularKetLS(l_c=0, l_r=0, l_tot=0, s_tot=1, j_tot=1, f_tot=0.5, species="Yb171"),  # "6sns 3S1"
     ]
     outer_channels = [
         AngularKetFJ(l_c=0, l_r=0, j_c=0.5, f_c=0, j_r=0.5, f_tot=0.5, species="Yb171"),
-        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6snl a", species="Yb171"),
+        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6s 6p J=0 A", species="Yb171"),
         AngularKetJJ(l_c=1, l_r=1, j_c=1.5, j_r=1.5, j_tot=0, f_tot=0.5, species="Yb171"),
-        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6snl b", species="Yb171"),
+        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6s 6p J=0 B", species="Yb171"),
         AngularKetJJ(l_c=1, l_r=1, j_c=0.5, j_r=0.5, j_tot=0, f_tot=0.5, species="Yb171"),
-        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6snl c", species="Yb171"),
+        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6s np J=0 (above I1)", species="Yb171"),
         AngularKetFJ(l_c=0, l_r=0, j_c=0.5, f_c=1, j_r=0.5, f_tot=0.5, species="Yb171"),
     ]
 
@@ -86,22 +86,22 @@ class Yb171_P05_HighN(EigenChannelModel):
     inner_channels = [
         AngularKetLS(l_c=0, l_r=1, l_tot=1, s_tot=0, j_tot=1, f_tot=0.5, species="Yb171"),  # "6snp 1P1"
         AngularKetLS(l_c=0, l_r=1, l_tot=1, s_tot=1, j_tot=1, f_tot=0.5, species="Yb171"),  # "6snp 3P1"
-        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl a", species="Yb171"),
-        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl b", species="Yb171"),
-        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl c", species="Yb171"),
-        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl d", species="Yb171"),
+        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s J=1 A", species="Yb171"),
+        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s J=1 B", species="Yb171"),
+        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s J=1 (unresolved)", species="Yb171"),
+        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6s nd J=1 (above I1)", species="Yb171"),
         AngularKetLS(l_c=0, l_r=1, l_tot=1, s_tot=1, j_tot=0, f_tot=0.5, species="Yb171"),  # "6snp 3P0"
-        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl e", species="Yb171"),
+        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s J=0 (unresolved)", species="Yb171"),
     ]
     outer_channels = [
         AngularKetFJ(l_c=0, l_r=1, j_c=0.5, f_c=1, j_r=1.5, f_tot=0.5, species="Yb171"),
         AngularKetFJ(l_c=0, l_r=1, j_c=0.5, f_c=1, j_r=0.5, f_tot=0.5, species="Yb171"),
-        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl a", species="Yb171"),
-        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl b", species="Yb171"),
-        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl c", species="Yb171"),
-        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl d", species="Yb171"),
+        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s J=1 A", species="Yb171"),
+        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s J=1 B", species="Yb171"),
+        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s J=1 (unresolved)", species="Yb171"),
+        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6s nd J=1 (above I1)", species="Yb171"),
         AngularKetFJ(l_c=0, l_r=1, j_c=0.5, f_c=0, j_r=0.5, f_tot=0.5, species="Yb171"),
-        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl e", species="Yb171"),
+        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s J=0 (unresolved)", species="Yb171"),
     ]
 
     eigen_quantum_defects = [
@@ -141,27 +141,27 @@ class Yb171_P15_HighN(EigenChannelModel):
     inner_channels = [
         AngularKetLS(l_c=0, l_r=1, l_tot=1, s_tot=0, j_tot=1, f_tot=1.5, species="Yb171"),  # "6snp 1P1"
         AngularKetLS(l_c=0, l_r=1, l_tot=1, s_tot=1, j_tot=1, f_tot=1.5, species="Yb171"),  # "6snp 3P1"
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl a", species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl b", species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl c", species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl d", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s J=1 A", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s J=1 B", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s J=1 (unresolved)", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6s nd J=1 (above I1)", species="Yb171"),
         AngularKetLS(l_c=0, l_r=1, l_tot=1, s_tot=1, j_tot=2, f_tot=1.5, species="Yb171"),  # "6snp 3P2"
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl e", species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl f", species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl g", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s 3P2", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s 1D2", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6s nd J=2 (above I1)", species="Yb171"),
         AngularKetLS(l_c=0, l_r=3, l_tot=3, s_tot=1, j_tot=2, f_tot=1.5, species="Yb171"),  # "6snf 3F2"
     ]
     outer_channels = [
         AngularKetFJ(l_c=0, l_r=1, j_c=0.5, f_c=1, j_r=1.5, f_tot=1.5, species="Yb171"),
         AngularKetFJ(l_c=0, l_r=1, j_c=0.5, f_c=1, j_r=0.5, f_tot=1.5, species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl a", species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl b", species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl c", species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl d", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s J=1 A", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s J=1 B", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s J=1 (unresolved)", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6s nd J=1 (above I1)", species="Yb171"),
         AngularKetFJ(l_c=0, l_r=1, j_c=0.5, f_c=0, j_r=1.5, f_tot=1.5, species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl e", species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl f", species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl g", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s 3P2", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s 1D2", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6s nd J=2 (above I1)", species="Yb171"),
         AngularKetFJ(l_c=0, l_r=3, j_c=0.5, f_c=1, j_r=2.5, f_tot=1.5, species="Yb171"),
     ]
 
@@ -224,16 +224,16 @@ class Yb171_D15_HighN(EigenChannelModel):
     inner_channels = [
         AngularKetLS(l_c=0, l_r=2, l_tot=2, s_tot=0, j_tot=2, f_tot=1.5, species="Yb171"),  # "6snd 1D2"
         AngularKetLS(l_c=0, l_r=2, l_tot=2, s_tot=1, j_tot=2, f_tot=1.5, species="Yb171"),  # "6snd 3D2"
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6snl a", species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6snl b", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6s 6p J=2 A", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6s 6p J=2 B", species="Yb171"),
         AngularKetLS(l_c=1, l_r=1, l_tot=2, s_tot=0, j_tot=2, f_tot=1.5, species="Yb171"),  # "6pnp 1D2"
         AngularKetLS(l_c=0, l_r=2, l_tot=2, s_tot=1, j_tot=1, f_tot=1.5, species="Yb171"),  # "6snd 3D1"
     ]
     outer_channels = [
         AngularKetFJ(l_c=0, l_r=2, j_c=0.5, f_c=1, j_r=2.5, f_tot=1.5, species="Yb171"),
         AngularKetFJ(l_c=0, l_r=2, j_c=0.5, f_c=1, j_r=1.5, f_tot=1.5, species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6snl a", species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6snl b", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6s 6p J=2 A", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6s 6p J=2 B", species="Yb171"),
         AngularKetLS(l_c=1, l_r=1, l_tot=2, s_tot=0, j_tot=2, f_tot=1.5, species="Yb171"),
         AngularKetFJ(l_c=0, l_r=2, j_c=0.5, f_c=0, j_r=1.5, f_tot=1.5, species="Yb171"),
     ]
@@ -266,16 +266,16 @@ class Yb171_D25_HighN(EigenChannelModel):
     inner_channels = [
         AngularKetLS(l_c=0, l_r=2, l_tot=2, s_tot=0, j_tot=2, f_tot=2.5, species="Yb171"),  # "6snd 1D2"
         AngularKetLS(l_c=0, l_r=2, l_tot=2, s_tot=1, j_tot=2, f_tot=2.5, species="Yb171"),  # "6snd 3D2"
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6snl a", species="Yb171"),
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6snl b", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6s 6p J=2 A", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6s 6p J=2 B", species="Yb171"),
         AngularKetLS(l_c=1, l_r=1, l_tot=2, s_tot=0, j_tot=2, f_tot=2.5, species="Yb171"),  # "6pnp 1D2"
         AngularKetLS(l_c=0, l_r=2, l_tot=2, s_tot=1, j_tot=3, f_tot=2.5, species="Yb171"),  # "6snd 3D3"
     ]
     outer_channels = [
         AngularKetFJ(l_c=0, l_r=2, j_c=0.5, f_c=1, j_r=2.5, f_tot=2.5, species="Yb171"),
         AngularKetFJ(l_c=0, l_r=2, j_c=0.5, f_c=1, j_r=1.5, f_tot=2.5, species="Yb171"),
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6snl a", species="Yb171"),
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6snl b", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6s 6p J=2 A", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6s 6p J=2 B", species="Yb171"),
         AngularKetLS(l_c=1, l_r=1, l_tot=2, s_tot=0, j_tot=2, f_tot=2.5, species="Yb171"),  # "6pnp 1D2"
         AngularKetFJ(l_c=0, l_r=2, j_c=0.5, f_c=0, j_r=2.5, f_tot=2.5, species="Yb171"),
     ]
@@ -327,29 +327,29 @@ class Yb171_F25_HighN(EigenChannelModel):
     inner_channels = [
         AngularKetLS(l_c=0, l_r=3, l_tot=3, s_tot=0, j_tot=3, f_tot=2.5, species="Yb171"),  # "6snf 1F3"
         AngularKetLS(l_c=0, l_r=3, l_tot=3, s_tot=1, j_tot=3, f_tot=2.5, species="Yb171"),  # "6snf 3F3"
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl a", species="Yb171"),
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl b", species="Yb171"),
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl c", species="Yb171"),
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl d", species="Yb171"),
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl e", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s 3D3", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s 1F3", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6s nd J=3 (above I1)", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s J=3", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s 3G3", species="Yb171"),
         AngularKetLS(l_c=0, l_r=1, l_tot=1, s_tot=1, j_tot=2, f_tot=2.5, species="Yb171"),  # "6snf 3P2"
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl f", species="Yb171"),
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl g", species="Yb171"),
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl h", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s 3P2", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s 1D2", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6s nd J=2 (above I1)", species="Yb171"),
         AngularKetLS(l_c=0, l_r=3, l_tot=3, s_tot=1, j_tot=2, f_tot=2.5, species="Yb171"),  # "6snf 3F2"
     ]
     outer_channels = [
         AngularKetFJ(l_c=0, l_r=3, j_c=0.5, f_c=1, j_r=3.5, f_tot=2.5, species="Yb171"),
         AngularKetFJ(l_c=0, l_r=3, j_c=0.5, f_c=1, j_r=2.5, f_tot=2.5, species="Yb171"),
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl a", species="Yb171"),
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl b", species="Yb171"),
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl c", species="Yb171"),
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl d", species="Yb171"),
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl e", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s 3D3", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s 1F3", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6s nd J=3 (above I1)", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s J=3", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s 3G3", species="Yb171"),
         AngularKetFJ(l_c=0, l_r=1, j_c=0.5, f_c=1, j_r=1.5, f_tot=2.5, species="Yb171"),
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl f", species="Yb171"),
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl g", species="Yb171"),
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl h", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s 3P2", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s 1D2", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6s nd J=2 (above I1)", species="Yb171"),
         AngularKetFJ(l_c=0, l_r=3, j_c=0.5, f_c=0, j_r=2.5, f_tot=2.5, species="Yb171"),
     ]
 
@@ -396,21 +396,21 @@ class Yb171_F35_HighN(EigenChannelModel):
     inner_channels = [
         AngularKetLS(l_c=0, l_r=3, l_tot=3, s_tot=0, j_tot=3, f_tot=3.5, species="Yb171"),  # "6snf 1F3"
         AngularKetLS(l_c=0, l_r=3, l_tot=3, s_tot=1, j_tot=3, f_tot=3.5, species="Yb171"),  # "6snf 3F3"
-        AngularKetFJ(f_tot=3.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl a", species="Yb171"),
-        AngularKetFJ(f_tot=3.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl b", species="Yb171"),
-        AngularKetFJ(f_tot=3.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl c", species="Yb171"),
-        AngularKetFJ(f_tot=3.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl d", species="Yb171"),
-        AngularKetFJ(f_tot=3.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl e", species="Yb171"),
+        AngularKetFJ(f_tot=3.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s 3D3", species="Yb171"),
+        AngularKetFJ(f_tot=3.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s 1F3", species="Yb171"),
+        AngularKetFJ(f_tot=3.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6s nd J=3 (above I1)", species="Yb171"),
+        AngularKetFJ(f_tot=3.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s J=3", species="Yb171"),
+        AngularKetFJ(f_tot=3.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s 3G3", species="Yb171"),
         AngularKetLS(l_c=0, l_r=3, l_tot=3, s_tot=1, j_tot=4, f_tot=3.5, species="Yb171"),  # "6snf 3F4"
     ]
     outer_channels = [
         AngularKetFJ(l_c=0, l_r=3, j_c=0.5, f_c=1, j_r=3.5, f_tot=3.5, species="Yb171"),
         AngularKetFJ(l_c=0, l_r=3, j_c=0.5, f_c=1, j_r=2.5, f_tot=3.5, species="Yb171"),
-        AngularKetFJ(f_tot=3.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl a", species="Yb171"),
-        AngularKetFJ(f_tot=3.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl b", species="Yb171"),
-        AngularKetFJ(f_tot=3.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl c", species="Yb171"),
-        AngularKetFJ(f_tot=3.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl d", species="Yb171"),
-        AngularKetFJ(f_tot=3.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl e", species="Yb171"),
+        AngularKetFJ(f_tot=3.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s 3D3", species="Yb171"),
+        AngularKetFJ(f_tot=3.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s 1F3", species="Yb171"),
+        AngularKetFJ(f_tot=3.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6s nd J=3 (above I1)", species="Yb171"),
+        AngularKetFJ(f_tot=3.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s J=3", species="Yb171"),
+        AngularKetFJ(f_tot=3.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s 3G3", species="Yb171"),
         AngularKetFJ(l_c=0, l_r=3, j_c=0.5, f_c=0, j_r=3.5, f_tot=3.5, species="Yb171"),
     ]
 
@@ -566,20 +566,20 @@ class Yb171_S05_LowN(EigenChannelModel):
 
     inner_channels = [
         AngularKetLS(l_c=0, l_r=0, l_tot=0, s_tot=0, j_tot=0, f_tot=0.5, species="Yb171"),  # "6sns 1S0"
-        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6snl a", species="Yb171"),
+        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6s 6p J=0 A", species="Yb171"),
         AngularKetLS(l_c=1, l_r=1, l_tot=0, s_tot=0, j_tot=0, f_tot=0.5, species="Yb171"),  # "6pnp 1S0"
-        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6snl b", species="Yb171"),
+        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6s 6p J=0 B", species="Yb171"),
         AngularKetLS(l_c=1, l_r=1, l_tot=1, s_tot=1, j_tot=0, f_tot=0.5, species="Yb171"),  # "6pnp 3P0"
-        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6snl c", species="Yb171"),
+        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6s np J=0 (above I1)", species="Yb171"),
         AngularKetLS(l_c=0, l_r=0, l_tot=0, s_tot=1, j_tot=1, f_tot=0.5, species="Yb171"),  # "6sns 3S1"
     ]
     outer_channels = [
         AngularKetFJ(l_c=0, l_r=0, j_c=0.5, f_c=0, j_r=0.5, f_tot=0.5, species="Yb171"),
-        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6snl a", species="Yb171"),
+        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6s 6p J=0 A", species="Yb171"),
         AngularKetJJ(l_c=1, l_r=1, j_c=1.5, j_r=1.5, j_tot=0, f_tot=0.5, species="Yb171"),
-        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6snl b", species="Yb171"),
+        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6s 6p J=0 B", species="Yb171"),
         AngularKetJJ(l_c=1, l_r=1, j_c=0.5, j_r=0.5, j_tot=0, f_tot=0.5, species="Yb171"),
-        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6snl c", species="Yb171"),
+        AngularKetFJ(f_tot=0.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6s np J=0 (above I1)", species="Yb171"),
         AngularKetFJ(l_c=0, l_r=0, j_c=0.5, f_c=1, j_r=0.5, f_tot=0.5, species="Yb171"),
     ]
 
@@ -712,26 +712,26 @@ class Yb171_P15_LowN(EigenChannelModel):
     inner_channels = [
         AngularKetLS(l_c=0, l_r=1, l_tot=1, s_tot=0, j_tot=1, f_tot=1.5, species="Yb171"),  # "6snp 1P1"
         AngularKetLS(l_c=0, l_r=1, l_tot=1, s_tot=1, j_tot=1, f_tot=1.5, species="Yb171"),  # "6snp 3P1"
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl a", species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl b", species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl c", species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl d", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s J=1 A", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s J=1 B", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s J=1 (unresolved)", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6s nd J=1 (above I1)", species="Yb171"),
         AngularKetLS(l_c=0, l_r=1, l_tot=1, s_tot=1, j_tot=2, f_tot=1.5, species="Yb171"),  # "6snp 3P2"
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl e", species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl f", species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl g", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s 3P2", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s 1D2", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6s nd J=2 (above I1)", species="Yb171"),
     ]
     outer_channels = [
         AngularKetFJ(l_c=0, l_r=1, j_c=0.5, f_c=1, j_r=1.5, f_tot=1.5, species="Yb171"),
         AngularKetFJ(l_c=0, l_r=1, j_c=0.5, f_c=1, j_r=0.5, f_tot=1.5, species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl a", species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl b", species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl c", species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl d", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s J=1 A", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s J=1 B", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s J=1 (unresolved)", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6s nd J=1 (above I1)", species="Yb171"),
         AngularKetFJ(l_c=0, l_r=1, j_c=0.5, f_c=0, j_r=1.5, f_tot=1.5, species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl e", species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl f", species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl g", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s 3P2", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s 1D2", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6s nd J=2 (above I1)", species="Yb171"),
     ]
 
     eigen_quantum_defects = [
@@ -790,15 +790,15 @@ class Yb171_P25_LowN(EigenChannelModel):
 
     inner_channels = [
         AngularKetLS(l_c=0, l_r=1, l_tot=1, s_tot=1, j_tot=2, f_tot=2.5, species="Yb171"),  # "6snp 3P2"
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl a", species="Yb171"),
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl b", species="Yb171"),
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl c", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s 3P2", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s 1D2", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6s nd J=2 (above I1)", species="Yb171"),
     ]
     outer_channels = [
         AngularKetFJ(l_c=0, l_r=1, j_c=0.5, f_c=1, j_r=1.5, f_tot=2.5, species="Yb171"),
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl a", species="Yb171"),
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl b", species="Yb171"),
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6snl c", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s 3P2", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d2 6s 1D2", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=-1, allow_unknown=True, label="4f13 5d 6s nd J=2 (above I1)", species="Yb171"),
     ]
 
     eigen_quantum_defects = [
@@ -843,16 +843,16 @@ class Yb171_D15_LowN(EigenChannelModel):
     inner_channels = [
         AngularKetLS(l_c=0, l_r=2, l_tot=2, s_tot=0, j_tot=2, f_tot=1.5, species="Yb171"),  # "6snd 1D2"
         AngularKetLS(l_c=0, l_r=2, l_tot=2, s_tot=1, j_tot=2, f_tot=1.5, species="Yb171"),  # "6snd 3D2"
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6snl a", species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6snl b", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6s 6p J=2 A", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6s 6p J=2 B", species="Yb171"),
         AngularKetLS(l_c=1, l_r=1, l_tot=2, s_tot=0, j_tot=2, f_tot=1.5, species="Yb171"),  # "6pnp 1D2"
         AngularKetLS(l_c=0, l_r=2, l_tot=2, s_tot=1, j_tot=1, f_tot=1.5, species="Yb171"),  # "6snd 3D1"
     ]
     outer_channels = [
         AngularKetFJ(l_c=0, l_r=2, j_c=0.5, f_c=1, j_r=2.5, f_tot=1.5, species="Yb171"),
         AngularKetFJ(l_c=0, l_r=2, j_c=0.5, f_c=1, j_r=1.5, f_tot=1.5, species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6snl a", species="Yb171"),
-        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6snl b", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6s 6p J=2 A", species="Yb171"),
+        AngularKetFJ(f_tot=1.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6s 6p J=2 B", species="Yb171"),
         AngularKetLS(l_c=1, l_r=1, l_tot=2, s_tot=0, j_tot=2, f_tot=1.5, species="Yb171"),  # "6pnp 1D2"
         AngularKetFJ(l_c=0, l_r=2, j_c=0.5, f_c=0, j_r=1.5, f_tot=1.5, species="Yb171"),
     ]
@@ -885,16 +885,16 @@ class Yb171_D25_LowN(EigenChannelModel):
     inner_channels = [
         AngularKetLS(l_c=0, l_r=2, l_tot=2, s_tot=0, j_tot=2, f_tot=2.5, species="Yb171"),  # "6snd 1D2"
         AngularKetLS(l_c=0, l_r=2, l_tot=2, s_tot=1, j_tot=2, f_tot=2.5, species="Yb171"),  # "6snd 3D2"
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6snl a", species="Yb171"),
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6snl b", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6s 6p J=2 A", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6s 6p J=2 B", species="Yb171"),
         AngularKetLS(l_c=1, l_r=1, l_tot=2, s_tot=0, j_tot=2, f_tot=2.5, species="Yb171"),  # "6pnp 1D2"
         AngularKetLS(l_c=0, l_r=2, l_tot=2, s_tot=1, j_tot=3, f_tot=2.5, species="Yb171"),  # "6snd 3D3"
     ]
     outer_channels = [
         AngularKetFJ(l_c=0, l_r=2, j_c=0.5, f_c=1, j_r=2.5, f_tot=2.5, species="Yb171"),
         AngularKetFJ(l_c=0, l_r=2, j_c=0.5, f_c=1, j_r=1.5, f_tot=2.5, species="Yb171"),
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6snl a", species="Yb171"),
-        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6snl b", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6s 6p J=2 A", species="Yb171"),
+        AngularKetFJ(f_tot=2.5, l_c=Unknown, parity=1, allow_unknown=True, label="4f13 5d 6s 6p J=2 B", species="Yb171"),
         AngularKetLS(l_c=1, l_r=1, l_tot=2, s_tot=0, j_tot=2, f_tot=2.5, species="Yb171"),  # "6pnp 1D2"
         AngularKetFJ(l_c=0, l_r=2, j_c=0.5, f_c=0, j_r=2.5, f_tot=2.5, species="Yb171"),
     ]
