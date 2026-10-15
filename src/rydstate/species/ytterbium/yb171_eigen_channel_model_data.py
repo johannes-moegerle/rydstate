@@ -707,7 +707,10 @@ class Yb171_P15_LowN(EigenChannelModel):
     name = "P F=3/2, 2.6 < nu < 10"
     f_tot, parity = (1.5, -1)
     nu_range = (2.6, 10.0)
-    reference = "fit to Yb174 NIST data"
+    reference = (
+        "fit to Yb174 NIST data",
+        "J=2 perturber parameters taken from the Yb171 P F=5/2, 4.5 < nu < 20 model",
+    )
 
     inner_channels = [
         AngularKetLS(l_c=0, l_r=1, l_tot=1, s_tot=0, j_tot=1, f_tot=1.5, species="Yb171"),  # "6snp 1P1"
@@ -742,9 +745,9 @@ class Yb171_P15_LowN(EigenChannelModel):
         [4.193528629, 0, 0],
         [4.181385000, 0, 0],
         [3.906105, 0.383471, 1.23512],
-        [4.236866903, 0, 0],
-        [4.221055883, 0, 0],
-        [4.185599376, 0, 0],
+        [4.230133261, 0, 0],
+        [4.209638118, 0, 0],
+        [4.186228192, 0, 0],
     ]
     mixing_angles = [
         (0, 1, [-0.08410871, 120.37555, -9314.23]),
@@ -756,9 +759,9 @@ class Yb171_P15_LowN(EigenChannelModel):
         (1, 3, [0.054105142]),
         (1, 4, [0.086127672]),
         (1, 5, [0.053804487]),
-        (6, 7, [0.071426685]),
-        (6, 8, [0.027464110]),
-        (6, 9, [-0.029741862]),
+        (6, 7, [0.0706666127]),
+        (6, 8, [0.0232711158]),
+        (6, 9, [-0.0292153659]),
     ]
 
 
