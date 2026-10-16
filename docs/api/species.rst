@@ -12,8 +12,6 @@ General classes
     PotentialCoulomb
     PotentialMarinescu1994
     PotentialFei2009
-    SQDT
-    MQDT
 
 Specific data for the different species
 

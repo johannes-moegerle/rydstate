@@ -2,8 +2,8 @@ import numpy as np
 import pytest
 from rydstate import RydbergStateSQDTAlkali
 from rydstate.angular import AngularKetLS
+from rydstate.qdt import get_sqdt
 from rydstate.radial import RadialKet
-from rydstate.species import get_sqdt
 from rydstate.species.potential import get_potential_class
 
 

@@ -1,7 +1,7 @@
 from abc import ABC
 from typing import ClassVar
 
-from rydstate.species.sqdt import SQDT
+from rydstate.qdt.sqdt import SQDT
 
 
 class _SQDTYtterbiumIon(SQDT, ABC):

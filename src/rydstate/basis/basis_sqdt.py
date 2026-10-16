@@ -11,9 +11,9 @@ from rydstate.angular.angular_ket import AngularKetLS
 from rydstate.angular.utils import AllKnown
 from rydstate.basis.basis_base import BasisBase
 from rydstate.basis.utils import get_m_range, is_allowed_qn
+from rydstate.qdt import get_sqdt
+from rydstate.qdt.sqdt import SQDT
 from rydstate.rydberg_state import RydbergStateSQDT
-from rydstate.species import get_sqdt
-from rydstate.species.sqdt import SQDT
 
 if TYPE_CHECKING:
     from rydstate.species.potential import Potential

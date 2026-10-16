@@ -14,14 +14,15 @@ from rydstate import RydbergStateSQDTDivalent
 from rydstate.angular.angular_ket import AngularKetFJ, AngularKetJJ, AngularKetLS
 from rydstate.angular.utils import NotSet, is_unknown
 from rydstate.basis.basis_mqdt import get_mqdt_states_from_model
-from rydstate.species import EigenChannelModel, KMatrixModel, get_mqdt, get_potential_class, get_sqdt
+from rydstate.qdt import EigenChannelModel, KMatrixModel, get_mqdt, get_sqdt
+from rydstate.species import get_potential_class
 from rydstate.species.utils import calc_modified_ritz_formula_in_nu, calc_nu_from_energy
 from rydstate.units import ureg
 
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase
+    from rydstate.qdt import MQDTModel
     from rydstate.rydberg_state import RydbergStateMQDT
-    from rydstate.species import MQDTModel
     from rydstate.units import NDArray
 
 
@@ -544,7 +545,7 @@ def test_nist_fit_mixing_angles_smaller_than_pi_half(model: EigenChannelModel) -
     with the eigen quantum defects swapped, but they make the sign of the angle (i.e. the singlet-triplet mixing)
     hard to interpret and compare between models. The angles are evaluated like in the model,
     i.e. with the nui of the first channel, see
-    :meth:`~rydstate.species.eigen_channel_model.EigenChannelModel.calc_frame_transformation_inner_closecoupling`.
+    :meth:`~rydstate.qdt.eigen_channel_model.EigenChannelModel.calc_frame_transformation_inner_closecoupling`.
     """
     if model.name == "P F=3/2, 2.6 < nu < 10":
         pytest.skip(f"{model.full_name}: TODO: the mixing angle is not well defined for this model, fix this!")

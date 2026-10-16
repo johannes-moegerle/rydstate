@@ -8,11 +8,11 @@ import pytest
 from rydstate import BasisMQDT, RydbergStateSQDTAlkali
 from rydstate.angular import AngularKetFJ
 from rydstate.angular.utils import is_unknown
+from rydstate.qdt import TrivialModel
 from rydstate.radial import RadialKet
-from rydstate.species import TrivialModel
 
 if TYPE_CHECKING:
-    from rydstate.species import MQDTModel
+    from rydstate.qdt import MQDTModel
 
 
 def test_mqdt_basis_creation() -> None:

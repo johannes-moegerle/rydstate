@@ -1,4 +1,4 @@
-from rydstate import angular, basis, radial, rydberg_state, species
+from rydstate import angular, basis, qdt, radial, rydberg_state, species
 from rydstate.basis import BasisMQDT, BasisSQDT
 from rydstate.rydberg_state import RydbergStateMQDT, RydbergStateSQDT, RydbergStateSQDTAlkali, RydbergStateSQDTDivalent
 from rydstate.units import ureg
@@ -13,6 +13,7 @@ __all__ = [
     "angular",
     "basis",
     "generate_database",
+    "qdt",
     "radial",
     "rydberg_state",
     "species",

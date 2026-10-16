@@ -6,7 +6,7 @@ import numpy as np
 
 from rydstate.angular.angular_ket import AngularKetFJ, AngularKetJJ, AngularKetLS
 from rydstate.angular.utils import Unknown
-from rydstate.species.eigen_channel_model import EigenChannelModel
+from rydstate.qdt.eigen_channel_model import EigenChannelModel
 
 
 class Yb173_S15_HighN(EigenChannelModel):

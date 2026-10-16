@@ -8,17 +8,17 @@ from rydstate import units
 from rydstate.angular import NotSet
 from rydstate.angular.angular_ket import AngularKetBase, AngularKetFJ, AngularKetLS
 from rydstate.angular.utils import AllKnown, is_unknown
+from rydstate.qdt import SQDT, get_sqdt
 from rydstate.radial import RadialKet
 from rydstate.radial.radial_ket import RadialDummy
 from rydstate.rydberg_state.rydberg_base import RydbergState
 from rydstate.rydberg_state.rydberg_ket import RydbergKet
-from rydstate.species import get_element_properties, get_sqdt
+from rydstate.species import get_element_properties
 from rydstate.species.potential import Potential, get_potential_class
-from rydstate.species.sqdt import SQDT
 from rydstate.species.utils import calc_energy_from_nu, calc_nu_from_energy
 
 if TYPE_CHECKING:
-    from rydstate.species.osqdt import OSQDT
+    from rydstate.qdt.osqdt import OSQDT
     from rydstate.units import PintFloat
 
 GenericT_AngularKet = TypeVar("GenericT_AngularKet", bound=AngularKetBase[AllKnown])
@@ -104,7 +104,7 @@ class RydbergStateSQDT(RydbergState, Generic[GenericT_AngularKet]):
         r"""The effective principal quantum number nui, defined with reference to the ionization energy.
 
         nui is defined with reference to the ionization energy of the Rydberg electron
-        (see :attr:`~rydstate.species.sqdt.SQDT.ionization_energy_au`), i.e. via the binding energy
+        (see :attr:`~rydstate.qdt.sqdt.SQDT.ionization_energy_au`), i.e. via the binding energy
 
         .. math::
             E = I - \frac{R_M}{\nu_i^2} = I_{\text{ref}} - \frac{R_M}{\nu^2}
@@ -120,7 +120,7 @@ class RydbergStateSQDT(RydbergState, Generic[GenericT_AngularKet]):
         r"""The effective principal quantum number nu, defined with reference to the reference ionization energy.
 
         In contrast to :attr:`nui`, nu is defined with reference to the reference ionization energy
-        (see :attr:`~rydstate.species.sqdt.SQDT.reference_ionization_energy_au`).
+        (see :attr:`~rydstate.qdt.sqdt.SQDT.reference_ionization_energy_au`).
 
         For states without hyperfine splitting, nui and nu are equal.
         """
@@ -295,7 +295,7 @@ class RydbergStateOSQDT(RydbergStateSQDT[AngularKetFJ[AllKnown]]):
     They are rather used for comparison and didactic purposes.
 
     This is a :class:`RydbergStateSQDT`, whose quantum defects are given by an
-    :class:`~rydstate.species.osqdt.OSQDT` object, i.e. by the diagonal elements of the K-matrix
+    :class:`~rydstate.qdt.osqdt.OSQDT` object, i.e. by the diagonal elements of the K-matrix
     of the MQDT models in the outer channel frame.
     """
 

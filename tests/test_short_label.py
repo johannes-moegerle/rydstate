@@ -8,14 +8,15 @@ from rydstate.angular import AngularKetFJ, AngularKetJJ, AngularKetLS
 from rydstate.angular.angular_ket import AngularKetBase
 from rydstate.angular.short_label import format_short_label, parse_short_label
 from rydstate.angular.utils import Unknown
+from rydstate.qdt import MQDT, EigenChannelModel
 from rydstate.radial import RadialDummy
 from rydstate.rydberg_state import RydbergKet
-from rydstate.species import MQDT, EigenChannelModel, get_all_subclasses, get_element_properties
+from rydstate.species import get_all_subclasses, get_element_properties
 
 if TYPE_CHECKING:
     from rydstate import RydbergStateSQDT
     from rydstate.angular.utils import CouplingScheme
-    from rydstate.species import MQDTModel
+    from rydstate.qdt import MQDTModel
 
 ALL_MODELS = [model for mqdt_class in get_all_subclasses(MQDT) for model in mqdt_class().models]
 

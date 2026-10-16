@@ -1,6 +1,6 @@
 from typing import ClassVar
 
-from rydstate.species.sqdt import SQDT
+from rydstate.qdt.sqdt import SQDT
 
 
 class SQDTStrontium88(SQDT):

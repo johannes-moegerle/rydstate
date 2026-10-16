@@ -12,9 +12,9 @@ from rydstate.angular.utils import is_unknown
 from rydstate.basis.basis_base import BasisBase
 from rydstate.basis.basis_sqdt import BasisSQDT
 from rydstate.basis.utils import get_m_range, is_allowed_qn
+from rydstate.qdt.mqdt import MQDT, get_mqdt
+from rydstate.qdt.osqdt import OSQDT, NoOSQDTStateError
 from rydstate.rydberg_state.rydberg_sqdt import RydbergStateOSQDT
-from rydstate.species.mqdt import MQDT, get_mqdt
-from rydstate.species.osqdt import OSQDT, NoOSQDTStateError
 
 if TYPE_CHECKING:
     from rydstate.angular.utils import AllKnown
@@ -36,8 +36,8 @@ class BasisOSQDT(BasisSQDT):
     Since the states are requested in a range of nu, the n of each channel are looped over generously
     and the states outside the requested nu range are discarded afterwards.
     In contrast to :class:`~rydstate.basis.BasisSQDT`, the quantum defects are not taken from the
-    :class:`~rydstate.species.SQDT` data, but from the diagonal elements of the K-matrix of the
-    :class:`~rydstate.species.MQDT` models in the outer channel frame.
+    :class:`~rydstate.qdt.SQDT` data, but from the diagonal elements of the K-matrix of the
+    :class:`~rydstate.qdt.MQDT` models in the outer channel frame.
 
     This is the same condition one obtains from :class:`~rydstate.basis.BasisMQDT` when the coupling
     between the outer channels is switched off, i.e. when the off-diagonal elements of the K-matrix are neglected,

@@ -7,13 +7,13 @@ from typing import TYPE_CHECKING, Any, ClassVar, overload
 from rydstate import units
 from rydstate.angular.utils import is_not_set
 from rydstate.metaclass_cache import CachedABCMeta
-from rydstate.species.eigen_channel_model import TrivialModel
+from rydstate.qdt.eigen_channel_model import TrivialModel
 from rydstate.species.utils import get_all_subclasses
 
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase
     from rydstate.angular.core_ket import CoreKet
-    from rydstate.species.mqdt_model import MQDTModel
+    from rydstate.qdt.mqdt_model import MQDTModel
     from rydstate.units import PintFloat
 
 
@@ -36,7 +36,7 @@ class MQDT(ABC, metaclass=CachedABCMeta):
     If None, it is defined as the smallest ionization threshold in the ionization_threshold_dict."""
 
     model_classes: ClassVar[list[type[MQDTModel]]]
-    """List of the MQDT :class:`~rydstate.species.mqdt_model.MQDTModel` models available for this species.
+    """List of the MQDT :class:`~rydstate.qdt.mqdt_model.MQDTModel` models available for this species.
 
     :meta hide-value:
 

@@ -7,7 +7,7 @@ import numpy as np
 import pytest
 from rydstate import BasisMQDT, RydbergStateSQDTDivalent
 from rydstate.angular.utils import is_unknown
-from rydstate.species import TrivialModel
+from rydstate.qdt import TrivialModel
 
 if TYPE_CHECKING:
     from rydstate import RydbergStateMQDT

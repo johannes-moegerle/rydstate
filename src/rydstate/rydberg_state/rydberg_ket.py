@@ -16,8 +16,8 @@ from rydstate.angular.utils import (
     is_not_set,
     is_unknown,
 )
+from rydstate.qdt.sqdt import get_sqdt
 from rydstate.species.element_properties import get_element_properties
-from rydstate.species.sqdt import get_sqdt
 from rydstate.units import MatrixElementOperatorRanks
 
 if TYPE_CHECKING:

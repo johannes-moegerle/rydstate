@@ -3,8 +3,9 @@ from typing import Any
 import pytest
 from rydstate import RydbergStateSQDT, RydbergStateSQDTDivalent
 from rydstate.angular import AngularKetLS
-from rydstate.species import get_all_subclasses, get_element_properties, get_sqdt
-from rydstate.species.sqdt import SQDT
+from rydstate.qdt import get_sqdt
+from rydstate.qdt.sqdt import SQDT
+from rydstate.species import get_all_subclasses, get_element_properties
 
 ALL_AVAILABLE_SQDT_SPECIES = sorted([cls.species for cls in get_all_subclasses(SQDT)])
 

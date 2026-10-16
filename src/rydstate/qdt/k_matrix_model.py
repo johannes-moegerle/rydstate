@@ -4,11 +4,11 @@ from typing import TYPE_CHECKING, ClassVar
 
 import numpy as np
 
-from rydstate.species.mqdt_model import MQDTModel
+from rydstate.qdt.mqdt_model import MQDTModel
 from rydstate.species.utils import calc_energy_from_nu, calc_polynomial, check_expansion_coefficients
 
 if TYPE_CHECKING:
-    from rydstate.species.mqdt import MQDT
+    from rydstate.qdt.mqdt import MQDT
     from rydstate.species.utils import ExpansionCoefficients
     from rydstate.units import NDArray
 
@@ -29,7 +29,7 @@ class KMatrixModel(MQDTModel):
         \epsilon = \frac{I_{\text{ref}} - E}{I_{\text{ref}}} = \frac{Z^2 R_M}{I_{\text{ref}} \nu^2}
 
     with :math:`I_{\text{ref}}` the reference ionization threshold of the MQDT model
-    (see :attr:`~rydstate.species.mqdt.MQDT.reference_ionization_threshold_au`) and :math:`E` the energy of the state,
+    (see :attr:`~rydstate.qdt.mqdt.MQDT.reference_ionization_threshold_au`) and :math:`E` the energy of the state,
     both measured from the ground state of the atom.
     """
 

@@ -10,14 +10,15 @@ from rydstate.angular.utils import NotSet, is_unknown
 from rydstate.basis.basis_base import BasisBase
 from rydstate.basis.utils import get_m_range, is_allowed_qn
 from rydstate.linalg import calc_nullvector, find_roots
+from rydstate.qdt import MQDT, get_mqdt
 from rydstate.radial import RadialDummy, RadialKet
 from rydstate.rydberg_state import RydbergKet, RydbergStateMQDT
-from rydstate.species import MQDT, get_mqdt
 
 if TYPE_CHECKING:
     from typing_extensions import Self
 
-    from rydstate.species import MQDTModel, Potential
+    from rydstate.qdt import MQDTModel
+    from rydstate.species import Potential
 
 
 logger = logging.getLogger(__name__)

@@ -13,7 +13,7 @@ from rydstate.generate_database.generate_database import (
     create_tables_for_mqdt,
     create_tables_for_sqdt,
 )
-from rydstate.species.mqdt import MQDT
+from rydstate.qdt.mqdt import MQDT
 from rydstate.species.utils import get_all_subclasses
 
 logger = logging.getLogger(__name__)

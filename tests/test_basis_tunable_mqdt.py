@@ -5,10 +5,10 @@ from typing import TYPE_CHECKING
 import numpy as np
 import pytest
 from rydstate.basis import BasisMQDT, BasisOSQDT, BasisTunableMQDT
-from rydstate.species import ScaledOffDiagonalModel, get_mqdt
+from rydstate.qdt import ScaledOffDiagonalModel, get_mqdt
 
 if TYPE_CHECKING:
-    from rydstate.species import MQDTModel
+    from rydstate.qdt import MQDTModel
 
 
 @pytest.fixture
