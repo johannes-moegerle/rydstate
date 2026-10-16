@@ -3,13 +3,17 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 import pytest
+from rydstate import RydbergStateSQDTAlkali, RydbergStateSQDTDivalent
 from rydstate.angular import AngularKetFJ, AngularKetJJ, AngularKetLS
 from rydstate.angular.angular_ket import AngularKetBase
 from rydstate.angular.short_label import format_short_label, parse_short_label
 from rydstate.angular.utils import Unknown
-from rydstate.species import MQDT, EigenChannelModel, get_all_subclasses
+from rydstate.radial import RadialDummy
+from rydstate.rydberg_state import RydbergKet
+from rydstate.species import MQDT, EigenChannelModel, get_all_subclasses, get_element_properties
 
 if TYPE_CHECKING:
+    from rydstate import RydbergStateSQDT
     from rydstate.angular.utils import CouplingScheme
     from rydstate.species import MQDTModel
 
@@ -236,3 +240,33 @@ def test_short_label_round_trip_mqdt_channels(model: MQDTModel) -> None:
         channels += model.inner_channels
     for channel in channels:
         assert type(channel).from_short_label(channel.get_short_label(), model.species) == channel
+
+
+@pytest.mark.parametrize(
+    ("state", "label"),
+    [
+        (RydbergStateSQDTAlkali("Rb", n=60, l=1, j=1.5, m=0.5), "60p_3/2 m=1/2"),
+        (RydbergStateSQDTDivalent("Sr88", n=61, l=2, s=1, j=1, m=0), "5s 61d 3D1 m=0"),
+        (RydbergStateSQDTDivalent("Yb174", n=55, l=3, s=0, j=3), "6s 55f 1F3"),
+    ],
+)
+def test_rydberg_ket_short_label(state: RydbergStateSQDT[Any], label: str) -> None:
+    """The rydberg ket plugs its n into the short label template of the angular ket."""
+    ket = state.rydberg_kets[0]
+    assert ket.get_short_label() == label
+
+
+def test_rydberg_ket_short_label_without_n() -> None:
+    """Without n, the rydberg ket uses [nu] instead (like get_label)."""
+    ket = RydbergStateSQDTDivalent("Sr88", n=61, l=2, s=1, j=1, m=0).rydberg_kets[0]
+    ket_without_n = RydbergKet("Sr88", ket.angular, ket.radial)
+    assert ket_without_n.get_short_label() == f"5s [{ket.radial.nu:.1f}]d 3D1 m=0"
+
+
+def test_rydberg_ket_short_label_unknown() -> None:
+    """A rydberg ket with unknown angular quantum numbers is labeled like its angular ket."""
+    angular = AngularKetFJ(
+        species="Yb171", l_c=Unknown, f_tot=1.5, m=0.5, parity=-1, label="4f13 5d2 6s 3P2", allow_unknown=True
+    )
+    ket = RydbergKet("Yb171", angular, RadialDummy(1.0, 1.8, element_properties=get_element_properties("Yb171")))
+    assert ket.get_short_label() == angular.get_short_label() == "? 4f13 5d2 6s 3P2 parity=-1 F=3/2 m=1/2"

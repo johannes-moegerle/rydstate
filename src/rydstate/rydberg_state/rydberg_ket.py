@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Any, Literal, overload
 
 from rydstate import units
 from rydstate.angular.angular_ket import AngularKetFJ, AngularKetJJ, AngularKetLS
+from rydstate.angular.short_label import format_short_label
 from rydstate.angular.utils import (
     format_quantum_number,
     get_spectroscopic_letter,
@@ -128,6 +129,28 @@ class RydbergKet:
         if fmt == "bra":
             return f"⟨{label}|"
         raise ValueError(f"Unknown fmt {fmt}")
+
+    def get_short_label(self) -> str:
+        """Return a short label of the Rydberg ket, e.g. "5s 60p 3P1 m=0".
+
+        This uses the same template as the short label of the angular ket (see :meth:`AngularKetBase.get_short_label`),
+        but with the principal quantum number n plugged in, or "[nu]" if n is not known.
+        """
+        angular = self.angular
+        values: dict[str, float | str | None] = {qn: getattr(angular, qn) for qn in angular.quantum_number_names}
+        values["m"] = None if is_not_set(angular.m) else angular.m
+
+        if angular.contains_unknown:
+            values["label"] = angular.label
+            values["parity"] = angular.parity
+            return format_short_label(angular.short_label_template_unknown, values)
+
+        nu = self.radial.nu
+        values["n"] = self.n if self.n is not None else f"[{nu:.1f}]" if nu is not None else "[?]"
+        values["n_c"] = angular.n_c  # type: ignore [assignment]
+        values["label"] = angular.label
+        template = angular.short_label_template_single_valence if angular.s_c == 0 else angular.short_label_template
+        return format_short_label(template, values, omit={"f_tot", "f_c"} if angular.i_c == 0 else ())
 
     def calc_reduced_overlap(self, other: RydbergKet) -> float:
         """Calculate the reduced overlap <self|other> (ignoring the magnetic quantum number m)."""
