@@ -43,7 +43,16 @@ class _SQDTStrontiumIon(SQDT, ABC):
     #        Glukhov 2013, Opt. Spectrosc. 115, 9 (https://doi.org/10.1134/S0030400X13070060) give extended Ritz
     #        parameters fitted to the low-lying tabulated levels only (fine-structure averaged; [3] showed the 7p
     #        levels used by Djerad to be wrong by 34 cm^-1).
-    #
+
+
+class SQDTStrontium87Ion(_SQDTStrontiumIon):
+    species = "Sr87_ion"
+    # no quantum defects (they would have to account for the hyperfine structure), i.e. only the NIST levels are used
+
+
+class SQDTStrontium88Ion(_SQDTStrontiumIon):
+    species = "Sr88_ion"
+
     # The quantum defect is expanded as delta(n) = d0 + d2 / (n - d0)^2 + d4 / (n - d0)^4 + ...
     # Reference [3] instead parametrizes the energy dependence linearly around the double ionization threshold,
     # mu(E) = mu0 + dmu/dE (E - I++) with mu0 = mu(I++). Inserting the binding energy of an electron bound to a
@@ -67,11 +76,3 @@ class _SQDTStrontiumIon(SQDT, ABC):
         (4, 3.5, 1 / 2): [0.011, -0.132, 0, 0, 0],  # [3]
         (4, 4.5, 1 / 2): [0.011, -0.132, 0, 0, 0],  # [3]
     }
-
-
-class SQDTStrontium87Ion(_SQDTStrontiumIon):
-    species = "Sr87_ion"
-
-
-class SQDTStrontium88Ion(_SQDTStrontiumIon):
-    species = "Sr88_ion"
