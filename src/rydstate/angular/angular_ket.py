@@ -90,6 +90,8 @@ class AngularKetBase(ABC, Generic[GenericT_Unknown], metaclass=CachedABCMeta):
     """Template of the short label for atoms with two valence electrons, see :meth:`get_short_label`."""
     short_label_template_single_valence: ClassVar[str]
     """Template of the short label for atoms with a single valence electron, see :meth:`get_short_label`."""
+    short_label_template_unknown: ClassVar[str] = "?[ {label:label}] parity={parity:parity} F={f_tot:qn}[ m={m:qn}]"
+    """Template of the short label for kets with unknown quantum numbers, see :meth:`get_short_label`."""
 
     i_c: float
     """Nuclear spin quantum number."""
@@ -278,7 +280,10 @@ class AngularKetBase(ABC, Generic[GenericT_Unknown], metaclass=CachedABCMeta):
         (e.g. "5s_1/2 np_3/2 F=1" for Sr88),
         and the magnetic quantum number m only if it is set (e.g. "np_3/2 m=1/2").
 
-        Short labels of kets with unknown quantum numbers are not supported.
+        Kets with unknown quantum numbers are labeled according to :attr:`short_label_template_unknown`
+        by a leading "?" (indicating that not all quantum numbers are known),
+        followed by their :attr:`label` (if any), the parity, F and m
+        (e.g. "? 4f13 5d2 6s 3P2 parity=-1 F=3/2" or "? parity=+1 F=0").
 
         The principal quantum number of the rydberg electron is not known by the angular ket,
         so the placeholder "n" is shown instead (see also :meth:`RydbergKet.get_short_label`).
@@ -289,7 +294,9 @@ class AngularKetBase(ABC, Generic[GenericT_Unknown], metaclass=CachedABCMeta):
         values["m"] = None if is_not_set(self.m) else self.m
 
         if self.contains_unknown:
-            raise ValueError(f"Short labels of kets with unknown quantum numbers are not supported, {self!r}.")
+            values["label"] = self.label
+            values["parity"] = self.parity
+            return format_short_label(self.short_label_template_unknown, values)
 
         values["n_c"] = self.n_c  # type: ignore [assignment]
         template = self.short_label_template_single_valence if self.s_c == 0 else self.short_label_template
@@ -309,7 +316,9 @@ class AngularKetBase(ABC, Generic[GenericT_Unknown], metaclass=CachedABCMeta):
         Returns:
             The angular ket. If called on the base class :class:`AngularKetBase`,
             the coupling scheme is inferred from the label (for a single valence electron the label is the same
-            in all coupling schemes, and LS coupling is used).
+            in all coupling schemes, and LS coupling is used; the same holds for kets with unknown quantum numbers).
+            Kets with unknown quantum numbers are created like the perturber channels of the MQDT models,
+            i.e. with an unknown l_c (and thus all quantum numbers except f_tot unknown).
 
         """
         ket_class: type[AngularKetBase[Any]] = cls
@@ -341,7 +350,14 @@ class AngularKetBase(ABC, Generic[GenericT_Unknown], metaclass=CachedABCMeta):
 
         s_c = get_element_properties(species).s_c
         template = cls.short_label_template_single_valence if s_c == 0 else cls.short_label_template
-        kwargs: dict[str, Any] = parse_short_label(template, label)
+        try:
+            kwargs: dict[str, Any] = parse_short_label(template, label)
+        except ValueError as err:
+            try:
+                kwargs = parse_short_label(cls.short_label_template_unknown, label)
+            except ValueError:
+                raise err from None
+            kwargs.update(l_c=Unknown, allow_unknown=True)
         return kwargs
 
     def __eq__(self, other: object) -> bool:

@@ -39,7 +39,7 @@ if TYPE_CHECKING:
 class FieldType(NamedTuple):
     regex: str
     format: Callable[[float], str]
-    parse: Callable[[str], float]
+    parse: Callable[[str], float | str]
     placeholder: str | None = None
     """Shown for a required field without value (None) and parsed back as None."""
 
@@ -65,6 +65,10 @@ FIELD_TYPES: dict[str, FieldType] = {
     "mult": FieldType(r"\d+", lambda value: str(int(2 * value + 1)), lambda string: (int(string) - 1) / 2),
     # integer or half-integer quantum number, e.g. j_r=1.5 -> "3/2"
     "qn": FieldType(r"-?\d+(?:/2|\.5)?", format_quantum_number, parse_quantum_number),
+    # parity, i.e. -1 or +1
+    "parity": FieldType(r"[+-]1", lambda value: "+1" if value > 0 else "-1", int),
+    # free text label (e.g. of a ket with unknown quantum numbers)
+    "label": FieldType(r".+?", str, str),
 }
 
 
@@ -139,7 +143,7 @@ def format_short_label(template: str, values: Mapping[str, float | str | None], 
     return label
 
 
-def parse_short_label(template: str, label: str) -> dict[str, float]:
+def parse_short_label(template: str, label: str) -> dict[str, float | str]:
     """Parse a short label according to a template.
 
     Args:

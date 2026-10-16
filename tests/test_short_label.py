@@ -6,6 +6,7 @@ import pytest
 from rydstate.angular import AngularKetFJ, AngularKetJJ, AngularKetLS
 from rydstate.angular.angular_ket import AngularKetBase
 from rydstate.angular.short_label import format_short_label, parse_short_label
+from rydstate.angular.utils import Unknown
 
 if TYPE_CHECKING:
     from rydstate.angular.utils import CouplingScheme
@@ -179,3 +180,38 @@ def test_from_short_label_invalid_quantum_numbers(
 ) -> None:
     with pytest.raises(ValueError, match=r"spin addition rule|Unknown quantum numbers"):
         ket_class.from_short_label(label, species)
+
+
+def test_short_label_unknown() -> None:
+    """Kets with unknown quantum numbers are labeled by a leading "?", their label (if any), parity, F and m."""
+    ket = AngularKetFJ(
+        species="Yb171", l_c=Unknown, f_tot=1.5, m=0.5, parity=-1, label="4f13 5d2 6s 3P2", allow_unknown=True
+    )
+    label = "? 4f13 5d2 6s 3P2 parity=-1 F=3/2 m=1/2"
+    assert ket.get_short_label() == label
+    assert AngularKetFJ.from_short_label(label, "Yb171") == ket
+
+    ket = AngularKetFJ(species="Yb174", l_c=Unknown, f_tot=0, parity=1, allow_unknown=True)
+    assert ket.get_short_label() == "? parity=+1 F=0"
+    assert AngularKetFJ.from_short_label("? parity=+1 F=0", "Yb174") == ket
+
+    # the leading "?" distinguishes the label from that of a ket with known quantum numbers
+    ket_ls = AngularKetLS(
+        species="Sr88", l_c=Unknown, f_tot=1, parity=-1, label="5s np 3P1 label=x", allow_unknown=True
+    )
+    assert ket_ls.get_short_label() == "? 5s np 3P1 label=x parity=-1 F=1"
+    assert AngularKetBase.from_short_label("? 5s np 3P1 label=x parity=-1 F=1", "Sr88") == ket_ls
+
+    # a label "?" is not confused with a missing label
+    ket = AngularKetFJ(species="Yb174", l_c=Unknown, f_tot=0, parity=1, label="?", allow_unknown=True)
+    assert ket.get_short_label() == "? ? parity=+1 F=0"
+    assert AngularKetFJ.from_short_label("? ? parity=+1 F=0", "Yb174") == ket
+
+
+@pytest.mark.parametrize(
+    "label", ["? 4f13 5d2 6s 3P2 F=3/2", "? 4f13 5d2 6s 3P2 parity=-1", "4f13 5d2 6s 3P2 parity=-1 F=3/2"]
+)
+def test_from_short_label_unknown_invalid(label: str) -> None:
+    """For kets with unknown quantum numbers the leading "?", parity and F are required."""
+    with pytest.raises(ValueError, match="does not match"):
+        AngularKetFJ.from_short_label(label, "Yb171")
