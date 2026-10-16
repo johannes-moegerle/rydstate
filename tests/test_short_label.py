@@ -182,18 +182,21 @@ def test_from_short_label_invalid_format(ket_class: type[AngularKetBase[Any]], l
 
 
 @pytest.mark.parametrize(
-    ("ket_class", "label", "species"),
+    ("ket_class", "label", "species", "match"),
     [
-        (AngularKetLS, "5s np 3P3", "Sr88"),  # j_tot not allowed
-        (AngularKetLS, "np_3/2", "Yb171_ion"),  # F missing for a non-zero nuclear spin
-        (AngularKetFJ, "6s_1/2(Fc=2) np_3/2 F=3/2", "Yb171"),  # f_c not allowed
-        (AngularKetFJ, "6s_1/2 np_3/2 F=3/2", "Yb171"),  # Fc missing for a non-zero nuclear spin
+        (AngularKetLS, "5s np 3P3", "Sr88", r"spin addition rule"),  # j_tot not allowed
+        # F missing for a non-zero nuclear spin
+        (AngularKetLS, "np_3/2", "Yb171_ion", r"Unknown quantum numbers detected \(f_tot\)"),
+        (AngularKetBase, "5s np 3P1 m=0", "Sr87", r"Unknown quantum numbers detected \(f_tot\)"),
+        (AngularKetFJ, "6s_1/2(Fc=2) np_3/2 F=3/2", "Yb171", r"spin addition rule"),  # f_c not allowed
+        # Fc missing for a non-zero nuclear spin
+        (AngularKetFJ, "6s_1/2 np_3/2 F=3/2", "Yb171", r"Unknown quantum numbers detected \(f_c\)"),
     ],
 )
 def test_from_short_label_invalid_quantum_numbers(
-    ket_class: type[AngularKetBase[Any]], label: str, species: str
+    ket_class: type[AngularKetBase[Any]], label: str, species: str, match: str
 ) -> None:
-    with pytest.raises(ValueError, match=r"spin addition rule|Unknown quantum numbers"):
+    with pytest.raises(ValueError, match=match):
         ket_class.from_short_label(label, species)
 
 

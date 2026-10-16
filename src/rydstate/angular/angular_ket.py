@@ -225,8 +225,15 @@ class AngularKetBase(ABC, Generic[GenericT_Unknown], metaclass=CachedABCMeta):
         """Check that the quantum numbers are valid."""
         msgs = msgs if msgs is not None else []
 
-        if not self._allow_unknown and any(is_unknown(qn) for qn in self.quantum_numbers):
-            raise ValueError(f"Unknown quantum numbers detected, but allow_unknown is False for {self!r}.")
+        unknown_qns = [
+            name for name, qn in zip(self.quantum_number_names, self.quantum_numbers, strict=True) if is_unknown(qn)
+        ]
+        if not self._allow_unknown and len(unknown_qns) > 0:
+            raise ValueError(
+                f"Unknown quantum numbers detected ({', '.join(unknown_qns)}), "
+                f"but allow_unknown is False for {self!r}. "
+                "Please specify them explicitly, if they cannot be determined from the given quantum numbers."
+            )
 
         if is_unknown(self.f_tot):
             msgs.append("f_tot cannot be determined from the given quantum numbers, please specify it explicitly.")
