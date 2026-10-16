@@ -279,6 +279,7 @@ class AngularKetBase(ABC, Generic[GenericT_Unknown], metaclass=CachedABCMeta):
         (always for two valence electrons in FJ coupling), and likewise the core angular momentum Fc in FJ coupling
         (e.g. "5s_1/2 np_3/2 F=1" for Sr88),
         and the magnetic quantum number m only if it is set (e.g. "np_3/2 m=1/2").
+        If the ket has a :attr:`label`, it is appended at the end (e.g. "4d np 3P0 label=4d threshold averaged").
 
         Kets with unknown quantum numbers are labeled according to :attr:`short_label_template_unknown`
         by a leading "?" (indicating that not all quantum numbers are known),
@@ -299,6 +300,7 @@ class AngularKetBase(ABC, Generic[GenericT_Unknown], metaclass=CachedABCMeta):
             return format_short_label(self.short_label_template_unknown, values)
 
         values["n_c"] = self.n_c  # type: ignore [assignment]
+        values["label"] = self.label
         template = self.short_label_template_single_valence if self.s_c == 0 else self.short_label_template
         return format_short_label(template, values, omit={"f_tot", "f_c"} if self.i_c == 0 else ())
 
@@ -940,8 +942,10 @@ class AngularKetLS(AngularKetBase[GenericT_Unknown], Generic[GenericT_Unknown]):
         "f_tot": ("i_c", "j_tot"),
     }
     coupling_scheme = "LS"
-    short_label_template = "{n_c:int}{l_c:l} {n:n}{l_r:l} {s_tot:mult}{l_tot:L}{j_tot:qn}[ F={f_tot:qn}][ m={m:qn}]"
-    short_label_template_single_valence = "{n:n}{l_r:l}_{j_tot:qn}[ F={f_tot:qn}][ m={m:qn}]"
+    short_label_template = (
+        "{n_c:int}{l_c:l} {n:n}{l_r:l} {s_tot:mult}{l_tot:L}{j_tot:qn}[ F={f_tot:qn}][ m={m:qn}][ label={label:label}]"
+    )
+    short_label_template_single_valence = "{n:n}{l_r:l}_{j_tot:qn}[ F={f_tot:qn}][ m={m:qn}][ label={label:label}]"
 
     s_tot: float | GenericT_Unknown
     """Total electron spin quantum number (s_c + s_r)."""
@@ -1065,8 +1069,10 @@ class AngularKetJJ(AngularKetBase[GenericT_Unknown], Generic[GenericT_Unknown]):
         "f_tot": ("i_c", "j_tot"),
     }
     coupling_scheme = "JJ"
-    short_label_template = "{n_c:int}{l_c:l}_{j_c:qn} {n:n}{l_r:l}_{j_r:qn} J={j_tot:qn}[ F={f_tot:qn}][ m={m:qn}]"
-    short_label_template_single_valence = "{n:n}{l_r:l}_{j_r:qn}[ F={f_tot:qn}][ m={m:qn}]"
+    short_label_template = (
+        "{n_c:int}{l_c:l}_{j_c:qn} {n:n}{l_r:l}_{j_r:qn} J={j_tot:qn}[ F={f_tot:qn}][ m={m:qn}][ label={label:label}]"
+    )
+    short_label_template_single_valence = "{n:n}{l_r:l}_{j_r:qn}[ F={f_tot:qn}][ m={m:qn}][ label={label:label}]"
 
     j_c: float | GenericT_Unknown
     """Total core electron angular quantum number (s_c + l_c)."""
@@ -1188,8 +1194,10 @@ class AngularKetFJ(AngularKetBase[GenericT_Unknown], Generic[GenericT_Unknown]):
         "f_tot": ("f_c", "j_r"),
     }
     coupling_scheme = "FJ"
-    short_label_template = "{n_c:int}{l_c:l}_{j_c:qn}[(Fc={f_c:qn})] {n:n}{l_r:l}_{j_r:qn} F={f_tot:qn}[ m={m:qn}]"
-    short_label_template_single_valence = "{n:n}{l_r:l}_{j_r:qn}[ F={f_tot:qn}][ m={m:qn}]"
+    short_label_template = (
+        "{n_c:int}{l_c:l}_{j_c:qn}[(Fc={f_c:qn})] {n:n}{l_r:l}_{j_r:qn} F={f_tot:qn}[ m={m:qn}][ label={label:label}]"
+    )
+    short_label_template_single_valence = "{n:n}{l_r:l}_{j_r:qn}[ F={f_tot:qn}][ m={m:qn}][ label={label:label}]"
 
     j_c: float | GenericT_Unknown
     """Total core electron angular quantum number (s_c + l_c)."""

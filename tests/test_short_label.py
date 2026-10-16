@@ -7,9 +7,13 @@ from rydstate.angular import AngularKetFJ, AngularKetJJ, AngularKetLS
 from rydstate.angular.angular_ket import AngularKetBase
 from rydstate.angular.short_label import format_short_label, parse_short_label
 from rydstate.angular.utils import Unknown
+from rydstate.species import MQDT, EigenChannelModel, get_all_subclasses
 
 if TYPE_CHECKING:
     from rydstate.angular.utils import CouplingScheme
+    from rydstate.species import MQDTModel
+
+ALL_MODELS = [model for mqdt_class in get_all_subclasses(MQDT) for model in mqdt_class().models]
 
 KET_CLASSES: dict[CouplingScheme, type[AngularKetBase[Any]]] = {
     "LS": AngularKetLS,
@@ -83,6 +87,13 @@ def test_parse_short_label() -> None:
         ("Yb174", AngularKetLS(species="Yb174", l_c=2, l_r=7, l_tot=7, s_tot=0, j_tot=7), "5d n(l=7) 1(L=7)7"),
         ("Sr87", AngularKetLS(species="Sr87", l_r=2, s_tot=1, j_tot=1, f_tot=5.5, m=0.5), "5s nd 3D1 F=5.5 m=1/2"),
         ("Yb171", AngularKetLS(species="Yb171", l_r=0, s_tot=0, j_tot=0, f_tot=0.5), "6s ns 1S0 F=1/2"),
+        # a label is appended at the end
+        (
+            "Sr88",
+            AngularKetLS(species="Sr88", l_c=2, l_r=1, l_tot=1, s_tot=1, j_tot=0, m=0, label="4d threshold averaged"),
+            "4d np 3P0 m=0 label=4d threshold averaged",
+        ),
+        ("Sr88", AngularKetLS(species="Sr88", l_r=1, s_tot=1, j_tot=1, label="?"), "5s np 3P1 label=?"),
         # JJ coupling
         ("Sr88", AngularKetJJ(species="Sr88", l_r=1, j_c=0.5, j_r=1.5, j_tot=1, m=0), "5s_1/2 np_3/2 J=1 m=0"),
         ("Yb174", AngularKetJJ(species="Yb174", l_c=1, l_r=1, j_c=1.5, j_r=0.5, j_tot=2), "6p_3/2 np_1/2 J=2"),
@@ -215,3 +226,13 @@ def test_from_short_label_unknown_invalid(label: str) -> None:
     """For kets with unknown quantum numbers the leading "?", parity and F are required."""
     with pytest.raises(ValueError, match="does not match"):
         AngularKetFJ.from_short_label(label, "Yb171")
+
+
+@pytest.mark.parametrize("model", ALL_MODELS, ids=lambda model: f"{model.species}:{model.name}")
+def test_short_label_round_trip_mqdt_channels(model: MQDTModel) -> None:
+    """All channels of the MQDT models (including the perturber channels) can be recreated from their short label."""
+    channels = list(model.outer_channels)
+    if isinstance(model, EigenChannelModel):
+        channels += model.inner_channels
+    for channel in channels:
+        assert type(channel).from_short_label(channel.get_short_label(), model.species) == channel
