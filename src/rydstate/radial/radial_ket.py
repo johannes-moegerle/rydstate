@@ -12,9 +12,9 @@ from scipy.special import gamma
 
 from rydstate.angular.utils import is_unknown
 from rydstate.metaclass_cache import CachedABCMeta
+from rydstate.qdt.utils import calc_energy_from_nu
 from rydstate.radial.numerov import _run_numerov_integration_python, run_numerov_integration
 from rydstate.radial.radial_base import Radial
-from rydstate.species.utils import calc_energy_from_nu
 
 if TYPE_CHECKING:
     from rydstate.radial.radial_matrix_element import INTEGRATION_METHODS, RadialMatrixElementOperator

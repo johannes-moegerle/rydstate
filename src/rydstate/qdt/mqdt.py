@@ -8,7 +8,7 @@ from rydstate import units
 from rydstate.angular.utils import is_not_set
 from rydstate.metaclass_cache import CachedABCMeta
 from rydstate.qdt.eigen_channel_model import TrivialModel
-from rydstate.species.utils import get_all_subclasses
+from rydstate.qdt.utils import get_all_subclasses
 
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase

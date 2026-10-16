@@ -9,8 +9,8 @@ import numpy as np
 
 from rydstate.angular.utils import is_unknown
 from rydstate.metaclass_cache import CachedABCMeta
+from rydstate.qdt.utils import get_all_subclasses
 from rydstate.species.element_properties import get_element_properties
-from rydstate.species.utils import get_all_subclasses
 
 if TYPE_CHECKING:
     from rydstate.units import NDArray

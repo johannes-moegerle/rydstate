@@ -8,19 +8,19 @@ from typing import TYPE_CHECKING, Any, ClassVar, overload
 from rydstate import units
 from rydstate.angular.utils import is_unknown
 from rydstate.metaclass_cache import CachedABCMeta
-from rydstate.species.element_properties import get_element_properties
-from rydstate.species.nist import parse_nist_energy_levels, resolve_species_data_file
-from rydstate.species.utils import (
+from rydstate.qdt.utils import (
     calc_modified_ritz_formula,
     calc_nu_from_energy,
     check_expansion_coefficients,
     get_all_subclasses,
 )
+from rydstate.species.element_properties import get_element_properties
+from rydstate.species.nist import parse_nist_energy_levels, resolve_species_data_file
 
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase
+    from rydstate.qdt.utils import ExpansionCoefficients
     from rydstate.species.nist import NistEnergyLevels
-    from rydstate.species.utils import ExpansionCoefficients
     from rydstate.units import PintFloat
 
 

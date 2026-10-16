@@ -9,13 +9,13 @@ from rydstate.angular import NotSet
 from rydstate.angular.angular_ket import AngularKetBase, AngularKetFJ, AngularKetLS
 from rydstate.angular.utils import AllKnown, is_unknown
 from rydstate.qdt import SQDT, get_sqdt
+from rydstate.qdt.utils import calc_energy_from_nu, calc_nu_from_energy
 from rydstate.radial import RadialKet
 from rydstate.radial.radial_ket import RadialDummy
 from rydstate.rydberg_state.rydberg_base import RydbergState
 from rydstate.rydberg_state.rydberg_ket import RydbergKet
 from rydstate.species import get_element_properties
 from rydstate.species.potential import Potential, get_potential_class
-from rydstate.species.utils import calc_energy_from_nu, calc_nu_from_energy
 
 if TYPE_CHECKING:
     from rydstate.qdt.osqdt import OSQDT

@@ -4,9 +4,9 @@ import pytest
 from rydstate import RydbergStateSQDT
 from rydstate.angular import AngularKetLS
 from rydstate.qdt import get_sqdt
+from rydstate.qdt.utils import calc_energy_from_nu, calc_nu_from_energy, get_all_subclasses
 from rydstate.species import get_element_properties, get_potential_class
 from rydstate.species.element_properties import ElementProperties
-from rydstate.species.utils import calc_energy_from_nu, calc_nu_from_energy, get_all_subclasses
 
 ALL_AVAILABLE_ION_SPECIES = sorted([cls.species for cls in get_all_subclasses(ElementProperties) if cls.net_charge > 1])
 

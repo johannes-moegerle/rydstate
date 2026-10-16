@@ -7,8 +7,8 @@ from typing import TYPE_CHECKING, Any, ClassVar, overload
 
 import numpy as np
 
+from rydstate.qdt.utils import calc_energy_from_nu, calc_nu_from_energy
 from rydstate.species.element_properties import get_element_properties
-from rydstate.species.utils import calc_energy_from_nu, calc_nu_from_energy
 
 if TYPE_CHECKING:
     from types import ModuleType

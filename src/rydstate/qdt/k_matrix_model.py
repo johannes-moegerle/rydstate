@@ -5,11 +5,11 @@ from typing import TYPE_CHECKING, ClassVar
 import numpy as np
 
 from rydstate.qdt.mqdt_model import MQDTModel
-from rydstate.species.utils import calc_energy_from_nu, calc_polynomial, check_expansion_coefficients
+from rydstate.qdt.utils import calc_energy_from_nu, calc_polynomial, check_expansion_coefficients
 
 if TYPE_CHECKING:
     from rydstate.qdt.mqdt import MQDT
-    from rydstate.species.utils import ExpansionCoefficients
+    from rydstate.qdt.utils import ExpansionCoefficients
     from rydstate.units import NDArray
 
 

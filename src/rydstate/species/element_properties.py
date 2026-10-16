@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, ClassVar, overload
 from rydstate import units
 from rydstate.angular.utils import check_spin_addition_rule, get_possible_quantum_number_values, is_unknown
 from rydstate.metaclass_cache import CachedABCMeta
-from rydstate.species.utils import get_all_subclasses
+from rydstate.qdt.utils import get_all_subclasses
 from rydstate.units import electron_mass_u, rydberg_constant_au
 
 if TYPE_CHECKING:
