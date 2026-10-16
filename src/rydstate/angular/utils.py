@@ -155,6 +155,21 @@ def get_spectroscopic_letter(l: int | Unknown) -> str:
     return ORBITAL_TO_STRING.get(l, f"(l={int(l)})")
 
 
+def parse_spectroscopic_letter(letter: str) -> int:
+    """Return the orbital angular momentum quantum number l for a spectroscopic letter.
+
+    This is the inverse of :func:`get_spectroscopic_letter` and case insensitive,
+    e.g. 'p' -> 1, 'D' -> 2, '(l=7)' -> 7.
+    """
+    letter = letter.lower()
+    for l, string in ORBITAL_TO_STRING.items():
+        if letter == string:
+            return l
+    if letter.startswith("(l=") and letter.endswith(")") and letter[3:-1].isdigit():
+        return int(letter[3:-1])
+    raise ValueError(f"parse_spectroscopic_letter: Invalid spectroscopic letter {letter!r}.")
+
+
 def format_quantum_number(value: float | Unknown) -> str:
     """Format a quantum number as string.
 
@@ -170,6 +185,17 @@ def format_quantum_number(value: float | Unknown) -> str:
             return f"{int(2 * value)}/2"
         return f"{value:.1f}"
     raise ValueError(f"format_quantum_number: Invalid quantum number {value=}. Must be integer or half-integer.")
+
+
+def parse_quantum_number(string: str) -> float:
+    """Parse a quantum number string, inverse of :func:`format_quantum_number` (e.g. '3/2' -> 1.5, '5.5' -> 5.5)."""
+    try:
+        value = float(string[:-2]) / 2 if string.endswith("/2") else float(string)
+    except ValueError:
+        raise ValueError(f"parse_quantum_number: Invalid quantum number string {string!r}.") from None
+    if (2 * value) % 1 != 0:
+        raise ValueError(f"parse_quantum_number: Invalid quantum number {string!r}. Must be integer or half-integer.")
+    return value
 
 
 def minus_one_pow(n: float) -> int:

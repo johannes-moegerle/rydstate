@@ -2,7 +2,7 @@ import math
 from typing import Any
 
 import pytest
-from rydstate.angular.utils import NotSet, Unknown
+from rydstate.angular.utils import NotSet, Unknown, parse_quantum_number, parse_spectroscopic_letter
 
 REAL_NUMBERS = [-math.inf, -3, 0, 0.5, 2, 1e100, math.inf]
 
@@ -68,3 +68,25 @@ def test_sorting_with_unknown() -> None:
     assert min(3, Unknown) == 3
     # a range filter like in BasisBase.filter_states always excludes Unknown
     assert not 0 <= Unknown <= math.inf
+
+
+@pytest.mark.parametrize(("string", "value"), [("3/2", 1.5), ("-1/2", -0.5), ("2", 2), ("-3", -3), ("5.5", 5.5)])
+def test_parse_quantum_number(string: str, value: float) -> None:
+    assert parse_quantum_number(string) == value
+
+
+@pytest.mark.parametrize("string", ["1/4", "0.25", "a", "3/", ""])
+def test_parse_quantum_number_invalid(string: str) -> None:
+    with pytest.raises(ValueError, match="parse_quantum_number"):
+        parse_quantum_number(string)
+
+
+@pytest.mark.parametrize(("letter", "l"), [("s", 0), ("P", 1), ("d", 2), ("(l=7)", 7), ("(L=12)", 12)])
+def test_parse_spectroscopic_letter(letter: str, l: int) -> None:
+    assert parse_spectroscopic_letter(letter) == l
+
+
+@pytest.mark.parametrize("letter", ["k", "(l=)", "(l=1.5)", "pp"])
+def test_parse_spectroscopic_letter_invalid(letter: str) -> None:
+    with pytest.raises(ValueError, match="Invalid spectroscopic letter"):
+        parse_spectroscopic_letter(letter)
