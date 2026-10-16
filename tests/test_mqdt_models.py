@@ -8,7 +8,8 @@ import pytest
 from rydstate.angular import AngularKetFJ
 from rydstate.angular.utils import is_unknown
 from rydstate.qdt import MQDT, EigenChannelModel, KMatrixModel, MQDTModel
-from rydstate.species import get_all_subclasses, get_element_properties
+from rydstate.species import get_element_properties
+from rydstate.utils import get_all_subclasses
 
 ALL_MQDTS = [cls() for cls in get_all_subclasses(MQDT)]
 ALL_MODELS = [model for mqdt in ALL_MQDTS for model in mqdt.models]

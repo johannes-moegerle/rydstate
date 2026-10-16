@@ -1,19 +1,11 @@
 from __future__ import annotations
 
-import inspect
 import math
-from typing import TYPE_CHECKING, Any, TypeAlias, TypeVar
+from typing import TypeAlias
 
 import numpy as np
 
 ExpansionCoefficients: TypeAlias = list[float]
-
-
-if TYPE_CHECKING:
-    T = TypeVar("T", bound=type)
-    F = TypeVar("F")
-
-    def cache(func: F) -> F: ...
 
 
 def calc_nu_from_energy(reduced_mass_au: float, energy_au: float, charge: int = 1) -> float:
@@ -151,20 +143,3 @@ def calc_modified_ritz_formula_in_nu(nui: float, coefficients: ExpansionCoeffici
 
     """
     return calc_polynomial(1.0 / nui**2, coefficients)
-
-
-def get_all_subclasses(cls: T, species: str | None = None, tag: str | None = None) -> list[T]:
-    """Get all subclasses of cls for the given species (and tag)."""
-    subclasses: list[T] = []
-    direct_subclasses: list[Any] = cls.__subclasses__()
-    for subclass in direct_subclasses:
-        subclasses.extend(get_all_subclasses(subclass, species, tag))
-        if inspect.isabstract(subclass) or getattr(subclass, "species", None) is None:
-            continue
-        if species is not None and getattr(subclass, "species", None) != species:
-            continue
-        if tag is not None and getattr(subclass, "tag", None) != tag:
-            continue
-        subclasses.append(subclass)
-
-    return subclasses

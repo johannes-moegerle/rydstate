@@ -14,7 +14,7 @@ from rydstate.generate_database.generate_database import (
     create_tables_for_sqdt,
 )
 from rydstate.qdt.mqdt import MQDT
-from rydstate.qdt.utils import get_all_subclasses
+from rydstate.utils import get_all_subclasses
 
 logger = logging.getLogger(__name__)
 

@@ -5,7 +5,8 @@ from rydstate import RydbergStateSQDT, RydbergStateSQDTDivalent
 from rydstate.angular import AngularKetLS
 from rydstate.qdt import get_sqdt
 from rydstate.qdt.sqdt import SQDT
-from rydstate.species import get_all_subclasses, get_element_properties
+from rydstate.species import get_element_properties
+from rydstate.utils import get_all_subclasses
 
 ALL_AVAILABLE_SQDT_SPECIES = sorted([cls.species for cls in get_all_subclasses(SQDT)])
 

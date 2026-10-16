@@ -11,7 +11,8 @@ from rydstate.angular.utils import Unknown
 from rydstate.qdt import MQDT, EigenChannelModel
 from rydstate.radial import RadialDummy
 from rydstate.rydberg_state import RydbergKet
-from rydstate.species import get_all_subclasses, get_element_properties
+from rydstate.species import get_element_properties
+from rydstate.utils import get_all_subclasses
 
 if TYPE_CHECKING:
     from rydstate import RydbergStateSQDT

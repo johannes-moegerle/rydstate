@@ -12,10 +12,10 @@ from rydstate.qdt.utils import (
     calc_modified_ritz_formula,
     calc_nu_from_energy,
     check_expansion_coefficients,
-    get_all_subclasses,
 )
 from rydstate.species.element_properties import get_element_properties
 from rydstate.species.nist import parse_nist_energy_levels, resolve_species_data_file
+from rydstate.utils import get_all_subclasses
 
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase

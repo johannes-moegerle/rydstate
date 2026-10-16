@@ -1,4 +1,3 @@
-from rydstate.qdt.utils import get_all_subclasses
 from rydstate.species import (
     cesium,
     hydrogen,
@@ -27,7 +26,6 @@ __all__ = [
     "PotentialFei2009",
     "PotentialMarinescu1994",
     "cesium",
-    "get_all_subclasses",
     "get_element_properties",
     "get_potential_class",
     "hydrogen",
