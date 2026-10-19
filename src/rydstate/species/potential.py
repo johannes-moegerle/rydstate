@@ -8,8 +8,8 @@ from typing import TYPE_CHECKING, ClassVar, TypeVar
 import numpy as np
 
 from rydstate.angular.utils import is_unknown
+from rydstate.element_properties import get_element_properties
 from rydstate.metaclass_cache import CachedABCMeta
-from rydstate.species.element_properties import get_element_properties
 from rydstate.utils import get_all_subclasses
 
 if TYPE_CHECKING:

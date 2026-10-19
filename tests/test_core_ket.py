@@ -5,8 +5,8 @@ from typing import TYPE_CHECKING, Any
 import pytest
 from rydstate.angular.angular_ket import AngularKetFJ, AngularKetJJ, AngularKetLS, determine_n_c
 from rydstate.angular.utils import Unknown, is_unknown
+from rydstate.element_properties import ElementProperties, get_element_properties
 from rydstate.qdt import MQDT
-from rydstate.species import ElementProperties, get_element_properties
 from rydstate.utils import get_all_subclasses
 
 if TYPE_CHECKING:

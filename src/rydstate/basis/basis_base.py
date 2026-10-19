@@ -9,8 +9,9 @@ import numpy as np
 from typing_extensions import Self
 
 from rydstate import units
+from rydstate.element_properties import get_element_properties
 from rydstate.rydberg_state.rydberg_base import RydbergState
-from rydstate.species import Potential, get_element_properties
+from rydstate.species import Potential
 from rydstate.species.potential import get_potential_class
 
 if TYPE_CHECKING:

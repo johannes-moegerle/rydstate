@@ -17,8 +17,8 @@ from rydstate.radial.numerov import _run_numerov_integration_python, run_numerov
 from rydstate.radial.radial_base import Radial
 
 if TYPE_CHECKING:
+    from rydstate.element_properties import ElementProperties
     from rydstate.radial.radial_matrix_element import INTEGRATION_METHODS, RadialMatrixElementOperator
-    from rydstate.species.element_properties import ElementProperties
     from rydstate.species.potential import Potential
     from rydstate.units import NDArray
 

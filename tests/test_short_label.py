@@ -8,10 +8,10 @@ from rydstate.angular import AngularKetFJ, AngularKetJJ, AngularKetLS
 from rydstate.angular.angular_ket import AngularKetBase
 from rydstate.angular.short_label import format_short_label, parse_short_label
 from rydstate.angular.utils import Unknown
+from rydstate.element_properties import get_element_properties
 from rydstate.qdt import MQDT, EigenChannelModel
 from rydstate.radial import RadialDummy
 from rydstate.rydberg_state import RydbergKet
-from rydstate.species import get_element_properties
 from rydstate.utils import get_all_subclasses
 
 if TYPE_CHECKING:

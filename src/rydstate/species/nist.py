@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 if TYPE_CHECKING:
-    from rydstate.species.element_properties import ElementProperties
+    from rydstate.element_properties import ElementProperties
 
 # A parsed NIST energy level is keyed by (n, l, j_tot, s_tot) and maps to the level energy in Hartree.
 NistEnergyLevels = dict[tuple[int, int, float, float], float]

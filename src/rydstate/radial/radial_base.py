@@ -14,8 +14,8 @@ from rydstate.radial.radial_matrix_element import (
 )
 
 if TYPE_CHECKING:
+    from rydstate.element_properties import ElementProperties
     from rydstate.radial.radial_matrix_element import INTEGRATION_METHODS, RadialMatrixElementOperator
-    from rydstate.species.element_properties import ElementProperties
     from rydstate.units import Dimension, NDArray, PintFloat
 
 logger = logging.getLogger(__name__)

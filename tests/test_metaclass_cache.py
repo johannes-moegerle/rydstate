@@ -6,9 +6,9 @@ from typing import Any
 
 import pytest
 from rydstate.angular import AngularKetFJ, AngularKetJJ, AngularKetLS
+from rydstate.element_properties import get_element_properties
 from rydstate.metaclass_cache import CachedABCMeta
 from rydstate.qdt import get_mqdt, get_sqdt
-from rydstate.species import get_element_properties
 
 
 class CachedExample(metaclass=CachedABCMeta):

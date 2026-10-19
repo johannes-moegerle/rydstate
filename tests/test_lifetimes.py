@@ -6,8 +6,8 @@ import numpy as np
 import pytest
 from rydstate import BasisMQDT, RydbergStateSQDT, RydbergStateSQDTAlkali
 from rydstate.angular import AngularKetLS
+from rydstate.element_properties import ElementProperties, get_element_properties
 from rydstate.qdt import get_mqdt
-from rydstate.species import ElementProperties, get_element_properties
 from rydstate.species.potential import get_potential_class
 from rydstate.utils import get_all_subclasses
 

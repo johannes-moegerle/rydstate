@@ -16,8 +16,8 @@ from rydstate.angular.utils import (
     is_not_set,
     is_unknown,
 )
+from rydstate.element_properties import get_element_properties
 from rydstate.rydberg_state.rydberg_ket import RydbergKet
-from rydstate.species.element_properties import get_element_properties
 
 if TYPE_CHECKING:
     from collections.abc import Iterator, Sequence

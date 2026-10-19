@@ -1,7 +1,7 @@
 from abc import ABC
 from typing import ClassVar
 
-from rydstate.species.element_properties import ElementProperties
+from rydstate.element_properties import ElementProperties
 
 
 class _ElementPropertiesYtterbiumAbstract(ElementProperties, ABC):

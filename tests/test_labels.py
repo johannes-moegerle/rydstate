@@ -6,9 +6,9 @@ import pytest
 from rydstate import RydbergStateSQDT, RydbergStateSQDTAlkali, RydbergStateSQDTDivalent
 from rydstate.angular import AngularKetFJ, AngularKetJJ, AngularKetLS
 from rydstate.angular.utils import Unknown, format_quantum_number, get_spectroscopic_letter
+from rydstate.element_properties import get_element_properties
 from rydstate.radial import RadialDummy, RadialKet
 from rydstate.rydberg_state import RydbergKet, RydbergState
-from rydstate.species import get_element_properties
 from rydstate.species.potential import get_potential_class
 
 if TYPE_CHECKING:

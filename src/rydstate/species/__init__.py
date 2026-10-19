@@ -10,7 +10,6 @@ from rydstate.species import (
     ytterbium,
     ytterbium_ion,
 )
-from rydstate.species.element_properties import ElementProperties, get_element_properties
 from rydstate.species.potential import (
     Potential,
     PotentialCoulomb,
@@ -20,13 +19,11 @@ from rydstate.species.potential import (
 )
 
 __all__ = [
-    "ElementProperties",
     "Potential",
     "PotentialCoulomb",
     "PotentialFei2009",
     "PotentialMarinescu1994",
     "cesium",
-    "get_element_properties",
     "get_potential_class",
     "hydrogen",
     "lithium",

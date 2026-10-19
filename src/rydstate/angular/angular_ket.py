@@ -39,7 +39,7 @@ if TYPE_CHECKING:
 
     from rydstate.angular.angular_state import AngularState
     from rydstate.angular.utils import AngularMomentumQuantumNumbers, AngularOperatorType, CouplingScheme
-    from rydstate.species.element_properties import ElementProperties
+    from rydstate.element_properties import ElementProperties
 
 logger = logging.getLogger(__name__)
 
@@ -147,7 +147,7 @@ class AngularKetBase(ABC, Generic[GenericT_Unknown], metaclass=CachedABCMeta):
         self._to_state_cache: dict[CouplingScheme, AngularState[Any]] = {}
 
         if species is not None:
-            from rydstate.species.element_properties import get_element_properties  # noqa: PLC0415
+            from rydstate.element_properties import get_element_properties  # noqa: PLC0415
 
             element_properties = get_element_properties(species)
 
@@ -355,7 +355,7 @@ class AngularKetBase(ABC, Generic[GenericT_Unknown], metaclass=CachedABCMeta):
     @classmethod
     def _parse_short_label(cls, label: str, species: str) -> dict[str, Any]:
         """Parse the short label and return the keyword arguments to create the ket (without the species)."""
-        from rydstate.species.element_properties import get_element_properties  # noqa: PLC0415
+        from rydstate.element_properties import get_element_properties  # noqa: PLC0415
 
         s_c = get_element_properties(species).s_c
         template = cls.short_label_template_single_valence if s_c == 0 else cls.short_label_template

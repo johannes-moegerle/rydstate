@@ -1,4 +1,4 @@
-from rydstate.species.element_properties import ElementProperties
+from rydstate.element_properties import ElementProperties
 
 
 class ElementPropertiesSodium(ElementProperties):
