@@ -12,10 +12,10 @@ from rydstate.element_properties import get_element_properties
 from rydstate.qdt import SQDT, get_sqdt
 from rydstate.qdt.utils import calc_energy_from_nu, calc_nu_from_energy
 from rydstate.radial import RadialKet
+from rydstate.radial.potential import Potential, get_potential_class
 from rydstate.radial.radial_ket import RadialDummy
 from rydstate.rydberg_state.rydberg_base import RydbergState
 from rydstate.rydberg_state.rydberg_ket import RydbergKet
-from rydstate.species.potential import Potential, get_potential_class
 
 if TYPE_CHECKING:
     from rydstate.qdt.osqdt import OSQDT

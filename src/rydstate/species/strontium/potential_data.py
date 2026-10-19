@@ -1,4 +1,4 @@
-from rydstate.species.potential import PotentialCoulomb, PotentialFei2009
+from rydstate.radial.potential import PotentialCoulomb, PotentialFei2009
 
 
 class PotentialCoulombStrontium87(PotentialCoulomb):

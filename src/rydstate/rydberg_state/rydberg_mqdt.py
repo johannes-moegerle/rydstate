@@ -15,8 +15,8 @@ if TYPE_CHECKING:
     from collections.abc import Sequence
 
     from rydstate.qdt import MQDT, MQDTModel
+    from rydstate.radial.potential import Potential
     from rydstate.rydberg_state.rydberg_ket import RydbergKet
-    from rydstate.species import Potential
     from rydstate.units import NDArray
 
 

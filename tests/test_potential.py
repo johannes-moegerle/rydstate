@@ -1,4 +1,4 @@
-from rydstate.species.potential import get_potential_class
+from rydstate.radial.potential import get_potential_class
 
 
 def test_potential_is_reused_for_same_class_and_l_r() -> None:

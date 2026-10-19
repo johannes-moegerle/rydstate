@@ -4,7 +4,7 @@ from rydstate import RydbergStateSQDTAlkali
 from rydstate.angular import AngularKetLS
 from rydstate.qdt import get_sqdt
 from rydstate.radial import RadialKet
-from rydstate.species.potential import get_potential_class
+from rydstate.radial.potential import get_potential_class
 
 
 @pytest.mark.parametrize(

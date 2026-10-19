@@ -18,7 +18,7 @@ if TYPE_CHECKING:
     from typing_extensions import Self
 
     from rydstate.qdt import MQDTModel
-    from rydstate.species import Potential
+    from rydstate.radial.potential import Potential
 
 
 logger = logging.getLogger(__name__)

@@ -18,8 +18,8 @@ from rydstate.radial.radial_base import Radial
 
 if TYPE_CHECKING:
     from rydstate.element_properties import ElementProperties
+    from rydstate.radial.potential import Potential
     from rydstate.radial.radial_matrix_element import INTEGRATION_METHODS, RadialMatrixElementOperator
-    from rydstate.species.potential import Potential
     from rydstate.units import NDArray
 
 logger = logging.getLogger(__name__)

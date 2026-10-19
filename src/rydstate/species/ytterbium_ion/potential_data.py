@@ -1,4 +1,4 @@
-from rydstate.species.potential import PotentialCoulomb
+from rydstate.radial.potential import PotentialCoulomb
 
 
 class PotentialCoulombYtterbium171Ion(PotentialCoulomb):

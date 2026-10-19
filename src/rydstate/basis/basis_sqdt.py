@@ -16,7 +16,7 @@ from rydstate.qdt.sqdt import SQDT
 from rydstate.rydberg_state import RydbergStateSQDT
 
 if TYPE_CHECKING:
-    from rydstate.species.potential import Potential
+    from rydstate.radial.potential import Potential
 
 
 logger = logging.getLogger(__name__)

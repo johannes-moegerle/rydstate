@@ -6,7 +6,7 @@ from rydstate.angular import AngularKetLS
 from rydstate.element_properties import ElementProperties, get_element_properties
 from rydstate.qdt import get_sqdt
 from rydstate.qdt.utils import calc_energy_from_nu, calc_nu_from_energy
-from rydstate.species import get_potential_class
+from rydstate.radial.potential import get_potential_class
 from rydstate.utils import get_all_subclasses
 
 ALL_AVAILABLE_ION_SPECIES = sorted([cls.species for cls in get_all_subclasses(ElementProperties) if cls.net_charge > 1])

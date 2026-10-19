@@ -1,5 +1,5 @@
 from rydstate.radial import RadialKet
-from rydstate.species.potential import get_potential_class
+from rydstate.radial.potential import get_potential_class
 
 
 def test_radial_ket_is_reused_for_same_nu_and_potential() -> None:

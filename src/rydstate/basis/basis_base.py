@@ -10,9 +10,8 @@ from typing_extensions import Self
 
 from rydstate import units
 from rydstate.element_properties import get_element_properties
+from rydstate.radial.potential import Potential, get_potential_class
 from rydstate.rydberg_state.rydberg_base import RydbergState
-from rydstate.species import Potential
-from rydstate.species.potential import get_potential_class
 
 if TYPE_CHECKING:
     from rydstate.angular.utils import Unknown

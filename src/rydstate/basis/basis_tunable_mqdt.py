@@ -8,7 +8,7 @@ from rydstate.qdt import ScaledOffDiagonalModel
 
 if TYPE_CHECKING:
     from rydstate.qdt import MQDT
-    from rydstate.species import Potential
+    from rydstate.radial.potential import Potential
 
 
 class BasisTunableMQDT(BasisMQDT):

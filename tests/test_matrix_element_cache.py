@@ -5,7 +5,7 @@ import weakref
 
 from rydstate.angular import AngularKetLS
 from rydstate.radial import RadialKet
-from rydstate.species.potential import get_potential_class
+from rydstate.radial.potential import get_potential_class
 
 
 def test_angular_reduced_matrix_element_is_cached() -> None:

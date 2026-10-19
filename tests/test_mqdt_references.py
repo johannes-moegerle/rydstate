@@ -16,7 +16,7 @@ from rydstate.angular.utils import NotSet, is_unknown
 from rydstate.basis.basis_mqdt import get_mqdt_states_from_model
 from rydstate.qdt import EigenChannelModel, KMatrixModel, get_mqdt, get_sqdt
 from rydstate.qdt.utils import calc_modified_ritz_formula_in_nu, calc_nu_from_energy
-from rydstate.species import get_potential_class
+from rydstate.radial.potential import get_potential_class
 from rydstate.units import ureg
 
 if TYPE_CHECKING:

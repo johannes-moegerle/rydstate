@@ -11,15 +11,6 @@ General classes
     ElementProperties
     get_element_properties
 
-.. currentmodule:: rydstate.species
-
-.. autosummary::
-    :toctree: ../_autosummary/
-
-    PotentialCoulomb
-    PotentialMarinescu1994
-    PotentialFei2009
-
 Specific data for the different species
 
 .. currentmodule:: rydstate.species
