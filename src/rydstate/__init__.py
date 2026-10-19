@@ -1,3 +1,4 @@
+# Importing species registers the species data subclasses, which are looked up via rydstate.utils.get_all_subclasses
 from rydstate import angular, basis, qdt, radial, rydberg_state, species
 from rydstate.basis import BasisMQDT, BasisSQDT
 from rydstate.rydberg_state import RydbergStateMQDT, RydbergStateSQDT, RydbergStateSQDTAlkali, RydbergStateSQDTDivalent
