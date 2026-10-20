@@ -7,16 +7,16 @@ from rydstate.qdt.mqdt import (
     TrivialModel,
     get_mqdt,
 )
-from rydstate.qdt.sqdt import OSQDT, ModelSetSQDT, OSQDTModel, get_sqdt
+from rydstate.qdt.sqdt import ModelOSQDT, ModelSetOSQDT, ModelSetSQDT, get_sqdt
 
 __all__ = [
-    "OSQDT",
     "ModelEigenChannel",
     "ModelKMatrix",
     "ModelMQDT",
+    "ModelOSQDT",
     "ModelSetMQDT",
+    "ModelSetOSQDT",
     "ModelSetSQDT",
-    "OSQDTModel",
     "ScaledOffDiagonalModel",
     "TrivialModel",
     "get_mqdt",

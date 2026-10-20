@@ -13,7 +13,7 @@ from rydstate.basis.basis_base import BasisBase
 from rydstate.basis.basis_sqdt import BasisSQDT
 from rydstate.basis.utils import get_m_range, is_allowed_qn
 from rydstate.qdt.mqdt import ModelSetMQDT, get_mqdt
-from rydstate.qdt.sqdt.osqdt import OSQDT, NoOSQDTStateError
+from rydstate.qdt.sqdt.osqdt import ModelSetOSQDT, NoOSQDTStateError
 from rydstate.rydberg_state.rydberg_sqdt import RydbergStateOSQDT
 
 if TYPE_CHECKING:
@@ -136,7 +136,7 @@ class BasisOSQDT(BasisSQDT):
 
         for angular in self._channels:
             s_tot = angular.get_qn("s_tot", allow_unknown=True)
-            osqdt = OSQDT(tuple(self.mqdt.get_mqdt_models(angular)), angular, nu_range=nu_range)
+            osqdt = ModelSetOSQDT(tuple(self.mqdt.get_mqdt_models(angular)), angular, nu_range=nu_range)
 
             n_min, n_max = osqdt.n_min, osqdt.n_max
             for n in range(n_min, n_max + 1):

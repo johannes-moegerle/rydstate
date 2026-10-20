@@ -27,7 +27,7 @@ class NoOSQDTStateError(ValueError):
     """Raised if the OSQDT models do not contain a state with the requested principal quantum number."""
 
 
-class OSQDT(ModelSetSQDT):
+class ModelSetOSQDT(ModelSetSQDT):
     r"""Outer single channel quantum defects for a specific channel derived from the MQDT models.
 
     In contrast to a normal :class:`~rydstate.qdt.ModelSetSQDT`, the quantum defects are not taken from
@@ -36,7 +36,7 @@ class OSQDT(ModelSetSQDT):
     (and setting the couplings of the K matrix in the outer channel basis to zero).
 
     Since one MQDT model is only valid in a limited nu range, the channel is described by one
-    :class:`OSQDTModel` per model, which each solve the OSQDT condition in their own range of validity.
+    :class:`ModelOSQDT` per model, which each solve the OSQDT condition in their own range of validity.
     :meth:`calc_nui` then simply picks the model which contains the requested state.
     """
 
@@ -66,7 +66,7 @@ class OSQDT(ModelSetSQDT):
 
         self.nu_range = nu_range
         self.channel = channel
-        self.osqdt_models = [OSQDTModel(model, channel, nu_range=nu_range) for model in models]
+        self.osqdt_models = [ModelOSQDT(model, channel, nu_range=nu_range) for model in models]
 
         # all models describe the same channel, so they must agree on its ionization threshold
         thresholds = {osqdt_model.ionization_energy_au for osqdt_model in self.osqdt_models}
@@ -136,13 +136,13 @@ class OSQDT(ModelSetSQDT):
     def calc_nui(self, n: int, angular_ket: AngularKetBase[Any]) -> float:  # type: ignore [override]
         r"""Calculate the effective principal quantum number nui of the state with principal quantum number n.
 
-        The state is given by the root of the OSQDT condition (see :meth:`OSQDTModel.calc_condition`)
-        which belongs to the principal quantum number n (see :meth:`OSQDTModel.calc_ns`).
+        The state is given by the root of the OSQDT condition (see :meth:`ModelOSQDT.calc_condition`)
+        which belongs to the principal quantum number n (see :meth:`ModelOSQDT.calc_ns`).
 
         Args:
             n: The principal quantum number of the Rydberg state.
                 This is the true principal quantum number, i.e. it includes the integer part of the
-                quantum defect (see :meth:`OSQDTModel.calc_ns`).
+                quantum defect (see :meth:`ModelOSQDT.calc_ns`).
             angular_ket: The angular ket of the state, which must be the channel of this OSQDT object
                 (its m quantum number is ignored).
 
@@ -169,7 +169,7 @@ class OSQDT(ModelSetSQDT):
         return osqdt_models[0].solutions[n]
 
 
-class OSQDTModel:
+class ModelOSQDT:
     r"""Outer single channel quantum defects model for a specific channel derived from a single MQDT model.
 
     On initialization, all roots of the OSQDT condition (see :meth:`calc_condition`) inside the range of
