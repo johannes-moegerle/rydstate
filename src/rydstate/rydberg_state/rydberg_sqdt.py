@@ -18,7 +18,7 @@ from rydstate.rydberg_state.rydberg_ket import RydbergKet
 from rydstate.utils import calc_energy_from_nu, calc_nu_from_energy
 
 if TYPE_CHECKING:
-    from rydstate.qdt.osqdt import OSQDT
+    from rydstate.qdt.sqdt.osqdt import OSQDT
     from rydstate.units import PintFloat
 
 GenericT_AngularKet = TypeVar("GenericT_AngularKet", bound=AngularKetBase[AllKnown])
@@ -295,7 +295,7 @@ class RydbergStateOSQDT(RydbergStateSQDT[AngularKetFJ[AllKnown]]):
     They are rather used for comparison and didactic purposes.
 
     This is a :class:`RydbergStateSQDT`, whose quantum defects are given by an
-    :class:`~rydstate.qdt.osqdt.OSQDT` object, i.e. by the diagonal elements of the K-matrix
+    :class:`~rydstate.qdt.sqdt.osqdt.OSQDT` object, i.e. by the diagonal elements of the K-matrix
     of the MQDT models in the outer channel frame.
     """
 

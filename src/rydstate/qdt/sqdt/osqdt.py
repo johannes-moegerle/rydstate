@@ -10,7 +10,7 @@ import numpy as np
 from rydstate.angular import NotSet
 from rydstate.angular.utils import is_unknown
 from rydstate.linalg import find_roots
-from rydstate.qdt.sqdt import SQDT
+from rydstate.qdt.sqdt.sqdt import SQDT
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
