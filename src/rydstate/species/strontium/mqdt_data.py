@@ -4,7 +4,7 @@ from typing import ClassVar
 
 from rydstate.angular.core_ket import CoreKet
 from rydstate.angular.utils import Unknown
-from rydstate.qdt.mqdt import MQDT
+from rydstate.qdt.mqdt import ModelSetMQDT
 from rydstate.qdt.mqdt.mqdt_model import get_model_classes
 from rydstate.species.strontium import (
     sr87_eigen_channel_model_data,
@@ -13,7 +13,7 @@ from rydstate.species.strontium import (
 )
 
 
-class MQDTStrontium87(MQDT):
+class MQDTStrontium87(ModelSetMQDT):
     """MQDT models for Sr87 of F. Robicheaux in the eigenchannel formulation.
 
     See :mod:`~rydstate.species.strontium.sr87_eigen_channel_model_data` for the models and references.
@@ -35,7 +35,7 @@ class MQDTStrontium87(MQDT):
     model_classes = get_model_classes(sr87_eigen_channel_model_data, species)
 
 
-class MQDTStrontium88(MQDT):
+class MQDTStrontium88(ModelSetMQDT):
     """MQDT models for Sr88 of F. Robicheaux in the eigenchannel formulation.
 
     See :mod:`~rydstate.species.strontium.sr88_eigen_channel_model_data` for the models and references.
@@ -59,7 +59,7 @@ class MQDTStrontium88(MQDT):
     model_classes = get_model_classes(sr88_eigen_channel_model_data, species)
 
 
-class MQDTStrontium88Vaillant2024(MQDT):
+class MQDTStrontium88Vaillant2024(ModelSetMQDT):
     """MQDT models for Sr88 of Vaillant, Jones and Potvliege in the K-matrix formulation.
 
     See :mod:`~rydstate.species.strontium.sr88_vaillant2024_k_matrix_model_data` for the models and references.

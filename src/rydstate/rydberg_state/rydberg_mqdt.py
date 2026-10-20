@@ -14,7 +14,7 @@ from rydstate.rydberg_state.rydberg_base import RydbergState
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
-    from rydstate.qdt import MQDT, MQDTModel
+    from rydstate.qdt import ModelSetMQDT, MQDTModel
     from rydstate.radial.potential import Potential
     from rydstate.rydberg_state.rydberg_ket import RydbergKet
     from rydstate.units import NDArray
@@ -47,7 +47,7 @@ class RydbergStateMQDT(RydbergState):
         )
 
     @property
-    def mqdt(self) -> MQDT:
+    def mqdt(self) -> ModelSetMQDT:
         """Return the MQDT object used to calculate this state."""
         return self.model.mqdt
 

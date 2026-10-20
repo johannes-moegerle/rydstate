@@ -1,9 +1,9 @@
 from typing import ClassVar
 
-from rydstate.qdt.sqdt import SQDT
+from rydstate.qdt.sqdt import ModelSetSQDT
 
 
-class SQDTPotassium(SQDT):
+class SQDTPotassium(ModelSetSQDT):
     species = "K"
     is_default = True
     nist_data_file = "nist_data.txt"

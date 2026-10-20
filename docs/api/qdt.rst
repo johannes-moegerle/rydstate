@@ -9,7 +9,7 @@ Single channel quantum defect theory (SQDT)
 .. autosummary::
     :toctree: ../_autosummary/
 
-    SQDT
+    ModelSetSQDT
     OSQDT
     OSQDTModel
     get_sqdt
@@ -20,7 +20,7 @@ Multichannel quantum defect theory (MQDT)
 .. autosummary::
     :toctree: ../_autosummary/
 
-    MQDT
+    ModelSetMQDT
     MQDTModel
     EigenChannelModel
     KMatrixModel

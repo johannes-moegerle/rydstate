@@ -6,14 +6,14 @@ import pytest
 from rydstate.angular.angular_ket import AngularKetFJ, AngularKetJJ, AngularKetLS, determine_n_c
 from rydstate.angular.utils import Unknown, is_unknown
 from rydstate.element_properties import ElementProperties, get_element_properties
-from rydstate.qdt import MQDT
+from rydstate.qdt import ModelSetMQDT
 from rydstate.utils import get_all_subclasses
 
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase
     from rydstate.angular.utils import CouplingScheme
 
-ALL_MQDTS = [cls() for cls in get_all_subclasses(MQDT)]
+ALL_MQDTS = [cls() for cls in get_all_subclasses(ModelSetMQDT)]
 ALL_ELEMENT_PROPERTIES = [cls() for cls in get_all_subclasses(ElementProperties)]
 MONOVALENT_ELEMENT_PROPERTIES = [ep for ep in ALL_ELEMENT_PROPERTIES if ep.number_valence_electrons == 1]
 DIVALENT_ELEMENT_PROPERTIES = [ep for ep in ALL_ELEMENT_PROPERTIES if ep.number_valence_electrons == 2]
@@ -58,7 +58,7 @@ def test_determine_n_c_unknown_l_c(element_properties: ElementProperties) -> Non
 
 
 @pytest.mark.parametrize("mqdt", ALL_MQDTS, ids=lambda mqdt: f"{mqdt.species}_{mqdt.tag}")
-def test_ionization_threshold_core_kets_are_consistent(mqdt: MQDT) -> None:
+def test_ionization_threshold_core_kets_are_consistent(mqdt: ModelSetMQDT) -> None:
     """Every core ket of the ionization_threshold_dict must be one that get_core_ket() actually produces.
 
     Since n_c is part of CoreKet.quantum_number_names, a hardcoded n_c in the ionization_threshold_dict

@@ -10,7 +10,7 @@ from rydstate.angular.utils import NotSet, is_unknown
 from rydstate.basis.basis_base import BasisBase
 from rydstate.basis.utils import get_m_range, is_allowed_qn
 from rydstate.linalg import calc_nullvector, find_roots
-from rydstate.qdt import MQDT, get_mqdt
+from rydstate.qdt import ModelSetMQDT, get_mqdt
 from rydstate.radial import RadialDummy, RadialKet
 from rydstate.rydberg_state import RydbergKet, RydbergStateMQDT
 
@@ -37,7 +37,7 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
         m: tuple[float, float] | NotSet | None = NotSet,
         # potential and mqdt parameters
         potential_class: type[Potential] | str | None = None,
-        mqdt: MQDT | str | None = None,
+        mqdt: ModelSetMQDT | str | None = None,
     ) -> None:
         """Initialize the MQDT basis.
 
@@ -57,12 +57,12 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
                 Either a a potential class
                 or a string representing the tag of the potential class to use.
             mqdt: The MQDT data to use for the states.
-                Either an instance of an MQDT class
-                or a string representing the tag of the MQDT class to use.
+                Either an instance of an ModelSetMQDT subclass
+                or a string representing the tag of the ModelSetMQDT to use.
 
         """
         super().__init__(species, potential_class)
-        self.mqdt = mqdt if isinstance(mqdt, MQDT) else get_mqdt(species, tag=mqdt)
+        self.mqdt = mqdt if isinstance(mqdt, ModelSetMQDT) else get_mqdt(species, tag=mqdt)
 
         # the maximum l_r is limited by the maximum nu, because l_r < n for bound states
         # and for high l_r the quantum defects are 0, so n = nu

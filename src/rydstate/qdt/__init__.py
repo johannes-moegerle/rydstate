@@ -1,21 +1,21 @@
 from rydstate.qdt.mqdt import (
-    MQDT,
     EigenChannelModel,
     KMatrixModel,
+    ModelSetMQDT,
     MQDTModel,
     ScaledOffDiagonalModel,
     TrivialModel,
     get_mqdt,
 )
-from rydstate.qdt.sqdt import OSQDT, SQDT, OSQDTModel, get_sqdt
+from rydstate.qdt.sqdt import OSQDT, ModelSetSQDT, OSQDTModel, get_sqdt
 
 __all__ = [
-    "MQDT",
     "OSQDT",
-    "SQDT",
     "EigenChannelModel",
     "KMatrixModel",
     "MQDTModel",
+    "ModelSetMQDT",
+    "ModelSetSQDT",
     "OSQDTModel",
     "ScaledOffDiagonalModel",
     "TrivialModel",

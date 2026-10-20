@@ -1,10 +1,10 @@
 from abc import ABC
 from typing import ClassVar
 
-from rydstate.qdt.sqdt import SQDT
+from rydstate.qdt.sqdt import ModelSetSQDT
 
 
-class _SQDTYtterbiumIon(SQDT, ABC):
+class _SQDTYtterbiumIon(ModelSetSQDT, ABC):
     is_default = True
     # Yb II (Yb+) energy levels, referenced to the Yb+ ground state (4f14.6s 2S1/2)
     nist_data_file = "nist_data.txt"

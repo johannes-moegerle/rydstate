@@ -13,7 +13,7 @@ from rydstate.qdt.utils import calc_modified_ritz_formula_in_nu, check_expansion
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase
     from rydstate.angular.utils import AllKnown
-    from rydstate.qdt.mqdt.mqdt import MQDT
+    from rydstate.qdt.mqdt.mqdt import ModelSetMQDT
     from rydstate.qdt.utils import ExpansionCoefficients
     from rydstate.units import NDArray
 
@@ -43,7 +43,7 @@ class EigenChannelModel(MQDTModel):
     channel of the model, see :meth:`calc_frame_transformation_inner_closecoupling`.
     The default None means no mixing between the close-coupling channels."""
 
-    def __init__(self, mqdt: MQDT) -> None:
+    def __init__(self, mqdt: ModelSetMQDT) -> None:
         super().__init__(mqdt)
         self._check_channels(self.inner_channels)
 
@@ -232,7 +232,7 @@ class TrivialModel(EigenChannelModel):
     This is used as fallback for channels for which no MQDT model is available.
     """
 
-    def __init__(self, species: str, channel: AngularKetBase[AllKnown], mqdt: MQDT) -> None:
+    def __init__(self, species: str, channel: AngularKetBase[AllKnown], mqdt: ModelSetMQDT) -> None:
         if not is_not_set(channel.m):
             raise ValueError("The m quantum number of the channel must be NotSet.")
 

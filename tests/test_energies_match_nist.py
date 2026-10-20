@@ -17,8 +17,8 @@ from rydstate.angular.utils import NotSet
 from rydstate.basis.basis_mqdt import get_mqdt_states_from_model
 from rydstate.element_properties import get_element_properties
 from rydstate.qdt import get_mqdt, get_sqdt
-from rydstate.qdt.mqdt import MQDT
-from rydstate.qdt.sqdt import SQDT
+from rydstate.qdt.mqdt import ModelSetMQDT
+from rydstate.qdt.sqdt import ModelSetSQDT
 from rydstate.radial.potential import get_potential_class
 from rydstate.units import ureg
 from rydstate.utils import calc_energy_from_nu, calc_nu_from_energy, get_all_subclasses
@@ -28,8 +28,8 @@ if TYPE_CHECKING:
 
     from rydstate.angular.utils import AllKnown
 
-ALL_SQDT_SPECIES = sorted([cls.species for cls in get_all_subclasses(SQDT)])
-ALL_MQDT_SPECIES = sorted([cls.species for cls in get_all_subclasses(MQDT)])
+ALL_SQDT_SPECIES = sorted([cls.species for cls in get_all_subclasses(ModelSetSQDT)])
+ALL_MQDT_SPECIES = sorted([cls.species for cls in get_all_subclasses(ModelSetMQDT)])
 
 HARTREE_TO_GHZ = ureg.Quantity(1, "hartree").to("GHz", "spectroscopy").magnitude
 

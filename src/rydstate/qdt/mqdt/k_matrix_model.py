@@ -9,7 +9,7 @@ from rydstate.qdt.utils import calc_polynomial, check_expansion_coefficients
 from rydstate.utils import calc_energy_from_nu
 
 if TYPE_CHECKING:
-    from rydstate.qdt.mqdt.mqdt import MQDT
+    from rydstate.qdt.mqdt.mqdt import ModelSetMQDT
     from rydstate.qdt.utils import ExpansionCoefficients
     from rydstate.units import NDArray
 
@@ -30,7 +30,7 @@ class KMatrixModel(MQDTModel):
         \epsilon = \frac{I_{\text{ref}} - E}{I_{\text{ref}}} = \frac{Z^2 R_M}{I_{\text{ref}} \nu^2}
 
     with :math:`I_{\text{ref}}` the reference ionization threshold of the MQDT model
-    (see :attr:`~rydstate.qdt.MQDT.reference_ionization_threshold_au`) and :math:`E` the energy of the state,
+    (see :attr:`~rydstate.qdt.ModelSetMQDT.reference_ionization_threshold_au`) and :math:`E` the energy of the state,
     both measured from the ground state of the atom.
     """
 
@@ -43,7 +43,7 @@ class KMatrixModel(MQDTModel):
     Only the upper triangle needs to be given, the lower triangle follows from the symmetry of the K-matrix.
     Elements not given are zero."""
 
-    def __init__(self, mqdt: MQDT) -> None:
+    def __init__(self, mqdt: ModelSetMQDT) -> None:
         super().__init__(mqdt)
 
         n = len(self.outer_channels)

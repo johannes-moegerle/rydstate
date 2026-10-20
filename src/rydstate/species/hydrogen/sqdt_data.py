@@ -1,10 +1,10 @@
 from typing import ClassVar
 
-from rydstate.qdt.sqdt import SQDT
+from rydstate.qdt.sqdt import ModelSetSQDT
 from rydstate.units import rydberg_constant_au
 
 
-class SQDTHydrogen(SQDT):
+class SQDTHydrogen(ModelSetSQDT):
     species = "H"
     is_default = True
 
@@ -14,7 +14,7 @@ class SQDTHydrogen(SQDT):
     quantum_defects: ClassVar = {}
 
 
-class SQDTHydrogenTextBook(SQDT):
+class SQDTHydrogenTextBook(ModelSetSQDT):
     species = "H_textbook"
     is_default = True
 

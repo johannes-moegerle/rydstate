@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
     from rydstate.angular.angular_ket import AngularKetBase, AngularKetFJ
     from rydstate.angular.core_ket import CoreKet
-    from rydstate.qdt.mqdt.mqdt import MQDT
+    from rydstate.qdt.mqdt.mqdt import ModelSetMQDT
     from rydstate.units import NDArray, PintFloat
 
 
@@ -50,7 +50,7 @@ class MQDTModel(ABC):
     outer_channels: ClassVar[list[AngularKetBase[Any]]]
     """List of outer channels in the MQDT model."""
 
-    def __init__(self, mqdt: MQDT) -> None:
+    def __init__(self, mqdt: ModelSetMQDT) -> None:
         self.mqdt = mqdt
         self.element_properties = get_element_properties(self.species)
         self._check_channels(self.outer_channels)
@@ -133,7 +133,7 @@ class MQDTModel(ABC):
 
         The energy is calculated for an effective principal quantum number nu,
         which is defined with reference to the reference ionization threshold of the MQDT model,
-        see :attr:`~rydstate.qdt.MQDT.reference_ionization_threshold_au`.
+        see :attr:`~rydstate.qdt.ModelSetMQDT.reference_ionization_threshold_au`.
         """
         return (
             calc_energy_from_nu(self.element_properties.reduced_mass_au, nu, self.element_properties.net_charge)

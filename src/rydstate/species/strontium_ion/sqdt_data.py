@@ -1,10 +1,10 @@
 from abc import ABC
 from typing import ClassVar
 
-from rydstate.qdt.sqdt import SQDT
+from rydstate.qdt.sqdt import ModelSetSQDT
 
 
-class _SQDTStrontiumIon(SQDT, ABC):
+class _SQDTStrontiumIon(ModelSetSQDT, ABC):
     is_default = True
     # Sr II (Sr+) energy levels, referenced to the Sr+ ground state (4p6.5s 2S1/2)
     nist_data_file = "nist_data.txt"

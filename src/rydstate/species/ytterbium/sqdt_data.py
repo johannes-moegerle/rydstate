@@ -1,9 +1,9 @@
 from typing import ClassVar
 
-from rydstate.qdt.sqdt import SQDT
+from rydstate.qdt.sqdt import ModelSetSQDT
 
 
-class SQDTYtterbium174(SQDT):
+class SQDTYtterbium174(ModelSetSQDT):
     species = "Yb174"
     is_default = True
     nist_data_file = "nist_data.txt"

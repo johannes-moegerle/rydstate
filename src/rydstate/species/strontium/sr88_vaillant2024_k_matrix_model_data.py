@@ -85,7 +85,7 @@ REFERENCE_ROBERTSON_2021 = (
 # LS-coupled channels with a 4d core, whose j_c is fixed by the angular momentum coupling (e.g. 4dns 3D1 is purely
 # 4d_3/2 ns_1/2, 4dns 3D3 purely 4d_5/2 ns_1/2 and 4dnp 3P0 purely 4d_3/2 np_3/2), are labeled to use the averaged
 # 4d ionization threshold of the paper instead of the fine structure resolved one
-# (see the ionization_threshold_dict of the MQDT class).
+# (see the ionization_threshold_dict of the ModelSetMQDT).
 LABEL_4D_AVERAGED = "4d threshold averaged"
 
 

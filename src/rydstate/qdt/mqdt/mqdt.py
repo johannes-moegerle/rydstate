@@ -17,15 +17,15 @@ if TYPE_CHECKING:
     from rydstate.units import PintFloat
 
 
-class MQDT(ABC, metaclass=CachedABCMeta):
-    """Base class for all MQDT classes."""
+class ModelSetMQDT(ABC, metaclass=CachedABCMeta):
+    """Base class for the MQDT model sets of the different species."""
 
     species: ClassVar[str]
     """The short name of the atomic species."""
     tag: ClassVar[str | None] = None
     """The tag for these MQDT parameters."""
     is_default: ClassVar[bool] = False
-    """Whether this MQDT is the default MQDT for the species."""
+    """Whether this is the default MQDT model set for the species."""
 
     ionization_threshold_dict: ClassVar[dict[CoreKet, tuple[float, str]]]
     """Dictionary containing the ionization thresholds for the different core states.
@@ -46,7 +46,7 @@ class MQDT(ABC, metaclass=CachedABCMeta):
         self.models: list[MQDTModel] = [model_class(self) for model_class in self.model_classes]
 
     def __repr__(self) -> str:
-        return f"MQDT({self.species}, {self.tag})"
+        return f"ModelSetMQDT({self.species}, {self.tag})"
 
     @overload
     def get_ionization_threshold(self, core_ket: CoreKet, unit: None = None) -> PintFloat: ...
@@ -106,9 +106,9 @@ class MQDT(ABC, metaclass=CachedABCMeta):
         return sorted(core_kets, key=lambda ket: (ket.l_c, ket.j_c, ket.f_c, str(ket.label)))
 
 
-def get_mqdt(species: str, tag: str | None = None) -> MQDT:
+def get_mqdt(species: str, tag: str | None = None) -> ModelSetMQDT:
     """Get an instance of the subclass of MQDT for the given species and tag."""
-    subclasses = get_all_subclasses(MQDT, species, tag)
+    subclasses = get_all_subclasses(ModelSetMQDT, species, tag)
 
     if tag is None:
         subclasses = [cls for cls in subclasses if getattr(cls, "is_default", False)]

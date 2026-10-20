@@ -12,7 +12,7 @@ from rydstate.angular.utils import is_unknown
 from rydstate.basis.basis_base import BasisBase
 from rydstate.basis.basis_sqdt import BasisSQDT
 from rydstate.basis.utils import get_m_range, is_allowed_qn
-from rydstate.qdt.mqdt import MQDT, get_mqdt
+from rydstate.qdt.mqdt import ModelSetMQDT, get_mqdt
 from rydstate.qdt.sqdt.osqdt import OSQDT, NoOSQDTStateError
 from rydstate.rydberg_state.rydberg_sqdt import RydbergStateOSQDT
 
@@ -36,8 +36,8 @@ class BasisOSQDT(BasisSQDT):
     Since the states are requested in a range of nu, the n of each channel are looped over generously
     and the states outside the requested nu range are discarded afterwards.
     In contrast to :class:`~rydstate.basis.BasisSQDT`, the quantum defects are not taken from the
-    :class:`~rydstate.qdt.SQDT` data, but from the diagonal elements of the K-matrix of the
-    :class:`~rydstate.qdt.MQDT` models in the outer channel frame.
+    :class:`~rydstate.qdt.ModelSetSQDT` data, but from the diagonal elements of the K-matrix of the
+    :class:`~rydstate.qdt.ModelSetMQDT` models in the outer channel frame.
 
     This is the same condition one obtains from :class:`~rydstate.basis.BasisMQDT` when the coupling
     between the outer channels is switched off, i.e. when the off-diagonal elements of the K-matrix are neglected,
@@ -57,7 +57,7 @@ class BasisOSQDT(BasisSQDT):
         m: tuple[float, float] | NotSet | None = NotSet,
         # potential and mqdt parameters
         potential_class: type[Potential] | str | None = None,
-        mqdt: MQDT | str | None = None,
+        mqdt: ModelSetMQDT | str | None = None,
     ) -> None:
         """Initialize the OSQDT basis.
 
@@ -77,13 +77,13 @@ class BasisOSQDT(BasisSQDT):
                 Either a a potential class
                 or a string representing the tag of the potential class to use.
             mqdt: The MQDT data to use for the states.
-                Either an instance of an MQDT class
-                or a string representing the tag of the MQDT class to use.
+                Either an instance of an ModelSetMQDT subclass
+                or a string representing the tag of the ModelSetMQDT to use.
 
         """
         # skip BasisSQDT.__init__, since this basis uses MQDT models instead of SQDT data
         BasisBase.__init__(self, species, potential_class)
-        self.mqdt = mqdt if isinstance(mqdt, MQDT) else get_mqdt(species, tag=mqdt)
+        self.mqdt = mqdt if isinstance(mqdt, ModelSetMQDT) else get_mqdt(species, tag=mqdt)
 
         if not 0 <= nu[0] < nu[1] < math.inf:
             raise ValueError(f"nu must be a tuple (nu_min, nu_max) with 0 <= nu_min < nu_max < inf, but got {nu}.")

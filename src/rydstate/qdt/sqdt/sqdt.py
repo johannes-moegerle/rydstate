@@ -23,15 +23,15 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-class SQDT(ABC, metaclass=CachedABCMeta):
-    """Base class for all SQDT classes."""
+class ModelSetSQDT(ABC, metaclass=CachedABCMeta):
+    """Base class for the SQDT model sets of the different species."""
 
     species: ClassVar[str]
     """The short name of the atomic species."""
     tag: ClassVar[str | None] = None
     """The tag for these SQDT parameters."""
     is_default: ClassVar[bool] = False
-    """Whether this SQDT is the default SQDT for the species."""
+    """Whether this is the default SQDT model set for the species."""
     nist_data_file: ClassVar[str | None] = None
     """Name of the file (in the species directory) with the low-lying NIST energy levels,
     usually ``"nist_data.txt"``. Left as None for species without a NIST data file."""
@@ -60,7 +60,7 @@ class SQDT(ABC, metaclass=CachedABCMeta):
             self._nist_energy_levels = parse_nist_energy_levels(file, self.element_properties)
 
     def __repr__(self) -> str:
-        return f"SQDT({self.species}, {self.tag})"
+        return f"ModelSetSQDT({self.species}, {self.tag})"
 
     @overload
     def get_ionization_energy(self, unit: None = None) -> PintFloat: ...
@@ -180,9 +180,9 @@ class SQDT(ABC, metaclass=CachedABCMeta):
         return n - delta_nlj
 
 
-def get_sqdt(species: str, tag: str | None = None) -> SQDT:
+def get_sqdt(species: str, tag: str | None = None) -> ModelSetSQDT:
     """Get an instance of the subclass of SQDT for the given species and tag."""
-    subclasses = get_all_subclasses(SQDT, species, tag)
+    subclasses = get_all_subclasses(ModelSetSQDT, species, tag)
 
     if tag is None:
         subclasses = [cls for cls in subclasses if getattr(cls, "is_default", False)]

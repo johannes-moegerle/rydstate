@@ -8,22 +8,22 @@ import pytest
 from rydstate.angular import AngularKetFJ
 from rydstate.angular.utils import is_unknown
 from rydstate.element_properties import get_element_properties
-from rydstate.qdt import MQDT, EigenChannelModel, KMatrixModel, MQDTModel
+from rydstate.qdt import EigenChannelModel, KMatrixModel, ModelSetMQDT, MQDTModel
 from rydstate.utils import get_all_subclasses
 
-ALL_MQDTS = [cls() for cls in get_all_subclasses(MQDT)]
+ALL_MQDTS = [cls() for cls in get_all_subclasses(ModelSetMQDT)]
 ALL_MODELS = [model for mqdt in ALL_MQDTS for model in mqdt.models]
 ALL_EIGEN_CHANNEL_MODELS = [model for model in ALL_MODELS if isinstance(model, EigenChannelModel)]
 ALL_K_MATRIX_MODELS = [model for model in ALL_MODELS if isinstance(model, KMatrixModel)]
 
 
 def test_all_mqdt_models_discovered() -> None:
-    """Sanity check: every defined MQDTModel subclass must be reachable via MQDT.models."""
+    """Sanity check: every defined MQDTModel subclass must be reachable via ModelSetMQDT.models."""
     all_model_classes = get_all_subclasses(MQDTModel)
     missing = {cls.__name__ for cls in all_model_classes} - {type(model).__name__ for model in ALL_MODELS}
     assert len(all_model_classes) == len(set(ALL_MODELS)), (
         f"Found {len(all_model_classes)} MQDTModel subclasses, but only {len(set(ALL_MODELS))} unique models"
-        f" (not reachable via MQDT.models: {sorted(missing)})"
+        f" (not reachable via ModelSetMQDT.models: {sorted(missing)})"
     )
 
 
@@ -43,7 +43,7 @@ def k_matrix_model(request: pytest.FixtureRequest) -> KMatrixModel:
 
 
 @pytest.fixture(params=ALL_MQDTS, ids=lambda mqdt: f"{mqdt.species}_{mqdt.tag}")
-def mqdt(request: pytest.FixtureRequest) -> MQDT:
+def mqdt(request: pytest.FixtureRequest) -> ModelSetMQDT:
     return request.param  # type: ignore[no-any-return]
 
 
@@ -118,7 +118,7 @@ def test_species_field_set(model: MQDTModel) -> None:
     assert model.species is not None, f"{model.full_name}: species is None"
 
 
-def test_all_models_found_by_get_mqdt_models(mqdt: MQDT) -> None:
+def test_all_models_found_by_get_mqdt_models(mqdt: ModelSetMQDT) -> None:
     """Looping over all channels like BasisMQDT._init_models must find every model of the species."""
     element_properties = get_element_properties(mqdt.species)
     i_c = element_properties.i_c
@@ -164,8 +164,8 @@ def test_model_get_core_kets(model: MQDTModel) -> None:
     assert sort_keys == sorted(sort_keys)
 
 
-def test_mqdt_get_core_kets(mqdt: MQDT) -> None:
-    """MQDT.get_core_kets returns the union of core kets over all its models."""
+def test_mqdt_get_core_kets(mqdt: ModelSetMQDT) -> None:
+    """ModelSetMQDT.get_core_kets returns the union of core kets over all its models."""
     core_kets = mqdt.get_core_kets()
     assert len(core_kets) == len(set(core_kets))
     assert set(core_kets) == {ck for model in mqdt.models for ck in model.get_core_kets()}
@@ -205,7 +205,7 @@ def _group_models_by_channels(models: list[MQDTModel]) -> list[list[MQDTModel]]:
     return groups
 
 
-def test_nu_ranges_match_at_boundaries(mqdt: MQDT) -> None:
+def test_nu_ranges_match_at_boundaries(mqdt: ModelSetMQDT) -> None:
     """Models describing the same channels must tile nu without gaps or overlaps.
 
     If one model is valid up to nu = 5.7, the model describing the same channels above it must start

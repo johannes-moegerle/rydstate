@@ -4,7 +4,7 @@ from typing import ClassVar
 
 from rydstate.angular.core_ket import CoreKet
 from rydstate.angular.utils import Unknown
-from rydstate.qdt.mqdt import MQDT
+from rydstate.qdt.mqdt import ModelSetMQDT
 from rydstate.qdt.mqdt.mqdt_model import get_model_classes
 from rydstate.species.ytterbium import (
     yb171_eigen_channel_model_data,
@@ -13,7 +13,7 @@ from rydstate.species.ytterbium import (
 )
 
 
-class MQDTYtterbium171(MQDT):
+class MQDTYtterbium171(ModelSetMQDT):
     species = "Yb171"
     is_default = True
 
@@ -33,7 +33,7 @@ class MQDTYtterbium171(MQDT):
     model_classes = get_model_classes(yb171_eigen_channel_model_data, species)
 
 
-class MQDTYtterbium173(MQDT):
+class MQDTYtterbium173(ModelSetMQDT):
     species = "Yb173"
     is_default = True
 
@@ -52,7 +52,7 @@ class MQDTYtterbium173(MQDT):
     model_classes = get_model_classes(yb173_eigen_channel_model_data, species)
 
 
-class MQDTYtterbium174(MQDT):
+class MQDTYtterbium174(ModelSetMQDT):
     species = "Yb174"
     is_default = True
 

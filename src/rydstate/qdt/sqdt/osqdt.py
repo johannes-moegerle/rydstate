@@ -10,13 +10,13 @@ import numpy as np
 from rydstate.angular import NotSet
 from rydstate.angular.utils import is_unknown
 from rydstate.linalg import find_roots
-from rydstate.qdt.sqdt.sqdt import SQDT
+from rydstate.qdt.sqdt.sqdt import ModelSetSQDT
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
     from rydstate.angular.angular_ket import AngularKetBase
-    from rydstate.qdt.mqdt import MQDT
+    from rydstate.qdt.mqdt import ModelSetMQDT
     from rydstate.qdt.mqdt.mqdt_model import MQDTModel
 
 
@@ -27,12 +27,12 @@ class NoOSQDTStateError(ValueError):
     """Raised if the OSQDT models do not contain a state with the requested principal quantum number."""
 
 
-class OSQDT(SQDT):
+class OSQDT(ModelSetSQDT):
     r"""Outer single channel quantum defects for a specific channel derived from the MQDT models.
 
-    In contrast to a normal :class:`~rydstate.qdt.SQDT`, the quantum defects are not taken from
+    In contrast to a normal :class:`~rydstate.qdt.ModelSetSQDT`, the quantum defects are not taken from
     tabulated Rydberg-Ritz parameters, but from the diagonal elements of the K-matrix of the
-    :class:`~rydstate.qdt.MQDT` models in the outer channel frame
+    :class:`~rydstate.qdt.ModelSetMQDT` models in the outer channel frame
     (and setting the couplings of the K matrix in the outer channel basis to zero).
 
     Since one MQDT model is only valid in a limited nu range, the channel is described by one
@@ -47,7 +47,7 @@ class OSQDT(SQDT):
 
         Args:
             models: All MQDT models which contain the channel as one of their outer channels.
-                The models must all belong to the same :class:`~rydstate.qdt.MQDT` instance,
+                The models must all belong to the same :class:`~rydstate.qdt.ModelSetMQDT` instance,
                 usually they are simply the models valid in the different nu ranges of the channel.
             channel: The outer channel, whose quantum defects are described by this object.
             nu_range: Tuple of (nu_min, nu_max) for the effective principal quantum number nu.
@@ -61,7 +61,7 @@ class OSQDT(SQDT):
         if not all(model.mqdt is models[0].mqdt for model in models):
             raise ValueError("All models must belong to the same MQDT instance.")
         self.species = models[0].species  # type: ignore [misc]
-        self.mqdt: MQDT = models[0].mqdt
+        self.mqdt: ModelSetMQDT = models[0].mqdt
         super().__init__()
 
         self.nu_range = nu_range
