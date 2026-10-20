@@ -36,7 +36,7 @@ class MQDT(ABC, metaclass=CachedABCMeta):
     If None, it is defined as the smallest ionization threshold in the ionization_threshold_dict."""
 
     model_classes: ClassVar[list[type[MQDTModel]]]
-    """List of the MQDT :class:`~rydstate.qdt.mqdt.mqdt_model.MQDTModel` models available for this species.
+    """List of the MQDT :class:`~rydstate.qdt.MQDTModel` models available for this species.
 
     :meta hide-value:
 

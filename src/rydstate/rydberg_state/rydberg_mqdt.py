@@ -65,7 +65,7 @@ class RydbergStateMQDT(RydbergState):
 
         We define the corresponding principal quantum number n for MQDT states via the nodes of
         the main contributing rydberg ket (nodes = n - l_r - 1).
-        For :class:`~rydstate.qdt.mqdt.eigen_channel_model.TrivialModel` states, the quantum defect is zero,
+        For :class:`~rydstate.qdt.TrivialModel` states, the quantum defect is zero,
         so the channel dependent effective quantum number nui is already an integer
         and we simply round it to the nearest integer.
         """

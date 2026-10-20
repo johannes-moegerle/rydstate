@@ -30,7 +30,7 @@ class KMatrixModel(MQDTModel):
         \epsilon = \frac{I_{\text{ref}} - E}{I_{\text{ref}}} = \frac{Z^2 R_M}{I_{\text{ref}} \nu^2}
 
     with :math:`I_{\text{ref}}` the reference ionization threshold of the MQDT model
-    (see :attr:`~rydstate.qdt.mqdt.MQDT.reference_ionization_threshold_au`) and :math:`E` the energy of the state,
+    (see :attr:`~rydstate.qdt.MQDT.reference_ionization_threshold_au`) and :math:`E` the energy of the state,
     both measured from the ground state of the atom.
     """
 
