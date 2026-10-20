@@ -1,15 +1,13 @@
 from __future__ import annotations
 
 import logging
-from abc import ABC
 from functools import cached_property
 from typing import TYPE_CHECKING, Any, ClassVar, overload
 
 from rydstate import units
 from rydstate.angular import NotSet
 from rydstate.angular.utils import is_not_set, is_unknown
-from rydstate.element_properties import get_element_properties
-from rydstate.metaclass_cache import CachedABCMeta
+from rydstate.qdt.model_set import ModelSet
 from rydstate.qdt.sqdt.nist import parse_nist_energy_levels, resolve_species_data_file
 from rydstate.utils import calc_nu_from_energy, get_all_subclasses
 
@@ -23,15 +21,9 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-class ModelSetSQDT(ABC, metaclass=CachedABCMeta):
+class ModelSetSQDT(ModelSet):
     """Base class for the SQDT model sets of the different species."""
 
-    species: ClassVar[str]
-    """The short name of the atomic species."""
-    tag: ClassVar[str | None] = None
-    """The tag for these SQDT parameters."""
-    is_default: ClassVar[bool] = False
-    """Whether this is the default SQDT model set for the species."""
     nist_data_file: ClassVar[str | None] = None
     """Name of the file (in the species directory) with the low-lying NIST energy levels,
     usually ``"nist_data.txt"``. Left as None for species without a NIST data file."""
@@ -49,7 +41,7 @@ class ModelSetSQDT(ABC, metaclass=CachedABCMeta):
     """
 
     def __init__(self) -> None:
-        self.element_properties = get_element_properties(self.species)
+        super().__init__()
 
         self._nist_energy_levels: NistEnergyLevels = {}
         if self.nist_data_file is not None:

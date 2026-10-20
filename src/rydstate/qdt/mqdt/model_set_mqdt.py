@@ -1,12 +1,11 @@
 from __future__ import annotations
 
-from abc import ABC
 from functools import cached_property
 from typing import TYPE_CHECKING, Any, ClassVar, overload
 
 from rydstate import units
 from rydstate.angular.utils import is_not_set
-from rydstate.metaclass_cache import CachedABCMeta
+from rydstate.qdt.model_set import ModelSet
 from rydstate.qdt.mqdt.model_eigen_channel import TrivialModel
 from rydstate.utils import get_all_subclasses
 
@@ -17,15 +16,8 @@ if TYPE_CHECKING:
     from rydstate.units import PintFloat
 
 
-class ModelSetMQDT(ABC, metaclass=CachedABCMeta):
+class ModelSetMQDT(ModelSet):
     """Base class for the MQDT model sets of the different species."""
-
-    species: ClassVar[str]
-    """The short name of the atomic species."""
-    tag: ClassVar[str | None] = None
-    """The tag for these MQDT parameters."""
-    is_default: ClassVar[bool] = False
-    """Whether this is the default MQDT model set for the species."""
 
     ionization_threshold_dict: ClassVar[dict[CoreKet, tuple[float, str]]]
     """Dictionary containing the ionization thresholds for the different core states.
@@ -43,6 +35,7 @@ class ModelSetMQDT(ABC, metaclass=CachedABCMeta):
     """
 
     def __init__(self) -> None:
+        super().__init__()
         self.models: list[ModelMQDT] = [model_class(self) for model_class in self.model_classes]
 
     def __repr__(self) -> str:
