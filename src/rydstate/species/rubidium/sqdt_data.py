@@ -5,7 +5,6 @@ from rydstate.qdt.sqdt import ModelSetSQDT, ModelSQDT
 
 class SQDTRubidium(ModelSetSQDT):
     species = "Rb"
-    is_default = True
     nist_data_file = "nist_data.txt"
 
     # -- [1] Phys. Rev. A 83, 052515 (2011) - Rb87

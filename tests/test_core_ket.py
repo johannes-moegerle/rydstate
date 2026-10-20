@@ -24,6 +24,7 @@ DIVALENT_ELEMENT_PROPERTIES = [ep for ep in ALL_ELEMENT_PROPERTIES if ep.number_
 EXPECTED_N_C: dict[str, list[int]] = {
     "Sr87": [5, 5, 4, 4, 5],
     "Sr88": [5, 5, 4, 4, 5],
+    "Sr88_vaillant2024": [5, 5, 4, 4, 5],
     "Yb171": [6, 6, 5, 5, 5],
     "Yb173": [6, 6, 5, 5, 5],
     "Yb174": [6, 6, 5, 5, 5],

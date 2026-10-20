@@ -62,6 +62,9 @@ class ElementProperties(ABC, metaclass=CachedABCMeta):
     The thresholds are measured from the ground state of the atom.
     The threshold of a channel is the one of the best matching core ket, see :meth:`get_ionization_threshold`.
     """
+    ion_species: ClassVar[str | None] = None
+    """The species of the singly charged ion, i.e. of the core of an atom with two valence electrons
+    (e.g. "Sr88_ion" for Sr88). None if no ion species is available (e.g. for the alkali atoms)."""
     reference_ionization_threshold_tuple: ClassVar[tuple[float, str] | None] = None
     """The reference ionization threshold (value, unit), with respect to which the effective principal quantum
     number nu is defined. If None, the smallest threshold of the ionization_threshold_dict is used."""

@@ -5,7 +5,6 @@ from rydstate.qdt.sqdt import ModelSetSQDT, ModelSQDT
 
 
 class _SQDTStrontiumIon(ModelSetSQDT, ABC):
-    is_default = True
     # Sr II (Sr+) energy levels, referenced to the Sr+ ground state (4p6.5s 2S1/2)
     nist_data_file = "nist_data.txt"
 

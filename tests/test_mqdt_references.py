@@ -178,8 +178,8 @@ def test_mqdt_energies_match_nist(name: str, n: int, l_r: int, j_tot: int, s_tot
 
 
 def _get_k_matrix_model(name: str) -> ModelKMatrix:
-    """Return the Sr88 model of Vaillant 2024 (MQDT tag vaillant2024) with the given name."""
-    model = next(model for model in get_mqdt("Sr88", "vaillant2024").models if model.name == name)
+    """Return the Sr88 model of Vaillant 2024 (species Sr88_vaillant2024) with the given name."""
+    model = next(model for model in get_mqdt("Sr88_vaillant2024").models if model.name == name)
     assert isinstance(model, ModelKMatrix)
     return model
 
@@ -637,9 +637,7 @@ def test_vaillant2024_triplet_f_energies_match_nist(j_tot: int) -> None:
     Vaillant 2012 (same parameters for 3F2 and 3F3) and the rounded values of table B.1 of Robertson 2021
     deviate by 0.22-0.28 1/cm at n = 10 for the 3F2 or 3F3 series and fail this test.
     """
-    model = next(
-        model for model in get_mqdt("Sr88", "vaillant2024").models if model.name == TRIPLET_F_MODEL_NAMES[j_tot]
-    )
+    model = next(model for model in get_mqdt("Sr88_vaillant2024").models if model.name == TRIPLET_F_MODEL_NAMES[j_tot])
     levels = _get_nist_triplet_f_levels(j_tot)
     assert len(levels) >= 10, f"only {len(levels)} NIST levels found for 5snf 3F{j_tot}"
     for n, energy_nist in levels:
@@ -760,25 +758,23 @@ def test_vaillant2024_ionization_thresholds() -> None:
     core j_c is fixed by the angular momentum coupling (e.g. 4dns 3D1 is purely 4d_3/2 ns_1/2), while the
     jj coupled channels use the fine structure resolved 4d_3/2 (60488.09 1/cm) and 4d_5/2 (60768.43 1/cm) thresholds.
     """
-    # the 5s threshold of Couturier 2019, which the Addendum uses rounded to 45932.2002 1/cm
-    threshold_5s = float(ureg.Quantity(1_377_012_721, "MHz").to("1/cm", "spectroscopy").magnitude)
     expected = {
-        "S J=0, nu > 3.7": [threshold_5s, 60768.43, 60488.09],
-        "S J=1, nu > 3.4": [threshold_5s, 70048.11],
-        "P J=1 singlet, nu > 2.8": [threshold_5s, 60628.26],
-        "P J=0, nu > 2.8": [threshold_5s, 60628.26],
-        "P J=1 triplet, nu > 2.8": [threshold_5s, 60628.26],
-        "P J=2, nu > 2.8": [threshold_5s, 60628.26],
-        "D J=2, nu > 5.7": [threshold_5s, threshold_5s, 60768.43, 60488.09, 70048.11, 60628.26],
-        "D J=1, nu > 9.5": [threshold_5s, 60628.26],
-        "D J=3, nu > 3.9": [threshold_5s, 60628.26, 60628.26],
-        "F J=3 singlet, nu > 3.5": [threshold_5s, 60628.26],
+        "S J=0, nu > 3.7": [45932.2002, 60768.43, 60488.09],
+        "S J=1, nu > 3.4": [45932.2002, 70048.11],
+        "P J=1 singlet, nu > 2.8": [45932.2002, 60628.26],
+        "P J=0, nu > 2.8": [45932.2002, 60628.26],
+        "P J=1 triplet, nu > 2.8": [45932.2002, 60628.26],
+        "P J=2, nu > 2.8": [45932.2002, 60628.26],
+        "D J=2, nu > 5.7": [45932.2002, 45932.2002, 60768.43, 60488.09, 70048.11, 60628.26],
+        "D J=1, nu > 9.5": [45932.2002, 60628.26],
+        "D J=3, nu > 3.9": [45932.2002, 60628.26, 60628.26],
+        "F J=3 singlet, nu > 3.5": [45932.2002, 60628.26],
         # the triplet F models are single channel models converging to the first ionization threshold
-        "F J=2 (Rydberg-Ritz), nu > 9": [threshold_5s],
-        "F J=3 triplet (Rydberg-Ritz), nu > 9": [threshold_5s],
-        "F J=4 (Rydberg-Ritz), nu > 9": [threshold_5s],
+        "F J=2 (Rydberg-Ritz), nu > 9": [45932.2002],
+        "F J=3 triplet (Rydberg-Ritz), nu > 9": [45932.2002],
+        "F J=4 (Rydberg-Ritz), nu > 9": [45932.2002],
     }
-    mqdt = get_mqdt("Sr88", "vaillant2024")
+    mqdt = get_mqdt("Sr88_vaillant2024")
     assert {model.name for model in mqdt.models} == set(expected)
     for model in mqdt.models:
         thresholds = [units.au_to_user(threshold, "energy", "1/cm") for threshold in model.ionization_thresholds_au]

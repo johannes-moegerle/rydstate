@@ -17,8 +17,6 @@ class MQDTStrontium87(ModelSetMQDT):
     """
 
     species = "Sr87"
-    tag = "robicheaux2019"
-    is_default = True
 
     model_classes = get_model_classes(sr87_eigen_channel_model_data, species)
 
@@ -33,8 +31,6 @@ class MQDTStrontium88(ModelSetMQDT):
     """
 
     species = "Sr88"
-    tag = "robicheaux2019"
-    is_default = True
 
     model_classes = get_model_classes(sr88_eigen_channel_model_data, species)
 
@@ -47,10 +43,10 @@ class MQDTStrontium88Vaillant2024(ModelSetMQDT):
     the doubly excited perturber channels (4dnl, 5pnp) explicitly and are therefore valid down to much lower
     principal quantum numbers. The only series not covered by Vaillant 2024 are the 5snf 3FJ series, for which
     single channel models with the Rydberg-Ritz quantum defects of Robertson 2021 (ARC 3.0) are used instead.
+    These models are available for the separate species "Sr88_vaillant2024",
+    see :class:`~rydstate.species.strontium.ElementPropertiesStrontium88Vaillant2024`.
     """
 
-    species = "Sr88"
-    tag = "vaillant2024"
-    is_default = False
+    species = "Sr88_vaillant2024"
 
     model_classes = get_model_classes(sr88_vaillant2024_k_matrix_model_data, species)

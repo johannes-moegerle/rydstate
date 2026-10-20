@@ -5,7 +5,6 @@ from rydstate.qdt.sqdt import ModelSetSQDT, ModelSQDT
 
 class SQDTPotassium(ModelSetSQDT):
     species = "K"
-    is_default = True
     nist_data_file = "nist_data.txt"
 
     # -- [1] Phys. Scr. 27, 300 (1983)

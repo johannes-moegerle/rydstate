@@ -5,7 +5,6 @@ from rydstate.qdt.sqdt import ModelSetSQDT, ModelSQDT
 
 class SQDTLithium(ModelSetSQDT):
     species = "Li"
-    is_default = True
     nist_data_file = "nist_data.txt"
 
     # -- [1] Phys. Rev. A 34, 2889 (1986) (Li 7)

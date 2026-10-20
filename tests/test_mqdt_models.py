@@ -42,7 +42,7 @@ def k_matrix_model(request: pytest.FixtureRequest) -> ModelKMatrix:
     return request.param  # type: ignore[no-any-return]
 
 
-@pytest.fixture(params=ALL_MQDTS, ids=lambda mqdt: f"{mqdt.species}_{mqdt.tag}")
+@pytest.fixture(params=ALL_MQDTS, ids=lambda mqdt: mqdt.species)
 def mqdt(request: pytest.FixtureRequest) -> ModelSetMQDT:
     return request.param  # type: ignore[no-any-return]
 

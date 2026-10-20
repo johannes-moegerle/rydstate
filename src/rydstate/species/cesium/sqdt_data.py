@@ -5,7 +5,6 @@ from rydstate.qdt.sqdt import ModelSetSQDT, ModelSQDT
 
 class SQDTCesium(ModelSetSQDT):
     species = "Cs"
-    is_default = True
     nist_data_file = "nist_data.txt"
 
     # -- [1] Phys. Rev. A 93, 013424 (2016)

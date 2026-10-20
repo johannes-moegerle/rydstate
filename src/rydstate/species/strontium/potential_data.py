@@ -21,3 +21,11 @@ class PotentialFei2009Strontium87(_PotentialFei2009StrontiumAbstract):
 
 class PotentialFei2009Strontium88(_PotentialFei2009StrontiumAbstract):
     species = "Sr88"
+
+
+class PotentialCoulombStrontium88Vaillant2024(PotentialCoulombStrontium88):
+    species = "Sr88_vaillant2024"
+
+
+class PotentialFei2009Strontium88Vaillant2024(PotentialFei2009Strontium88):
+    species = "Sr88_vaillant2024"

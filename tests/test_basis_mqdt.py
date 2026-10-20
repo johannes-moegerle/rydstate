@@ -174,24 +174,24 @@ def _calc_expected_channel_coefficients(model: ModelMQDT, nu: float) -> np.ndarr
 
 
 @pytest.mark.parametrize(
-    ("species", "tag", "f_tot", "model_name", "nu_range"),
+    ("species", "f_tot", "model_name", "nu_range"),
     [
-        ("Sr88", "vaillant2024", 1, "S J=1, nu > 3.4", (4, 15)),
-        ("Sr88", "vaillant2024", 2, "D J=2, nu > 5.7", (6, 15)),
-        ("Yb171", None, 0.5, "S F=1/2, 2 < nu < 26", (8, 20)),
-        ("Yb171", None, 1.5, "D F=3/2, 2 < nu < 30", (20, 29)),
-        ("Yb174", None, 0, "S J=0, nu > 2", (8, 20)),
+        ("Sr88_vaillant2024", 1, "S J=1, nu > 3.4", (4, 15)),
+        ("Sr88_vaillant2024", 2, "D J=2, nu > 5.7", (6, 15)),
+        ("Yb171", 0.5, "S F=1/2, 2 < nu < 26", (8, 20)),
+        ("Yb171", 1.5, "D F=3/2, 2 < nu < 30", (20, 29)),
+        ("Yb174", 0, "S J=0, nu > 2", (8, 20)),
     ],
 )
 def test_mqdt_channel_coefficients_match_coulomb_asymptotics(
-    species: str, tag: str | None, f_tot: float, model_name: str, nu_range: tuple[float, float]
+    species: str, f_tot: float, model_name: str, nu_range: tuple[float, float]
 ) -> None:
     """The channel coefficients must agree with the decaying part of the Coulomb asymptotics, incl. its (-1)^l_r.
 
     The tested models couple channels whose l_r differ in parity, so the (-1)^l_r phase between the
     Coulomb functions (positive near the origin) and the radial kets (positive at the outer bound) matters.
     """
-    basis = BasisMQDT(species, nu=nu_range, mqdt=tag, f_tot=(f_tot, f_tot))
+    basis = BasisMQDT(species, nu=nu_range, f_tot=(f_tot, f_tot))
     states = [state for state in basis.states if state.model.name == model_name]
     assert len(states) > 3
 

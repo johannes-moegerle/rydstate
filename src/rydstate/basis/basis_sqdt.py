@@ -12,10 +12,10 @@ from rydstate.angular.utils import AllKnown
 from rydstate.basis.basis_base import BasisBase
 from rydstate.basis.utils import get_m_range, is_allowed_qn
 from rydstate.qdt import get_sqdt
-from rydstate.qdt.sqdt import ModelSetSQDT
 from rydstate.rydberg_state import RydbergStateSQDT
 
 if TYPE_CHECKING:
+    from rydstate.qdt.sqdt import ModelSetSQDT
     from rydstate.radial.potential import Potential
 
 
@@ -36,7 +36,7 @@ class BasisSQDT(BasisBase[RydbergStateSQDT[AngularKetLS[AllKnown]]]):
         m: tuple[float, float] | NotSet | None = NotSet,
         # potential and sqdt parameters
         potential_class: type[Potential] | str | None = None,
-        sqdt: ModelSetSQDT | str | None = None,
+        sqdt: ModelSetSQDT | None = None,
     ) -> None:
         """Initialize the SQDT basis.
 
@@ -53,13 +53,12 @@ class BasisSQDT(BasisBase[RydbergStateSQDT[AngularKetLS[AllKnown]]]):
             potential_class: The potential class to use for the radial ket.
                 Either a a potential class
                 or a string representing the tag of the potential class to use.
-            sqdt: The SQDT data to use for the states.
-                Either an instance of an ModelSetSQDT subclass
-                or a string representing the tag of the ModelSetSQDT to use.
+            sqdt: The SQDT model set to use for the states.
+                Default None, use the SQDT model set of the species.
 
         """
         super().__init__(species, potential_class)
-        self.sqdt = sqdt if isinstance(sqdt, ModelSetSQDT) else get_sqdt(species, tag=sqdt)
+        self.sqdt = sqdt if sqdt is not None else get_sqdt(species)
 
         if l_r is None:
             l_r = (0, n[1] - 1)

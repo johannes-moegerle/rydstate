@@ -16,6 +16,7 @@ class _ElementPropertiesStrontiumAbstract(ElementProperties, ABC):
 
 class ElementPropertiesStrontium87(_ElementPropertiesStrontiumAbstract):
     species = "Sr87"
+    ion_species = "Sr87_ion"
     i_c = 9 / 2
 
     mass_number = 87
@@ -36,21 +37,36 @@ class ElementPropertiesStrontium87(_ElementPropertiesStrontiumAbstract):
 
 class ElementPropertiesStrontium88(_ElementPropertiesStrontiumAbstract):
     species = "Sr88"
+    ion_species = "Sr88_ion"
     i_c = 0
 
     mass_number = 88
     atomic_mass_u = 87.905612253
     nuclear_dipole = 0.0
 
-    # The 5s threshold is taken from Couturier et al., Phys. Rev. A 99, 022503 (2019)
-    # (https://doi.org/10.1103/PhysRevA.99.022503): I = 1_377_012_721(10) MHz (= 45932.20024 1/cm).
-    # The Addendum of Vaillant et al. 2024 (https://doi.org/10.1088/1361-6455/ad76f0) uses the same value
-    # rounded to 45932.2002 1/cm.
-    # The 4d and 5p thresholds are the ones used in the Addendum (Table I), i.e. the 5s threshold plus the
-    # Sr+ 4d_3/2, 4d_5/2, 5p_1/2 and 5p_3/2 excitation energies (Sansonetti 2012).
-    # For LS-coupled channels (4dnl, 5pnp), the unweighted average of the fine structure thresholds is used.
+    # Couturier et al., Phys. Rev. A 99, 022503 (2019) (https://doi.org/10.1103/PhysRevA.99.022503)
+    # I = 1_377_012_721(10) MHz (= 45932.20024 1/cm)
     ionization_threshold_dict: ClassVar = {
         CoreKet(i_c=0, n_c=5, l_c=0, j_c=0.5): (1_377_012_721, "MHz"),
+    }
+
+
+class ElementPropertiesStrontium88Vaillant2024(ElementPropertiesStrontium88):
+    """Sr88 as described by the MQDT models of Vaillant 2024.
+
+    This species uses the models of :class:`~rydstate.species.strontium.MQDTStrontium88Vaillant2024`.
+    Apart from the ionization thresholds, everything is the same as for Sr88.
+    """
+
+    species = "Sr88_vaillant2024"
+
+    # Ionization thresholds as used in the Addendum of Vaillant et al. 2024 (https://doi.org/10.1088/1361-6455/ad76f0),
+    # Table I. The 5s threshold is the one of Couturier 2019 (see Sr88), but rounded to 45932.2002 1/cm exactly as in
+    # the Addendum and in mqdtfit. The 4d and 5p thresholds are the 5s threshold plus the Sr+ 4d_3/2, 4d_5/2, 5p_1/2
+    # and 5p_3/2 excitation energies (Sansonetti 2012).
+    # For LS-coupled channels (4dnl, 5pnp), the unweighted average of the fine structure thresholds is used.
+    ionization_threshold_dict: ClassVar = {
+        CoreKet(i_c=0, n_c=5, l_c=0, j_c=0.5): (45932.2002, "1/cm"),
         CoreKet(i_c=0, n_c=4, l_c=2, j_c=1.5): (60488.09, "1/cm"),
         CoreKet(i_c=0, n_c=4, l_c=2, j_c=2.5): (60768.43, "1/cm"),
         CoreKet(i_c=0, n_c=4, l_c=2, j_c=Unknown, label=Unknown): (60628.26, "1/cm"),

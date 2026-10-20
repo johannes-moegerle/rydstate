@@ -5,7 +5,6 @@ from rydstate.qdt.sqdt import ModelSetSQDT, ModelSQDT
 
 class SQDTSodium(ModelSetSQDT):
     species = "Na"
-    is_default = True
     nist_data_file = "nist_data.txt"
 
     # -- [1] Phys. Rev. A 45, 4720 (1992)

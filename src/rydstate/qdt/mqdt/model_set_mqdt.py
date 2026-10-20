@@ -28,7 +28,7 @@ class ModelSetMQDT(ModelSet):
         self.models: list[ModelMQDT] = [model_class(self) for model_class in self.model_classes]
 
     def __repr__(self) -> str:
-        return f"ModelSetMQDT({self.species}, {self.tag})"
+        return f"ModelSetMQDT({self.species})"
 
     def get_mqdt_models(self, outer_channel: AngularKetBase[Any]) -> list[ModelMQDT]:
         """Return a list of MQDT models for the outer_channel."""
@@ -51,15 +51,11 @@ class ModelSetMQDT(ModelSet):
         return sorted(core_kets, key=lambda ket: (ket.l_c, ket.j_c, ket.f_c, str(ket.label)))
 
 
-def get_mqdt(species: str, tag: str | None = None) -> ModelSetMQDT:
-    """Get an instance of the subclass of MQDT for the given species and tag."""
-    subclasses = get_all_subclasses(ModelSetMQDT, species, tag)
-
-    if tag is None:
-        subclasses = [cls for cls in subclasses if getattr(cls, "is_default", False)]
-
+def get_mqdt(species: str) -> ModelSetMQDT:
+    """Get an instance of the subclass of ModelSetMQDT for the given species."""
+    subclasses = get_all_subclasses(ModelSetMQDT, species)
     if len(subclasses) == 0:
-        raise ValueError(f"No subclass of MQDT found for {species=} and {tag=}.")
+        raise ValueError(f"No subclass of ModelSetMQDT found for {species=}.")
     if len(subclasses) == 1:
         return subclasses[0]()
-    raise ValueError(f"Multiple subclasses of MQDT found for {species=} and {tag=}: {subclasses}.")
+    raise ValueError(f"Multiple subclasses of ModelSetMQDT found for {species=}: {subclasses}.")

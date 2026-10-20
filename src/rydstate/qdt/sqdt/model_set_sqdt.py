@@ -42,7 +42,7 @@ class ModelSetSQDT(ModelSet):
             self._nist_energy_levels = parse_nist_energy_levels(file, self.element_properties)
 
     def __repr__(self) -> str:
-        return f"ModelSetSQDT({self.species}, {self.tag})"
+        return f"ModelSetSQDT({self.species})"
 
     def get_models(self, angular_ket: AngularKetBase[Any]) -> list[ModelSQDT]:
         """Return all models whose channel is the given angular ket (up to the magnetic quantum number m).
@@ -188,15 +188,11 @@ class ModelSetSQDT(ModelSet):
         )
 
 
-def get_sqdt(species: str, tag: str | None = None) -> ModelSetSQDT:
-    """Get an instance of the subclass of SQDT for the given species and tag."""
-    subclasses = get_all_subclasses(ModelSetSQDT, species, tag)
-
-    if tag is None:
-        subclasses = [cls for cls in subclasses if getattr(cls, "is_default", False)]
-
+def get_sqdt(species: str) -> ModelSetSQDT:
+    """Get an instance of the subclass of ModelSetSQDT for the given species."""
+    subclasses = get_all_subclasses(ModelSetSQDT, species)
     if len(subclasses) == 0:
-        raise ValueError(f"No subclass of SQDT found for {species=} and {tag=}.")
+        raise ValueError(f"No subclass of ModelSetSQDT found for {species=}.")
     if len(subclasses) == 1:
         return subclasses[0]()
-    raise ValueError(f"Multiple subclasses of SQDT found for {species=} and {tag=}: {subclasses}.")
+    raise ValueError(f"Multiple subclasses of ModelSetSQDT found for {species=}: {subclasses}.")

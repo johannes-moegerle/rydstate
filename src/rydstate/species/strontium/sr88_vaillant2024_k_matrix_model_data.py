@@ -85,7 +85,7 @@ REFERENCE_ROBERTSON_2021 = (
 # LS-coupled channels with a 4d core, whose j_c is fixed by the angular momentum coupling (e.g. 4dns 3D1 is purely
 # 4d_3/2 ns_1/2, 4dns 3D3 purely 4d_5/2 ns_1/2 and 4dnp 3P0 purely 4d_3/2 np_3/2), are labeled to use the averaged
 # 4d ionization threshold of the paper instead of the fine structure resolved one
-# (see the ionization_threshold_dict of ElementPropertiesStrontium88).
+# (see the ionization_threshold_dict of ElementPropertiesStrontium88Vaillant2024).
 LABEL_4D_AVERAGED = "4d threshold averaged"
 
 
@@ -95,16 +95,16 @@ LABEL_4D_AVERAGED = "4d threshold averaged"
 
 
 class Sr88_S0_Vaillant2024(ModelKMatrix):
-    species = "Sr88"
+    species = "Sr88_vaillant2024"
     name = "S J=0, nu > 3.7"
     f_tot, parity = (0, +1)
     nu_range = (3.7, np.inf)  # fitted to 5sns 1S0, n = 7-30, and the 4d2 3P0 perturber
     reference = REFERENCE_VAILLANT_2024
 
     outer_channels = [
-        AngularKetJJ(l_c=0, l_r=0, j_c=0.5, j_r=0.5, j_tot=0, species="Sr88"),  # 5s_1/2 ns_1/2
-        AngularKetJJ(l_c=2, l_r=2, j_c=2.5, j_r=2.5, j_tot=0, species="Sr88"),  # 4d_5/2 nd_5/2
-        AngularKetJJ(l_c=2, l_r=2, j_c=1.5, j_r=1.5, j_tot=0, species="Sr88"),  # 4d_3/2 nd_3/2
+        AngularKetJJ(l_c=0, l_r=0, j_c=0.5, j_r=0.5, j_tot=0, species="Sr88_vaillant2024"),  # 5s_1/2 ns_1/2
+        AngularKetJJ(l_c=2, l_r=2, j_c=2.5, j_r=2.5, j_tot=0, species="Sr88_vaillant2024"),  # 4d_5/2 nd_5/2
+        AngularKetJJ(l_c=2, l_r=2, j_c=1.5, j_r=1.5, j_tot=0, species="Sr88_vaillant2024"),  # 4d_3/2 nd_3/2
     ]
 
     # All channels have the same phase d_i = -1 (see the module docstring), so no sign is changed.
@@ -124,15 +124,15 @@ class Sr88_S1_Vaillant2024(ModelKMatrix):
     The Addendum also gives a fit to the older data set (a) of the 2014 paper, which is not included here.
     """
 
-    species = "Sr88"
+    species = "Sr88_vaillant2024"
     name = "S J=1, nu > 3.4"
     f_tot, parity = (1, +1)
     nu_range = (3.4, np.inf)  # fitted to 5sns 3S1, n = 7-23
     reference = REFERENCE_VAILLANT_2024
 
     outer_channels = [
-        AngularKetLS(l_c=0, l_r=0, l_tot=0, s_tot=1, j_tot=1, species="Sr88"),  # 5sns 3S1
-        AngularKetLS(l_c=1, l_r=1, l_tot=1, s_tot=1, j_tot=1, species="Sr88"),  # 5pnp 3P1
+        AngularKetLS(l_c=0, l_r=0, l_tot=0, s_tot=1, j_tot=1, species="Sr88_vaillant2024"),  # 5sns 3S1
+        AngularKetLS(l_c=1, l_r=1, l_tot=1, s_tot=1, j_tot=1, species="Sr88_vaillant2024"),  # 5pnp 3P1
     ]
 
     # The element marked with (*) has the opposite sign compared to Table III of the Addendum,
@@ -151,15 +151,15 @@ class Sr88_S1_Vaillant2024(ModelKMatrix):
 
 
 class Sr88_P1_Singlet_Vaillant2024(ModelKMatrix):
-    species = "Sr88"
+    species = "Sr88_vaillant2024"
     name = "P J=1 singlet, nu > 2.8"
     f_tot, parity = (1, -1)
     nu_range = (2.8, np.inf)  # fitted to 5snp 1P1, n = 6-29, and the 4d5p 1P1 perturber
     reference = REFERENCE_VAILLANT_2024
 
     outer_channels = [
-        AngularKetLS(l_c=0, l_r=1, l_tot=1, s_tot=0, j_tot=1, species="Sr88"),  # 5snp 1P1
-        AngularKetLS(l_c=2, l_r=1, l_tot=1, s_tot=0, j_tot=1, species="Sr88"),  # 4dnp 1P1
+        AngularKetLS(l_c=0, l_r=1, l_tot=1, s_tot=0, j_tot=1, species="Sr88_vaillant2024"),  # 5snp 1P1
+        AngularKetLS(l_c=2, l_r=1, l_tot=1, s_tot=0, j_tot=1, species="Sr88_vaillant2024"),  # 4dnp 1P1
     ]
 
     k_matrix_entries = [
@@ -170,15 +170,17 @@ class Sr88_P1_Singlet_Vaillant2024(ModelKMatrix):
 
 
 class Sr88_P0_Vaillant2024(ModelKMatrix):
-    species = "Sr88"
+    species = "Sr88_vaillant2024"
     name = "P J=0, nu > 2.8"
     f_tot, parity = (0, -1)
     nu_range = (2.8, np.inf)  # fitted to 5snp 3P0, n = 6-15, and the 4d5p 3P0 perturber
     reference = REFERENCE_VAILLANT_2024
 
     outer_channels = [
-        AngularKetLS(l_c=0, l_r=1, l_tot=1, s_tot=1, j_tot=0, species="Sr88"),  # 5snp 3P0
-        AngularKetLS(l_c=2, l_r=1, l_tot=1, s_tot=1, j_tot=0, species="Sr88", label=LABEL_4D_AVERAGED),  # 4dnp 3P0
+        AngularKetLS(l_c=0, l_r=1, l_tot=1, s_tot=1, j_tot=0, species="Sr88_vaillant2024"),  # 5snp 3P0
+        AngularKetLS(
+            l_c=2, l_r=1, l_tot=1, s_tot=1, j_tot=0, species="Sr88_vaillant2024", label=LABEL_4D_AVERAGED
+        ),  # 4dnp 3P0
     ]
 
     k_matrix_entries = [
@@ -189,15 +191,15 @@ class Sr88_P0_Vaillant2024(ModelKMatrix):
 
 
 class Sr88_P1_Triplet_Vaillant2024(ModelKMatrix):
-    species = "Sr88"
+    species = "Sr88_vaillant2024"
     name = "P J=1 triplet, nu > 2.8"
     f_tot, parity = (1, -1)
     nu_range = (2.8, np.inf)  # fitted to 5snp 3P1, n = 6-15, and the 4d5p 3P1 perturber
     reference = REFERENCE_VAILLANT_2024
 
     outer_channels = [
-        AngularKetLS(l_c=0, l_r=1, l_tot=1, s_tot=1, j_tot=1, species="Sr88"),  # 5snp 3P1
-        AngularKetLS(l_c=2, l_r=1, l_tot=1, s_tot=1, j_tot=1, species="Sr88"),  # 4dnp 3P1
+        AngularKetLS(l_c=0, l_r=1, l_tot=1, s_tot=1, j_tot=1, species="Sr88_vaillant2024"),  # 5snp 3P1
+        AngularKetLS(l_c=2, l_r=1, l_tot=1, s_tot=1, j_tot=1, species="Sr88_vaillant2024"),  # 4dnp 3P1
     ]
 
     k_matrix_entries = [
@@ -208,15 +210,15 @@ class Sr88_P1_Triplet_Vaillant2024(ModelKMatrix):
 
 
 class Sr88_P2_Vaillant2024(ModelKMatrix):
-    species = "Sr88"
+    species = "Sr88_vaillant2024"
     name = "P J=2, nu > 2.8"
     f_tot, parity = (2, -1)
     nu_range = (2.8, np.inf)  # fitted to 5snp 3P2, n = 6-15, and the 4d5p 3P2 perturber
     reference = REFERENCE_VAILLANT_2024
 
     outer_channels = [
-        AngularKetLS(l_c=0, l_r=1, l_tot=1, s_tot=1, j_tot=2, species="Sr88"),  # 5snp 3P2
-        AngularKetLS(l_c=2, l_r=1, l_tot=1, s_tot=1, j_tot=2, species="Sr88"),  # 4dnp 3P2
+        AngularKetLS(l_c=0, l_r=1, l_tot=1, s_tot=1, j_tot=2, species="Sr88_vaillant2024"),  # 5snp 3P2
+        AngularKetLS(l_c=2, l_r=1, l_tot=1, s_tot=1, j_tot=2, species="Sr88_vaillant2024"),  # 4dnp 3P2
     ]
 
     k_matrix_entries = [
@@ -234,19 +236,19 @@ class Sr88_P2_Vaillant2024(ModelKMatrix):
 class Sr88_D2_Vaillant2024(ModelKMatrix):
     """Combined 6-channel model for the strongly mixed 5snd 1D2 and 5snd 3D2 series."""
 
-    species = "Sr88"
+    species = "Sr88_vaillant2024"
     name = "D J=2, nu > 5.7"
     f_tot, parity = (2, +1)
     nu_range = (5.7, np.inf)  # fitted to 5snd 1D2 and 3D2, n = 8-30, and the 4d2 3P2 perturber
     reference = REFERENCE_VAILLANT_2024
 
     outer_channels = [
-        AngularKetJJ(l_c=0, l_r=2, j_c=0.5, j_r=2.5, j_tot=2, species="Sr88"),  # 5s_1/2 nd_5/2
-        AngularKetJJ(l_c=0, l_r=2, j_c=0.5, j_r=1.5, j_tot=2, species="Sr88"),  # 5s_1/2 nd_3/2
-        AngularKetJJ(l_c=2, l_r=0, j_c=2.5, j_r=0.5, j_tot=2, species="Sr88"),  # 4d_5/2 ns_1/2
-        AngularKetJJ(l_c=2, l_r=0, j_c=1.5, j_r=0.5, j_tot=2, species="Sr88"),  # 4d_3/2 ns_1/2
-        AngularKetLS(l_c=1, l_r=1, l_tot=2, s_tot=0, j_tot=2, species="Sr88"),  # 5pnp 1D2
-        AngularKetLS(l_c=2, l_r=2, l_tot=1, s_tot=1, j_tot=2, species="Sr88"),  # 4dnd 3P2
+        AngularKetJJ(l_c=0, l_r=2, j_c=0.5, j_r=2.5, j_tot=2, species="Sr88_vaillant2024"),  # 5s_1/2 nd_5/2
+        AngularKetJJ(l_c=0, l_r=2, j_c=0.5, j_r=1.5, j_tot=2, species="Sr88_vaillant2024"),  # 5s_1/2 nd_3/2
+        AngularKetJJ(l_c=2, l_r=0, j_c=2.5, j_r=0.5, j_tot=2, species="Sr88_vaillant2024"),  # 4d_5/2 ns_1/2
+        AngularKetJJ(l_c=2, l_r=0, j_c=1.5, j_r=0.5, j_tot=2, species="Sr88_vaillant2024"),  # 4d_3/2 ns_1/2
+        AngularKetLS(l_c=1, l_r=1, l_tot=2, s_tot=0, j_tot=2, species="Sr88_vaillant2024"),  # 5pnp 1D2
+        AngularKetLS(l_c=2, l_r=2, l_tot=1, s_tot=1, j_tot=2, species="Sr88_vaillant2024"),  # 4dnd 3P2
     ]
 
     # The elements marked with (*) have the opposite sign compared to Table III of the Addendum,
@@ -272,15 +274,17 @@ class Sr88_D2_Vaillant2024(ModelKMatrix):
 
 
 class Sr88_D1_Vaillant2024(ModelKMatrix):
-    species = "Sr88"
+    species = "Sr88_vaillant2024"
     name = "D J=1, nu > 9.5"
     f_tot, parity = (1, +1)
     nu_range = (9.5, np.inf)  # fitted to 5snd 3D1, n = 12-15 and 17-50
     reference = REFERENCE_VAILLANT_2024
 
     outer_channels = [
-        AngularKetLS(l_c=0, l_r=2, l_tot=2, s_tot=1, j_tot=1, species="Sr88"),  # 5snd 3D1
-        AngularKetLS(l_c=2, l_r=0, l_tot=2, s_tot=1, j_tot=1, species="Sr88", label=LABEL_4D_AVERAGED),  # 4dns 3D1
+        AngularKetLS(l_c=0, l_r=2, l_tot=2, s_tot=1, j_tot=1, species="Sr88_vaillant2024"),  # 5snd 3D1
+        AngularKetLS(
+            l_c=2, l_r=0, l_tot=2, s_tot=1, j_tot=1, species="Sr88_vaillant2024", label=LABEL_4D_AVERAGED
+        ),  # 4dns 3D1
     ]
 
     k_matrix_entries = [
@@ -291,16 +295,18 @@ class Sr88_D1_Vaillant2024(ModelKMatrix):
 
 
 class Sr88_D3_Vaillant2024(ModelKMatrix):
-    species = "Sr88"
+    species = "Sr88_vaillant2024"
     name = "D J=3, nu > 3.9"
     f_tot, parity = (3, +1)
     nu_range = (3.9, np.inf)  # fitted to 5snd 3D3, n = 6-8, 9-21 and 23-29
     reference = REFERENCE_VAILLANT_2024
 
     outer_channels = [
-        AngularKetLS(l_c=0, l_r=2, l_tot=2, s_tot=1, j_tot=3, species="Sr88"),  # 5snd 3D3
-        AngularKetLS(l_c=2, l_r=0, l_tot=2, s_tot=1, j_tot=3, species="Sr88", label=LABEL_4D_AVERAGED),  # 4dns 3D3
-        AngularKetLS(l_c=2, l_r=2, l_tot=2, s_tot=1, j_tot=3, species="Sr88"),  # 4dnd 3D3
+        AngularKetLS(l_c=0, l_r=2, l_tot=2, s_tot=1, j_tot=3, species="Sr88_vaillant2024"),  # 5snd 3D3
+        AngularKetLS(
+            l_c=2, l_r=0, l_tot=2, s_tot=1, j_tot=3, species="Sr88_vaillant2024", label=LABEL_4D_AVERAGED
+        ),  # 4dns 3D3
+        AngularKetLS(l_c=2, l_r=2, l_tot=2, s_tot=1, j_tot=3, species="Sr88_vaillant2024"),  # 4dnd 3D3
     ]
 
     k_matrix_entries = [
@@ -319,15 +325,15 @@ class Sr88_D3_Vaillant2024(ModelKMatrix):
 
 
 class Sr88_F3_Singlet_Vaillant2024(ModelKMatrix):
-    species = "Sr88"
+    species = "Sr88_vaillant2024"
     name = "F J=3 singlet, nu > 3.5"
     f_tot, parity = (3, -1)
     nu_range = (3.5, np.inf)  # fitted to 5snf 1F3, n = 4-29, and the 4d5p 1F3 perturber
     reference = REFERENCE_VAILLANT_2024
 
     outer_channels = [
-        AngularKetLS(l_c=0, l_r=3, l_tot=3, s_tot=0, j_tot=3, species="Sr88"),  # 5snf 1F3
-        AngularKetLS(l_c=2, l_r=1, l_tot=3, s_tot=0, j_tot=3, species="Sr88"),  # 4dnp 1F3
+        AngularKetLS(l_c=0, l_r=3, l_tot=3, s_tot=0, j_tot=3, species="Sr88_vaillant2024"),  # 5snf 1F3
+        AngularKetLS(l_c=2, l_r=1, l_tot=3, s_tot=0, j_tot=3, species="Sr88_vaillant2024"),  # 4dnp 1F3
     ]
 
     k_matrix_entries = [
@@ -340,17 +346,17 @@ class Sr88_F3_Singlet_Vaillant2024(ModelKMatrix):
 class Sr88_F2_Robertson2021(ModelEigenChannel):
     """5snf 3F2 series, described by its Rydberg-Ritz quantum defects, since Vaillant 2024 has no triplet F models."""
 
-    species = "Sr88"
+    species = "Sr88_vaillant2024"
     name = "F J=2 (Rydberg-Ritz), nu > 9"
     f_tot, parity = (2, -1)
     nu_range = (9.0, np.inf)  # quantum defects fitted to 5snf 3F2, n = 10-24
     reference = REFERENCE_ROBERTSON_2021
 
     inner_channels = [
-        AngularKetLS(l_c=0, l_r=3, l_tot=3, s_tot=1, j_tot=2, species="Sr88"),  # 5snf 3F2
+        AngularKetLS(l_c=0, l_r=3, l_tot=3, s_tot=1, j_tot=2, species="Sr88_vaillant2024"),  # 5snf 3F2
     ]
     outer_channels = [
-        AngularKetLS(l_c=0, l_r=3, l_tot=3, s_tot=1, j_tot=2, species="Sr88"),  # 5snf 3F2
+        AngularKetLS(l_c=0, l_r=3, l_tot=3, s_tot=1, j_tot=2, species="Sr88_vaillant2024"),  # 5snf 3F2
     ]
 
     eigen_quantum_defects = [
@@ -366,17 +372,17 @@ class Sr88_F3_Triplet_Robertson2021(ModelEigenChannel):
     (there, the 1F3 and 3F3 channels are the two uncoupled eigen channels of a single F J=3 model).
     """
 
-    species = "Sr88"
+    species = "Sr88_vaillant2024"
     name = "F J=3 triplet (Rydberg-Ritz), nu > 9"
     f_tot, parity = (3, -1)
     nu_range = (9.0, np.inf)  # quantum defects fitted to 5snf 3F3, n = 10-24
     reference = REFERENCE_ROBERTSON_2021
 
     inner_channels = [
-        AngularKetLS(l_c=0, l_r=3, l_tot=3, s_tot=1, j_tot=3, species="Sr88"),  # 5snf 3F3
+        AngularKetLS(l_c=0, l_r=3, l_tot=3, s_tot=1, j_tot=3, species="Sr88_vaillant2024"),  # 5snf 3F3
     ]
     outer_channels = [
-        AngularKetLS(l_c=0, l_r=3, l_tot=3, s_tot=1, j_tot=3, species="Sr88"),  # 5snf 3F3
+        AngularKetLS(l_c=0, l_r=3, l_tot=3, s_tot=1, j_tot=3, species="Sr88_vaillant2024"),  # 5snf 3F3
     ]
 
     eigen_quantum_defects = [
@@ -387,17 +393,17 @@ class Sr88_F3_Triplet_Robertson2021(ModelEigenChannel):
 class Sr88_F4_Robertson2021(ModelEigenChannel):
     """5snf 3F4 series, described by its Rydberg-Ritz quantum defects, since Vaillant 2024 has no triplet F models."""
 
-    species = "Sr88"
+    species = "Sr88_vaillant2024"
     name = "F J=4 (Rydberg-Ritz), nu > 9"
     f_tot, parity = (4, -1)
     nu_range = (9.0, np.inf)  # quantum defects fitted to 5snf 3F4, n = 10-28
     reference = REFERENCE_ROBERTSON_2021
 
     inner_channels = [
-        AngularKetLS(l_c=0, l_r=3, l_tot=3, s_tot=1, j_tot=4, species="Sr88"),  # 5snf 3F4
+        AngularKetLS(l_c=0, l_r=3, l_tot=3, s_tot=1, j_tot=4, species="Sr88_vaillant2024"),  # 5snf 3F4
     ]
     outer_channels = [
-        AngularKetLS(l_c=0, l_r=3, l_tot=3, s_tot=1, j_tot=4, species="Sr88"),  # 5snf 3F4
+        AngularKetLS(l_c=0, l_r=3, l_tot=3, s_tot=1, j_tot=4, species="Sr88_vaillant2024"),  # 5snf 3F4
     ]
 
     eigen_quantum_defects = [

@@ -5,7 +5,6 @@ from rydstate.qdt.sqdt import ModelSetSQDT, ModelSQDT
 
 class SQDTStrontium88(ModelSetSQDT):
     species = "Sr88"
-    is_default = True
     nist_data_file = "nist_data.txt"
 
     # -- [1] Brienza 2023, Phys. Rev. A 108, 022815

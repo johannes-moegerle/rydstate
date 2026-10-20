@@ -12,12 +12,13 @@ from rydstate.angular.utils import is_unknown
 from rydstate.basis.basis_base import BasisBase
 from rydstate.basis.basis_sqdt import BasisSQDT
 from rydstate.basis.utils import get_m_range, is_allowed_qn
-from rydstate.qdt.mqdt import ModelSetMQDT, get_mqdt
+from rydstate.qdt.mqdt import get_mqdt
 from rydstate.qdt.osqdt.model_set_osqdt import ModelSetOSQDT, NoOSQDTStateError
 from rydstate.rydberg_state.rydberg_sqdt import RydbergStateOSQDT
 
 if TYPE_CHECKING:
     from rydstate.angular.utils import AllKnown
+    from rydstate.qdt.mqdt import ModelSetMQDT
     from rydstate.radial.potential import Potential
 
 
@@ -57,7 +58,7 @@ class BasisOSQDT(BasisSQDT):
         m: tuple[float, float] | NotSet | None = NotSet,
         # potential and mqdt parameters
         potential_class: type[Potential] | str | None = None,
-        mqdt: ModelSetMQDT | str | None = None,
+        mqdt: ModelSetMQDT | None = None,
     ) -> None:
         """Initialize the OSQDT basis.
 
@@ -76,14 +77,13 @@ class BasisOSQDT(BasisSQDT):
             potential_class: The potential class to use for the radial ket.
                 Either a a potential class
                 or a string representing the tag of the potential class to use.
-            mqdt: The MQDT data to use for the states.
-                Either an instance of an ModelSetMQDT subclass
-                or a string representing the tag of the ModelSetMQDT to use.
+            mqdt: The MQDT model set to use for the states.
+                Default None, use the MQDT model set of the species.
 
         """
         # skip BasisSQDT.__init__, since this basis uses MQDT models instead of SQDT data
         BasisBase.__init__(self, species, potential_class)
-        self.mqdt = mqdt if isinstance(mqdt, ModelSetMQDT) else get_mqdt(species, tag=mqdt)
+        self.mqdt = mqdt if mqdt is not None else get_mqdt(species)
 
         if not 0 <= nu[0] < nu[1] < math.inf:
             raise ValueError(f"nu must be a tuple (nu_min, nu_max) with 0 <= nu_min < nu_max < inf, but got {nu}.")

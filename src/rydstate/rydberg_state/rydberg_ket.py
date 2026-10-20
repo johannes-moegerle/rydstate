@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import contextlib
 import logging
 import math
 from functools import cache, cached_property
@@ -391,10 +392,12 @@ class RydbergKet:
         if n_c is None:
             raise RuntimeError("The principal quantum number n_c of the core electron is not set in the angular ket.")
 
-        ion_species = f"{self.species}_ion"
-        try:
-            core_sqdt = get_sqdt(ion_species)
-        except ValueError:
+        ion_species = get_element_properties(self.species).ion_species
+        core_sqdt = None
+        if ion_species is not None:
+            with contextlib.suppress(ValueError):
+                core_sqdt = get_sqdt(ion_species)
+        if ion_species is None or core_sqdt is None:
             logger.warning(
                 "No SQDT data available for the ion species of %s, "
                 "thus we cannot calculate the ion state and its matrix elements.",

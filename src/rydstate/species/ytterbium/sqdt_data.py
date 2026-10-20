@@ -5,7 +5,6 @@ from rydstate.qdt.sqdt import ModelSetSQDT, ModelSQDT
 
 class SQDTYtterbium174(ModelSetSQDT):
     species = "Yb174"
-    is_default = True
     nist_data_file = "nist_data.txt"
 
     # -- [1] Peper 2024, http://arxiv.org/abs/2406.01482
