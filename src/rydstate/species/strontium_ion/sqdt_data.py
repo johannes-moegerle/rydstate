@@ -1,7 +1,7 @@
 from abc import ABC
 from typing import ClassVar
 
-from rydstate.qdt.sqdt import ModelSetSQDT
+from rydstate.qdt.sqdt import ModelSetSQDT, ModelSQDT
 
 
 class _SQDTStrontiumIon(ModelSetSQDT, ABC):
@@ -65,14 +65,80 @@ class SQDTStrontium88Ion(_SQDTStrontiumIon):
     # The fine structure of the nd series is not resolved in [3], so d0(D3/2) is taken from [2] and d0(D5/2)
     # from the fine-structure splitting of the NIST levels [4]; the fine structure of the nf and ng series
     # is neither resolved in [3] nor in the NIST data (n >= 5).
-    quantum_defects: ClassVar = {
-        (0, 0.5, 1 / 2): [2.7062, 0.22, 0, 0, 0],  # d0 [1], d2 [3]
-        (1, 0.5, 1 / 2): [2.3265, 0.47, 0, 0, 0],  # d0 [1], d2 from mu(7p1/2) [3]
-        (1, 1.5, 1 / 2): [2.3105, 0.47, 0, 0, 0],  # d0 = d0(P1/2) - 0.016 [1, 3], d2 from mu(7p3/2) [3]
-        (2, 1.5, 1 / 2): [1.4563, 0.148, 0, 0, 0],  # d0 [2], d2 [3]
-        (2, 2.5, 1 / 2): [1.4520, 0.148, 0, 0, 0],  # d0 = d0(D3/2) - 0.0043 [2, 4], d2 [3]
-        (3, 2.5, 1 / 2): [0.069, -0.70, 0, 0, 0],  # [3]
-        (3, 3.5, 1 / 2): [0.069, -0.70, 0, 0, 0],  # [3]
-        (4, 3.5, 1 / 2): [0.011, -0.132, 0, 0, 0],  # [3]
-        (4, 4.5, 1 / 2): [0.011, -0.132, 0, 0, 0],  # [3]
-    }
+    models: ClassVar = [
+        # ns_1/2: d0 [1], d2 [3]
+        ModelSQDT(
+            "Sr88_ion",
+            "ns_1/2",
+            [2.7062, 0.22, 0, 0, 0],
+            reference=(
+                "Pokorny 2020, Doctoral thesis, Stockholm University, ISBN 978-91-7911-293-6",
+                "Lange 1991, Z. Phys. D 18, 319, https://doi.org/10.1007/BF01426593",
+            ),
+        ),
+        # np_1/2: d0 [1], d2 from mu(7p1/2) [3]
+        ModelSQDT(
+            "Sr88_ion",
+            "np_1/2",
+            [2.3265, 0.47, 0, 0, 0],
+            reference=(
+                "Pokorny 2020, Doctoral thesis, Stockholm University, ISBN 978-91-7911-293-6",
+                "Lange 1991, Z. Phys. D 18, 319, https://doi.org/10.1007/BF01426593",
+            ),
+        ),
+        # np_3/2: d0 = d0(P1/2) - 0.016 [1, 3], d2 from mu(7p3/2) [3]
+        ModelSQDT(
+            "Sr88_ion",
+            "np_3/2",
+            [2.3105, 0.47, 0, 0, 0],
+            reference=(
+                "Pokorny 2020, Doctoral thesis, Stockholm University, ISBN 978-91-7911-293-6",
+                "Lange 1991, Z. Phys. D 18, 319, https://doi.org/10.1007/BF01426593",
+            ),
+        ),
+        # nd_3/2: d0 [2], d2 [3]
+        ModelSQDT(
+            "Sr88_ion",
+            "nd_3/2",
+            [1.4563, 0.148, 0, 0, 0],
+            reference=(
+                "Higgins 2018, Doctoral thesis, Stockholm University, http://urn.kb.se/resolve?urn=urn:nbn:se:su:diva-153415",
+                "Lange 1991, Z. Phys. D 18, 319, https://doi.org/10.1007/BF01426593",
+            ),
+        ),
+        # nd_5/2: d0 = d0(D3/2) - 0.0043 [2, 4], d2 [3]
+        ModelSQDT(
+            "Sr88_ion",
+            "nd_5/2",
+            [1.4520, 0.148, 0, 0, 0],
+            reference=(
+                "Higgins 2018, Doctoral thesis, Stockholm University, http://urn.kb.se/resolve?urn=urn:nbn:se:su:diva-153415",
+                "NIST Atomic Spectra Database, Sr II levels (see nist_data.txt)",
+                "Lange 1991, Z. Phys. D 18, 319, https://doi.org/10.1007/BF01426593",
+            ),
+        ),
+        ModelSQDT(
+            "Sr88_ion",
+            "nf_5/2",
+            [0.069, -0.70, 0, 0, 0],
+            reference="Lange 1991, Z. Phys. D 18, 319, https://doi.org/10.1007/BF01426593",
+        ),
+        ModelSQDT(
+            "Sr88_ion",
+            "nf_7/2",
+            [0.069, -0.70, 0, 0, 0],
+            reference="Lange 1991, Z. Phys. D 18, 319, https://doi.org/10.1007/BF01426593",
+        ),
+        ModelSQDT(
+            "Sr88_ion",
+            "ng_7/2",
+            [0.011, -0.132, 0, 0, 0],
+            reference="Lange 1991, Z. Phys. D 18, 319, https://doi.org/10.1007/BF01426593",
+        ),
+        ModelSQDT(
+            "Sr88_ion",
+            "ng_9/2",
+            [0.011, -0.132, 0, 0, 0],
+            reference="Lange 1991, Z. Phys. D 18, 319, https://doi.org/10.1007/BF01426593",
+        ),
+    ]

@@ -15,7 +15,7 @@ ALL_AVAILABLE_SQDT_SPECIES = sorted([cls.species for cls in get_all_subclasses(M
 def test_sqdt_species(species: str) -> None:
     element_properties = get_element_properties(species)
     sqdt = get_sqdt(species)
-    if sqdt.quantum_defects is None:
+    if sqdt.models is None:
         pytest.skip(f"Species {species} does not have quantum defects defined.")
     i_c = element_properties.i_c
 
@@ -26,7 +26,7 @@ def test_sqdt_species(species: str) -> None:
         state.radial.integrate_wavefunction()
         with pytest.raises(ValueError, match="Unknown quantum numbers detected"):
             AngularKetLS(l_r=1, species=species)
-    elif element_properties.number_valence_electrons == 2 and sqdt.quantum_defects is not None:
+    elif element_properties.number_valence_electrons == 2:
         for s_tot in [0, 1]:
             state = RydbergStateSQDTDivalent(species, n=50, l=1, s=s_tot, j=1 + s_tot, f=s_tot + 1 + i_c)
             state.radial.integrate_wavefunction()

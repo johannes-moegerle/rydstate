@@ -236,11 +236,11 @@ class TrivialModel(ModelEigenChannel):
         if not is_not_set(channel.m):
             raise ValueError("The m quantum number of the channel must be NotSet.")
 
-        self.species = species  # type: ignore [misc]
+        self.species = species
         # preliminary name, the final one needs nu_min, which is only available after super().__init__
-        self.name = f"SQDT {channel}"  # type: ignore [misc]
-        self.f_tot = channel.f_tot  # type: ignore [misc]
-        self.parity = channel.parity  # type: ignore [misc]
+        self.name = f"SQDT {channel}"
+        self.f_tot = channel.f_tot
+        self.parity = channel.parity
         self.inner_channels = [channel]  # type: ignore [misc]
         self.outer_channels = [channel]  # type: ignore [misc]
         self.eigen_quantum_defects = [[0.0]]  # type: ignore [misc]
@@ -252,8 +252,8 @@ class TrivialModel(ModelEigenChannel):
         # states require n > l_r, and since the quantum defect is 0: nui = n >= l_r + 1
         nui_min = channel.l_r + 1 - 0.5  # -0.5 to avoid numerical issues
         nu_min = self.calc_nu_from_channel_nui(nui_min, 0)
-        self.nu_range = (nu_min, math.inf)  # type: ignore [misc]
-        self.name = f"SQDT {channel}, nu > {nu_min:.2f} (nui > {nui_min})"  # type: ignore [misc]
+        self.nu_range = (nu_min, math.inf)
+        self.name = f"SQDT {channel}, nu > {nu_min:.2f} (nui > {nui_min})"
 
     def calc_scaled_m_matrix(self, nu: float) -> NDArray:
         # Fast path for single channel models: the single channel has a vanishing quantum defect, so K = 0 and

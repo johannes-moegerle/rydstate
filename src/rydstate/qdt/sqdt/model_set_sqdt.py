@@ -6,17 +6,17 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Any, ClassVar, overload
 
 from rydstate import units
-from rydstate.angular.utils import is_unknown
+from rydstate.angular import NotSet
+from rydstate.angular.utils import is_not_set, is_unknown
 from rydstate.element_properties import get_element_properties
 from rydstate.metaclass_cache import CachedABCMeta
 from rydstate.qdt.sqdt.nist import parse_nist_energy_levels, resolve_species_data_file
-from rydstate.qdt.utils import calc_modified_ritz_formula, check_expansion_coefficients
 from rydstate.utils import calc_nu_from_energy, get_all_subclasses
 
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase
+    from rydstate.qdt.sqdt.model_sqdt import ModelSQDT
     from rydstate.qdt.sqdt.nist import NistEnergyLevels
-    from rydstate.qdt.utils import ExpansionCoefficients
     from rydstate.units import PintFloat
 
 
@@ -42,16 +42,14 @@ class ModelSetSQDT(ABC, metaclass=CachedABCMeta):
     """Reference ionization energy: (value, unit), in reference to which nu is defined.
     If None, the ionization_energy is used as the reference and nu = nui."""
 
-    quantum_defects: ClassVar[dict[tuple[int, float, float], ExpansionCoefficients] | None] = None
-    """Dictionary containing the quantum defects for each (l, j_tot, s_tot) combination, i.e.
-    quantum_defects[(l,j_tot,s_tot)] = [d0, d2, d4, d6, d8]
+    models: ClassVar[list[ModelSQDT] | None] = None
+    """List of the :class:`~rydstate.qdt.ModelSQDT` models, each describing the quantum defects of one channel
+    (in its range of validity). Channels without a model have zero quantum defects.
+    The default None means that no quantum defects are available for this species at all.
     """
 
     def __init__(self) -> None:
         self.element_properties = get_element_properties(self.species)
-
-        for key, coefficients in (self.quantum_defects or {}).items():
-            check_expansion_coefficients(coefficients, f"{self!r}: quantum_defects[{key}]")
 
         self._nist_energy_levels: NistEnergyLevels = {}
         if self.nist_data_file is not None:
@@ -104,6 +102,18 @@ class ModelSetSQDT(ABC, metaclass=CachedABCMeta):
         value, unit = self._reference_ionization_energy
         return units.user_to_au(value, unit, "energy")
 
+    def get_models(self, angular_ket: AngularKetBase[Any]) -> list[ModelSQDT]:
+        """Return all models whose channel is the given angular ket (up to the magnetic quantum number m).
+
+        Args:
+            angular_ket: The angular ket of the channel, which must be in LS coupling.
+
+        """
+        if angular_ket.coupling_scheme != "LS":
+            raise ValueError(f"The angular ket {angular_ket!r} must be in LS coupling.")
+        channel = angular_ket if is_not_set(angular_ket.m) else angular_ket.replace_m(NotSet)
+        return [model for model in self.models or [] if model.channel == channel]
+
     def calc_nui(
         self,
         n: int,
@@ -126,15 +136,11 @@ class ModelSetSQDT(ABC, metaclass=CachedABCMeta):
             \nu_i = Z \sqrt{\frac{1}{2} \frac{\mu/m_e}{-(E - I)/E_H}}
 
         Or calculate nui via the quantum defect theory,
-        where nui is defined as series expansion :math:`\nu_i = n^* = n - \delta_{lj}(n)`
-        with the quantum defect
-
-        .. math::
-            \delta_{lj}(n) = d0_{lj} + d2_{lj} / [n - d0_{lj}(n)]^2 + d4_{lj} / [n - \delta_{lj}(n)]^4 + ...
-
-        References:
-            - On a New Law of Series Spectra, Ritz; DOI: 10.1086/141591, https://ui.adsabs.harvard.edu/abs/1908ApJ....28..237R/abstract
-            - Rydberg atoms, Gallagher; DOI: 10.1088/0034-4885/51/2/001, (Eq. 16.19)
+        where nui is defined as :math:`\nu_i = n^* = n - \delta_{lj}(n)`
+        with the quantum defect :math:`\delta_{lj}(n)` given by the :class:`~rydstate.qdt.ModelSQDT` model
+        whose channel is the angular ket (see :meth:`get_models`) and whose nu range contains nui
+        (see :meth:`~rydstate.qdt.ModelSQDT.calc_quantum_defect`).
+        If there is no model for the channel, the quantum defect is zero.
 
         Args:
             n: The principal quantum number of the Rydberg state.
@@ -171,13 +177,21 @@ class ModelSetSQDT(ABC, metaclass=CachedABCMeta):
                 *(n, l_r, j_tot, s_tot),
             )
 
-        if self.quantum_defects is None:
+        if self.models is None:
             raise ValueError(f"No quantum defect data available for species {self.species}.")
 
-        quantum_defects = self.quantum_defects.get((l_r, j_tot, s_tot), [0.0])
-        delta_nlj = calc_modified_ritz_formula(n, quantum_defects)
+        models = self.get_models(angular_ket)
+        if len(models) == 0:
+            return float(n)  # no model for this channel, i.e. zero quantum defect
 
-        return n - delta_nlj
+        for model in models:
+            nui = model.calc_nui(n)
+            if model.nu_min <= nui <= model.nu_max:
+                return nui
+        raise ValueError(
+            f"None of the SQDT models {models} of the channel {angular_ket!r} is valid for n={n}, "
+            f"their nu ranges are {[model.nu_range for model in models]}."
+        )
 
 
 def get_sqdt(species: str, tag: str | None = None) -> ModelSetSQDT:

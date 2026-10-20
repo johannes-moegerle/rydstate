@@ -12,7 +12,7 @@ class _SQDTYtterbiumIon(ModelSetSQDT, ABC):
     # https://physics.nist.gov/cgi-bin/ASD/ie.pl?spectra=Yb&units=1&at_num_out=on&el_name_out=on&seq_out=on&shells_out=on&level_out=on&e_out=0&unc_out=on&biblio=on
     ionization_energy = (12.179185, "eV")
 
-    quantum_defects: ClassVar = None
+    models: ClassVar = None
 
 
 class SQDTYtterbium171Ion(_SQDTYtterbiumIon):

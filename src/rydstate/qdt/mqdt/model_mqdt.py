@@ -264,12 +264,12 @@ class ScaledOffDiagonalModel(ModelMQDT):
         self.model = model
         self.scale_off_diagonal = scale_off_diagonal
 
-        self.species = model.species  # type: ignore [misc]
-        self.name = f"{model.name} (off-diagonal K scaled by {scale_off_diagonal})"  # type: ignore [misc]
-        self.reference = model.reference  # type: ignore [misc]
-        self.f_tot = model.f_tot  # type: ignore [misc]
-        self.parity = model.parity  # type: ignore [misc]
-        self.nu_range = model.nu_range  # type: ignore [misc]
+        self.species = model.species
+        self.name = f"{model.name} (off-diagonal K scaled by {scale_off_diagonal})"
+        self.reference = model.reference
+        self.f_tot = model.f_tot
+        self.parity = model.parity
+        self.nu_range = model.nu_range
         self.outer_channels = model.outer_channels  # type: ignore [misc]
 
         super().__init__(model.mqdt)

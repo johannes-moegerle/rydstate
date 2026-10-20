@@ -52,17 +52,21 @@ def _nist_levels(species: str, threshold_au: float) -> Iterator[tuple[int, Angul
         yield n, angular, nu, energy_nist_au
 
 
+# only levels with nu >= NU_MIN are compared, for lower nu the quantum defects are not accurate enough
+# (and for SQDT the Rydberg-Ritz expansion can even be outside of its range of validity)
+NU_MIN = 10
+
+
 def _assert_no_constant_offset(label: str, deviations: Deviations) -> None:
     """Assert that the deviations scatter around zero instead of around a constant offset.
 
     A large offset is only blamed on the ionization threshold if it also stands out from the scatter
     of the levels; if it does not, the NIST data (or the quantum defects) are simply too noisy to tell.
     """
-    nu_min = 10
-    values = [deviation for nu, deviation in deviations.values() if nu >= nu_min]
+    values = [deviation for nu, deviation in deviations.values() if nu >= NU_MIN]
     if len(values) < 10:
         pytest.skip(
-            f"{label}: only {len(values)} of the {len(deviations)} NIST levels have nu >= {nu_min}, "
+            f"{label}: only {len(values)} of the {len(deviations)} NIST levels have nu >= {NU_MIN}, "
             f"which is not enough to resolve the ionization threshold"
         )
 
@@ -94,14 +98,13 @@ def _assert_no_constant_offset(label: str, deviations: Deviations) -> None:
 def test_sqdt_energies_match_nist(species: str) -> None:
     """The energies from the quantum defects and the ionization energy must match the NIST levels."""
     sqdt = get_sqdt(species)
-    quantum_defects = sqdt.quantum_defects
-    if quantum_defects is None or not sqdt._nist_energy_levels:  # noqa: SLF001
+    if sqdt.models is None or not sqdt._nist_energy_levels:  # noqa: SLF001
         pytest.skip(f"{species} has no quantum defects and/or no NIST data.")
     element_properties = get_element_properties(species)
 
     deviations: Deviations = {}
     for n, angular, nu, energy_nist_au in _nist_levels(species, sqdt.ionization_energy_au):
-        if (angular.l_r, angular.j_tot, angular.s_tot) not in quantum_defects:
+        if nu < NU_MIN or len(sqdt.get_models(angular)) == 0:
             continue
         nui = sqdt.calc_nui(n, angular, use_nist_data=False)
         binding_energy_au = calc_energy_from_nu(element_properties.reduced_mass_au, nui, element_properties.net_charge)

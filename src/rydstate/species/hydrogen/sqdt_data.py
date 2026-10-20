@@ -11,7 +11,7 @@ class SQDTHydrogen(ModelSetSQDT):
     # https://physics.nist.gov/cgi-bin/ASD/ie.pl?spectra=H&units=1&at_num_out=on&el_name_out=on&seq_out=on&shells_out=on&level_out=on&e_out=0&unc_out=on&biblio=on
     ionization_energy = (13.598_434_599_702, "eV")
 
-    quantum_defects: ClassVar = {}
+    models: ClassVar = []
 
 
 class SQDTHydrogenTextBook(ModelSetSQDT):
@@ -20,4 +20,4 @@ class SQDTHydrogenTextBook(ModelSetSQDT):
 
     ionization_energy = (rydberg_constant_au, "a.u.")
 
-    quantum_defects: ClassVar = {}
+    models: ClassVar = []

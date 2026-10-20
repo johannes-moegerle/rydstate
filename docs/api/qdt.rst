@@ -18,6 +18,7 @@ Single channel quantum defect theory (SQDT)
     :toctree: ../_autosummary/
 
     ModelSetSQDT
+    ModelSQDT
     get_sqdt
 
 Multichannel quantum defect theory (MQDT)

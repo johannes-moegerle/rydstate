@@ -1,6 +1,6 @@
 from typing import ClassVar
 
-from rydstate.qdt.sqdt import ModelSetSQDT
+from rydstate.qdt.sqdt import ModelSetSQDT, ModelSQDT
 
 
 class SQDTStrontium88(ModelSetSQDT):
@@ -27,23 +27,103 @@ class SQDTStrontium88(ModelSetSQDT):
     #        Isotope Sr88
     # -- [4] (not used but also lot of data) Vaillant 2012, J. Phys. B: At. Mol. Opt. Phys. 45 135004
     #        Long-range Rydberg-Rydberg interactions in calcium, strontium and ytterbium
-    quantum_defects: ClassVar = {
+    models: ClassVar = [
         # singlet
-        (0, 0.0, 0): [3.2688559, -0.0879, -3.36, 0.0, 0.0],  # [1]
-        (1, 1.0, 0): [2.7314851, -5.1501, -140.0, 0.0, 0.0],  # [1]
-        (2, 2.0, 0): [2.3821857, -40.5009, -878.6, 0.0, 0.0],  # [1]
-        (3, 3.0, 0): [0.0873868, -1.5446, 7.56, 0.0, 0.0],  # [1]
-        (4, 4.0, 0): [0.038, 0.0, 0.0, 0.0, 0.0],  # [2]
-        (5, 5.0, 0): [0.0134759, 0.0, 0.0, 0.0, 0.0],  # [2]
+        ModelSQDT(
+            "Sr88",
+            "5s ns 1S0",
+            [3.2688559, -0.0879, -3.36, 0.0, 0.0],
+            reference="Brienza 2023, Phys. Rev. A 108, 022815",
+        ),
+        ModelSQDT(
+            "Sr88",
+            "5s np 1P1",
+            [2.7314851, -5.1501, -140.0, 0.0, 0.0],
+            reference="Brienza 2023, Phys. Rev. A 108, 022815",
+        ),
+        ModelSQDT(
+            "Sr88",
+            "5s nd 1D2",
+            [2.3821857, -40.5009, -878.6, 0.0, 0.0],
+            reference="Brienza 2023, Phys. Rev. A 108, 022815",
+        ),
+        ModelSQDT(
+            "Sr88",
+            "5s nf 1F3",
+            [0.0873868, -1.5446, 7.56, 0.0, 0.0],
+            reference="Brienza 2023, Phys. Rev. A 108, 022815",
+        ),
+        ModelSQDT(
+            "Sr88",
+            "5s ng 1G4",
+            [0.038, 0.0, 0.0, 0.0, 0.0],
+            reference="Patsch 2021, http://dx.doi.org/10.17169/refubium-34581",
+        ),
+        ModelSQDT(
+            "Sr88",
+            "5s nh 1H5",
+            [0.0134759, 0.0, 0.0, 0.0, 0.0],
+            reference="Patsch 2021, http://dx.doi.org/10.17169/refubium-34581",
+        ),
         # triplet
-        (0, 1.0, 1): [3.3707725, 0.41979, -0.421377, 0.0, 0.0],  # [3]
-        (1, 0.0, 1): [2.88673, 0.433745, -1.800, 0.0, 0.0],  # [3]
-        (1, 1.0, 1): [2.88265, 0.39398, -1.1199, 0.0, 0.0],  # [3]
-        (1, 2.0, 1): [2.88163, -2.462, 145.18, 0.0, 0.0],  # [3]
-        (2, 1.0, 1): [2.675236, -13.23217, -4418.0, 0.0, 0.0],  # [3]
-        (2, 2.0, 1): [2.661488, -16.8524, -6629.26, 0.0, 0.0],  # [3]
-        (2, 3.0, 1): [2.655, -65.317, -13576.7, 0.0, 0.0],  # [3]
-        (3, 2.0, 1): [0.120588, -2.1847, 102.98, 0.0, 0.0],  # [3]
-        (3, 3.0, 1): [0.11899, -2.0446, 103.26, 0.0, 0.0],  # [3]
-        (3, 4.0, 1): [0.12000, -2.37716, 118.97, 0.0, 0.0],  # [3]
-    }
+        ModelSQDT(
+            "Sr88",
+            "5s ns 3S1",
+            [3.3707725, 0.41979, -0.421377, 0.0, 0.0],
+            reference="Robertson 2021, Comput. Phys. Commun. 261, 107814 (2021)",
+        ),
+        ModelSQDT(
+            "Sr88",
+            "5s np 3P0",
+            [2.88673, 0.433745, -1.800, 0.0, 0.0],
+            reference="Robertson 2021, Comput. Phys. Commun. 261, 107814 (2021)",
+        ),
+        ModelSQDT(
+            "Sr88",
+            "5s np 3P1",
+            [2.88265, 0.39398, -1.1199, 0.0, 0.0],
+            reference="Robertson 2021, Comput. Phys. Commun. 261, 107814 (2021)",
+        ),
+        ModelSQDT(
+            "Sr88",
+            "5s np 3P2",
+            [2.88163, -2.462, 145.18, 0.0, 0.0],
+            reference="Robertson 2021, Comput. Phys. Commun. 261, 107814 (2021)",
+        ),
+        ModelSQDT(
+            "Sr88",
+            "5s nd 3D1",
+            [2.675236, -13.23217, -4418.0, 0.0, 0.0],
+            reference="Robertson 2021, Comput. Phys. Commun. 261, 107814 (2021)",
+        ),
+        ModelSQDT(
+            "Sr88",
+            "5s nd 3D2",
+            [2.661488, -16.8524, -6629.26, 0.0, 0.0],
+            reference="Robertson 2021, Comput. Phys. Commun. 261, 107814 (2021)",
+        ),
+        ModelSQDT(
+            "Sr88",
+            "5s nd 3D3",
+            [2.655, -65.317, -13576.7, 0.0, 0.0],
+            reference="Robertson 2021, Comput. Phys. Commun. 261, 107814 (2021)",
+        ),
+        ModelSQDT(
+            "Sr88",
+            "5s nf 3F2",
+            [0.120588, -2.1847, 102.98, 0.0, 0.0],
+            reference="Robertson 2021, Comput. Phys. Commun. 261, 107814 (2021)",
+        ),
+        ModelSQDT(
+            "Sr88",
+            "5s nf 3F3",
+            [0.11899, -2.0446, 103.26, 0.0, 0.0],
+            reference="Robertson 2021, Comput. Phys. Commun. 261, 107814 (2021)",
+        ),
+        ModelSQDT(
+            "Sr88",
+            "5s nf 3F4",
+            [0.12000, -2.37716, 118.97, 0.0, 0.0],
+            reference="Robertson 2021, Comput. Phys. Commun. 261, 107814 (2021)",
+        ),
+    ]
