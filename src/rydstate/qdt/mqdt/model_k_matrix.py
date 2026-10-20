@@ -9,7 +9,6 @@ from rydstate.qdt.utils import calc_polynomial, check_expansion_coefficients
 from rydstate.utils import calc_energy_from_nu
 
 if TYPE_CHECKING:
-    from rydstate.qdt.mqdt.model_set_mqdt import ModelSetMQDT
     from rydstate.qdt.utils import ExpansionCoefficients
     from rydstate.units import NDArray
 
@@ -43,8 +42,8 @@ class ModelKMatrix(ModelMQDT):
     Only the upper triangle needs to be given, the lower triangle follows from the symmetry of the K-matrix.
     Elements not given are zero."""
 
-    def __init__(self, mqdt: ModelSetMQDT) -> None:
-        super().__init__(mqdt)
+    def __init__(self) -> None:
+        super().__init__()
 
         n = len(self.outer_channels)
         seen: set[tuple[int, int]] = set()

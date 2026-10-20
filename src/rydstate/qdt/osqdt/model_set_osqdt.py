@@ -10,7 +10,6 @@ from rydstate.qdt.sqdt.model_set_sqdt import ModelSetSQDT
 
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase
-    from rydstate.qdt.mqdt import ModelSetMQDT
     from rydstate.qdt.mqdt.model_mqdt import ModelMQDT
 
 
@@ -41,7 +40,7 @@ class ModelSetOSQDT(ModelSetSQDT):
 
         Args:
             models: All MQDT models which contain the channel as one of their outer channels.
-                The models must all belong to the same :class:`~rydstate.qdt.ModelSetMQDT` instance,
+                The models must all be of the same species,
                 usually they are simply the models valid in the different nu ranges of the channel.
             channel: The outer channel, whose quantum defects are described by this object.
             nu_range: Tuple of (nu_min, nu_max) for the effective principal quantum number nu.
@@ -52,10 +51,7 @@ class ModelSetOSQDT(ModelSetSQDT):
             raise ValueError(f"No MQDT model given for the channel {channel}.")
         if not all(model.species == models[0].species for model in models):
             raise ValueError("All models must have the same species.")
-        if not all(model.mqdt is models[0].mqdt for model in models):
-            raise ValueError("All models must belong to the same MQDT instance.")
         self.species = models[0].species  # type: ignore [misc]
-        self.mqdt: ModelSetMQDT = models[0].mqdt
         super().__init__()
 
         self.nu_range = nu_range

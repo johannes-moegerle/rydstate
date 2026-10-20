@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 from rydstate.angular.utils import is_unknown
+from rydstate.qdt.mqdt import get_mqdt
 from rydstate.qdt.mqdt.model_eigen_channel import TrivialModel
 from rydstate.rydberg_state.rydberg_base import RydbergState
 
@@ -48,8 +49,8 @@ class RydbergStateMQDT(RydbergState):
 
     @property
     def mqdt(self) -> ModelSetMQDT:
-        """Return the MQDT object used to calculate this state."""
-        return self.model.mqdt
+        """Return the MQDT model set of the species of this state."""
+        return get_mqdt(self.species)
 
     @property
     def nui(self) -> NDArray:

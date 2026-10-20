@@ -13,7 +13,6 @@ from rydstate.qdt.utils import calc_modified_ritz_formula_in_nu, check_expansion
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase
     from rydstate.angular.utils import AllKnown
-    from rydstate.qdt.mqdt.model_set_mqdt import ModelSetMQDT
     from rydstate.qdt.utils import ExpansionCoefficients
     from rydstate.units import NDArray
 
@@ -43,8 +42,8 @@ class ModelEigenChannel(ModelMQDT):
     channel of the model, see :meth:`calc_frame_transformation_inner_closecoupling`.
     The default None means no mixing between the close-coupling channels."""
 
-    def __init__(self, mqdt: ModelSetMQDT) -> None:
-        super().__init__(mqdt)
+    def __init__(self) -> None:
+        super().__init__()
         self._check_channels(self.inner_channels)
 
         n_outer = len(self.outer_channels)
@@ -232,7 +231,7 @@ class TrivialModel(ModelEigenChannel):
     This is used as fallback for channels for which no MQDT model is available.
     """
 
-    def __init__(self, species: str, channel: AngularKetBase[AllKnown], mqdt: ModelSetMQDT) -> None:
+    def __init__(self, species: str, channel: AngularKetBase[AllKnown]) -> None:
         if not is_not_set(channel.m):
             raise ValueError("The m quantum number of the channel must be NotSet.")
 
@@ -247,7 +246,7 @@ class TrivialModel(ModelEigenChannel):
 
         # calc_nu_from_channel_nui needs ionization_thresholds_au and reference_ionization_threshold_au,
         # which are only set up by super().__init__
-        super().__init__(mqdt)
+        super().__init__()
 
         # states require n > l_r, and since the quantum defect is 0: nui = n >= l_r + 1
         nui_min = channel.l_r + 1 - 0.5  # -0.5 to avoid numerical issues

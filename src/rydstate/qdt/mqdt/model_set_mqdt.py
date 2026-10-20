@@ -25,7 +25,7 @@ class ModelSetMQDT(ModelSet):
 
     def __init__(self) -> None:
         super().__init__()
-        self.models: list[ModelMQDT] = [model_class(self) for model_class in self.model_classes]
+        self.models: list[ModelMQDT] = [model_class() for model_class in self.model_classes]
 
     def __repr__(self) -> str:
         return f"ModelSetMQDT({self.species})"
@@ -40,7 +40,7 @@ class ModelSetMQDT(ModelSet):
             if any(abs(outer_channel.calc_reduced_overlap(ket)) > 0 for ket in model.outer_channels)
         ]
         if len(models) == 0:
-            models = [TrivialModel(self.species, outer_channel, mqdt=self)]
+            models = [TrivialModel(self.species, outer_channel)]
         return models
 
     def get_core_kets(self) -> list[CoreKet]:

@@ -15,7 +15,6 @@ if TYPE_CHECKING:
 
     from rydstate.angular.angular_ket import AngularKetBase, AngularKetFJ
     from rydstate.angular.core_ket import CoreKet
-    from rydstate.qdt.mqdt.model_set_mqdt import ModelSetMQDT
     from rydstate.units import NDArray
 
 
@@ -30,9 +29,8 @@ class ModelMQDT(Model):
     see :meth:`calc_m_matrix`.
     """
 
-    def __init__(self, mqdt: ModelSetMQDT) -> None:
+    def __init__(self) -> None:
         super().__init__()
-        self.mqdt = mqdt
         self._check_channels(self.outer_channels)
 
     def _check_channels(self, channels: list[AngularKetBase[Any]]) -> None:
@@ -246,7 +244,7 @@ class ScaledOffDiagonalModel(ModelMQDT):
         self.nu_range = model.nu_range
         self.outer_channels = model.outer_channels
 
-        super().__init__(model.mqdt)
+        super().__init__()
 
     def calc_approximate_quantum_defects(self, nu: float) -> NDArray:
         """Return the approximate quantum defects of the wrapped model.
