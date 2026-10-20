@@ -19,10 +19,9 @@ from rydstate.element_properties import get_element_properties
 from rydstate.qdt import get_mqdt, get_sqdt
 from rydstate.qdt.mqdt import MQDT
 from rydstate.qdt.sqdt import SQDT
-from rydstate.qdt.utils import calc_energy_from_nu, calc_nu_from_energy
 from rydstate.radial.potential import get_potential_class
 from rydstate.units import ureg
-from rydstate.utils import get_all_subclasses
+from rydstate.utils import calc_energy_from_nu, calc_nu_from_energy, get_all_subclasses
 
 if TYPE_CHECKING:
     from collections.abc import Iterator

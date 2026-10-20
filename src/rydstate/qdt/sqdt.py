@@ -10,12 +10,8 @@ from rydstate.angular.utils import is_unknown
 from rydstate.element_properties import get_element_properties
 from rydstate.metaclass_cache import CachedABCMeta
 from rydstate.qdt.nist import parse_nist_energy_levels, resolve_species_data_file
-from rydstate.qdt.utils import (
-    calc_modified_ritz_formula,
-    calc_nu_from_energy,
-    check_expansion_coefficients,
-)
-from rydstate.utils import get_all_subclasses
+from rydstate.qdt.utils import calc_modified_ritz_formula, check_expansion_coefficients
+from rydstate.utils import calc_nu_from_energy, get_all_subclasses
 
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase
