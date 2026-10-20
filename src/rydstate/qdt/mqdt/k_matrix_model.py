@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, ClassVar
 
 import numpy as np
 
-from rydstate.qdt.mqdt.mqdt_model import MQDTModel
+from rydstate.qdt.mqdt.mqdt_model import ModelMQDT
 from rydstate.qdt.utils import calc_polynomial, check_expansion_coefficients
 from rydstate.utils import calc_energy_from_nu
 
@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from rydstate.units import NDArray
 
 
-class KMatrixModel(MQDTModel):
+class KMatrixModel(ModelMQDT):
     r"""MQDT model parametrized directly by the K-matrix in the outer channel frame (reactance matrix approach).
 
     The model is defined by the real symmetric K-matrix (reactance matrix) in the frame of the outer channels,

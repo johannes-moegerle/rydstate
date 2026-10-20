@@ -13,7 +13,7 @@ from rydstate.utils import get_all_subclasses
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase
     from rydstate.angular.core_ket import CoreKet
-    from rydstate.qdt.mqdt.mqdt_model import MQDTModel
+    from rydstate.qdt.mqdt.mqdt_model import ModelMQDT
     from rydstate.units import PintFloat
 
 
@@ -35,15 +35,15 @@ class ModelSetMQDT(ABC, metaclass=CachedABCMeta):
     """The reference ionization threshold, which is used to define the zero of energy for the MQDT models.
     If None, it is defined as the smallest ionization threshold in the ionization_threshold_dict."""
 
-    model_classes: ClassVar[list[type[MQDTModel]]]
-    """List of the MQDT :class:`~rydstate.qdt.MQDTModel` models available for this species.
+    model_classes: ClassVar[list[type[ModelMQDT]]]
+    """List of the MQDT :class:`~rydstate.qdt.ModelMQDT` models available for this species.
 
     :meta hide-value:
 
     """
 
     def __init__(self) -> None:
-        self.models: list[MQDTModel] = [model_class(self) for model_class in self.model_classes]
+        self.models: list[ModelMQDT] = [model_class(self) for model_class in self.model_classes]
 
     def __repr__(self) -> str:
         return f"ModelSetMQDT({self.species}, {self.tag})"
@@ -85,7 +85,7 @@ class ModelSetMQDT(ABC, metaclass=CachedABCMeta):
             return units.user_to_au(*self.reference_ionization_threshold_tuple, "energy")
         return min(self.get_ionization_threshold(core_ket, unit="a.u.") for core_ket in self.ionization_threshold_dict)
 
-    def get_mqdt_models(self, outer_channel: AngularKetBase[Any]) -> list[MQDTModel]:
+    def get_mqdt_models(self, outer_channel: AngularKetBase[Any]) -> list[ModelMQDT]:
         """Return a list of MQDT models for the outer_channel."""
         if not is_not_set(outer_channel.m):
             raise ValueError("The m quantum number of the outer_channel must be NotSet.")

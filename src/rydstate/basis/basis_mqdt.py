@@ -17,7 +17,7 @@ from rydstate.rydberg_state import RydbergKet, RydbergStateMQDT
 if TYPE_CHECKING:
     from typing_extensions import Self
 
-    from rydstate.qdt import MQDTModel
+    from rydstate.qdt import ModelMQDT
     from rydstate.radial.potential import Potential
 
 
@@ -82,7 +82,7 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
         f_tot_range: tuple[float, float] | None,
         l_r_range: tuple[int, int] | None,
     ) -> None:
-        self.models: list[MQDTModel] = []
+        self.models: list[ModelMQDT] = []
         s_r = 0.5
         i_c = self.element_properties.i_c
         s_c = self.element_properties.s_c
@@ -128,12 +128,12 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
 
 
 def get_mqdt_states_from_model(
-    model: MQDTModel,
+    model: ModelMQDT,
     nu_range: tuple[float, float],
     m_range: tuple[float, float] | NotSet | None,
     potential_class: type[Potential],
 ) -> list[RydbergStateMQDT]:
-    """Calculate MQDT states from an MQDTModel by finding zeros of det(M-matrix).
+    """Calculate MQDT states from an ModelMQDT by finding zeros of det(M-matrix).
 
     Args:
         model: The MQDT model to compute states for.

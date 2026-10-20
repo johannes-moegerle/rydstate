@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Any, ClassVar
 import numpy as np
 
 from rydstate.angular.utils import is_not_set
-from rydstate.qdt.mqdt.mqdt_model import MQDTModel
+from rydstate.qdt.mqdt.mqdt_model import ModelMQDT
 from rydstate.qdt.utils import calc_modified_ritz_formula_in_nu, check_expansion_coefficients
 
 if TYPE_CHECKING:
@@ -18,7 +18,7 @@ if TYPE_CHECKING:
     from rydstate.units import NDArray
 
 
-class EigenChannelModel(MQDTModel):
+class EigenChannelModel(ModelMQDT):
     """MQDT model formulated in terms of eigenchannels and a frame transformation.
 
     The K-matrix is diagonal in the close-coupling (eigenchannel) frame, with the eigen quantum defects
@@ -257,6 +257,6 @@ class TrivialModel(EigenChannelModel):
 
     def calc_scaled_m_matrix(self, nu: float) -> NDArray:
         # Fast path for single channel models: the single channel has a vanishing quantum defect, so K = 0 and
-        # the scaled M-matrix reduces to the 1x1 matrix sin(pi * nui) (see MQDTModel.calc_scaled_m_matrix).
+        # the scaled M-matrix reduces to the 1x1 matrix sin(pi * nui) (see ModelMQDT.calc_scaled_m_matrix).
         nui = self.calc_channel_nuis(nu)[0]
         return np.array([[math.sin(math.pi * nui)]])

@@ -8,16 +8,16 @@ from rydstate.basis import BasisMQDT, BasisOSQDT, BasisTunableMQDT
 from rydstate.qdt import ScaledOffDiagonalModel, get_mqdt
 
 if TYPE_CHECKING:
-    from rydstate.qdt import MQDTModel
+    from rydstate.qdt import ModelMQDT
 
 
 @pytest.fixture
-def model() -> MQDTModel:
+def model() -> ModelMQDT:
     """Return a multi-channel model of Yb174."""
     return next(model for model in get_mqdt("Yb174").models if model.name == "S J=0, nu > 2")
 
 
-def test_scaled_off_diagonal_model_only_scales_the_coupling(model: MQDTModel) -> None:
+def test_scaled_off_diagonal_model_only_scales_the_coupling(model: ModelMQDT) -> None:
     """The wrapper must scale the off-diagonal elements of K (and M) and leave their diagonals alone."""
     scale = 0.3
     scaled = ScaledOffDiagonalModel(model, scale)
@@ -32,7 +32,7 @@ def test_scaled_off_diagonal_model_only_scales_the_coupling(model: MQDTModel) ->
         )
 
 
-def test_scaled_off_diagonal_model_is_transparent_for_scale_one(model: MQDTModel) -> None:
+def test_scaled_off_diagonal_model_is_transparent_for_scale_one(model: ModelMQDT) -> None:
     """A scaling factor of 1 must reproduce the wrapped model."""
     scaled = ScaledOffDiagonalModel(model, 1.0)
     nu = 51.3

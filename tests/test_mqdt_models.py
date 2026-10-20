@@ -8,7 +8,7 @@ import pytest
 from rydstate.angular import AngularKetFJ
 from rydstate.angular.utils import is_unknown
 from rydstate.element_properties import get_element_properties
-from rydstate.qdt import EigenChannelModel, KMatrixModel, ModelSetMQDT, MQDTModel
+from rydstate.qdt import EigenChannelModel, KMatrixModel, ModelMQDT, ModelSetMQDT
 from rydstate.utils import get_all_subclasses
 
 ALL_MQDTS = [cls() for cls in get_all_subclasses(ModelSetMQDT)]
@@ -18,17 +18,17 @@ ALL_K_MATRIX_MODELS = [model for model in ALL_MODELS if isinstance(model, KMatri
 
 
 def test_all_mqdt_models_discovered() -> None:
-    """Sanity check: every defined MQDTModel subclass must be reachable via ModelSetMQDT.models."""
-    all_model_classes = get_all_subclasses(MQDTModel)
+    """Sanity check: every defined ModelMQDT subclass must be reachable via ModelSetMQDT.models."""
+    all_model_classes = get_all_subclasses(ModelMQDT)
     missing = {cls.__name__ for cls in all_model_classes} - {type(model).__name__ for model in ALL_MODELS}
     assert len(all_model_classes) == len(set(ALL_MODELS)), (
-        f"Found {len(all_model_classes)} MQDTModel subclasses, but only {len(set(ALL_MODELS))} unique models"
+        f"Found {len(all_model_classes)} ModelMQDT subclasses, but only {len(set(ALL_MODELS))} unique models"
         f" (not reachable via ModelSetMQDT.models: {sorted(missing)})"
     )
 
 
 @pytest.fixture(params=ALL_MODELS, ids=lambda cls: cls.full_name)
-def model(request: pytest.FixtureRequest) -> MQDTModel:
+def model(request: pytest.FixtureRequest) -> ModelMQDT:
     return request.param  # type: ignore[no-any-return]
 
 
@@ -48,18 +48,18 @@ def mqdt(request: pytest.FixtureRequest) -> ModelSetMQDT:
 
 
 def test_all_models_discovered() -> None:
-    """Sanity check: we should find at least 80 MQDTModel subclasses."""
+    """Sanity check: we should find at least 80 ModelMQDT subclasses."""
     assert len(ALL_MODELS) >= 80
 
 
-def test_nu_range_valid(model: MQDTModel) -> None:
+def test_nu_range_valid(model: ModelMQDT) -> None:
     """nu_range must be a 2-tuple with min < max."""
     nu_min, nu_max = model.nu_range
     assert nu_min < nu_max, f"{model.full_name}: nu_range {model.nu_range} has min >= max"
     assert nu_min > 0, f"{model.full_name}: nu_range min must be positive"
 
 
-def test_all_channels_have_ionization_threshold(model: MQDTModel) -> None:
+def test_all_channels_have_ionization_threshold(model: ModelMQDT) -> None:
     """All channels must have ionization thresholds."""
     mqdt = model.mqdt
     try:
@@ -72,10 +72,10 @@ def test_all_channels_have_ionization_threshold(model: MQDTModel) -> None:
         )
 
 
-def test_no_unknown_class_attributes(model: MQDTModel) -> None:
-    """Models must only define attributes known to MQDTModel or its subclasses.
+def test_no_unknown_class_attributes(model: ModelMQDT) -> None:
+    """Models must only define attributes known to ModelMQDT or its subclasses.
 
-    Since all MQDTModel fields have either a default or are only used if present (e.g. mixing_angles),
+    Since all ModelMQDT fields have either a default or are only used if present (e.g. mixing_angles),
     a misspelled field name would otherwise be silently ignored.
     """
     # everything the model inherits from, i.e. its whole mro except the model class itself
@@ -86,7 +86,7 @@ def test_no_unknown_class_attributes(model: MQDTModel) -> None:
     assert not unknown, f"{model.full_name}: unknown class attributes {sorted(unknown)} (misspelled field?)"
 
 
-def test_model_name_contains_quantum_number(model: MQDTModel) -> None:
+def test_model_name_contains_quantum_number(model: ModelMQDT) -> None:
     """Model name must contain F=X/Y or J=X matching the model's f_tot."""
     assert model.name is not None
     # Match F=X/Y or J=X patterns (integers and fractions)
@@ -101,19 +101,19 @@ def test_model_name_contains_quantum_number(model: MQDTModel) -> None:
     assert f_val == model.f_tot, f"{model.full_name}: name says F/J={f_val} but f_tot={model.f_tot}"
 
 
-def test_reference_field_set(model: MQDTModel) -> None:
+def test_reference_field_set(model: ModelMQDT) -> None:
     """Every model must have an explicit reference field (str or None)."""
     assert hasattr(model, "reference"), f"{model.full_name}: missing 'reference' field"
 
 
-def test_model_name_unique(model: MQDTModel) -> None:
+def test_model_name_unique(model: ModelMQDT) -> None:
     """Every model must have a unique combination of species and name (full_name)."""
     full_name = model.full_name
     duplicates = [m for m in ALL_MODELS if m.full_name == full_name]
     assert len(duplicates) == 1, f"{model.full_name}: {len(duplicates)} duplicate models found"
 
 
-def test_species_field_set(model: MQDTModel) -> None:
+def test_species_field_set(model: ModelMQDT) -> None:
     """Every model must have a species field."""
     assert model.species is not None, f"{model.full_name}: species is None"
 
@@ -129,7 +129,7 @@ def test_all_models_found_by_get_mqdt_models(mqdt: ModelSetMQDT) -> None:
     known_l_r = [ch.l_r for model in mqdt.models for ch in model.outer_channels if not is_unknown(ch.l_r)]
     max_l_r = max(known_l_r)
 
-    found_models: list[MQDTModel] = []
+    found_models: list[ModelMQDT] = []
     for l_r in range(max_l_r + 1):
         for j_r in np.arange(abs(l_r - s_r), l_r + s_r + 1):
             for f_c in np.arange(abs(j_c - i_c), j_c + i_c + 1):
@@ -141,13 +141,13 @@ def test_all_models_found_by_get_mqdt_models(mqdt: ModelSetMQDT) -> None:
                         if model not in found_models:
                             found_models.append(model)
 
-    # MQDTModel instances are not cached, so compare the models by their (unique) full_name
+    # ModelMQDT instances are not cached, so compare the models by their (unique) full_name
     found_model_names = [model.full_name for model in found_models]
     missing = [model.full_name for model in mqdt.models if model.full_name not in found_model_names]
     assert not missing, f"{mqdt!r}: {len(missing)} models not reachable via get_mqdt_models: {missing}"
 
 
-def test_fj_channels(model: MQDTModel) -> None:
+def test_fj_channels(model: ModelMQDT) -> None:
     """fj_channels decomposes every outer channel into FJ kets with the model's f_tot."""
     fj_channels = model.fj_channels
     assert len(fj_channels) >= len(model.outer_channels)
@@ -155,7 +155,7 @@ def test_fj_channels(model: MQDTModel) -> None:
     assert all(ket.f_tot == model.f_tot for ket in fj_channels)
 
 
-def test_model_get_core_kets(model: MQDTModel) -> None:
+def test_model_get_core_kets(model: ModelMQDT) -> None:
     """get_core_kets returns the sorted unique core kets of the outer channels."""
     core_kets = model.get_core_kets()
     assert len(core_kets) == len(set(core_kets))
@@ -179,7 +179,7 @@ MODELS_WITH_ISOLATED_NU_RANGE = [
 ]
 
 
-def _share_channels(model_1: MQDTModel, model_2: MQDTModel) -> bool:
+def _share_channels(model_1: ModelMQDT, model_2: ModelMQDT) -> bool:
     """Whether two models describe (at least partly) the same physical channels.
 
     Dummy channels (channels with unknown quantum numbers) are ignored,
@@ -194,9 +194,9 @@ def _share_channels(model_1: MQDTModel, model_2: MQDTModel) -> bool:
     )
 
 
-def _group_models_by_channels(models: list[MQDTModel]) -> list[list[MQDTModel]]:
+def _group_models_by_channels(models: list[ModelMQDT]) -> list[list[ModelMQDT]]:
     """Group the models into sets of models that (transitively) describe the same channels."""
-    groups: list[list[MQDTModel]] = []
+    groups: list[list[ModelMQDT]] = []
     for model in models:
         matching = [group for group in groups if any(_share_channels(model, other) for other in group)]
         merged = [model, *(other for group in matching for other in group)]

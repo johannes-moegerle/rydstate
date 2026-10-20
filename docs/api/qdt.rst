@@ -21,7 +21,7 @@ Multichannel quantum defect theory (MQDT)
     :toctree: ../_autosummary/
 
     ModelSetMQDT
-    MQDTModel
+    ModelMQDT
     EigenChannelModel
     KMatrixModel
     ScaledOffDiagonalModel

@@ -22,7 +22,7 @@ from rydstate.utils import calc_nu_from_energy
 
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase
-    from rydstate.qdt import MQDTModel
+    from rydstate.qdt import ModelMQDT
     from rydstate.rydberg_state import RydbergStateMQDT
     from rydstate.units import NDArray
 
@@ -213,7 +213,7 @@ VAILLANT_REFERENCE_ENERGIES: list[tuple[str, list[tuple[float, float]]]] = [
 ]
 
 
-def _get_states_around_energy(model: MQDTModel, energy: float, delta_nu: float = 0.3) -> list[RydbergStateMQDT]:
+def _get_states_around_energy(model: ModelMQDT, energy: float, delta_nu: float = 0.3) -> list[RydbergStateMQDT]:
     """Return the MQDT states of the model within +- delta_nu around the given term energy (in 1/cm)."""
     energy_au = ureg.Quantity(energy, "1/cm").to("hartree", "spectroscopy").magnitude
     reference_au = model.mqdt.reference_ionization_threshold_au

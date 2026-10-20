@@ -17,7 +17,7 @@ from rydstate.utils import get_all_subclasses
 if TYPE_CHECKING:
     from rydstate import RydbergStateSQDT
     from rydstate.angular.utils import CouplingScheme
-    from rydstate.qdt import MQDTModel
+    from rydstate.qdt import ModelMQDT
 
 ALL_MODELS = [model for mqdt_class in get_all_subclasses(ModelSetMQDT) for model in mqdt_class().models]
 
@@ -238,7 +238,7 @@ def test_from_short_label_unknown_invalid(label: str) -> None:
 
 
 @pytest.mark.parametrize("model", ALL_MODELS, ids=lambda model: f"{model.species}:{model.name}")
-def test_short_label_round_trip_mqdt_channels(model: MQDTModel) -> None:
+def test_short_label_round_trip_mqdt_channels(model: ModelMQDT) -> None:
     """All channels of the MQDT models (including the perturber channels) can be recreated from their short label."""
     channels = list(model.outer_channels)
     if isinstance(model, EigenChannelModel):

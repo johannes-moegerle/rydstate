@@ -19,7 +19,7 @@ if TYPE_CHECKING:
     from rydstate.units import NDArray, PintFloat
 
 
-class MQDTModel(ABC):
+class ModelMQDT(ABC):
     r"""Base class for an MQDT model describing one symmetry block (f_tot and parity) of a species.
 
     The model defines a set of outer channels and, via :meth:`calc_k_matrix`,
@@ -249,15 +249,15 @@ class MQDTModel(ABC):
         return np.array(np.diag(np.sin(np.pi * nuis)) + np.diag(np.cos(np.pi * nuis)) @ kmat)
 
 
-def get_model_classes(module: ModuleType, species: str) -> list[type[MQDTModel]]:
-    """Return all MQDTModel subclasses defined in ``module`` that match the given species.
+def get_model_classes(module: ModuleType, species: str) -> list[type[ModelMQDT]]:
+    """Return all ModelMQDT subclasses defined in ``module`` that match the given species.
 
     Args:
-        module: The module to inspect for MQDTModel subclasses.
-        species: The species the returned MQDTModel subclasses must match.
+        module: The module to inspect for ModelMQDT subclasses.
+        species: The species the returned ModelMQDT subclasses must match.
 
     Returns:
-        List of all MQDTModel subclasses defined in the module for the given species.
+        List of all ModelMQDT subclasses defined in the module for the given species.
 
     """
     model_classes = [
@@ -266,16 +266,16 @@ def get_model_classes(module: ModuleType, species: str) -> list[type[MQDTModel]]
         if (
             inspect.isclass(obj)
             and obj.__module__ == module.__name__
-            and issubclass(obj, MQDTModel)
+            and issubclass(obj, ModelMQDT)
             and getattr(obj, "species", None) == species
         )
     ]
     if len(model_classes) == 0:
-        raise ValueError(f"No MQDTModel subclasses for species {species!r} found in {module.__name__}.")
+        raise ValueError(f"No ModelMQDT subclasses for species {species!r} found in {module.__name__}.")
     return model_classes
 
 
-class ScaledOffDiagonalModel(MQDTModel):
+class ScaledOffDiagonalModel(ModelMQDT):
     r"""MQDT model with the off-diagonal elements of the K-matrix scaled by a constant factor.
 
     The K-matrix in the outer channel frame describes the coupling between the outer channels,
@@ -287,7 +287,7 @@ class ScaledOffDiagonalModel(MQDTModel):
     This is used by :class:`~rydstate.basis.BasisTunableMQDT`.
     """
 
-    def __init__(self, model: MQDTModel, scale_off_diagonal: float) -> None:
+    def __init__(self, model: ModelMQDT, scale_off_diagonal: float) -> None:
         """Initialize the scaled model from an existing model.
 
         Args:

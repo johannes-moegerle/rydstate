@@ -12,7 +12,7 @@ from rydstate.qdt import TrivialModel
 from rydstate.radial import RadialKet
 
 if TYPE_CHECKING:
-    from rydstate.qdt import MQDTModel
+    from rydstate.qdt import ModelMQDT
 
 
 def test_mqdt_basis_creation() -> None:
@@ -139,7 +139,7 @@ def test_coulomb_sign_near_origin_vs_outer_bound(n: int, l: int) -> None:
     assert np.sign(u_inner) == (-1) ** (n - l - 1)
 
 
-def _calc_expected_channel_coefficients(model: MQDTModel, nu: float) -> np.ndarray:
+def _calc_expected_channel_coefficients(model: ModelMQDT, nu: float) -> np.ndarray:
     r"""Calculate the expected channel coefficients of an MQDT state from the Coulomb asymptotics.
 
     In the outer channel frame the state is psi_i = f_i b_i - g_i (K b)_i, where f_i (regular, positive near the

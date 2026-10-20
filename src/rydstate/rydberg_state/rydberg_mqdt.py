@@ -14,7 +14,7 @@ from rydstate.rydberg_state.rydberg_base import RydbergState
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
-    from rydstate.qdt import ModelSetMQDT, MQDTModel
+    from rydstate.qdt import ModelMQDT, ModelSetMQDT
     from rydstate.radial.potential import Potential
     from rydstate.rydberg_state.rydberg_ket import RydbergKet
     from rydstate.units import NDArray
@@ -31,7 +31,7 @@ class RydbergStateMQDT(RydbergState):
         rydberg_kets: Sequence[RydbergKet],
         nu: float,
         energy_au: float,
-        model: MQDTModel,
+        model: ModelMQDT,
         potential_class: type[Potential],
     ) -> None:
         self.model = model
