@@ -1,3 +1,4 @@
+from rydstate.qdt.model import Model
 from rydstate.qdt.mqdt import (
     ModelEigenChannel,
     ModelKMatrix,
@@ -11,6 +12,7 @@ from rydstate.qdt.osqdt import ModelOSQDT, ModelSetOSQDT
 from rydstate.qdt.sqdt import ModelSetSQDT, get_sqdt
 
 __all__ = [
+    "Model",
     "ModelEigenChannel",
     "ModelKMatrix",
     "ModelMQDT",

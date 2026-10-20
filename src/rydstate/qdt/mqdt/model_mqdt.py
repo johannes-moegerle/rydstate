@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 import inspect
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 from functools import cached_property
 from typing import TYPE_CHECKING, Any, ClassVar, overload
 
 import numpy as np
 
-from rydstate.element_properties import get_element_properties
+from rydstate.qdt.model import Model
 from rydstate.utils import calc_energy_from_nu, calc_nu_from_energy
 
 if TYPE_CHECKING:
@@ -19,7 +19,7 @@ if TYPE_CHECKING:
     from rydstate.units import NDArray, PintFloat
 
 
-class ModelMQDT(ABC):
+class ModelMQDT(Model):
     r"""Base class for an MQDT model describing one symmetry block (f_tot and parity) of a species.
 
     The model defines a set of outer channels and, via :meth:`calc_k_matrix`,
@@ -30,33 +30,13 @@ class ModelMQDT(ABC):
     see :meth:`calc_m_matrix`.
     """
 
-    species: ClassVar[str]
-    """The species for which the MQDT model is defined."""
-    name: ClassVar[str]
-    """The name of the MQDT model."""
-
-    reference: ClassVar[str | tuple[str, ...] | None] = None
-    """Reference for the MQDT model, e.g., a publication doi where the model is described."""
-
-    f_tot: ClassVar[float]
-    """Total angular momentum f_tot of the Rydberg state."""
-
-    parity: ClassVar[int]
-    """Parity (-1 or +1) of the Rydberg state, i.e. (-1)^(l_c + l_r) of its channels."""
-
-    nu_range: ClassVar[tuple[float, float]]
-    """Range of effective principal quantum numbers nu for which the MQDT model is valid."""
-
     outer_channels: ClassVar[list[AngularKetBase[Any]]]
     """List of outer channels in the MQDT model."""
 
     def __init__(self, mqdt: ModelSetMQDT) -> None:
+        super().__init__()
         self.mqdt = mqdt
-        self.element_properties = get_element_properties(self.species)
         self._check_channels(self.outer_channels)
-
-    def __repr__(self) -> str:
-        return f"{self.__class__.__name__}({self.full_name})"
 
     def _check_channels(self, channels: list[AngularKetBase[Any]]) -> None:
         """Check that the given channels have the f_tot and parity of the model.
@@ -79,21 +59,6 @@ class ModelMQDT(ABC):
                     f"{self.full_name}: channel {channel} has parity={channel.parity}, "
                     f"but the model has parity={self.parity}."
                 )
-
-    @property
-    def full_name(self) -> str:
-        """Return the full name of the model, combining species and model name."""
-        return f"{self.species} {self.name}"
-
-    @property
-    def nu_min(self) -> float:
-        """Minimum nu for which the model is valid."""
-        return self.nu_range[0]
-
-    @property
-    def nu_max(self) -> float:
-        """Maximum nu for which the model is valid."""
-        return self.nu_range[1]
 
     @cached_property
     def fj_channels(self) -> list[AngularKetFJ[Any]]:

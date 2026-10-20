@@ -3,6 +3,14 @@ Quantum Defect Theory
 
 .. currentmodule:: rydstate.qdt
 
+Base class
+----------
+
+.. autosummary::
+    :toctree: ../_autosummary/
+
+    Model
+
 Single channel quantum defect theory (SQDT)
 -------------------------------------------
 
