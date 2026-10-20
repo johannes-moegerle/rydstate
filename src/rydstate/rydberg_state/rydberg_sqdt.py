@@ -18,6 +18,7 @@ from rydstate.rydberg_state.rydberg_ket import RydbergKet
 from rydstate.utils import calc_energy_from_nu, calc_nu_from_energy
 
 if TYPE_CHECKING:
+    from rydstate.qdt import ModelOSQDT, ModelSQDT
     from rydstate.qdt.osqdt.model_set_osqdt import ModelSetOSQDT
     from rydstate.units import PintFloat
 
@@ -100,11 +101,16 @@ class RydbergStateSQDT(RydbergState, Generic[GenericT_AngularKet]):
         return f"{self.__class__.__name__}({self.species}, n={self.n}, {self.angular!r})"
 
     @cached_property
-    def nui(self) -> float:
-        r"""The effective principal quantum number nui, defined with reference to the ionization energy.
+    def model(self) -> ModelSQDT | ModelOSQDT:
+        """The model describing this state, see :meth:`~rydstate.qdt.ModelSetSQDT.get_model`."""
+        return self.sqdt.get_model(self.n, self.angular)
 
-        nui is defined with reference to the ionization energy of the Rydberg electron
-        (see :attr:`~rydstate.qdt.ModelSetSQDT.ionization_energy_au`), i.e. via the binding energy
+    @cached_property
+    def nui(self) -> float:
+        r"""The effective principal quantum number nui, defined with reference to the ionization threshold.
+
+        nui is defined with reference to the ionization threshold of the channel
+        (see :attr:`~rydstate.qdt.ModelSQDT.ionization_threshold_au` of the :attr:`model`), i.e. via the binding energy
 
         .. math::
             E = I - \frac{R_M}{\nu_i^2} = I_{\text{ref}} - \frac{R_M}{\nu^2}
@@ -117,14 +123,15 @@ class RydbergStateSQDT(RydbergState, Generic[GenericT_AngularKet]):
 
     @cached_property
     def nu(self) -> float:  # type: ignore [override]
-        r"""The effective principal quantum number nu, defined with reference to the reference ionization energy.
+        r"""The effective principal quantum number nu, defined with reference to the reference ionization threshold.
 
-        In contrast to :attr:`nui`, nu is defined with reference to the reference ionization energy
-        (see :attr:`~rydstate.qdt.ModelSetSQDT.reference_ionization_energy_au`).
+        In contrast to :attr:`nui`, nu is defined with reference to the reference ionization threshold of the species
+        (see :attr:`~rydstate.qdt.Model.reference_ionization_threshold_au` of the :attr:`model`).
 
         For states without hyperfine splitting, nui and nu are equal.
         """
-        reference_shift = self.sqdt.ionization_energy_au - self.sqdt.reference_ionization_energy_au
+        reference_threshold_au = self.model.reference_ionization_threshold_au
+        reference_shift = self.model.ionization_threshold_au - reference_threshold_au
         if reference_shift == 0:
             return self.nui
         reduced_mass_au = self.element_properties.reduced_mass_au
@@ -132,14 +139,14 @@ class RydbergStateSQDT(RydbergState, Generic[GenericT_AngularKet]):
         energy_wrt_reference_au = self.get_binding_energy("a.u.") + reference_shift
         if energy_wrt_reference_au >= 0:
             raise ValueError(
-                f"The energy of the state {self!r} lies above the reference ionization energy "
-                f"({self.sqdt.reference_ionization_energy_au} hartree), thus nu is not defined."
+                f"The energy of the state {self!r} lies above the reference ionization threshold "
+                f"({reference_threshold_au} hartree), thus nu is not defined."
             )
         return calc_nu_from_energy(reduced_mass_au, energy_wrt_reference_au, net_charge)
 
     @cached_property
     def _energy_au(self) -> float:  # type: ignore [override]
-        return self.get_binding_energy("a.u.") + self.sqdt.ionization_energy_au
+        return self.get_binding_energy("a.u.") + self.model.ionization_threshold_au
 
     @cached_property
     def radial(self) -> RadialKet:

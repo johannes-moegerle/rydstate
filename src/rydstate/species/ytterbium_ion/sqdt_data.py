@@ -9,9 +9,6 @@ class _SQDTYtterbiumIon(ModelSetSQDT, ABC):
     # Yb II (Yb+) energy levels, referenced to the Yb+ ground state (4f14.6s 2S1/2)
     nist_data_file = "nist_data.txt"
 
-    # https://physics.nist.gov/cgi-bin/ASD/ie.pl?spectra=Yb&units=1&at_num_out=on&el_name_out=on&seq_out=on&shells_out=on&level_out=on&e_out=0&unc_out=on&biblio=on
-    ionization_energy = (12.179185, "eV")
-
     models: ClassVar = None
 
 

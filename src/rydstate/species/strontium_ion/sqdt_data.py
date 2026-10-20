@@ -9,15 +9,6 @@ class _SQDTStrontiumIon(ModelSetSQDT, ABC):
     # Sr II (Sr+) energy levels, referenced to the Sr+ ground state (4p6.5s 2S1/2)
     nist_data_file = "nist_data.txt"
 
-    # Double ionization threshold I++ (Sr+ -> Sr2+), referenced to the Sr+ ground state, from a Rydberg-Ritz fit
-    # to the nS1/2 Rydberg series (n ~ 30 - 60) of a single trapped 88Sr+ ion measured with a 2 MHz wavelength
-    # meter [1]. Consistent with the earlier trapped-ion value 88 965.022(11) cm^-1 [2].
-    # Note: NIST (https://physics.nist.gov/cgi-bin/ASD/ie.pl?spectra=Sr+II) adopts 88 965.18(2) cm^-1 from the
-    # pulsed-laser spectroscopy (0.2 cm^-1 absolute accuracy) of Lange et al. [3], which is 0.16 cm^-1 (~5 GHz)
-    # higher. Since the quantum defects of [3] agree with [1], [2], this is a common offset of the absolute energy
-    # scale of [3], which cancels in the quantum defects (they only depend on I++ - E).
-    ionization_energy = (88_965.019_1, "1/cm")
-
     # -- [1] Pokorny 2020, Doctoral thesis, Stockholm University, ISBN 978-91-7911-293-6
     #        A microwave dressed Rydberg ion, http://urn.kb.se/resolve?urn=urn:nbn:se:su:diva-184811
     #        Single trapped 88Sr+ ion, I++ = 88 965.0191(16) cm^-1, see section 5.2

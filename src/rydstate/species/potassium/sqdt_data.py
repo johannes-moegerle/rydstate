@@ -8,11 +8,6 @@ class SQDTPotassium(ModelSetSQDT):
     is_default = True
     nist_data_file = "nist_data.txt"
 
-    # Phys. Rev. A 100, 012501 (2019) (https://doi.org/10.1103/PhysRevA.100.012501)
-    # Precision measurement of the ionization energy and quantum defects of 39K I
-    # I(39K) = 35009.8139710(22)(sys)(3)(stat) 1/cm
-    ionization_energy = (35009.813971, "1/cm")
-
     # -- [1] Phys. Scr. 27, 300 (1983)
     # -- [2] Opt. Commun. 39, 370 (1981)
     # -- [3] Ark. Fys., 10 p.583 (1956)

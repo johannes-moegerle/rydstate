@@ -3,7 +3,7 @@ from __future__ import annotations
 import inspect
 from abc import abstractmethod
 from functools import cached_property
-from typing import TYPE_CHECKING, Any, ClassVar, overload
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 
@@ -16,7 +16,7 @@ if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase, AngularKetFJ
     from rydstate.angular.core_ket import CoreKet
     from rydstate.qdt.mqdt.model_set_mqdt import ModelSetMQDT
-    from rydstate.units import NDArray, PintFloat
+    from rydstate.units import NDArray
 
 
 class ModelMQDT(Model):
@@ -29,9 +29,6 @@ class ModelMQDT(Model):
     The MQDT states of the model are then given by the roots of det(M) = det(tan(\pi \nu) + K) = 0,
     see :meth:`calc_m_matrix`.
     """
-
-    outer_channels: ClassVar[list[AngularKetBase[Any]]]
-    """List of outer channels in the MQDT model."""
 
     def __init__(self, mqdt: ModelSetMQDT) -> None:
         super().__init__()
@@ -70,39 +67,16 @@ class ModelMQDT(Model):
         core_kets = {channel.get_core_ket() for channel in self.outer_channels}
         return sorted(core_kets, key=lambda ket: (ket.l_c, ket.j_c, ket.f_c, str(ket.label)))
 
-    @overload
-    def get_ionization_thresholds(self, unit: None = None) -> list[PintFloat]: ...
-
-    @overload
-    def get_ionization_thresholds(self, unit: str) -> list[float]: ...
-
-    def get_ionization_thresholds(self, unit: str | None = None) -> list[PintFloat] | list[float]:
-        """Return the ionization thresholds for all channels.
-
-        Args:
-            unit: Desired unit for the ionization thresholds. Default None will return a list of pint.Quantity.
-
-        Returns:
-            List of ionization thresholds in the desired unit.
-
-        """
-        return [self.mqdt.get_ionization_threshold(ket.get_core_ket(), unit=unit) for ket in self.outer_channels]  # type: ignore [return-value]
-
-    @cached_property  # don't remove this caching without benchmarking it!!!
-    def ionization_thresholds_au(self) -> list[float]:
-        """Return the ionization thresholds for all channels in atomic units."""
-        return self.get_ionization_thresholds(unit="a.u.")
-
     def calc_energy_au(self, nu: float) -> float:
         """Calculate the energy of the Rydberg state.
 
         The energy is calculated for an effective principal quantum number nu,
         which is defined with reference to the reference ionization threshold of the MQDT model,
-        see :attr:`~rydstate.qdt.ModelSetMQDT.reference_ionization_threshold_au`.
+        see :attr:`reference_ionization_threshold_au`.
         """
         return (
             calc_energy_from_nu(self.element_properties.reduced_mass_au, nu, self.element_properties.net_charge)
-            + self.mqdt.reference_ionization_threshold_au
+            + self.reference_ionization_threshold_au
         )
 
     def calc_channel_nuis(self, nu: float) -> NDArray:
@@ -126,7 +100,7 @@ class ModelMQDT(Model):
         """
         reduced_mass_au = self.element_properties.reduced_mass_au
         net_charge = self.element_properties.net_charge
-        reference_threshold_au = self.mqdt.reference_ionization_threshold_au
+        reference_threshold_au = self.reference_ionization_threshold_au
         # we calculate binding_energy_au here directly from nu (and dont use calc_energy_au) to avoid numerical issues
         binding_energy_au = calc_energy_from_nu(reduced_mass_au, nu, net_charge)
         energies = [
@@ -150,7 +124,7 @@ class ModelMQDT(Model):
         """
         reduced_mass_au = self.element_properties.reduced_mass_au
         net_charge = self.element_properties.net_charge
-        reference_threshold_au = self.mqdt.reference_ionization_threshold_au
+        reference_threshold_au = self.reference_ionization_threshold_au
         binding_energy_au = calc_energy_from_nu(reduced_mass_au, nui, net_charge) + (
             self.ionization_thresholds_au[index] - reference_threshold_au
         )
@@ -270,7 +244,7 @@ class ScaledOffDiagonalModel(ModelMQDT):
         self.f_tot = model.f_tot
         self.parity = model.parity
         self.nu_range = model.nu_range
-        self.outer_channels = model.outer_channels  # type: ignore [misc]
+        self.outer_channels = model.outer_channels
 
         super().__init__(model.mqdt)
 

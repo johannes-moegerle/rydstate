@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import pytest
-from rydstate import RydbergStateSQDTDivalent
+from rydstate import RydbergStateSQDTDivalent, units
 from rydstate.angular.angular_ket import AngularKetFJ, AngularKetJJ, AngularKetLS
 from rydstate.angular.utils import NotSet, is_unknown
 from rydstate.basis.basis_mqdt import get_mqdt_states_from_model
@@ -216,7 +216,7 @@ VAILLANT_REFERENCE_ENERGIES: list[tuple[str, list[tuple[float, float]]]] = [
 def _get_states_around_energy(model: ModelMQDT, energy: float, delta_nu: float = 0.3) -> list[RydbergStateMQDT]:
     """Return the MQDT states of the model within +- delta_nu around the given term energy (in 1/cm)."""
     energy_au = ureg.Quantity(energy, "1/cm").to("hartree", "spectroscopy").magnitude
-    reference_au = model.mqdt.reference_ionization_threshold_au
+    reference_au = model.reference_ionization_threshold_au
     nu = calc_nu_from_energy(model.element_properties.reduced_mass_au, energy_au - reference_au)
     nu_range = (max(nu - delta_nu, model.nu_min), nu + delta_nu)
     return get_mqdt_states_from_model(model, nu_range, NotSet, get_potential_class(model.species))
@@ -760,24 +760,26 @@ def test_vaillant2024_ionization_thresholds() -> None:
     core j_c is fixed by the angular momentum coupling (e.g. 4dns 3D1 is purely 4d_3/2 ns_1/2), while the
     jj coupled channels use the fine structure resolved 4d_3/2 (60488.09 1/cm) and 4d_5/2 (60768.43 1/cm) thresholds.
     """
+    # the 5s threshold of Couturier 2019, which the Addendum uses rounded to 45932.2002 1/cm
+    threshold_5s = float(ureg.Quantity(1_377_012_721, "MHz").to("1/cm", "spectroscopy").magnitude)
     expected = {
-        "S J=0, nu > 3.7": [45932.2002, 60768.43, 60488.09],
-        "S J=1, nu > 3.4": [45932.2002, 70048.11],
-        "P J=1 singlet, nu > 2.8": [45932.2002, 60628.26],
-        "P J=0, nu > 2.8": [45932.2002, 60628.26],
-        "P J=1 triplet, nu > 2.8": [45932.2002, 60628.26],
-        "P J=2, nu > 2.8": [45932.2002, 60628.26],
-        "D J=2, nu > 5.7": [45932.2002, 45932.2002, 60768.43, 60488.09, 70048.11, 60628.26],
-        "D J=1, nu > 9.5": [45932.2002, 60628.26],
-        "D J=3, nu > 3.9": [45932.2002, 60628.26, 60628.26],
-        "F J=3 singlet, nu > 3.5": [45932.2002, 60628.26],
+        "S J=0, nu > 3.7": [threshold_5s, 60768.43, 60488.09],
+        "S J=1, nu > 3.4": [threshold_5s, 70048.11],
+        "P J=1 singlet, nu > 2.8": [threshold_5s, 60628.26],
+        "P J=0, nu > 2.8": [threshold_5s, 60628.26],
+        "P J=1 triplet, nu > 2.8": [threshold_5s, 60628.26],
+        "P J=2, nu > 2.8": [threshold_5s, 60628.26],
+        "D J=2, nu > 5.7": [threshold_5s, threshold_5s, 60768.43, 60488.09, 70048.11, 60628.26],
+        "D J=1, nu > 9.5": [threshold_5s, 60628.26],
+        "D J=3, nu > 3.9": [threshold_5s, 60628.26, 60628.26],
+        "F J=3 singlet, nu > 3.5": [threshold_5s, 60628.26],
         # the triplet F models are single channel models converging to the first ionization threshold
-        "F J=2 (Rydberg-Ritz), nu > 9": [45932.2002],
-        "F J=3 triplet (Rydberg-Ritz), nu > 9": [45932.2002],
-        "F J=4 (Rydberg-Ritz), nu > 9": [45932.2002],
+        "F J=2 (Rydberg-Ritz), nu > 9": [threshold_5s],
+        "F J=3 triplet (Rydberg-Ritz), nu > 9": [threshold_5s],
+        "F J=4 (Rydberg-Ritz), nu > 9": [threshold_5s],
     }
     mqdt = get_mqdt("Sr88", "vaillant2024")
     assert {model.name for model in mqdt.models} == set(expected)
     for model in mqdt.models:
-        thresholds = model.get_ionization_thresholds(unit="1/cm")
+        thresholds = [units.au_to_user(threshold, "energy", "1/cm") for threshold in model.ionization_thresholds_au]
         np.testing.assert_allclose(thresholds, expected[model.name], rtol=0, atol=1e-6, err_msg=model.full_name)

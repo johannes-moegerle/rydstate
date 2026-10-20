@@ -83,8 +83,13 @@ class ModelSQDT(Model):
         if not math.isfinite(nu_min):
             raise ValueError(f"{self.full_name}: nu_min must be finite, but got {nu_min}.")
         self.nu_range = (nu_min, nu_max)
+        self.outer_channels = [self.channel]
         self.quantum_defects = quantum_defects
         super().__init__()
+
+        self.ionization_threshold_au = self.ionization_thresholds_au[0]
+        """Ionization threshold of the single outer channel in atomic units (Hartree), with respect to which
+        the effective principal quantum number nui of the channel is defined."""
 
         check_expansion_coefficients(quantum_defects, f"{self.full_name}: quantum_defects")
 

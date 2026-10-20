@@ -57,8 +57,8 @@ def test_determine_n_c_unknown_l_c(element_properties: ElementProperties) -> Non
     assert is_unknown(determine_n_c(element_properties, Unknown))
 
 
-@pytest.mark.parametrize("mqdt", ALL_MQDTS, ids=lambda mqdt: f"{mqdt.species}_{mqdt.tag}")
-def test_ionization_threshold_core_kets_are_consistent(mqdt: ModelSetMQDT) -> None:
+@pytest.mark.parametrize("species", sorted({mqdt.species for mqdt in ALL_MQDTS}))
+def test_ionization_threshold_core_kets_are_consistent(species: str) -> None:
     """Every core ket of the ionization_threshold_dict must be one that get_core_ket() actually produces.
 
     Since n_c is part of CoreKet.quantum_number_names, a hardcoded n_c in the ionization_threshold_dict
@@ -66,21 +66,20 @@ def test_ionization_threshold_core_kets_are_consistent(mqdt: ModelSetMQDT) -> No
     i.e. the entry silently becomes unreachable and get_ionization_threshold either fails
     or falls back to a broader (wrong) entry.
     """
-    element_properties = get_element_properties(mqdt.species)
-    # the core kets of all outer channels, i.e. {channel.get_core_ket() for channel in ...}
-    channel_core_kets = mqdt.get_core_kets()
+    element_properties = get_element_properties(species)
+    threshold_dict = element_properties.ionization_threshold_dict
+    # the core kets of all outer channels of all MQDT model sets of the species
+    channel_core_kets = {ket for mqdt in ALL_MQDTS if mqdt.species == species for ket in mqdt.get_core_kets()}
 
-    for core_ket in mqdt.ionization_threshold_dict:
+    for core_ket in threshold_dict:
         expected_n_c = determine_n_c(element_properties, core_ket.l_c)
         assert core_ket.n_c == expected_n_c, (
-            f"{mqdt!r}: ionization threshold entry {core_ket} has n_c={core_ket.n_c}, "
+            f"{species}: ionization threshold entry {core_ket} has n_c={core_ket.n_c}, "
             f"but determine_n_c returns {expected_n_c} for l_c={core_ket.l_c}"
         )
-        matching = [
-            ket for ket in channel_core_kets if ket.find_matching_core_ket(mqdt.ionization_threshold_dict) is core_ket
-        ]
+        matching = [ket for ket in channel_core_kets if ket.find_matching_core_ket(threshold_dict) is core_ket]
         assert matching, (
-            f"{mqdt!r}: ionization threshold entry {core_ket} is not used by any channel core ket "
+            f"{species}: ionization threshold entry {core_ket} is not used by any channel core ket "
             f"(candidates: {channel_core_kets})"
         )
 

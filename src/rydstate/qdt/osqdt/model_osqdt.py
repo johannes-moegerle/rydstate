@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING, Any
 import numpy as np
 
 from rydstate.linalg import find_roots
+from rydstate.qdt.model import Model
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -19,7 +20,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-class ModelOSQDT:
+class ModelOSQDT(Model):
     r"""Outer single channel quantum defects model for a specific channel derived from a single MQDT model.
 
     On initialization, all roots of the OSQDT condition (see :meth:`calc_condition`) inside the range of
@@ -27,6 +28,10 @@ class ModelOSQDT:
     (see :meth:`calc_ns`).
     The resulting states are stored in the attribute ``solutions``, which maps the principal quantum
     number n of each state to its channel nui.
+
+    The single outer channel of this model is the outer channel of the MQDT model, which overlaps with the channel,
+    so that both models use the same ionization threshold for it
+    (e.g. the averaged 6p threshold for the 6pnp perturber channels of the Yb models).
     """
 
     def __init__(self, model: ModelMQDT, channel: AngularKetBase[Any], nu_range: tuple[float, float]) -> None:
@@ -50,6 +55,19 @@ class ModelOSQDT:
         self.model = model
         self.channel = channel
 
+        self.species = model.species
+        self.name = f"{model.name}, OSQDT {channel}"
+        self.reference = model.reference
+        self.f_tot = channel.f_tot
+        self.parity = channel.parity
+        self.nu_range = (max(model.nu_min, nu_range[0]), min(model.nu_max, nu_range[1]))
+        self.outer_channels = [model.outer_channels[self.index]]
+        super().__init__()
+
+        self.ionization_threshold_au = self.ionization_thresholds_au[0]
+        """Ionization threshold of the single outer channel in atomic units (Hartree), with respect to which
+        the effective principal quantum number nui of the channel is defined."""
+
         # always use the model nu_min, so determining the principal quantum number n is more robust
         # but only roots with nu in nu_range are kept, see self.solutions below
         self.nui_min = self.model.calc_channel_nuis(self.model.nu_min)[self.index]
@@ -69,11 +87,6 @@ class ModelOSQDT:
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.model.full_name}, {self.channel})"
-
-    @property
-    def ionization_energy_au(self) -> float:
-        """The ionization threshold of the channel in atomic units (Hartree)."""
-        return self.model.ionization_thresholds_au[self.index]
 
     def calc_nu(self, nui: float) -> float:
         """Convert the channel nui into the nu of the state.

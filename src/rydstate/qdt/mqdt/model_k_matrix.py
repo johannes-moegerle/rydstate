@@ -29,9 +29,9 @@ class ModelKMatrix(ModelMQDT):
     .. math::
         \epsilon = \frac{I_{\text{ref}} - E}{I_{\text{ref}}} = \frac{Z^2 R_M}{I_{\text{ref}} \nu^2}
 
-    with :math:`I_{\text{ref}}` the reference ionization threshold of the MQDT model
-    (see :attr:`~rydstate.qdt.ModelSetMQDT.reference_ionization_threshold_au`) and :math:`E` the energy of the state,
-    both measured from the ground state of the atom.
+    with :math:`I_{\text{ref}}` the reference ionization threshold of the species
+    (see :attr:`~rydstate.qdt.Model.reference_ionization_threshold_au`)
+    and :math:`E` the energy of the state, both measured from the ground state of the atom.
     """
 
     k_matrix_entries: ClassVar[list[tuple[int, int, ExpansionCoefficients]]]
@@ -76,7 +76,7 @@ class ModelKMatrix(ModelMQDT):
         binding_energy_au = calc_energy_from_nu(
             self.element_properties.reduced_mass_au, nu, self.element_properties.net_charge
         )
-        return -binding_energy_au / self.mqdt.reference_ionization_threshold_au
+        return -binding_energy_au / self.reference_ionization_threshold_au
 
     def calc_k_matrix(self, nu: float) -> NDArray:
         r"""Return the K-matrix in the outer channel frame, evaluated at the energy corresponding to nu.

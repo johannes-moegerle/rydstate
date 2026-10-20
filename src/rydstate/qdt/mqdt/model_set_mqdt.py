@@ -1,9 +1,7 @@
 from __future__ import annotations
 
-from functools import cached_property
-from typing import TYPE_CHECKING, Any, ClassVar, overload
+from typing import TYPE_CHECKING, Any, ClassVar
 
-from rydstate import units
 from rydstate.angular.utils import is_not_set
 from rydstate.qdt.model_set import ModelSet
 from rydstate.qdt.mqdt.model_eigen_channel import TrivialModel
@@ -13,19 +11,10 @@ if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase
     from rydstate.angular.core_ket import CoreKet
     from rydstate.qdt.mqdt.model_mqdt import ModelMQDT
-    from rydstate.units import PintFloat
 
 
 class ModelSetMQDT(ModelSet):
     """Base class for the MQDT model sets of the different species."""
-
-    ionization_threshold_dict: ClassVar[dict[CoreKet, tuple[float, str]]]
-    """Dictionary containing the ionization thresholds for the different core states.
-    The thresholds are given in the form of a tuple (ionization_threshold, unit).
-    """
-    reference_ionization_threshold_tuple: ClassVar[tuple[float, str] | None] = None
-    """The reference ionization threshold, which is used to define the zero of energy for the MQDT models.
-    If None, it is defined as the smallest ionization threshold in the ionization_threshold_dict."""
 
     model_classes: ClassVar[list[type[ModelMQDT]]]
     """List of the MQDT :class:`~rydstate.qdt.ModelMQDT` models available for this species.
@@ -40,43 +29,6 @@ class ModelSetMQDT(ModelSet):
 
     def __repr__(self) -> str:
         return f"ModelSetMQDT({self.species}, {self.tag})"
-
-    @overload
-    def get_ionization_threshold(self, core_ket: CoreKet, unit: None = None) -> PintFloat: ...
-
-    @overload
-    def get_ionization_threshold(self, core_ket: CoreKet, unit: str) -> float: ...
-
-    def get_ionization_threshold(self, core_ket: CoreKet, unit: str | None = None) -> PintFloat | float:
-        """Return the ionization threshold of the channel given by the core_ket in the desired unit.
-
-        Args:
-            core_ket: The core ket for which to return the ionization threshold.
-            unit: Desired unit for the ionization threshold. Default None will return a pint.Quantity.
-
-        Returns:
-            Ionization threshold in the desired unit.
-
-        """
-        try:
-            matching_core_ket = core_ket.find_matching_core_ket(self.ionization_threshold_dict.keys())
-        except ValueError as e:
-            raise ValueError(f"Ionization threshold for core ket {core_ket} is not defined.") from e
-
-        ionization_threshold_tuple = self.ionization_threshold_dict[matching_core_ket]
-        ionization_threshold_au = units.user_to_au(*ionization_threshold_tuple, "energy")
-        return units.au_to_user(ionization_threshold_au, "energy", unit)
-
-    @cached_property
-    def reference_ionization_threshold_au(self) -> float:
-        """Reference ionization threshold in atomic units (Hartree).
-
-        If no reference_ionization_threshold_tuple is defined, we define the reference ionization threshold as
-        the smallest ionization threshold in the ionization_threshold_dict.
-        """
-        if self.reference_ionization_threshold_tuple is not None:
-            return units.user_to_au(*self.reference_ionization_threshold_tuple, "energy")
-        return min(self.get_ionization_threshold(core_ket, unit="a.u.") for core_ket in self.ionization_threshold_dict)
 
     def get_mqdt_models(self, outer_channel: AngularKetBase[Any]) -> list[ModelMQDT]:
         """Return a list of MQDT models for the outer_channel."""

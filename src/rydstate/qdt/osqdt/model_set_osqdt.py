@@ -62,14 +62,6 @@ class ModelSetOSQDT(ModelSetSQDT):
         self.channel = channel
         self.osqdt_models = [ModelOSQDT(model, channel, nu_range=nu_range) for model in models]
 
-        # all models describe the same channel, so they must agree on its ionization threshold
-        thresholds = {osqdt_model.ionization_energy_au for osqdt_model in self.osqdt_models}
-        if len(thresholds) > 1:
-            raise ValueError(f"The models do not agree on the ionization threshold of the channel {channel}.")
-        self.ionization_energy = (thresholds.pop(), "a.u.")  # type: ignore [misc]
-        # nu is defined with respect to the reference ionization threshold of the MQDT models
-        self._reference_ionization_energy = (self.mqdt.reference_ionization_threshold_au, "a.u.")  # type: ignore [misc]
-
         self.n_min = min(
             min(osqdt_model.solutions.keys(), default=int(nu_range[1]) + 100) for osqdt_model in self.osqdt_models
         )
@@ -127,6 +119,32 @@ class ModelSetOSQDT(ModelSetSQDT):
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.species}, {self.channel})"
 
+    def get_model(self, n: int, angular_ket: AngularKetBase[Any]) -> ModelOSQDT:  # type: ignore [override]
+        """Return the OSQDT model, which has a state with the principal quantum number n.
+
+        Args:
+            n: The principal quantum number of the Rydberg state, see :meth:`calc_nui`.
+            angular_ket: The angular ket of the state, which must be the channel of this OSQDT object
+                (its m quantum number is ignored).
+
+        """
+        if angular_ket.replace_m(NotSet) != self.channel:
+            raise ValueError(f"The angular ket {angular_ket} is not the OSQDT channel {self.channel}.")
+
+        osqdt_models = [osqdt_model for osqdt_model in self.osqdt_models if n in osqdt_model.solutions]
+
+        if len(osqdt_models) == 0:
+            raise NoOSQDTStateError(
+                f"None of the models {[m.model.full_name for m in self.osqdt_models]} "
+                f"has a state with n={n} for the channel {self.channel}."
+            )
+        if len(osqdt_models) > 1:
+            logger.warning(
+                "Found %d OSQDT models with n=%d for the channel %s, using the one of %s.",
+                *(len(osqdt_models), n, self.channel, osqdt_models[0].model.full_name),
+            )
+        return osqdt_models[0]
+
     def calc_nui(self, n: int, angular_ket: AngularKetBase[Any]) -> float:  # type: ignore [override]
         r"""Calculate the effective principal quantum number nui of the state with principal quantum number n.
 
@@ -145,19 +163,4 @@ class ModelSetOSQDT(ModelSetSQDT):
             ionization threshold of the channel.
 
         """
-        if angular_ket.replace_m(NotSet) != self.channel:
-            raise ValueError(f"The angular ket {angular_ket} is not the OSQDT channel {self.channel}.")
-
-        osqdt_models = [osqdt_model for osqdt_model in self.osqdt_models if n in osqdt_model.solutions]
-
-        if len(osqdt_models) == 0:
-            raise NoOSQDTStateError(
-                f"None of the models {[m.model.full_name for m in self.osqdt_models]} "
-                f"has a state with n={n} for the channel {self.channel}."
-            )
-        if len(osqdt_models) > 1:
-            logger.warning(
-                "Found %d OSQDT models with n=%d for the channel %s, using the one of %s.",
-                *(len(osqdt_models), n, self.channel, osqdt_models[0].model.full_name),
-            )
-        return osqdt_models[0].solutions[n]
+        return self.get_model(n, angular_ket).solutions[n]

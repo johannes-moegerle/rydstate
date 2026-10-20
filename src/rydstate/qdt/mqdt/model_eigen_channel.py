@@ -242,10 +242,10 @@ class TrivialModel(ModelEigenChannel):
         self.f_tot = channel.f_tot
         self.parity = channel.parity
         self.inner_channels = [channel]  # type: ignore [misc]
-        self.outer_channels = [channel]  # type: ignore [misc]
+        self.outer_channels = [channel]
         self.eigen_quantum_defects = [[0.0]]  # type: ignore [misc]
 
-        # calc_nu_from_channel_nui needs element_properties and ionization_thresholds_au,
+        # calc_nu_from_channel_nui needs ionization_thresholds_au and reference_ionization_threshold_au,
         # which are only set up by super().__init__
         super().__init__(mqdt)
 

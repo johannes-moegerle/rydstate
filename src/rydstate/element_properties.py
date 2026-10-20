@@ -11,6 +11,7 @@ from rydstate.units import electron_mass_u, rydberg_constant_au
 from rydstate.utils import get_all_subclasses
 
 if TYPE_CHECKING:
+    from rydstate.angular.core_ket import CoreKet
     from rydstate.angular.utils import Unknown
     from rydstate.units import PintFloat
 
@@ -55,6 +56,15 @@ class ElementProperties(ABC, metaclass=CachedABCMeta):
     """Additional allowed shells (n, l), which (n, l) is smaller than the ground state shell."""
     core_electron_configuration: ClassVar[str]
     """Electron configuration of the core electrons, e.g. 4p6 for Rb or 5s for Sr."""
+
+    ionization_threshold_dict: ClassVar[dict[CoreKet, tuple[float, str]]]
+    """Ionization thresholds for the different core states, given as tuples (ionization_threshold, unit).
+    The thresholds are measured from the ground state of the atom.
+    The threshold of a channel is the one of the best matching core ket, see :meth:`get_ionization_threshold`.
+    """
+    reference_ionization_threshold_tuple: ClassVar[tuple[float, str] | None] = None
+    """The reference ionization threshold (value, unit), with respect to which the effective principal quantum
+    number nu is defined. If None, the smallest threshold of the ionization_threshold_dict is used."""
 
     nuclear_dipole: ClassVar[float] = 0.0
     """Nuclear dipole moment of the species."""
@@ -122,6 +132,66 @@ class ElementProperties(ABC, metaclass=CachedABCMeta):
         if (n, l) >= self.ground_state_shell:
             return True
         return (n, l) in self.additional_allowed_shells
+
+    @overload
+    def get_ionization_threshold(self, core_ket: CoreKet, unit: None = None) -> PintFloat: ...
+
+    @overload
+    def get_ionization_threshold(self, core_ket: CoreKet, unit: str) -> float: ...
+
+    def get_ionization_threshold(self, core_ket: CoreKet, unit: str | None = None) -> PintFloat | float:
+        """Return the ionization threshold of the channel given by the core_ket in the desired unit.
+
+        Args:
+            core_ket: The core ket for which to return the ionization threshold,
+                see :meth:`~rydstate.angular.core_ket.CoreKet.find_matching_core_ket` for how it is matched
+                to the core kets of the :attr:`ionization_threshold_dict`.
+            unit: Desired unit for the ionization threshold. Default None will return a pint.Quantity.
+
+        Returns:
+            Ionization threshold in the desired unit.
+
+        """
+        try:
+            matching_core_ket = core_ket.find_matching_core_ket(self.ionization_threshold_dict.keys())
+        except ValueError as e:
+            raise ValueError(f"Ionization threshold for core ket {core_ket} of {self.species} is not defined.") from e
+
+        ionization_threshold_au = units.user_to_au(*self.ionization_threshold_dict[matching_core_ket], "energy")
+        return units.au_to_user(ionization_threshold_au, "energy", unit)
+
+    @overload
+    def get_reference_ionization_threshold(self, unit: None = None) -> PintFloat: ...
+
+    @overload
+    def get_reference_ionization_threshold(self, unit: str) -> float: ...
+
+    def get_reference_ionization_threshold(self, unit: str | None = None) -> PintFloat | float:
+        r"""Return the reference ionization threshold in the desired unit.
+
+        The reference ionization threshold defines the effective principal quantum number nu via
+
+        .. math::
+            E = I_i - \frac{Z^2 R_M}{\nu_i^2}
+              = I_{\text{ref}} - \frac{Z^2 R_M}{\nu^2}
+
+        where :math:`I_i` is the ionization threshold of the channel and :math:`\nu_i` the channel-dependent
+        effective principal quantum number.
+        If no :attr:`reference_ionization_threshold_tuple` is defined, the smallest threshold of the
+        :attr:`ionization_threshold_dict` is used (e.g. for all alkali atoms, which only have a single threshold).
+
+        Args:
+            unit: Desired unit for the reference ionization threshold. Default None will return a pint.Quantity.
+
+        Returns:
+            Reference ionization threshold in the desired unit.
+
+        """
+        if self.reference_ionization_threshold_tuple is not None:
+            reference_au = units.user_to_au(*self.reference_ionization_threshold_tuple, "energy")
+        else:
+            reference_au = min(units.user_to_au(*value, "energy") for value in self.ionization_threshold_dict.values())
+        return units.au_to_user(reference_au, "energy", unit)
 
     @overload
     def get_corrected_rydberg_constant(self, unit: None = None) -> PintFloat: ...

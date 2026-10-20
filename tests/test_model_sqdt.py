@@ -76,7 +76,24 @@ def test_model_set_uses_model_of_nu_range(monkeypatch: pytest.MonkeyPatch) -> No
         with pytest.raises(ValueError, match="None of the SQDT models"):
             sqdt.calc_nui(120, angular, use_nist_data=False)
 
+        assert sqdt.get_model(20, angular) is low_n
+        assert sqdt.get_model(50, angular_m) is high_n
+
         # channels without a model have a vanishing quantum defect
         angular_p = AngularKetLS(l_r=1, j_tot=0.5, f_tot=0.5, species="Rb")
         assert sqdt.get_models(angular_p) == []
+        trivial_model = sqdt.get_model(20, angular_p)
+        assert trivial_model.quantum_defects == [0.0]
+        assert sqdt.get_model(30, angular_p) is trivial_model
         assert sqdt.calc_nui(20, angular_p, use_nist_data=False) == 20
+
+
+def test_ionization_thresholds() -> None:
+    """The model knows the ionization threshold of its channel and the reference ionization threshold."""
+    model = ModelSQDT("Sr88", "5s np 3P1", [2.88265, 0.39398])
+    element_properties = model.element_properties
+    threshold_au = element_properties.get_ionization_threshold(model.channel.get_core_ket(), "a.u.")
+    assert model.outer_channels == [model.channel]
+    assert model.ionization_thresholds_au == [threshold_au]
+    assert model.ionization_threshold_au == threshold_au
+    assert model.reference_ionization_threshold_au == element_properties.get_reference_ionization_threshold("a.u.")

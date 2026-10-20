@@ -8,9 +8,6 @@ class SQDTRubidium(ModelSetSQDT):
     is_default = True
     nist_data_file = "nist_data.txt"
 
-    # https://journals.aps.org/pra/pdf/10.1103/PhysRevA.83.052515
-    ionization_energy = (1_010_029.164_6, "GHz")
-
     # -- [1] Phys. Rev. A 83, 052515 (2011) - Rb87
     # -- [2] Phys. Rev. A 67, 052502 (2003) - Rb85
     # -- [3] Phys. Rev. A 74, 054502 (2006) - Rb85

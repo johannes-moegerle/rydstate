@@ -61,10 +61,9 @@ def test_nu_range_valid(model: ModelMQDT) -> None:
 
 def test_all_channels_have_ionization_threshold(model: ModelMQDT) -> None:
     """All channels must have ionization thresholds."""
-    mqdt = model.mqdt
     try:
         for _i, ch in enumerate(model.outer_channels):
-            mqdt.get_ionization_threshold(ch.get_core_ket())
+            model.element_properties.get_ionization_threshold(ch.get_core_ket())
     except ValueError:
         pytest.fail(
             f"{model.full_name}: outer_channels[{_i}] with core ket {ch.get_core_ket()} "
@@ -316,6 +315,6 @@ def test_k_matrix_energy_variable_definition(k_matrix_model: ModelKMatrix) -> No
     """The energy variable is epsilon = (I_ref - E) / I_ref, with energies measured from the atomic ground state."""
     nu = 10.0
     energy_au = k_matrix_model.calc_energy_au(nu)
-    reference_au = k_matrix_model.mqdt.reference_ionization_threshold_au
+    reference_au = k_matrix_model.reference_ionization_threshold_au
     expected = (reference_au - energy_au) / reference_au
     assert k_matrix_model.calc_energy_variable(nu) == pytest.approx(expected, rel=1e-12)

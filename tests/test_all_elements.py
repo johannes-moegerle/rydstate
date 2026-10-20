@@ -35,18 +35,17 @@ def test_sqdt_species(species: str) -> None:
 def test_sqdt_total_energy_does_not_require_nu_below_reference(monkeypatch: pytest.MonkeyPatch) -> None:
     """A state energy remains defined even when its reference-specific nu is not."""
     species = "Rb"
-    sqdt = get_sqdt(species)  # note: this is a process wide cached instance, so we have to clean up carefully
-    try:
-        with monkeypatch.context() as patch:
-            patch.setattr(sqdt, "_reference_ionization_energy", (sqdt.ionization_energy_au - 1e-3, "a.u."))
-            sqdt.__dict__.pop("reference_ionization_energy_au", None)  # clear the cached_property
-            angular = AngularKetLS(l_r=0, f_tot=0.5, species=species)
-            state = RydbergStateSQDT(species, n=60, angular=angular, sqdt=sqdt)
+    angular = AngularKetLS(l_r=0, f_tot=0.5, species=species)
+    state = RydbergStateSQDT(species, n=60, angular=angular)
+    # note: the model is shared by all states of the channel, so we have to clean up carefully (monkeypatch restores it)
+    model = state.model
+    threshold_au = model.reference_ionization_threshold_au
+    with monkeypatch.context() as patch:
+        patch.setattr(model, "reference_ionization_threshold_au", threshold_au - 1e-3)
 
-            binding_energy_au = state.get_binding_energy("a.u.")
-            assert binding_energy_au < 0
-            assert state.get_energy("a.u.") == pytest.approx(sqdt.ionization_energy_au + binding_energy_au)
-            with pytest.raises(ValueError, match="nu is not defined"):
-                _ = state.nu
-    finally:
-        sqdt.__dict__.pop("reference_ionization_energy_au", None)  # clear the patched cached_property
+        binding_energy_au = state.get_binding_energy("a.u.")
+        assert binding_energy_au < 0
+        assert state.get_energy("a.u.") == pytest.approx(threshold_au + binding_energy_au)
+        with pytest.raises(ValueError, match="nu is not defined"):
+            _ = state.nu
+    assert model.reference_ionization_threshold_au == threshold_au

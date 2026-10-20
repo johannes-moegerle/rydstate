@@ -103,12 +103,13 @@ def test_sqdt_energies_match_nist(species: str) -> None:
     element_properties = get_element_properties(species)
 
     deviations: Deviations = {}
-    for n, angular, nu, energy_nist_au in _nist_levels(species, sqdt.ionization_energy_au):
+    reference_threshold_au = element_properties.get_reference_ionization_threshold("a.u.")
+    for n, angular, nu, energy_nist_au in _nist_levels(species, reference_threshold_au):
         if nu < NU_MIN or len(sqdt.get_models(angular)) == 0:
             continue
         nui = sqdt.calc_nui(n, angular, use_nist_data=False)
         binding_energy_au = calc_energy_from_nu(element_properties.reduced_mass_au, nui, element_properties.net_charge)
-        energy_au = sqdt.ionization_energy_au + binding_energy_au
+        energy_au = sqdt.get_model(n, angular).ionization_threshold_au + binding_energy_au
         deviations[n, angular.l_r, angular.j_tot, angular.s_tot] = (nu, (energy_au - energy_nist_au) * HARTREE_TO_GHZ)
 
     _assert_no_constant_offset(f"{species} - SQDT", deviations)
@@ -132,7 +133,8 @@ def test_mqdt_energies_match_nist(species: str) -> None:
     potential_class = get_potential_class(species)
 
     deviations: Deviations = {}
-    for n, angular, nu, energy_nist_au in _nist_levels(species, mqdt.reference_ionization_threshold_au):
+    reference_threshold_au = mqdt.element_properties.get_reference_ionization_threshold("a.u.")
+    for n, angular, nu, energy_nist_au in _nist_levels(species, reference_threshold_au):
         states = [
             state
             for model in mqdt.get_mqdt_models(angular)

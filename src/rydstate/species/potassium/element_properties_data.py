@@ -1,5 +1,6 @@
 from typing import ClassVar
 
+from rydstate.angular.core_ket import CoreKet
 from rydstate.element_properties import ElementProperties
 
 
@@ -12,6 +13,11 @@ class ElementPropertiesPotassium(ElementProperties):
     ground_state_shell = (4, 0)
     additional_allowed_shells: ClassVar = [(3, 2)]
     core_electron_configuration = "3p6"
+
+    # Phys. Rev. A 100, 012501 (2019) (https://doi.org/10.1103/PhysRevA.100.012501)
+    # Precision measurement of the ionization energy and quantum defects of 39K I
+    # I(39K) = 35009.8139710(22)(sys)(3)(stat) 1/cm
+    ionization_threshold_dict: ClassVar = {CoreKet(i_c=0, s_c=0, l_c=0): (35009.813971, "1/cm")}
 
     mass_number = 39
     atomic_mass_u = 38.96370648482
