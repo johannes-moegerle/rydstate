@@ -25,6 +25,7 @@ logger = logging.getLogger(__name__)
 class BasisSQDT(BasisBase[RydbergStateSQDT[AngularKetLS[AllKnown]]]):
     states: list[RydbergStateSQDT[AngularKetLS[AllKnown]]]
     _channels: list[AngularKetLS[AllKnown]]
+    model_set: ModelSetSQDT
 
     def __init__(
         self,
@@ -34,9 +35,8 @@ class BasisSQDT(BasisBase[RydbergStateSQDT[AngularKetLS[AllKnown]]]):
         l_r: tuple[int, int] | None = None,
         f_tot: tuple[float, float] | None = None,
         m: tuple[float, float] | NotSet | None = NotSet,
-        # potential and sqdt parameters
+        # potential parameters
         potential_class: type[Potential] | str | None = None,
-        sqdt: ModelSetSQDT | None = None,
     ) -> None:
         """Initialize the SQDT basis.
 
@@ -53,12 +53,10 @@ class BasisSQDT(BasisBase[RydbergStateSQDT[AngularKetLS[AllKnown]]]):
             potential_class: The potential class to use for the radial ket.
                 Either a a potential class
                 or a string representing the tag of the potential class to use.
-            sqdt: The SQDT model set to use for the states.
-                Default None, use the SQDT model set of the species.
 
         """
         super().__init__(species, potential_class)
-        self.sqdt = sqdt if sqdt is not None else get_sqdt(species)
+        self.model_set = get_sqdt(species)
 
         if l_r is None:
             l_r = (0, n[1] - 1)
@@ -110,7 +108,6 @@ class BasisSQDT(BasisBase[RydbergStateSQDT[AngularKetLS[AllKnown]]]):
                         n=n,
                         angular=angular_m,
                         potential_class=self.potential_class,
-                        sqdt=self.sqdt,
                     )
                     states.append(state)
 

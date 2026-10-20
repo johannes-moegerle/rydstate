@@ -7,7 +7,6 @@ from rydstate.basis.basis_mqdt import BasisMQDT
 from rydstate.qdt import ScaledOffDiagonalModel
 
 if TYPE_CHECKING:
-    from rydstate.qdt import ModelSetMQDT
     from rydstate.radial.potential import Potential
 
 
@@ -33,9 +32,8 @@ class BasisTunableMQDT(BasisMQDT):
         l_r: tuple[int, int] | None = None,
         f_tot: tuple[float, float] | None = None,
         m: tuple[float, float] | NotSet | None = NotSet,
-        # potential and mqdt parameters
+        # potential parameters
         potential_class: type[Potential] | str | None = None,
-        mqdt: ModelSetMQDT | None = None,
         coupling_factor: float = 1.0,
     ) -> None:
         """Initialize the TunableMQDT basis.
@@ -55,15 +53,13 @@ class BasisTunableMQDT(BasisMQDT):
             potential_class: The potential class to use for the radial ket.
                 Either a a potential class
                 or a string representing the tag of the potential class to use.
-            mqdt: The MQDT model set to use for the states.
-                Default None, use the MQDT model set of the species.
             coupling_factor: The factor by which to scale the off-diagonal elements of the K-matrix,
                 i.e. the coupling between the outer channels.
                 Default 1, i.e. fully coupled outer channels.
 
         """
         self.coupling_factor = coupling_factor
-        super().__init__(species, nu, l_r=l_r, f_tot=f_tot, m=m, potential_class=potential_class, mqdt=mqdt)
+        super().__init__(species, nu, l_r=l_r, f_tot=f_tot, m=m, potential_class=potential_class)
 
     def _init_models(
         self,

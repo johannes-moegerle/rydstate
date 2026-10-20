@@ -17,7 +17,7 @@ from rydstate.rydberg_state import RydbergKet, RydbergStateMQDT
 if TYPE_CHECKING:
     from typing_extensions import Self
 
-    from rydstate.qdt import ModelMQDT, ModelSetMQDT
+    from rydstate.qdt import ModelMQDT
     from rydstate.radial.potential import Potential
 
 
@@ -35,9 +35,8 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
         l_r: tuple[int, int] | None = None,
         f_tot: tuple[float, float] | None = None,
         m: tuple[float, float] | NotSet | None = NotSet,
-        # potential and mqdt parameters
+        # potential parameters
         potential_class: type[Potential] | str | None = None,
-        mqdt: ModelSetMQDT | None = None,
     ) -> None:
         """Initialize the MQDT basis.
 
@@ -56,12 +55,10 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
             potential_class: The potential class to use for the radial ket.
                 Either a a potential class
                 or a string representing the tag of the potential class to use.
-            mqdt: The MQDT model set to use for the states.
-                Default None, use the MQDT model set of the species.
 
         """
         super().__init__(species, potential_class)
-        self.mqdt = mqdt if mqdt is not None else get_mqdt(species)
+        self.model_set = get_mqdt(species)
 
         # the maximum l_r is limited by the maximum nu, because l_r < n for bound states
         # and for high l_r the quantum defects are 0, so n = nu
@@ -97,7 +94,7 @@ class BasisMQDT(BasisBase[RydbergStateMQDT]):
                         channel = AngularKetFJ(
                             l_r=l_r, j_r=float(j_r), f_c=float(f_c), f_tot=float(f_tot), species=self.species
                         )
-                        for model in self.mqdt.get_mqdt_models(channel):
+                        for model in self.model_set.get_mqdt_models(channel):
                             if model not in self.models:
                                 self.models.append(model)
 

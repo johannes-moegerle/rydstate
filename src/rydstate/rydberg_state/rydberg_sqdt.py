@@ -18,8 +18,7 @@ from rydstate.rydberg_state.rydberg_ket import RydbergKet
 from rydstate.utils import calc_energy_from_nu, calc_nu_from_energy
 
 if TYPE_CHECKING:
-    from rydstate.qdt import ModelOSQDT, ModelSetSQDT, ModelSQDT
-    from rydstate.qdt.osqdt.model_set_osqdt import ModelSetOSQDT
+    from rydstate.qdt import ModelOSQDT, ModelSQDT
     from rydstate.units import PintFloat
 
 GenericT_AngularKet = TypeVar("GenericT_AngularKet", bound=AngularKetBase[AllKnown])
@@ -43,7 +42,6 @@ class RydbergStateSQDT(RydbergState, Generic[GenericT_AngularKet]):
         n: int,
         angular: T_AngularKet,
         *,
-        sqdt: ModelSetSQDT | None = None,
         potential_class: type[Potential] | str | None = None,
     ) -> None:
         r"""Initialize the Rydberg state.
@@ -54,8 +52,6 @@ class RydbergStateSQDT(RydbergState, Generic[GenericT_AngularKet]):
             angular: The angular ket of the state, which can be given in any coupling scheme,
                 i.e. as :class:`~rydstate.angular.AngularKetLS`, :class:`~rydstate.angular.AngularKetJJ`
                 or :class:`~rydstate.angular.AngularKetFJ`.
-            sqdt: The SQDT model set to use for the state.
-                Default None, use the SQDT model set of the species.
             potential_class: The potential class to use for the radial ket.
                 Either a string representing the tag of the potential class to use, or a potential class.
                 If None, the default potential class for the species is used.
@@ -72,7 +68,6 @@ class RydbergStateSQDT(RydbergState, Generic[GenericT_AngularKet]):
         self.angular = angular
 
         self.n = n
-        self.sqdt = sqdt if sqdt is not None else get_sqdt(species)
         _s_tot = self.angular.get_qn("s_tot", allow_unknown=True)
         if not self.element_properties.is_allowed_shell(self.n, self.angular.l_r, _s_tot):
             raise ValueError(f"The Rydberg state {self!r} is not allowed due to forbidden shell configurations.")
@@ -101,8 +96,11 @@ class RydbergStateSQDT(RydbergState, Generic[GenericT_AngularKet]):
 
     @cached_property
     def model(self) -> ModelSQDT | ModelOSQDT:
-        """The model describing this state, see :meth:`~rydstate.qdt.ModelSetSQDT.get_model`."""
-        return self.sqdt.get_model(self.n, self.angular)
+        """The model describing this state.
+
+        This is the model of the SQDT model set of the species, see :meth:`~rydstate.qdt.ModelSetSQDT.get_model`.
+        """
+        return get_sqdt(self.species).get_model(self.n, self.angular)
 
     @cached_property
     def nui(self) -> float:
@@ -117,8 +115,10 @@ class RydbergStateSQDT(RydbergState, Generic[GenericT_AngularKet]):
         where :math:`R_M = R_\infty \mu/m_e` is the mass corrected Rydberg constant.
 
         Therefore, nui is the quantum number that determines the radial wavefunction, see :attr:`radial`.
+        For low lying states, nui is taken from the NIST energy levels if available,
+        see :meth:`~rydstate.qdt.ModelSetSQDT.calc_nui`.
         """
-        return self.sqdt.calc_nui(self.n, self.angular)
+        return get_sqdt(self.species).calc_nui(self.n, self.angular)
 
     @cached_property
     def nu(self) -> float:  # type: ignore [override]
@@ -222,8 +222,7 @@ class RydbergStateSQDTAlkali(RydbergStateSQDT[AngularKetLS[AllKnown]]):
         l: int,
         j: float | None = None,
         m: float | NotSet = NotSet,
-        # potential and sqdt parameters
-        sqdt: ModelSetSQDT | None = None,
+        # potential parameters
         potential_class: type[Potential] | str | None = None,
     ) -> None:
         r"""Initialize the Rydberg state.
@@ -236,15 +235,13 @@ class RydbergStateSQDTAlkali(RydbergStateSQDT[AngularKetLS[AllKnown]]):
               Optional, if it is uniquely determined by l (i.e. for l = 0).
             m: Total magnetic quantum number.
               Optional, only needed for concrete angular matrix elements.
-            sqdt: The SQDT model set to use for the state.
-                Default None, use the SQDT model set of the species.
             potential_class: The potential class to use for the radial ket.
                 Either a string representing the tag of the potential class to use, or a potential class.
                 If None, the default potential class for the species is used.
 
         """
         angular = AngularKetLS(l_c=0, l_r=l, j_tot=j, m=m, species=species)
-        super().__init__(species, n, angular, sqdt=sqdt, potential_class=potential_class)
+        super().__init__(species, n, angular, potential_class=potential_class)
 
 
 class RydbergStateSQDTDivalent(RydbergStateSQDT[AngularKetLS[AllKnown]]):
@@ -264,8 +261,7 @@ class RydbergStateSQDTDivalent(RydbergStateSQDT[AngularKetLS[AllKnown]]):
         j: int | None = None,
         f: float | None = None,
         m: float | NotSet = NotSet,
-        # potential and sqdt parameters
-        sqdt: ModelSetSQDT | None = None,
+        # potential parameters
         potential_class: type[Potential] | str | None = None,
     ) -> None:
         r"""Initialize the Rydberg state.
@@ -281,15 +277,13 @@ class RydbergStateSQDTDivalent(RydbergStateSQDT[AngularKetLS[AllKnown]]):
               Optional, if it is uniquely determined by j (i.e. for species without nuclear spin).
             m: Total magnetic quantum number.
               Optional, only needed for concrete angular matrix elements.
-            sqdt: The SQDT model set to use for the state.
-                Default None, use the SQDT model set of the species.
             potential_class: The potential class to use for the radial ket.
                 Either a string representing the tag of the potential class to use, or a potential class.
                 If None, the default potential class for the species is used.
 
         """
         angular = AngularKetLS(l_c=0, l_r=l, s_tot=s, j_tot=j, f_tot=f, m=m, species=species)
-        super().__init__(species, n, angular, sqdt=sqdt, potential_class=potential_class)
+        super().__init__(species, n, angular, potential_class=potential_class)
 
 
 class RydbergStateOSQDT(RydbergStateSQDT[AngularKetFJ[AllKnown]]):
@@ -299,11 +293,45 @@ class RydbergStateOSQDT(RydbergStateSQDT[AngularKetFJ[AllKnown]]):
     They are rather used for comparison and didactic purposes.
 
     This is a :class:`RydbergStateSQDT`, whose quantum defects are given by an
-    :class:`~rydstate.qdt.ModelSetOSQDT` object, i.e. by the diagonal elements of the K-matrix
-    of the MQDT models in the outer channel frame.
+    :class:`~rydstate.qdt.ModelOSQDT` model, i.e. by the diagonal elements of the K-matrix
+    of an MQDT model in the outer channel frame.
     """
 
-    sqdt: ModelSetOSQDT
+    model: ModelOSQDT
+    """The OSQDT model describing this state."""
+
+    def __init__(
+        self,
+        species: str,
+        n: int,
+        angular: AngularKetFJ[AllKnown],
+        model: ModelOSQDT,
+        *,
+        potential_class: type[Potential] | str | None = None,
+    ) -> None:
+        """Initialize the Rydberg state.
+
+        Args:
+            species: Atomic species.
+            n: Principal quantum number of the rydberg electron, see :meth:`~rydstate.qdt.ModelSetOSQDT.calc_nui`.
+            angular: The angular ket of the state, i.e. the channel of the OSQDT model.
+            model: The OSQDT model describing this state, which must have a state with the principal quantum number n.
+            potential_class: The potential class to use for the radial ket.
+                Either a string representing the tag of the potential class to use, or a potential class.
+                If None, the default potential class for the species is used.
+
+        """
+        if angular.replace_m(NotSet) != model.channel:
+            raise ValueError(f"The angular ket {angular!r} is not the channel {model.channel!r} of the OSQDT model.")
+        if n not in model.solutions:
+            raise ValueError(f"The OSQDT model {model} has no state with n={n}.")
+        self.model = model
+        super().__init__(species, n, angular, potential_class=potential_class)
+
+    @cached_property
+    def nui(self) -> float:
+        """The effective principal quantum number nui of the channel, given by the OSQDT model."""
+        return self.model.solutions[self.n]
 
     @cached_property
     def radial(self) -> RadialKet | RadialDummy:  # type: ignore [override]

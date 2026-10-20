@@ -105,16 +105,16 @@ def test_mqdt_lifetime_nu_scaling() -> None:
     np.testing.assert_allclose(tau2 / tau1, expected_ratio, rtol=0.05)
 
 
-def test_mqdt_transition_rate_basis_reuses_state_model_and_potential() -> None:
-    """The internal basis used for transition rates reuses the state's own mqdt model and potential."""
+def test_mqdt_transition_rate_basis_reuses_state_species_and_potential() -> None:
+    """The internal basis used for transition rates uses the state's species (i.e. its models) and potential."""
     state = _get_mqdt_state((29.5, 29.8))
 
     # the state retains the model and potential it was built from ...
-    assert state.mqdt is get_mqdt("Sr88")
+    assert state.model in get_mqdt("Sr88").models
     assert state.potential_class is get_potential_class("Sr88")
 
     # ... and these are forwarded into the basis built inside _get_transition_rates_au
     relevant_states, _ = state.get_spontaneous_transition_rates()
     assert len(relevant_states) > 0
-    assert all(other.mqdt is state.mqdt for other in relevant_states)
+    assert all(other.species == state.species for other in relevant_states)
     assert all(other.potential_class is state.potential_class for other in relevant_states)

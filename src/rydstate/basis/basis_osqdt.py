@@ -47,6 +47,7 @@ class BasisOSQDT(BasisSQDT):
 
     states: list[RydbergStateOSQDT]  # type: ignore [assignment]
     _channels: list[AngularKetFJ[AllKnown]]  # type: ignore [assignment]
+    model_set: ModelSetMQDT  # type: ignore [assignment]
 
     def __init__(
         self,
@@ -56,9 +57,8 @@ class BasisOSQDT(BasisSQDT):
         l_r: tuple[int, int] | None = None,
         f_tot: tuple[float, float] | None = None,
         m: tuple[float, float] | NotSet | None = NotSet,
-        # potential and mqdt parameters
+        # potential parameters
         potential_class: type[Potential] | str | None = None,
-        mqdt: ModelSetMQDT | None = None,
     ) -> None:
         """Initialize the OSQDT basis.
 
@@ -77,13 +77,11 @@ class BasisOSQDT(BasisSQDT):
             potential_class: The potential class to use for the radial ket.
                 Either a a potential class
                 or a string representing the tag of the potential class to use.
-            mqdt: The MQDT model set to use for the states.
-                Default None, use the MQDT model set of the species.
 
         """
         # skip BasisSQDT.__init__, since this basis uses MQDT models instead of SQDT data
         BasisBase.__init__(self, species, potential_class)
-        self.mqdt = mqdt if mqdt is not None else get_mqdt(species)
+        self.model_set = get_mqdt(species)
 
         if not 0 <= nu[0] < nu[1] < math.inf:
             raise ValueError(f"nu must be a tuple (nu_min, nu_max) with 0 <= nu_min < nu_max < inf, but got {nu}.")
@@ -115,7 +113,7 @@ class BasisOSQDT(BasisSQDT):
                         channels.append(angular)
 
         # also add channels l_c > 0 or with unknown quantum numbers given in the MQDT models
-        for model in self.mqdt.models:
+        for model in self.model_set.models:
             for channel in model.fj_channels:
                 if (
                     channel in channels
@@ -136,7 +134,7 @@ class BasisOSQDT(BasisSQDT):
 
         for angular in self._channels:
             s_tot = angular.get_qn("s_tot", allow_unknown=True)
-            osqdt = ModelSetOSQDT(tuple(self.mqdt.get_mqdt_models(angular)), angular, nu_range=nu_range)
+            osqdt = ModelSetOSQDT(tuple(self.model_set.get_mqdt_models(angular)), angular, nu_range=nu_range)
 
             n_min, n_max = osqdt.n_min, osqdt.n_max
             for n in range(n_min, n_max + 1):
@@ -144,7 +142,7 @@ class BasisOSQDT(BasisSQDT):
                     continue
 
                 try:
-                    osqdt.calc_nui(n, angular)
+                    osqdt_model = osqdt.get_model(n, angular)
                 except NoOSQDTStateError as err:
                     logger.warning(
                         "No OSQDT state found for intermediate n=%d in channel %s. "
@@ -158,7 +156,7 @@ class BasisOSQDT(BasisSQDT):
                         self.species,
                         n=n,
                         angular=angular.replace_m(m),
-                        sqdt=osqdt,
+                        model=osqdt_model,
                         potential_class=self.potential_class,
                     )
                     states.append(state)

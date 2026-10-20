@@ -6,6 +6,7 @@ import numpy as np
 import pytest
 from rydstate.angular.utils import is_unknown
 from rydstate.basis import BasisMQDT, BasisOSQDT, BasisSQDT
+from rydstate.rydberg_state.rydberg_sqdt import RydbergStateOSQDT
 
 
 def test_osqdt_states_are_single_channel_with_definite_n() -> None:
@@ -44,10 +45,10 @@ def test_osqdt_states_solve_the_decoupled_mqdt_condition() -> None:
     basis = BasisOSQDT("Yb174", nu=(50, 53), f_tot=(0, 0), l_r=(0, 0))
     assert len(basis) > 0
     for state in basis.states:
-        osqdt_models = [m for m in state.sqdt.osqdt_models if state.n in m.solutions]
-        assert len(osqdt_models) == 1
-        index = osqdt_models[0].index
-        assert abs(osqdt_models[0].model.calc_scaled_m_matrix(state.nu)[index, index]) < 1e-9
+        osqdt_model = state.model
+        assert state.n in osqdt_model.solutions
+        index = osqdt_model.index
+        assert abs(osqdt_model.model.calc_scaled_m_matrix(state.nu)[index, index]) < 1e-9
 
 
 def test_osqdt_l_r_filter() -> None:
@@ -163,3 +164,12 @@ def test_osqdt_sanity_check_reports_a_missing_low_nu_model(caplog: pytest.LogCap
     assert any("has no model for nui<17" in record.message for record in caplog.records), str(
         [record.message for record in caplog.records]
     )
+
+
+def test_osqdt_state_requires_the_channel_of_its_model() -> None:
+    """An OSQDT state must not be created with an angular ket other than the channel of its model."""
+    basis = BasisOSQDT("Yb174", nu=(50, 51), f_tot=(1, 1), l_r=(1, 1))
+    state = basis.states[0]
+    other = next(s for s in basis.states if s.model.channel != state.model.channel)
+    with pytest.raises(ValueError, match="is not the channel"):
+        RydbergStateOSQDT("Yb174", state.n, other.angular, state.model)

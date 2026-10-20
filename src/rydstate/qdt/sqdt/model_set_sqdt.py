@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+from functools import cache
 from typing import TYPE_CHECKING, Any, ClassVar
 
 from rydstate.angular import NotSet
@@ -188,8 +189,13 @@ class ModelSetSQDT(ModelSet):
         )
 
 
+@cache
 def get_sqdt(species: str) -> ModelSetSQDT:
-    """Get an instance of the subclass of ModelSetSQDT for the given species."""
+    """Get an instance of the subclass of ModelSetSQDT for the given species.
+
+    The instance is kept alive for the whole process (and not only as long as it is referenced, as for
+    other cached classes), since the states only store their models and look up the model set when needed.
+    """
     subclasses = get_all_subclasses(ModelSetSQDT, species)
     if len(subclasses) == 0:
         raise ValueError(f"No subclass of ModelSetSQDT found for {species=}.")

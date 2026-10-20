@@ -8,14 +8,13 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 from rydstate.angular.utils import is_unknown
-from rydstate.qdt.mqdt import get_mqdt
 from rydstate.qdt.mqdt.model_eigen_channel import TrivialModel
 from rydstate.rydberg_state.rydberg_base import RydbergState
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
-    from rydstate.qdt import ModelMQDT, ModelSetMQDT
+    from rydstate.qdt import ModelMQDT
     from rydstate.radial.potential import Potential
     from rydstate.rydberg_state.rydberg_ket import RydbergKet
     from rydstate.units import NDArray
@@ -46,11 +45,6 @@ class RydbergStateMQDT(RydbergState):
             f"parity={self.parity}, m={self.m}, channels={len(self.rydberg_kets)}, "
             f"model='{self.model.full_name}')"
         )
-
-    @property
-    def mqdt(self) -> ModelSetMQDT:
-        """Return the MQDT model set of the species of this state."""
-        return get_mqdt(self.species)
 
     @property
     def nui(self) -> NDArray:

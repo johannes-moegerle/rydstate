@@ -485,7 +485,6 @@ class RydbergState:
                 l_r=(l_r - 1, l_r + 1),
                 m=(m - 1, m + 1),
                 potential_class=self.potential_class,
-                sqdt=self.sqdt,
             )
         elif isinstance(self, RydbergStateMQDT):
             l_r_list = [
@@ -497,7 +496,6 @@ class RydbergState:
                 l_r=(min(l_r_list) - 1, max(l_r_list) + 1),
                 m=(m - 1, m + 1),
                 potential_class=self.potential_class,
-                mqdt=self.mqdt,
             )
         else:
             raise NotImplementedError(f"Transition rates are not implemented for {type(self)}.")
