@@ -67,8 +67,8 @@ from __future__ import annotations
 import numpy as np
 
 from rydstate.angular.angular_ket import AngularKetJJ, AngularKetLS
-from rydstate.qdt.mqdt.eigen_channel_model import ModelEigenChannel
-from rydstate.qdt.mqdt.k_matrix_model import ModelKMatrix
+from rydstate.qdt.mqdt.model_eigen_channel import ModelEigenChannel
+from rydstate.qdt.mqdt.model_k_matrix import ModelKMatrix
 
 REFERENCE_VAILLANT_2024 = (
     "C. L. Vaillant, M. P. A. Jones and R. M. Potvliege, "

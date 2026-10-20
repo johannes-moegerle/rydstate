@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 from rydstate.angular.utils import is_unknown
-from rydstate.qdt.mqdt.eigen_channel_model import TrivialModel
+from rydstate.qdt.mqdt.model_eigen_channel import TrivialModel
 from rydstate.rydberg_state.rydberg_base import RydbergState
 
 if TYPE_CHECKING:

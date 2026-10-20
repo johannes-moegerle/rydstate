@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Any, ClassVar, overload
 from rydstate import units
 from rydstate.angular.utils import is_not_set
 from rydstate.metaclass_cache import CachedABCMeta
-from rydstate.qdt.mqdt.eigen_channel_model import TrivialModel
+from rydstate.qdt.mqdt.model_eigen_channel import TrivialModel
 from rydstate.utils import get_all_subclasses
 
 if TYPE_CHECKING:
