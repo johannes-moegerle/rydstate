@@ -13,7 +13,7 @@ from rydstate.qdt.utils import calc_modified_ritz_formula_in_nu, check_expansion
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase
     from rydstate.angular.utils import AllKnown
-    from rydstate.qdt.mqdt.mqdt import ModelSetMQDT
+    from rydstate.qdt.mqdt.model_set_mqdt import ModelSetMQDT
     from rydstate.qdt.utils import ExpansionCoefficients
     from rydstate.units import NDArray
 

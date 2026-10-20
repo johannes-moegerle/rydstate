@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
     from rydstate.angular.angular_ket import AngularKetBase, AngularKetFJ
     from rydstate.angular.core_ket import CoreKet
-    from rydstate.qdt.mqdt.mqdt import ModelSetMQDT
+    from rydstate.qdt.mqdt.model_set_mqdt import ModelSetMQDT
     from rydstate.units import NDArray, PintFloat
 
 
