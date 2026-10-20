@@ -8,13 +8,13 @@ import pytest
 from rydstate.angular import AngularKetFJ
 from rydstate.angular.utils import is_unknown
 from rydstate.element_properties import get_element_properties
-from rydstate.qdt import EigenChannelModel, KMatrixModel, ModelMQDT, ModelSetMQDT
+from rydstate.qdt import ModelEigenChannel, ModelKMatrix, ModelMQDT, ModelSetMQDT
 from rydstate.utils import get_all_subclasses
 
 ALL_MQDTS = [cls() for cls in get_all_subclasses(ModelSetMQDT)]
 ALL_MODELS = [model for mqdt in ALL_MQDTS for model in mqdt.models]
-ALL_EIGEN_CHANNEL_MODELS = [model for model in ALL_MODELS if isinstance(model, EigenChannelModel)]
-ALL_K_MATRIX_MODELS = [model for model in ALL_MODELS if isinstance(model, KMatrixModel)]
+ALL_EIGEN_CHANNEL_MODELS = [model for model in ALL_MODELS if isinstance(model, ModelEigenChannel)]
+ALL_K_MATRIX_MODELS = [model for model in ALL_MODELS if isinstance(model, ModelKMatrix)]
 
 
 def test_all_mqdt_models_discovered() -> None:
@@ -33,12 +33,12 @@ def model(request: pytest.FixtureRequest) -> ModelMQDT:
 
 
 @pytest.fixture(params=ALL_EIGEN_CHANNEL_MODELS, ids=lambda cls: cls.full_name)
-def eigen_channel_model(request: pytest.FixtureRequest) -> EigenChannelModel:
+def eigen_channel_model(request: pytest.FixtureRequest) -> ModelEigenChannel:
     return request.param  # type: ignore[no-any-return]
 
 
 @pytest.fixture(params=ALL_K_MATRIX_MODELS, ids=lambda cls: cls.full_name)
-def k_matrix_model(request: pytest.FixtureRequest) -> KMatrixModel:
+def k_matrix_model(request: pytest.FixtureRequest) -> ModelKMatrix:
     return request.param  # type: ignore[no-any-return]
 
 
@@ -228,7 +228,7 @@ def test_nu_ranges_match_at_boundaries(mqdt: ModelSetMQDT) -> None:
     assert not errors, msg
 
 
-def test_mixing_angles_indices_valid(eigen_channel_model: EigenChannelModel) -> None:
+def test_mixing_angles_indices_valid(eigen_channel_model: ModelEigenChannel) -> None:
     """Mixing angle indices must refer to valid channel positions."""
     model = eigen_channel_model
     if model.mixing_angles is None:
@@ -242,7 +242,7 @@ def test_mixing_angles_indices_valid(eigen_channel_model: EigenChannelModel) -> 
 
 
 @pytest.mark.parametrize("channel_type", ["inner", "outer"])
-def test_channels_are_orthonormal(eigen_channel_model: EigenChannelModel, channel_type: str) -> None:
+def test_channels_are_orthonormal(eigen_channel_model: ModelEigenChannel, channel_type: str) -> None:
     """The channels of a model must form an orthonormal set."""
     model = eigen_channel_model
     channels = model.inner_channels if channel_type == "inner" else model.outer_channels
@@ -251,7 +251,7 @@ def test_channels_are_orthonormal(eigen_channel_model: EigenChannelModel, channe
     np.testing.assert_allclose(overlaps, np.eye(len(channels)), atol=1e-10, err_msg=msg)
 
 
-def test_inner_outer_unitary(eigen_channel_model: EigenChannelModel) -> None:
+def test_inner_outer_unitary(eigen_channel_model: ModelEigenChannel) -> None:
     """The frame transformation matrix from inner to outer channels must be unitary."""
     model = eigen_channel_model
     unitary = model.calc_frame_transformation_outer_inner()
@@ -268,11 +268,11 @@ def test_inner_outer_unitary(eigen_channel_model: EigenChannelModel) -> None:
 
 
 def test_k_matrix_models_discovered() -> None:
-    """Sanity check: the Sr88 models of Vaillant 2024 are KMatrixModel models."""
+    """Sanity check: the Sr88 models of Vaillant 2024 are ModelKMatrix models."""
     assert len(ALL_K_MATRIX_MODELS) >= 10
 
 
-def test_k_matrix_format(k_matrix_model: KMatrixModel) -> None:
+def test_k_matrix_format(k_matrix_model: ModelKMatrix) -> None:
     """Each K-matrix element must be given as (i, j, coefficients) with i <= j and a non-empty list of numbers."""
     model = k_matrix_model
     n = len(model.outer_channels)
@@ -290,7 +290,7 @@ def test_k_matrix_format(k_matrix_model: KMatrixModel) -> None:
     )
 
 
-def test_k_matrix_channels_are_orthonormal(k_matrix_model: KMatrixModel) -> None:
+def test_k_matrix_channels_are_orthonormal(k_matrix_model: ModelKMatrix) -> None:
     """The outer channels of a K-matrix model must form an orthonormal set."""
     channels = k_matrix_model.outer_channels
     overlaps = np.array([[ket1.calc_reduced_overlap(ket2) for ket2 in channels] for ket1 in channels])
@@ -299,7 +299,7 @@ def test_k_matrix_channels_are_orthonormal(k_matrix_model: KMatrixModel) -> None
 
 
 @pytest.mark.parametrize("nu", [4.5, 12.3, 30.5])
-def test_k_matrix_symmetric_and_energy_dependent(k_matrix_model: KMatrixModel, nu: float) -> None:
+def test_k_matrix_symmetric_and_energy_dependent(k_matrix_model: ModelKMatrix, nu: float) -> None:
     """The K-matrix must be real and symmetric and its elements follow the given polynomials in epsilon."""
     model = k_matrix_model
     kmat = model.calc_k_matrix(nu)
@@ -312,7 +312,7 @@ def test_k_matrix_symmetric_and_energy_dependent(k_matrix_model: KMatrixModel, n
         assert kmat[i, j] == pytest.approx(expected, abs=1e-14, rel=1e-12)
 
 
-def test_k_matrix_energy_variable_definition(k_matrix_model: KMatrixModel) -> None:
+def test_k_matrix_energy_variable_definition(k_matrix_model: ModelKMatrix) -> None:
     """The energy variable is epsilon = (I_ref - E) / I_ref, with energies measured from the atomic ground state."""
     nu = 10.0
     energy_au = k_matrix_model.calc_energy_au(nu)

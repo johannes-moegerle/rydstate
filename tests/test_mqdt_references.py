@@ -14,7 +14,7 @@ from rydstate import RydbergStateSQDTDivalent
 from rydstate.angular.angular_ket import AngularKetFJ, AngularKetJJ, AngularKetLS
 from rydstate.angular.utils import NotSet, is_unknown
 from rydstate.basis.basis_mqdt import get_mqdt_states_from_model
-from rydstate.qdt import EigenChannelModel, KMatrixModel, get_mqdt, get_sqdt
+from rydstate.qdt import ModelEigenChannel, ModelKMatrix, get_mqdt, get_sqdt
 from rydstate.qdt.utils import calc_modified_ritz_formula_in_nu
 from rydstate.radial.potential import get_potential_class
 from rydstate.units import ureg
@@ -27,10 +27,10 @@ if TYPE_CHECKING:
     from rydstate.units import NDArray
 
 
-def _get_model(species: str, name: str) -> EigenChannelModel:
+def _get_model(species: str, name: str) -> ModelEigenChannel:
     """Return the model of the given species with the given name."""
     model = next(model for model in get_mqdt(species).models if model.name == name)
-    assert isinstance(model, EigenChannelModel)
+    assert isinstance(model, ModelEigenChannel)
     return model
 
 
@@ -177,10 +177,10 @@ def test_mqdt_energies_match_nist(name: str, n: int, l_r: int, j_tot: int, s_tot
     )
 
 
-def _get_k_matrix_model(name: str) -> KMatrixModel:
+def _get_k_matrix_model(name: str) -> ModelKMatrix:
     """Return the Sr88 model of Vaillant 2024 (MQDT tag vaillant2024) with the given name."""
     model = next(model for model in get_mqdt("Sr88", "vaillant2024").models if model.name == name)
-    assert isinstance(model, KMatrixModel)
+    assert isinstance(model, ModelKMatrix)
     return model
 
 
@@ -240,7 +240,7 @@ def _channel_key(ket: AngularKetBase[Any]) -> tuple[Any, ...] | None:
     return (type(ket).__name__, *(value for qn, value in qns if qn not in ("i_c", "f_tot")))
 
 
-def _get_mixing_angles_by_channels(model: EigenChannelModel, nu: float) -> dict[tuple[Any, Any], float]:
+def _get_mixing_angles_by_channels(model: ModelEigenChannel, nu: float) -> dict[tuple[Any, Any], float]:
     """Return the mixing angles of the model at nu, keyed by the channel keys of the mixed channels.
 
     The angles are reduced to the interval (-pi/2, pi/2], since theta and theta + pi only differ by the sign of the
@@ -267,8 +267,8 @@ def test_mixing_angle_signs_consistent_between_isotopes(species: str, species_hf
     such that its sign can only be compared together with the eigen quantum defects
     (see test_yb_d2_singlet_triplet_relative_sign for a comparison of the resulting states).
     """
-    models = [model for model in get_mqdt(species).models if isinstance(model, EigenChannelModel)]
-    models_hfs = [model for model in get_mqdt(species_hfs).models if isinstance(model, EigenChannelModel)]
+    models = [model for model in get_mqdt(species).models if isinstance(model, ModelEigenChannel)]
+    models_hfs = [model for model in get_mqdt(species_hfs).models if isinstance(model, ModelEigenChannel)]
     n_compared = 0
     for model in models:
         for model_hfs in models_hfs:
@@ -359,7 +359,7 @@ def test_frame_transformation_phase_convention(species: str, name: str, referenc
     np.testing.assert_allclose(calculated, reference, atol=1e-10, err_msg=model.full_name)
 
 
-def _get_sign_flipped_mixing_angles(model: EigenChannelModel) -> set[tuple[int, int]]:
+def _get_sign_flipped_mixing_angles(model: ModelEigenChannel) -> set[tuple[int, int]]:
     """Return the mixing angles, which have the opposite sign in rydstate than in the publications.
 
     The kets of the publications are related to the rydstate kets by |i>_paper = d_i |i>_rydstate,
@@ -403,7 +403,7 @@ def test_kuroda2025_mixing_angle_phase_convention() -> None:
     flipped = set()
     for species in ("Yb171", "Yb173", "Yb174"):
         for model in get_mqdt(species).models:
-            if isinstance(model, EigenChannelModel):
+            if isinstance(model, ModelEigenChannel):
                 flipped |= {(species, model.name, angle) for angle in _get_sign_flipped_mixing_angles(model)}
     assert flipped == set(YB_SIGN_FLIPPED_MIXING_ANGLES)
 
@@ -523,14 +523,14 @@ def test_yb_d2_singlet_triplet_relative_sign(species: str, name: str, nu_range: 
     assert n_checked > 0
 
 
-def _get_nist_fit_models() -> list[EigenChannelModel]:
+def _get_nist_fit_models() -> list[ModelEigenChannel]:
     """Return the eigenchannel models of all species, which were fitted to NIST data (instead of taken from papers)."""
     models = []
     for species in ("Sr87", "Sr88", "Yb171", "Yb173", "Yb174"):
         for model in get_mqdt(species).models:
             reference = " ".join(model.reference) if isinstance(model.reference, tuple) else str(model.reference)
             if (
-                isinstance(model, EigenChannelModel)
+                isinstance(model, ModelEigenChannel)
                 and model.mixing_angles
                 and re.search("fit to .*NIST data", reference)
             ):
@@ -539,14 +539,14 @@ def _get_nist_fit_models() -> list[EigenChannelModel]:
 
 
 @pytest.mark.parametrize("model", _get_nist_fit_models(), ids=lambda model: model.full_name)
-def test_nist_fit_mixing_angles_smaller_than_pi_half(model: EigenChannelModel) -> None:
+def test_nist_fit_mixing_angles_smaller_than_pi_half(model: ModelEigenChannel) -> None:
     """The mixing angles of the models fitted to NIST data stay within (-pi/2, pi/2) in the whole nu range.
 
     A rotation by pi/2 just swaps the two eigenchannels, so larger angles are equivalent to smaller angles
     with the eigen quantum defects swapped, but they make the sign of the angle (i.e. the singlet-triplet mixing)
     hard to interpret and compare between models. The angles are evaluated like in the model,
     i.e. with the nui of the first channel, see
-    :meth:`~rydstate.qdt.EigenChannelModel.calc_frame_transformation_inner_closecoupling`.
+    :meth:`~rydstate.qdt.ModelEigenChannel.calc_frame_transformation_inner_closecoupling`.
     """
     if model.name == "P F=3/2, 2.6 < nu < 10":
         pytest.skip(f"{model.full_name}: TODO: the mixing angle is not well defined for this model, fix this!")
@@ -563,7 +563,7 @@ def test_nist_fit_mixing_angles_smaller_than_pi_half(model: EigenChannelModel) -
 def test_vaillant2024_energies_match_publication(name: str, energies: list[tuple[float, float]]) -> None:
     """The Sr88 K-matrix models reproduce the theoretical energies published with them.
 
-    This checks the K-matrix formulation (KMatrixModel, including the energy dependence of the K-matrix via
+    This checks the K-matrix formulation (ModelKMatrix, including the energy dependence of the K-matrix via
     epsilon = (I_s - E) / I_s), the channel definitions and the ionization thresholds of the models against the
     supplementary material of the Addendum, which we reproduce to ~1e-5 1/cm (the remaining difference comes from
     the slightly different mass corrected Rydberg constant, 109736.631 1/cm in the paper vs. 109736.6309 1/cm here).

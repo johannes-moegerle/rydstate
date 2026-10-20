@@ -6,13 +6,13 @@ import numpy as np
 
 from rydstate.angular.angular_ket import AngularKetFJ, AngularKetJJ, AngularKetLS
 from rydstate.angular.utils import Unknown
-from rydstate.qdt.mqdt.eigen_channel_model import EigenChannelModel
+from rydstate.qdt.mqdt.eigen_channel_model import ModelEigenChannel
 
 REFERENCE_PEPER_2025 = "M. Peper et al., Phys. Rev. X 15, 011009 (2025), https://doi.org/10.1103/PhysRevX.15.011009"
 REFERENCE_KURODA_2025 = "R. Kuroda et al., Phys. Rev. A 112, 042817 (2025), https://doi.org/10.1103/mzsv-rckx"
 
 
-class Yb171_S05_HighN(EigenChannelModel):
+class Yb171_S05_HighN(ModelEigenChannel):
     species = "Yb171"
     name = "S F=1/2, nu > 26"
     f_tot, parity = (0.5, +1)
@@ -57,7 +57,7 @@ class Yb171_S05_HighN(EigenChannelModel):
     ]
 
 
-class Yb171_S15_HighN(EigenChannelModel):
+class Yb171_S15_HighN(ModelEigenChannel):
     species = "Yb171"
     name = "S F=3/2, nu > 26"
     f_tot, parity = (1.5, +1)
@@ -76,7 +76,7 @@ class Yb171_S15_HighN(EigenChannelModel):
     ]
 
 
-class Yb171_P05_HighN(EigenChannelModel):
+class Yb171_P05_HighN(ModelEigenChannel):
     species = "Yb171"
     name = "P F=1/2, nu > 5.9"
     f_tot, parity = (0.5, -1)
@@ -131,7 +131,7 @@ class Yb171_P05_HighN(EigenChannelModel):
     ]
 
 
-class Yb171_P15_HighN(EigenChannelModel):
+class Yb171_P15_HighN(ModelEigenChannel):
     species = "Yb171"
     name = "P F=3/2, nu > 10"
     f_tot, parity = (1.5, -1)
@@ -195,7 +195,7 @@ class Yb171_P15_HighN(EigenChannelModel):
     ]
 
 
-class Yb171_D05_HighN(EigenChannelModel):
+class Yb171_D05_HighN(ModelEigenChannel):
     species = "Yb171"
     name = "D F=1/2, nu > 30"
     f_tot, parity = (0.5, +1)
@@ -214,7 +214,7 @@ class Yb171_D05_HighN(EigenChannelModel):
     ]
 
 
-class Yb171_D15_HighN(EigenChannelModel):
+class Yb171_D15_HighN(ModelEigenChannel):
     species = "Yb171"
     name = "D F=3/2, nu > 30"
     f_tot, parity = (1.5, +1)
@@ -256,7 +256,7 @@ class Yb171_D15_HighN(EigenChannelModel):
     ]
 
 
-class Yb171_D25_HighN(EigenChannelModel):
+class Yb171_D25_HighN(ModelEigenChannel):
     species = "Yb171"
     name = "D F=5/2, nu > 30"
     f_tot, parity = (2.5, +1)
@@ -298,7 +298,7 @@ class Yb171_D25_HighN(EigenChannelModel):
     ]
 
 
-class Yb171_D35_HighN(EigenChannelModel):
+class Yb171_D35_HighN(ModelEigenChannel):
     species = "Yb171"
     name = "D F=7/2, nu > 14"
     f_tot, parity = (3.5, +1)
@@ -317,7 +317,7 @@ class Yb171_D35_HighN(EigenChannelModel):
     ]
 
 
-class Yb171_F25_HighN(EigenChannelModel):
+class Yb171_F25_HighN(ModelEigenChannel):
     species = "Yb171"
     name = "F F=5/2, nu > 20"
     f_tot, parity = (2.5, -1)
@@ -386,7 +386,7 @@ class Yb171_F25_HighN(EigenChannelModel):
     ]
 
 
-class Yb171_F35_HighN(EigenChannelModel):
+class Yb171_F35_HighN(ModelEigenChannel):
     species = "Yb171"
     name = "F F=7/2, nu > 20"
     f_tot, parity = (3.5, -1)
@@ -439,7 +439,7 @@ class Yb171_F35_HighN(EigenChannelModel):
     ]
 
 
-class Yb171_F45_HighN(EigenChannelModel):
+class Yb171_F45_HighN(ModelEigenChannel):
     species = "Yb171"
     name = "F F=9/2, nu > 20"
     f_tot, parity = (4.5, -1)
@@ -458,7 +458,7 @@ class Yb171_F45_HighN(EigenChannelModel):
     ]
 
 
-class Yb171_G25_HighN(EigenChannelModel):
+class Yb171_G25_HighN(ModelEigenChannel):
     species = "Yb171"
     name = "G F=5/2, nu > 25"
     f_tot, parity = (2.5, +1)
@@ -477,7 +477,7 @@ class Yb171_G25_HighN(EigenChannelModel):
     ]
 
 
-class Yb171_G35_HighN(EigenChannelModel):
+class Yb171_G35_HighN(ModelEigenChannel):
     species = "Yb171"
     name = "G F=7/2, nu > 25"
     f_tot, parity = (3.5, +1)
@@ -505,7 +505,7 @@ class Yb171_G35_HighN(EigenChannelModel):
     ]
 
 
-class Yb171_G45_HighN(EigenChannelModel):
+class Yb171_G45_HighN(ModelEigenChannel):
     species = "Yb171"
     name = "G F=9/2, nu > 25"
     f_tot, parity = (4.5, +1)
@@ -533,7 +533,7 @@ class Yb171_G45_HighN(EigenChannelModel):
     ]
 
 
-class Yb171_G55_HighN(EigenChannelModel):
+class Yb171_G55_HighN(ModelEigenChannel):
     species = "Yb171"
     name = "G F=11/2, nu > 25"
     f_tot, parity = (5.5, +1)
@@ -557,7 +557,7 @@ class Yb171_G55_HighN(EigenChannelModel):
 # --------------------------------------------------------
 
 
-class Yb171_S05_LowN(EigenChannelModel):
+class Yb171_S05_LowN(ModelEigenChannel):
     species = "Yb171"
     name = "S F=1/2, 2 < nu < 26"
     f_tot, parity = (0.5, +1)
@@ -602,7 +602,7 @@ class Yb171_S05_LowN(EigenChannelModel):
     ]
 
 
-class Yb171_S15_LowN(EigenChannelModel):
+class Yb171_S15_LowN(ModelEigenChannel):
     species = "Yb171"
     name = "S F=3/2, 2 < nu < 26"
     f_tot, parity = (1.5, +1)
@@ -621,7 +621,7 @@ class Yb171_S15_LowN(EigenChannelModel):
     ]
 
 
-class Yb171_P05_Lowest(EigenChannelModel):
+class Yb171_P05_Lowest(ModelEigenChannel):
     species = "Yb171"
     name = "P F=1/2, 1.6 < nu < 2.6"
     f_tot, parity = (0.5, -1)
@@ -649,7 +649,7 @@ class Yb171_P05_Lowest(EigenChannelModel):
     ]
 
 
-class Yb171_P05_LowN(EigenChannelModel):
+class Yb171_P05_LowN(ModelEigenChannel):
     species = "Yb171"
     name = "P F=1/2, 2.6 < nu < 5.9"
     f_tot, parity = (0.5, -1)
@@ -674,7 +674,7 @@ class Yb171_P05_LowN(EigenChannelModel):
     ]
 
 
-class Yb171_P15_Lowest(EigenChannelModel):
+class Yb171_P15_Lowest(ModelEigenChannel):
     species = "Yb171"
     name = "P F=3/2, 1.6 < nu < 2.6"
     f_tot, parity = (1.5, -1)
@@ -702,7 +702,7 @@ class Yb171_P15_Lowest(EigenChannelModel):
     ]
 
 
-class Yb171_P15_LowN(EigenChannelModel):
+class Yb171_P15_LowN(ModelEigenChannel):
     species = "Yb171"
     name = "P F=3/2, 2.6 < nu < 10"
     f_tot, parity = (1.5, -1)
@@ -765,7 +765,7 @@ class Yb171_P15_LowN(EigenChannelModel):
     ]
 
 
-class Yb171_P25_Lowest(EigenChannelModel):
+class Yb171_P25_Lowest(ModelEigenChannel):
     species = "Yb171"
     name = "P F=5/2, 1.5 < nu < 4.5"
     f_tot, parity = (2.5, -1)
@@ -784,7 +784,7 @@ class Yb171_P25_Lowest(EigenChannelModel):
     ]
 
 
-class Yb171_P25_LowN(EigenChannelModel):
+class Yb171_P25_LowN(ModelEigenChannel):
     species = "Yb171"
     name = "P F=5/2, 4.5 < nu < 20"
     f_tot, parity = (2.5, -1)
@@ -817,7 +817,7 @@ class Yb171_P25_LowN(EigenChannelModel):
     ]
 
 
-class Yb171_D05_LowN(EigenChannelModel):
+class Yb171_D05_LowN(ModelEigenChannel):
     species = "Yb171"
     name = "D F=1/2, 2 < nu < 30"
     f_tot, parity = (0.5, +1)
@@ -836,7 +836,7 @@ class Yb171_D05_LowN(EigenChannelModel):
     ]
 
 
-class Yb171_D15_LowN(EigenChannelModel):
+class Yb171_D15_LowN(ModelEigenChannel):
     species = "Yb171"
     name = "D F=3/2, 2 < nu < 30"
     f_tot, parity = (1.5, +1)
@@ -878,7 +878,7 @@ class Yb171_D15_LowN(EigenChannelModel):
     ]
 
 
-class Yb171_D25_LowN(EigenChannelModel):
+class Yb171_D25_LowN(ModelEigenChannel):
     species = "Yb171"
     name = "D F=5/2, 2 < nu < 30"
     f_tot, parity = (2.5, +1)
@@ -920,7 +920,7 @@ class Yb171_D25_LowN(EigenChannelModel):
     ]
 
 
-class Yb171_D35_LowN(EigenChannelModel):
+class Yb171_D35_LowN(ModelEigenChannel):
     species = "Yb171"
     name = "D F=7/2, 2 < nu < 14"
     f_tot, parity = (3.5, +1)

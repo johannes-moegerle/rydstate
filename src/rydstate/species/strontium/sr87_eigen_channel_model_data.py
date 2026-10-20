@@ -5,14 +5,14 @@ from __future__ import annotations
 import numpy as np
 
 from rydstate.angular.angular_ket import AngularKetFJ, AngularKetLS
-from rydstate.qdt.mqdt.eigen_channel_model import EigenChannelModel
+from rydstate.qdt.mqdt.eigen_channel_model import ModelEigenChannel
 
 REFERENCE_ROBICHEAUX_2019 = (
     "F. Robicheaux, J. Phys. B: At. Mol. Opt. Phys. 52 244001 (2019), https://doi.org/10.1088/1361-6455/ab4c22"
 )
 
 
-class Sr87_S35_HighN(EigenChannelModel):
+class Sr87_S35_HighN(ModelEigenChannel):
     species = "Sr87"
     name = "S F=7/2, nu > 11"
     f_tot, parity = (3.5, +1)
@@ -31,7 +31,7 @@ class Sr87_S35_HighN(EigenChannelModel):
     ]
 
 
-class Sr87_S45_HighN(EigenChannelModel):
+class Sr87_S45_HighN(ModelEigenChannel):
     species = "Sr87"
     name = "S F=9/2, nu > 11"
     f_tot, parity = (4.5, +1)
@@ -53,7 +53,7 @@ class Sr87_S45_HighN(EigenChannelModel):
     ]
 
 
-class Sr87_S55_HighN(EigenChannelModel):
+class Sr87_S55_HighN(ModelEigenChannel):
     species = "Sr87"
     name = "S F=11/2, nu > 11"
     f_tot, parity = (5.5, +1)
@@ -77,7 +77,7 @@ class Sr87_S55_HighN(EigenChannelModel):
 # --------------------------------------------------------
 
 
-class Sr87_P45_LowN(EigenChannelModel):
+class Sr87_P45_LowN(ModelEigenChannel):
     species = "Sr87"
     name = "P F=9/2 (clock), 1.8 < nu < 2.2"
     f_tot, parity = (4.5, -1)
@@ -114,7 +114,7 @@ class Sr87_P45_LowN(EigenChannelModel):
 # --------------------------------------------------------
 
 
-class Sr87_P25_HighN(EigenChannelModel):
+class Sr87_P25_HighN(ModelEigenChannel):
     species = "Sr87"
     name = "P F=5/2, nu > 5"
     f_tot, parity = (2.5, -1)
@@ -133,7 +133,7 @@ class Sr87_P25_HighN(EigenChannelModel):
     ]
 
 
-class Sr87_P35_HighN(EigenChannelModel):
+class Sr87_P35_HighN(ModelEigenChannel):
     species = "Sr87"
     name = "P F=7/2, nu > 5"
     f_tot, parity = (3.5, -1)
@@ -158,7 +158,7 @@ class Sr87_P35_HighN(EigenChannelModel):
     ]
 
 
-class Sr87_P45_HighN(EigenChannelModel):
+class Sr87_P45_HighN(ModelEigenChannel):
     species = "Sr87"
     name = "P F=9/2, nu > 7"
     f_tot, parity = (4.5, -1)
@@ -186,7 +186,7 @@ class Sr87_P45_HighN(EigenChannelModel):
     ]
 
 
-class Sr87_P55_HighN(EigenChannelModel):
+class Sr87_P55_HighN(ModelEigenChannel):
     species = "Sr87"
     name = "P F=11/2, nu > 5"
     f_tot, parity = (5.5, -1)
@@ -211,7 +211,7 @@ class Sr87_P55_HighN(EigenChannelModel):
     ]
 
 
-class Sr87_P65_HighN(EigenChannelModel):
+class Sr87_P65_HighN(ModelEigenChannel):
     species = "Sr87"
     name = "P F=13/2, nu > 5"
     f_tot, parity = (6.5, -1)
@@ -235,7 +235,7 @@ class Sr87_P65_HighN(EigenChannelModel):
 # --------------------------------------------------------
 
 
-class Sr87_D15_HighN(EigenChannelModel):
+class Sr87_D15_HighN(ModelEigenChannel):
     species = "Sr87"
     name = "D F=3/2, nu > 25"
     f_tot, parity = (1.5, +1)
@@ -254,7 +254,7 @@ class Sr87_D15_HighN(EigenChannelModel):
     ]
 
 
-class Sr87_D25_HighN(EigenChannelModel):
+class Sr87_D25_HighN(ModelEigenChannel):
     species = "Sr87"
     name = "D F=5/2, nu > 25"
     f_tot, parity = (2.5, +1)
@@ -282,7 +282,7 @@ class Sr87_D25_HighN(EigenChannelModel):
     ]
 
 
-class Sr87_D35_HighN(EigenChannelModel):
+class Sr87_D35_HighN(ModelEigenChannel):
     species = "Sr87"
     name = "D F=7/2, nu > 25"
     f_tot, parity = (3.5, +1)
@@ -313,7 +313,7 @@ class Sr87_D35_HighN(EigenChannelModel):
     ]
 
 
-class Sr87_D45_HighN(EigenChannelModel):
+class Sr87_D45_HighN(ModelEigenChannel):
     species = "Sr87"
     name = "D F=9/2, nu > 25"
     f_tot, parity = (4.5, +1)
@@ -344,7 +344,7 @@ class Sr87_D45_HighN(EigenChannelModel):
     ]
 
 
-class Sr87_D55_HighN(EigenChannelModel):
+class Sr87_D55_HighN(ModelEigenChannel):
     species = "Sr87"
     name = "D F=11/2, nu > 25"
     f_tot, parity = (5.5, +1)
@@ -375,7 +375,7 @@ class Sr87_D55_HighN(EigenChannelModel):
     ]
 
 
-class Sr87_D65_HighN(EigenChannelModel):
+class Sr87_D65_HighN(ModelEigenChannel):
     species = "Sr87"
     name = "D F=13/2, nu > 25"
     f_tot, parity = (6.5, +1)
@@ -403,7 +403,7 @@ class Sr87_D65_HighN(EigenChannelModel):
     ]
 
 
-class Sr87_D75_HighN(EigenChannelModel):
+class Sr87_D75_HighN(ModelEigenChannel):
     species = "Sr87"
     name = "D F=15/2, nu > 25"
     f_tot, parity = (7.5, +1)
@@ -427,7 +427,7 @@ class Sr87_D75_HighN(EigenChannelModel):
 # --------------------------------------------------------
 
 
-class Sr87_F45_HighN(EigenChannelModel):
+class Sr87_F45_HighN(ModelEigenChannel):
     species = "Sr87"
     name = "F F=9/2, nu > 9"
     f_tot, parity = (4.5, -1)

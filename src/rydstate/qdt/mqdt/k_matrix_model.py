@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from rydstate.units import NDArray
 
 
-class KMatrixModel(ModelMQDT):
+class ModelKMatrix(ModelMQDT):
     r"""MQDT model parametrized directly by the K-matrix in the outer channel frame (reactance matrix approach).
 
     The model is defined by the real symmetric K-matrix (reactance matrix) in the frame of the outer channels,

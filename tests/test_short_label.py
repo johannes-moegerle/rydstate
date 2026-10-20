@@ -9,7 +9,7 @@ from rydstate.angular.angular_ket import AngularKetBase
 from rydstate.angular.short_label import format_short_label, parse_short_label
 from rydstate.angular.utils import Unknown
 from rydstate.element_properties import get_element_properties
-from rydstate.qdt import EigenChannelModel, ModelSetMQDT
+from rydstate.qdt import ModelEigenChannel, ModelSetMQDT
 from rydstate.radial import RadialDummy
 from rydstate.rydberg_state import RydbergKet
 from rydstate.utils import get_all_subclasses
@@ -241,7 +241,7 @@ def test_from_short_label_unknown_invalid(label: str) -> None:
 def test_short_label_round_trip_mqdt_channels(model: ModelMQDT) -> None:
     """All channels of the MQDT models (including the perturber channels) can be recreated from their short label."""
     channels = list(model.outer_channels)
-    if isinstance(model, EigenChannelModel):
+    if isinstance(model, ModelEigenChannel):
         channels += model.inner_channels
     for channel in channels:
         assert type(channel).from_short_label(channel.get_short_label(), model.species) == channel

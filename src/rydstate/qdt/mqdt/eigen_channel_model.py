@@ -18,7 +18,7 @@ if TYPE_CHECKING:
     from rydstate.units import NDArray
 
 
-class EigenChannelModel(ModelMQDT):
+class ModelEigenChannel(ModelMQDT):
     """MQDT model formulated in terms of eigenchannels and a frame transformation.
 
     The K-matrix is diagonal in the close-coupling (eigenchannel) frame, with the eigen quantum defects
@@ -226,7 +226,7 @@ class EigenChannelModel(ModelMQDT):
         return np.diag(transform @ eigen_quantum_defects @ transform.T)
 
 
-class TrivialModel(EigenChannelModel):
+class TrivialModel(ModelEigenChannel):
     """Trivial single channel model with a vanishing quantum defect (i.e. a hydrogen-like channel).
 
     This is used as fallback for channels for which no MQDT model is available.

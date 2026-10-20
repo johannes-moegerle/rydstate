@@ -67,8 +67,8 @@ from __future__ import annotations
 import numpy as np
 
 from rydstate.angular.angular_ket import AngularKetJJ, AngularKetLS
-from rydstate.qdt.mqdt.eigen_channel_model import EigenChannelModel
-from rydstate.qdt.mqdt.k_matrix_model import KMatrixModel
+from rydstate.qdt.mqdt.eigen_channel_model import ModelEigenChannel
+from rydstate.qdt.mqdt.k_matrix_model import ModelKMatrix
 
 REFERENCE_VAILLANT_2024 = (
     "C. L. Vaillant, M. P. A. Jones and R. M. Potvliege, "
@@ -94,7 +94,7 @@ LABEL_4D_AVERAGED = "4d threshold averaged"
 # --------------------------------------------------------
 
 
-class Sr88_S0_Vaillant2024(KMatrixModel):
+class Sr88_S0_Vaillant2024(ModelKMatrix):
     species = "Sr88"
     name = "S J=0, nu > 3.7"
     f_tot, parity = (0, +1)
@@ -118,7 +118,7 @@ class Sr88_S0_Vaillant2024(KMatrixModel):
     ]
 
 
-class Sr88_S1_Vaillant2024(KMatrixModel):
+class Sr88_S1_Vaillant2024(ModelKMatrix):
     """5sns 3S1 model fitted to the data set (b) of the Addendum (high precision data of Couturier 2019 for n >= 13).
 
     The Addendum also gives a fit to the older data set (a) of the 2014 paper, which is not included here.
@@ -150,7 +150,7 @@ class Sr88_S1_Vaillant2024(KMatrixModel):
 # --------------------------------------------------------
 
 
-class Sr88_P1_Singlet_Vaillant2024(KMatrixModel):
+class Sr88_P1_Singlet_Vaillant2024(ModelKMatrix):
     species = "Sr88"
     name = "P J=1 singlet, nu > 2.8"
     f_tot, parity = (1, -1)
@@ -169,7 +169,7 @@ class Sr88_P1_Singlet_Vaillant2024(KMatrixModel):
     ]
 
 
-class Sr88_P0_Vaillant2024(KMatrixModel):
+class Sr88_P0_Vaillant2024(ModelKMatrix):
     species = "Sr88"
     name = "P J=0, nu > 2.8"
     f_tot, parity = (0, -1)
@@ -188,7 +188,7 @@ class Sr88_P0_Vaillant2024(KMatrixModel):
     ]
 
 
-class Sr88_P1_Triplet_Vaillant2024(KMatrixModel):
+class Sr88_P1_Triplet_Vaillant2024(ModelKMatrix):
     species = "Sr88"
     name = "P J=1 triplet, nu > 2.8"
     f_tot, parity = (1, -1)
@@ -207,7 +207,7 @@ class Sr88_P1_Triplet_Vaillant2024(KMatrixModel):
     ]
 
 
-class Sr88_P2_Vaillant2024(KMatrixModel):
+class Sr88_P2_Vaillant2024(ModelKMatrix):
     species = "Sr88"
     name = "P J=2, nu > 2.8"
     f_tot, parity = (2, -1)
@@ -231,7 +231,7 @@ class Sr88_P2_Vaillant2024(KMatrixModel):
 # --------------------------------------------------------
 
 
-class Sr88_D2_Vaillant2024(KMatrixModel):
+class Sr88_D2_Vaillant2024(ModelKMatrix):
     """Combined 6-channel model for the strongly mixed 5snd 1D2 and 5snd 3D2 series."""
 
     species = "Sr88"
@@ -271,7 +271,7 @@ class Sr88_D2_Vaillant2024(KMatrixModel):
     ]
 
 
-class Sr88_D1_Vaillant2024(KMatrixModel):
+class Sr88_D1_Vaillant2024(ModelKMatrix):
     species = "Sr88"
     name = "D J=1, nu > 9.5"
     f_tot, parity = (1, +1)
@@ -290,7 +290,7 @@ class Sr88_D1_Vaillant2024(KMatrixModel):
     ]
 
 
-class Sr88_D3_Vaillant2024(KMatrixModel):
+class Sr88_D3_Vaillant2024(ModelKMatrix):
     species = "Sr88"
     name = "D J=3, nu > 3.9"
     f_tot, parity = (3, +1)
@@ -318,7 +318,7 @@ class Sr88_D3_Vaillant2024(KMatrixModel):
 # --------------------------------------------------------
 
 
-class Sr88_F3_Singlet_Vaillant2024(KMatrixModel):
+class Sr88_F3_Singlet_Vaillant2024(ModelKMatrix):
     species = "Sr88"
     name = "F J=3 singlet, nu > 3.5"
     f_tot, parity = (3, -1)
@@ -337,7 +337,7 @@ class Sr88_F3_Singlet_Vaillant2024(KMatrixModel):
     ]
 
 
-class Sr88_F2_Robertson2021(EigenChannelModel):
+class Sr88_F2_Robertson2021(ModelEigenChannel):
     """5snf 3F2 series, described by its Rydberg-Ritz quantum defects, since Vaillant 2024 has no triplet F models."""
 
     species = "Sr88"
@@ -358,7 +358,7 @@ class Sr88_F2_Robertson2021(EigenChannelModel):
     ]
 
 
-class Sr88_F3_Triplet_Robertson2021(EigenChannelModel):
+class Sr88_F3_Triplet_Robertson2021(ModelEigenChannel):
     """5snf 3F3 series, described by its Rydberg-Ritz quantum defects, since Vaillant 2024 has no triplet F models.
 
     The singlet 5snf 1F3 series of the same symmetry is described by :class:`Sr88_F3_Singlet_Vaillant2024`.
@@ -384,7 +384,7 @@ class Sr88_F3_Triplet_Robertson2021(EigenChannelModel):
     ]
 
 
-class Sr88_F4_Robertson2021(EigenChannelModel):
+class Sr88_F4_Robertson2021(ModelEigenChannel):
     """5snf 3F4 series, described by its Rydberg-Ritz quantum defects, since Vaillant 2024 has no triplet F models."""
 
     species = "Sr88"

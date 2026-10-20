@@ -6,10 +6,10 @@ import numpy as np
 
 from rydstate.angular.angular_ket import AngularKetFJ, AngularKetJJ, AngularKetLS
 from rydstate.angular.utils import Unknown
-from rydstate.qdt.mqdt.eigen_channel_model import EigenChannelModel
+from rydstate.qdt.mqdt.eigen_channel_model import ModelEigenChannel
 
 
-class Yb173_S15_HighN(EigenChannelModel):
+class Yb173_S15_HighN(ModelEigenChannel):
     species = "Yb173"
     name = "S F=3/2, nu > 26"
     f_tot, parity = (1.5, +1)
@@ -28,7 +28,7 @@ class Yb173_S15_HighN(EigenChannelModel):
     ]
 
 
-class Yb173_S25_HighN(EigenChannelModel):
+class Yb173_S25_HighN(ModelEigenChannel):
     species = "Yb173"
     name = "S F=5/2, nu > 26"
     f_tot, parity = (2.5, +1)
@@ -73,7 +73,7 @@ class Yb173_S25_HighN(EigenChannelModel):
     ]
 
 
-class Yb173_S35_HighN(EigenChannelModel):
+class Yb173_S35_HighN(ModelEigenChannel):
     species = "Yb173"
     name = "S F=7/2, nu > 26"
     f_tot, parity = (3.5, +1)
@@ -92,7 +92,7 @@ class Yb173_S35_HighN(EigenChannelModel):
     ]
 
 
-class Yb173_P05_HighN(EigenChannelModel):
+class Yb173_P05_HighN(ModelEigenChannel):
     species = "Yb173"
     name = "P F=1/2, nu > 10"
     f_tot, parity = (0.5, -1)
@@ -125,7 +125,7 @@ class Yb173_P05_HighN(EigenChannelModel):
     ]
 
 
-class Yb173_P15_HighN(EigenChannelModel):
+class Yb173_P15_HighN(ModelEigenChannel):
     species = "Yb173"
     name = "P F=3/2, nu > 10"
     f_tot, parity = (1.5, -1)
@@ -185,7 +185,7 @@ class Yb173_P15_HighN(EigenChannelModel):
     ]
 
 
-class Yb173_P25_HighN(EigenChannelModel):
+class Yb173_P25_HighN(ModelEigenChannel):
     species = "Yb173"
     name = "P F=5/2, nu > 10"
     f_tot, parity = (2.5, -1)
@@ -252,7 +252,7 @@ class Yb173_P25_HighN(EigenChannelModel):
     ]
 
 
-class Yb173_P35_HighN(EigenChannelModel):
+class Yb173_P35_HighN(ModelEigenChannel):
     species = "Yb173"
     name = "P F=7/2, nu > 10"
     f_tot, parity = (3.5, -1)
@@ -312,7 +312,7 @@ class Yb173_P35_HighN(EigenChannelModel):
     ]
 
 
-class Yb173_P45_HighN(EigenChannelModel):
+class Yb173_P45_HighN(ModelEigenChannel):
     species = "Yb173"
     name = "P F=9/2, nu > 10"
     f_tot, parity = (4.5, -1)

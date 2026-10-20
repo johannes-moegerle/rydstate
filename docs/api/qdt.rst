@@ -22,8 +22,8 @@ Multichannel quantum defect theory (MQDT)
 
     ModelSetMQDT
     ModelMQDT
-    EigenChannelModel
-    KMatrixModel
+    ModelEigenChannel
+    ModelKMatrix
     ScaledOffDiagonalModel
     TrivialModel
     get_mqdt
