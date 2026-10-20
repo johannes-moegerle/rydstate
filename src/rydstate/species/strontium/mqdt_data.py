@@ -5,7 +5,7 @@ from typing import ClassVar
 from rydstate.angular.core_ket import CoreKet
 from rydstate.angular.utils import Unknown
 from rydstate.qdt.mqdt import ModelSetMQDT
-from rydstate.qdt.mqdt.mqdt_model import get_model_classes
+from rydstate.qdt.mqdt.model_mqdt import get_model_classes
 from rydstate.species.strontium import (
     sr87_eigen_channel_model_data,
     sr88_eigen_channel_model_data,

@@ -13,7 +13,7 @@ from rydstate.utils import get_all_subclasses
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase
     from rydstate.angular.core_ket import CoreKet
-    from rydstate.qdt.mqdt.mqdt_model import ModelMQDT
+    from rydstate.qdt.mqdt.model_mqdt import ModelMQDT
     from rydstate.units import PintFloat
 
 

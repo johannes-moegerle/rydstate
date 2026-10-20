@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Any, ClassVar
 import numpy as np
 
 from rydstate.angular.utils import is_not_set
-from rydstate.qdt.mqdt.mqdt_model import ModelMQDT
+from rydstate.qdt.mqdt.model_mqdt import ModelMQDT
 from rydstate.qdt.utils import calc_modified_ritz_formula_in_nu, check_expansion_coefficients
 
 if TYPE_CHECKING:

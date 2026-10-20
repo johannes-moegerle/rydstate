@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, ClassVar
 
 import numpy as np
 
-from rydstate.qdt.mqdt.mqdt_model import ModelMQDT
+from rydstate.qdt.mqdt.model_mqdt import ModelMQDT
 from rydstate.qdt.utils import calc_polynomial, check_expansion_coefficients
 from rydstate.utils import calc_energy_from_nu
 

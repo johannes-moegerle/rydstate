@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
     from rydstate.angular.angular_ket import AngularKetBase
     from rydstate.qdt.mqdt import ModelSetMQDT
-    from rydstate.qdt.mqdt.mqdt_model import ModelMQDT
+    from rydstate.qdt.mqdt.model_mqdt import ModelMQDT
 
 
 logger = logging.getLogger(__name__)
