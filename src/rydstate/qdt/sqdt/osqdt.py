@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
     from rydstate.angular.angular_ket import AngularKetBase
     from rydstate.qdt.mqdt import MQDT
-    from rydstate.qdt.mqdt_model import MQDTModel
+    from rydstate.qdt.mqdt.mqdt_model import MQDTModel
 
 
 logger = logging.getLogger(__name__)
@@ -247,7 +247,7 @@ class OSQDTModel:
 
         Returns:
             The diagonal element of the K-matrix of the MQDT model in the outer channel
-            frame (see :meth:`~rydstate.qdt.mqdt_model.MQDTModel.calc_k_matrix`).
+            frame (see :meth:`~rydstate.qdt.mqdt.mqdt_model.MQDTModel.calc_k_matrix`).
             NaN for a state above the reference ionization threshold, where the K-matrix is not defined.
 
         """
@@ -267,7 +267,7 @@ class OSQDTModel:
             \sin(\pi \nu_i) + \cos(\pi \nu_i) K_{ii}(\nu) = 0
 
         I.e. this is the diagonal element of the scaled M-matrix belonging to this channel
-        (see :meth:`~rydstate.qdt.mqdt_model.MQDTModel.calc_scaled_m_matrix`), where the scaling with
+        (see :meth:`~rydstate.qdt.mqdt.mqdt_model.MQDTModel.calc_scaled_m_matrix`), where the scaling with
         :math:`\cos(\pi \nu_i)` improves the numerical stability of the root finding.
 
         Args:
@@ -286,7 +286,7 @@ class OSQDTModel:
         The OSQDT condition only determines the quantum defect modulo one
         (:math:`K_{ii} = \tan(\pi \mu_i)`), which is not enough to label the states with their principal
         quantum number n. The integer part is taken from the approximate quantum defects of the model
-        (see :meth:`~rydstate.qdt.mqdt_model.MQDTModel.calc_approximate_quantum_defects`), which
+        (see :meth:`~rydstate.qdt.mqdt.mqdt_model.MQDTModel.calc_approximate_quantum_defects`), which
         must not be used for the fractional part of the quantum defect (this one is given exactly by
         the OSQDT condition), but is good enough to determine the integer part.
 

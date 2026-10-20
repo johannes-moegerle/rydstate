@@ -4,12 +4,12 @@ from typing import TYPE_CHECKING, ClassVar
 
 import numpy as np
 
-from rydstate.qdt.mqdt_model import MQDTModel
+from rydstate.qdt.mqdt.mqdt_model import MQDTModel
 from rydstate.qdt.utils import calc_polynomial, check_expansion_coefficients
 from rydstate.utils import calc_energy_from_nu
 
 if TYPE_CHECKING:
-    from rydstate.qdt.mqdt import MQDT
+    from rydstate.qdt.mqdt.mqdt import MQDT
     from rydstate.qdt.utils import ExpansionCoefficients
     from rydstate.units import NDArray
 

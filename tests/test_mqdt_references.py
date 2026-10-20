@@ -546,7 +546,7 @@ def test_nist_fit_mixing_angles_smaller_than_pi_half(model: EigenChannelModel) -
     with the eigen quantum defects swapped, but they make the sign of the angle (i.e. the singlet-triplet mixing)
     hard to interpret and compare between models. The angles are evaluated like in the model,
     i.e. with the nui of the first channel, see
-    :meth:`~rydstate.qdt.eigen_channel_model.EigenChannelModel.calc_frame_transformation_inner_closecoupling`.
+    :meth:`~rydstate.qdt.mqdt.eigen_channel_model.EigenChannelModel.calc_frame_transformation_inner_closecoupling`.
     """
     if model.name == "P F=3/2, 2.6 < nu < 10":
         pytest.skip(f"{model.full_name}: TODO: the mixing angle is not well defined for this model, fix this!")

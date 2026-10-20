@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
     from rydstate.angular.angular_ket import AngularKetBase, AngularKetFJ
     from rydstate.angular.core_ket import CoreKet
-    from rydstate.qdt.mqdt import MQDT
+    from rydstate.qdt.mqdt.mqdt import MQDT
     from rydstate.units import NDArray, PintFloat
 
 
@@ -24,7 +24,7 @@ class MQDTModel(ABC):
 
     The model defines a set of outer channels and, via :meth:`calc_k_matrix`,
     the K-matrix coupling them. How the K-matrix is parametrized is up to the subclasses, e.g.
-    :class:`~rydstate.qdt.eigen_channel_model.EigenChannelModel` parametrizes it by eigen quantum
+    :class:`~rydstate.qdt.mqdt.eigen_channel_model.EigenChannelModel` parametrizes it by eigen quantum
     defects together with a frame transformation to the outer channels.
     The MQDT states of the model are then given by the roots of det(M) = det(tan(\pi \nu) + K) = 0,
     see :meth:`calc_m_matrix`.

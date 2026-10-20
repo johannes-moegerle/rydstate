@@ -5,7 +5,7 @@ from __future__ import annotations
 import numpy as np
 
 from rydstate.angular.angular_ket import AngularKetFJ, AngularKetLS
-from rydstate.qdt.eigen_channel_model import EigenChannelModel
+from rydstate.qdt.mqdt.eigen_channel_model import EigenChannelModel
 
 REFERENCE_ROBICHEAUX_2019 = (
     "F. Robicheaux, J. Phys. B: At. Mol. Opt. Phys. 52 244001 (2019), https://doi.org/10.1088/1361-6455/ab4c22"

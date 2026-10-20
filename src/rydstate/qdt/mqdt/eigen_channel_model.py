@@ -7,13 +7,13 @@ from typing import TYPE_CHECKING, Any, ClassVar
 import numpy as np
 
 from rydstate.angular.utils import is_not_set
-from rydstate.qdt.mqdt_model import MQDTModel
+from rydstate.qdt.mqdt.mqdt_model import MQDTModel
 from rydstate.qdt.utils import calc_modified_ritz_formula_in_nu, check_expansion_coefficients
 
 if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase
     from rydstate.angular.utils import AllKnown
-    from rydstate.qdt.mqdt import MQDT
+    from rydstate.qdt.mqdt.mqdt import MQDT
     from rydstate.qdt.utils import ExpansionCoefficients
     from rydstate.units import NDArray
 
