@@ -18,7 +18,7 @@ from rydstate.rydberg_state.rydberg_ket import RydbergKet
 from rydstate.utils import calc_energy_from_nu, calc_nu_from_energy
 
 if TYPE_CHECKING:
-    from rydstate.qdt.sqdt.osqdt import ModelSetOSQDT
+    from rydstate.qdt.osqdt.model_set_osqdt import ModelSetOSQDT
     from rydstate.units import PintFloat
 
 GenericT_AngularKet = TypeVar("GenericT_AngularKet", bound=AngularKetBase[AllKnown])

@@ -13,7 +13,7 @@ from rydstate.basis.basis_base import BasisBase
 from rydstate.basis.basis_sqdt import BasisSQDT
 from rydstate.basis.utils import get_m_range, is_allowed_qn
 from rydstate.qdt.mqdt import ModelSetMQDT, get_mqdt
-from rydstate.qdt.sqdt.osqdt import ModelSetOSQDT, NoOSQDTStateError
+from rydstate.qdt.osqdt.model_set_osqdt import ModelSetOSQDT, NoOSQDTStateError
 from rydstate.rydberg_state.rydberg_sqdt import RydbergStateOSQDT
 
 if TYPE_CHECKING:

@@ -7,7 +7,8 @@ from rydstate.qdt.mqdt import (
     TrivialModel,
     get_mqdt,
 )
-from rydstate.qdt.sqdt import ModelOSQDT, ModelSetOSQDT, ModelSetSQDT, get_sqdt
+from rydstate.qdt.osqdt import ModelOSQDT, ModelSetOSQDT
+from rydstate.qdt.sqdt import ModelSetSQDT, get_sqdt
 
 __all__ = [
     "ModelEigenChannel",

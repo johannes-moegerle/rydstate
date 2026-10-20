@@ -10,8 +10,6 @@ Single channel quantum defect theory (SQDT)
     :toctree: ../_autosummary/
 
     ModelSetSQDT
-    ModelSetOSQDT
-    ModelOSQDT
     get_sqdt
 
 Multichannel quantum defect theory (MQDT)
@@ -27,3 +25,12 @@ Multichannel quantum defect theory (MQDT)
     ScaledOffDiagonalModel
     TrivialModel
     get_mqdt
+
+Outer single channel quantum defect theory (OSQDT)
+--------------------------------------------------
+
+.. autosummary::
+    :toctree: ../_autosummary/
+
+    ModelSetOSQDT
+    ModelOSQDT
