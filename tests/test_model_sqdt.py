@@ -129,6 +129,13 @@ def test_to_dict() -> None:
         "reference": ["Ref A", "Ref B"],
         "nu_range": [10, "inf"],
     }
+    # optional keys with their default value are not included
+    assert ModelSQDT("Rb", "ns_1/2", [3.1311807]).to_dict() == {
+        "model_class": "ModelSQDT",
+        "species": "Rb",
+        "channel": "ns_1/2",
+        "quantum_defects": [3.1311807],
+    }
 
 
 def test_from_dict_optional_keys() -> None:
@@ -137,6 +144,14 @@ def test_from_dict_optional_keys() -> None:
     )
     assert model.reference is None
     assert model.nu_range == (0, math.inf)
+
+
+def test_from_dict_ignores_comment() -> None:
+    """A comment in the json file is only meant for its reader and not stored in the model."""
+    data = {"model_class": "ModelSQDT", "species": "Rb", "channel": "ns_1/2", "quantum_defects": [3.13], "comment": "x"}
+    model = ModelSQDT.from_dict(data)
+    assert not hasattr(model, "comment")
+    assert "comment" not in model.to_dict()
 
 
 def test_from_dict_unknown_key() -> None:

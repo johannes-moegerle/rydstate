@@ -32,6 +32,9 @@ class ModelSQDTDict(TypedDict):
     reference: NotRequired[str | list[str] | None]
     nu_range: NotRequired[list[float | Literal["inf"]]]
     """[nu_min, nu_max], where an infinite nu_max is given as the string "inf" (JSON has no infinity)."""
+    comment: NotRequired[str]
+    """Optional comment, e.g. how the quantum defects were derived from the reference.
+    It is only meant for the reader of the json file and ignored by :meth:`ModelSQDT.from_dict`."""
 
 
 class ModelSQDT(Model):
@@ -125,16 +128,23 @@ class ModelSQDT(Model):
             with open("model.json") as file:
                 model = ModelSQDT.from_dict(json.load(file))
 
+        The optional keys "reference" and "nu_range" are only included,
+        if they differ from their default value (None and (0, inf), respectively).
+        An infinite nu_max is given as the string "inf", since JSON has no infinity.
+
         """
-        nu_min, nu_max = self.nu_range
-        return {
+        data: ModelSQDTDict = {
             "model_class": type(self).__name__,
             "species": self.species,
             "channel": self.channel.get_short_label(),
             "quantum_defects": list(self.quantum_defects),
-            "reference": list(self.reference) if isinstance(self.reference, tuple) else self.reference,
-            "nu_range": [nu_min, "inf" if math.isinf(nu_max) else nu_max],
         }
+        if self.reference is not None:
+            data["reference"] = list(self.reference) if isinstance(self.reference, tuple) else self.reference
+        nu_min, nu_max = self.nu_range
+        if (nu_min, nu_max) != (0, math.inf):
+            data["nu_range"] = [nu_min, "inf" if math.isinf(nu_max) else nu_max]
+        return data
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> Self:
@@ -143,7 +153,7 @@ class ModelSQDT(Model):
         Args:
             data: The dictionary describing the model, see :class:`ModelSQDTDict`.
                 Its "model_class" must be the name of this class.
-                The keys "reference" and "nu_range" are optional.
+                The keys "reference", "nu_range" and "comment" are optional, where "comment" is ignored.
 
         """
         unknown_keys = set(data) - set(ModelSQDTDict.__annotations__)
