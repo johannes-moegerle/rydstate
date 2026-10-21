@@ -1,8 +1,10 @@
+import json
 import math
 
 import pytest
 from rydstate.angular import AngularKetJJ, AngularKetLS
-from rydstate.qdt import ModelSQDT, get_sqdt
+from rydstate.qdt import ModelSetSQDT, ModelSQDT, get_sqdt
+from rydstate.utils import get_all_subclasses
 
 
 def test_channel_from_short_label() -> None:
@@ -97,3 +99,55 @@ def test_ionization_thresholds() -> None:
     assert model.ionization_thresholds_au == [threshold_au]
     assert model.ionization_threshold_au == threshold_au
     assert model.reference_ionization_threshold_au == element_properties.get_reference_ionization_threshold("a.u.")
+
+
+ALL_SQDT_MODELS = [
+    model for cls in get_all_subclasses(ModelSetSQDT) if cls.species is not None for model in cls.models or []
+]
+
+
+@pytest.mark.parametrize("model", ALL_SQDT_MODELS, ids=lambda model: model.full_name)
+def test_json_round_trip(model: ModelSQDT) -> None:
+    """A model can be stored as json and recreated from it."""
+    data = json.loads(json.dumps(model.to_dict()))
+    loaded = ModelSQDT.from_dict(data)
+    assert loaded.species == model.species
+    assert loaded.channel == model.channel
+    assert loaded.quantum_defects == model.quantum_defects
+    assert loaded.reference == model.reference
+    assert loaded.nu_range == model.nu_range
+    assert loaded.to_dict() == model.to_dict()
+
+
+def test_to_dict() -> None:
+    model = ModelSQDT("Sr88", "5s np 3P1", [2.88265, 0.39398], reference=("Ref A", "Ref B"), nu_range=(10, math.inf))
+    assert model.to_dict() == {
+        "model_class": "ModelSQDT",
+        "species": "Sr88",
+        "channel": "5s np 3P1",
+        "quantum_defects": [2.88265, 0.39398],
+        "reference": ["Ref A", "Ref B"],
+        "nu_range": [10, "inf"],
+    }
+
+
+def test_from_dict_optional_keys() -> None:
+    model = ModelSQDT.from_dict(
+        {"model_class": "ModelSQDT", "species": "Rb", "channel": "ns_1/2", "quantum_defects": [3.1311807]}
+    )
+    assert model.reference is None
+    assert model.nu_range == (0, math.inf)
+
+
+def test_from_dict_unknown_key() -> None:
+    with pytest.raises(ValueError, match="Unknown keys"):
+        ModelSQDT.from_dict(
+            {"model_class": "ModelSQDT", "species": "Rb", "channel": "ns_1/2", "quantum_defect": [3.1311807]}
+        )
+
+
+def test_from_dict_wrong_model_class() -> None:
+    with pytest.raises(ValueError, match="ModelSQDT was expected"):
+        ModelSQDT.from_dict(
+            {"model_class": "ModelEigenChannel", "species": "Rb", "channel": "ns_1/2", "quantum_defects": [3.13]}
+        )

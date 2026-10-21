@@ -3,15 +3,35 @@ from __future__ import annotations
 import math
 from typing import TYPE_CHECKING, Any, Literal
 
+from typing_extensions import NotRequired, TypedDict
+
 from rydstate.angular.angular_ket import AngularKetBase
 from rydstate.angular.utils import is_not_set
 from rydstate.qdt.model import Model
 from rydstate.qdt.utils import calc_modified_ritz_formula, check_expansion_coefficients
 
 if TYPE_CHECKING:
+    from collections.abc import Mapping
+
+    from typing_extensions import Self
+
     from rydstate.angular.angular_ket import AngularKetLS
     from rydstate.angular.utils import AllKnown
     from rydstate.qdt.utils import ExpansionCoefficients
+
+
+class ModelSQDTDict(TypedDict):
+    """JSON serializable description of a :class:`ModelSQDT`, see :meth:`ModelSQDT.to_dict`."""
+
+    model_class: str
+    """Name of the model class, i.e. "ModelSQDT", which allows to recreate the model with the correct class."""
+    species: str
+    channel: str
+    """Short label of the channel, see :meth:`~rydstate.angular.angular_ket.AngularKetBase.get_short_label`."""
+    quantum_defects: list[float]
+    reference: NotRequired[str | list[str] | None]
+    nu_range: NotRequired[list[float | Literal["inf"]]]
+    """[nu_min, nu_max], where an infinite nu_max is given as the string "inf" (JSON has no infinity)."""
 
 
 class ModelSQDT(Model):
@@ -92,6 +112,55 @@ class ModelSQDT(Model):
         the effective principal quantum number nui of the channel is defined."""
 
         check_expansion_coefficients(quantum_defects, f"{self.full_name}: quantum_defects")
+
+    def to_dict(self) -> ModelSQDTDict:
+        """Return a JSON serializable dictionary describing the model.
+
+        The model can be recreated from the dictionary via :meth:`from_dict`, e.g. to store a model in a json file:
+
+        .. code-block:: python
+
+            with open("model.json", "w") as file:
+                json.dump(model.to_dict(), file, indent=2)
+            with open("model.json") as file:
+                model = ModelSQDT.from_dict(json.load(file))
+
+        """
+        nu_min, nu_max = self.nu_range
+        return {
+            "model_class": type(self).__name__,
+            "species": self.species,
+            "channel": self.channel.get_short_label(),
+            "quantum_defects": list(self.quantum_defects),
+            "reference": list(self.reference) if isinstance(self.reference, tuple) else self.reference,
+            "nu_range": [nu_min, "inf" if math.isinf(nu_max) else nu_max],
+        }
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> Self:
+        """Create a model from a dictionary, as returned by :meth:`to_dict`.
+
+        Args:
+            data: The dictionary describing the model, see :class:`ModelSQDTDict`.
+                Its "model_class" must be the name of this class.
+                The keys "reference" and "nu_range" are optional.
+
+        """
+        unknown_keys = set(data) - set(ModelSQDTDict.__annotations__)
+        if unknown_keys:
+            raise ValueError(f"Unknown keys {sorted(unknown_keys)} in the description of an SQDT model: {data}")
+        if data["model_class"] != cls.__name__:
+            raise ValueError(f"The description is of a {data['model_class']}, but {cls.__name__} was expected: {data}")
+
+        reference = data.get("reference")
+        nu_min, nu_max = data.get("nu_range", (0, math.inf))
+        return cls(
+            data["species"],
+            data["channel"],
+            list(data["quantum_defects"]),
+            reference=tuple(reference) if isinstance(reference, list) else reference,
+            nu_range=(nu_min, nu_max),
+        )
 
     def calc_quantum_defect(self, n: int) -> float:
         r"""Calculate the quantum defect of the state with principal quantum number n via the modified Ritz formula.
