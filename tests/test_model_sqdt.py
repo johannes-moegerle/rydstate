@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 from rydstate.angular import AngularKetJJ, AngularKetLS
-from rydstate.qdt import ModelSetSQDT, ModelSQDT, get_sqdt, register_model_set_sqdt
+from rydstate.qdt import ModelSetSQDT, ModelSQDT, ModelSQDTFit, get_sqdt, register_model_set_sqdt
 from rydstate.qdt.sqdt.model_set_sqdt import _SQDT_MODEL_SETS
 
 
@@ -88,7 +88,7 @@ def test_model_set_uses_model_of_nu_range(monkeypatch: pytest.MonkeyPatch) -> No
         angular_p = AngularKetLS(l_r=1, j_tot=0.5, f_tot=0.5, species="Rb")
         assert sqdt.get_models(angular_p) == []
         trivial_model = sqdt.get_model(20, angular_p)
-        assert trivial_model.quantum_defects == [0.0]
+        assert trivial_model.quantum_defects == (0.0,)
         assert sqdt.get_model(30, angular_p) is trivial_model
         assert sqdt.calc_nui(20, angular_p, use_nist_data=False) == 20
 
@@ -236,3 +236,54 @@ def test_models_must_be_of_the_species(tmp_path: Path) -> None:
 def test_load_models_missing_directory(tmp_path: Path) -> None:
     with pytest.raises(FileNotFoundError, match="does not exist"):
         ModelSetSQDT.load_models(tmp_path / "missing")
+
+
+def test_quantum_defects_are_immutable() -> None:
+    """The (shared) models cannot be changed, see ModelSQDTFit."""
+    model = ModelSQDT("Rb", "ns_1/2", [3.1311807, 0.1787])
+    assert model.quantum_defects == (3.1311807, 0.1787)
+    with pytest.raises(TypeError):
+        model.quantum_defects[0] = 0  # type: ignore [index]
+    assert not hasattr(model, "set_parameters")
+
+
+def test_fit_model_is_an_independent_copy() -> None:
+    model = next(model for model in get_sqdt("Rb").models or [] if model.name == "ns_1/2")
+    original = model.quantum_defects
+    model_fit = ModelSQDTFit.from_model(model)
+    assert model_fit.to_dict() == model.to_dict()
+
+    model_fit.set_parameters([parameter + 0.1 for parameter in model_fit.get_parameters()])
+    assert model_fit.quantum_defects != original
+    assert model.quantum_defects == original
+    assert get_sqdt("Rb").get_model(50, model.channel) is model
+
+
+def test_fit_parameters() -> None:
+    """Every given order of the quantum defect is a free parameter, also if it is zero."""
+    model = ModelSQDTFit("Rb", "ns_1/2", [3.1311807, 0])
+    assert model.number_of_parameters == 2
+    assert model.get_parameters() == [3.1311807, 0]
+    assert ModelSQDTFit("Rb", "ns_1/2", [3.1311807]).number_of_parameters == 1
+
+    # the returned list is a copy
+    model.get_parameters()[0] = 0
+    assert model.get_parameters() == [3.1311807, 0]
+
+    model.set_parameters([3.2, 0.1])
+    assert model.get_parameters() == [3.2, 0.1]
+    assert model.calc_quantum_defect(50) == pytest.approx(3.2 + 0.1 / (50 - 3.2) ** 2)
+
+    with pytest.raises(ValueError, match="expected 2 parameters"):
+        model.set_parameters([3.2])
+
+
+def test_fit_model_is_stored_as_model_sqdt() -> None:
+    """A fitted model is stored as an ordinary ModelSQDT, but can also be loaded as ModelSQDTFit to refit it."""
+    model_fit = ModelSQDTFit("Rb", "ns_1/2", [3.1311807, 0.1787])
+    data = json.loads(json.dumps(model_fit.to_dict()))
+    assert data["model_class"] == "ModelSQDT"
+    loaded = ModelSQDT.from_dict(data)
+    assert type(loaded) is ModelSQDT
+    assert loaded.quantum_defects == model_fit.quantum_defects
+    assert type(ModelSQDTFit.from_dict(data)) is ModelSQDTFit
