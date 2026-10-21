@@ -86,6 +86,12 @@ class ElementProperties(ABC, metaclass=CachedABCMeta):
     If not said otherwise, r_c is fitted to the NIST ASD line strengths of the principal series (ground state -> np_j).
     """
 
+    def __init__(self) -> None:
+        if not getattr(self, "ionization_threshold_dict", None):
+            raise ValueError(
+                f"{self.__class__.__name__} ({self.species}) must define a non-empty ionization_threshold_dict."
+            )
+
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}()"
 

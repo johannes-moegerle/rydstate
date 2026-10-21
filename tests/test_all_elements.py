@@ -3,7 +3,7 @@ from typing import Any
 import pytest
 from rydstate import RydbergStateSQDT, RydbergStateSQDTDivalent
 from rydstate.angular import AngularKetLS
-from rydstate.element_properties import get_element_properties
+from rydstate.element_properties import ElementProperties, get_element_properties
 from rydstate.qdt import get_sqdt
 from rydstate.qdt.sqdt import ModelSetSQDT
 from rydstate.utils import get_all_subclasses
@@ -49,3 +49,11 @@ def test_sqdt_total_energy_does_not_require_nu_below_reference(monkeypatch: pyte
         with pytest.raises(ValueError, match="nu is not defined"):
             _ = state.nu
     assert model.reference_ionization_threshold_au == threshold_au
+
+
+def test_missing_ionization_threshold_dict_raises() -> None:
+    class ElementPropertiesWithoutThresholds(ElementProperties):
+        species = "NoThresholds"
+
+    with pytest.raises(ValueError, match="ionization_threshold_dict"):
+        ElementPropertiesWithoutThresholds()

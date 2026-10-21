@@ -6,6 +6,8 @@ import numpy as np
 import pytest
 from rydstate.angular.utils import is_unknown
 from rydstate.basis import BasisMQDT, BasisOSQDT, BasisSQDT
+from rydstate.qdt.osqdt.model_osqdt import ModelOSQDT
+from rydstate.qdt.osqdt.model_set_osqdt import ModelSetOSQDT
 from rydstate.rydberg_state.rydberg_sqdt import RydbergStateOSQDT
 
 
@@ -164,6 +166,21 @@ def test_osqdt_sanity_check_reports_a_missing_low_nu_model(caplog: pytest.LogCap
     assert any("has no model for nui<17" in record.message for record in caplog.records), str(
         [record.message for record in caplog.records]
     )
+
+
+def test_osqdt_models_only_cover_the_requested_nu_range() -> None:
+    """Only models valid somewhere in the requested nu range are used, so no OSQDT model has an empty nu range."""
+    nu_range = (3.0, 8.0)
+    basis = BasisOSQDT("Yb171", nu=nu_range)
+    for channel in basis._channels:  # noqa: SLF001
+        mqdt_models = basis.model_set.get_mqdt_models(channel)
+        osqdt = ModelSetOSQDT(tuple(mqdt_models), channel, nu_range=nu_range)
+        for osqdt_model in osqdt.osqdt_models:
+            assert nu_range[0] <= osqdt_model.nu_min <= osqdt_model.nu_max <= nu_range[1]
+        for model in mqdt_models:
+            if model.nu_min > nu_range[1]:
+                with pytest.raises(ValueError, match="does not overlap"):
+                    ModelOSQDT(model, channel, nu_range=nu_range)
 
 
 def test_osqdt_state_requires_the_channel_of_its_model() -> None:

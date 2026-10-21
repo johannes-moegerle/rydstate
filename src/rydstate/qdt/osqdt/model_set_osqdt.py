@@ -56,21 +56,27 @@ class ModelSetOSQDT(ModelSetSQDT):
 
         self.nu_range = nu_range
         self.channel = channel
-        self.osqdt_models = [ModelOSQDT(model, channel, nu_range=nu_range) for model in models]
+        self.mqdt_models = models
+        # only models valid somewhere in the requested nu range can have states in it
+        self.osqdt_models = [
+            ModelOSQDT(model, channel, nu_range=nu_range)
+            for model in models
+            if model.nu_min <= nu_range[1] and nu_range[0] <= model.nu_max
+        ]
 
-        self.n_min = min(
-            min(osqdt_model.solutions.keys(), default=int(nu_range[1]) + 100) for osqdt_model in self.osqdt_models
-        )
-        self.n_max = max(max(osqdt_model.solutions.keys(), default=0) for osqdt_model in self.osqdt_models)
+        ns = [n for osqdt_model in self.osqdt_models for n in osqdt_model.solutions]
+        self.n_min = min(ns, default=int(nu_range[1]) + 100)
+        self.n_max = max(ns, default=0)
 
         self._sanity_check()
 
     def _sanity_check(self) -> None:
         tol = 1e-3
 
-        osqdt_models = self.osqdt_models[0]
-        wanted_nui_min = osqdt_models.model.calc_channel_nuis(self.nu_range[0])[osqdt_models.index]
-        wanted_nui_max = osqdt_models.model.calc_channel_nuis(self.nu_range[1])[osqdt_models.index]
+        model = self.mqdt_models[0]
+        index = ModelOSQDT.get_channel_index(model, self.channel)
+        wanted_nui_min = model.calc_channel_nuis(self.nu_range[0])[index]
+        wanted_nui_max = model.calc_channel_nuis(self.nu_range[1])[index]
         l_r = self.channel.l_r if not is_unknown(self.channel.l_r) else 0
 
         if wanted_nui_max < max(wanted_nui_min + 1, l_r + 2) + tol:

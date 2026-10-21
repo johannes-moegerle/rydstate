@@ -42,16 +42,11 @@ class ModelOSQDT(Model):
             channel: The outer channel, whose quantum defects are described by this object.
             nu_range: Tuple of (nu_min, nu_max) for the effective principal quantum number nu,
                 restricting the nu range, in which the roots of the OSQDT condition are searched,
-                to the range of interest (intersected with the range of validity of the model).
+                to the range of interest (intersected with the range of validity of the model,
+                which must overlap with it).
 
         """
-        indices = [i for i, ket in enumerate(model.outer_channels) if channel.calc_reduced_overlap(ket) != 0]
-        if len(indices) != 1:
-            raise ValueError(
-                f"The channel {channel} overlaps with {len(indices)} outer channels of {model.full_name}, "
-                "but it must overlap with exactly one."
-            )
-        self.index = indices[0]
+        self.index = self.get_channel_index(model, channel)
         self.model = model
         self.channel = channel
 
@@ -61,6 +56,11 @@ class ModelOSQDT(Model):
         self.f_tot = channel.f_tot
         self.parity = channel.parity
         self.nu_range = (max(model.nu_min, nu_range[0]), min(model.nu_max, nu_range[1]))
+        if self.nu_range[0] > self.nu_range[1]:
+            raise ValueError(
+                f"The requested nu range {nu_range} does not overlap with the range of validity "
+                f"{model.nu_range} of {model.full_name}."
+            )
         self.outer_channels = [model.outer_channels[self.index]]
         super().__init__()
 
@@ -87,6 +87,17 @@ class ModelOSQDT(Model):
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.model.full_name}, {self.channel})"
+
+    @staticmethod
+    def get_channel_index(model: ModelMQDT, channel: AngularKetBase[Any]) -> int:
+        """Return the index of the single outer channel of the MQDT model, which overlaps with the channel."""
+        indices = [i for i, ket in enumerate(model.outer_channels) if channel.calc_reduced_overlap(ket) != 0]
+        if len(indices) != 1:
+            raise ValueError(
+                f"The channel {channel} overlaps with {len(indices)} outer channels of {model.full_name}, "
+                "but it must overlap with exactly one."
+            )
+        return indices[0]
 
     def calc_nu(self, nui: float) -> float:
         """Convert the channel nui into the nu of the state.
