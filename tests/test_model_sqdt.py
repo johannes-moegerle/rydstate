@@ -1,10 +1,17 @@
+from __future__ import annotations
+
 import json
 import math
+from typing import TYPE_CHECKING
 
 import pytest
 from rydstate.angular import AngularKetJJ, AngularKetLS
 from rydstate.qdt import ModelSetSQDT, ModelSQDT, get_sqdt
+from rydstate.qdt.sqdt.nist import resolve_species_data_file
 from rydstate.utils import get_all_subclasses
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 def test_channel_from_short_label() -> None:
@@ -101,9 +108,8 @@ def test_ionization_thresholds() -> None:
     assert model.reference_ionization_threshold_au == element_properties.get_reference_ionization_threshold("a.u.")
 
 
-ALL_SQDT_MODELS = [
-    model for cls in get_all_subclasses(ModelSetSQDT) if cls.species is not None for model in cls.models or []
-]
+ALL_SQDT_MODEL_SETS = [cls() for cls in get_all_subclasses(ModelSetSQDT) if cls.species is not None]
+ALL_SQDT_MODELS = [model for model_set in ALL_SQDT_MODEL_SETS for model in model_set.models or []]
 
 
 @pytest.mark.parametrize("model", ALL_SQDT_MODELS, ids=lambda model: model.full_name)
@@ -166,3 +172,56 @@ def test_from_dict_wrong_model_class() -> None:
         ModelSQDT.from_dict(
             {"model_class": "ModelEigenChannel", "species": "Rb", "channel": "ns_1/2", "quantum_defects": [3.13]}
         )
+
+
+@pytest.mark.parametrize("model_set", ALL_SQDT_MODEL_SETS, ids=lambda model_set: model_set.species)
+def test_model_files(model_set: ModelSetSQDT) -> None:
+    """The json files of the models are named after their channel and stored as written by to_dict (plus a comment)."""
+    if model_set.models_directory is None:
+        assert model_set.models is None
+        return
+    directory = resolve_species_data_file(type(model_set), model_set.models_directory)
+    files = sorted(directory.glob("*.json"))
+    assert len(files) == len(model_set.models or [])
+    for file, model in zip(files, model_set.models or [], strict=True):
+        assert file.name == model.name.replace("/", "_").replace(" ", "_") + ".json"
+        data = json.loads(file.read_text(encoding="utf-8"))
+        data.pop("comment", None)
+        assert data == model.to_dict()
+
+
+def test_load_models_checks_the_species(tmp_path: Path) -> None:
+    model = ModelSQDT("Rb", "ns_1/2", [3.1311807, 0.1787])
+    (tmp_path / "ns_1_2.json").write_text(json.dumps(model.to_dict()))
+    with pytest.raises(ValueError, match="is not a model of the species Cs"):
+        get_sqdt("Cs")._load_models(tmp_path)  # noqa: SLF001
+
+
+def test_load_models_missing_directory(tmp_path: Path) -> None:
+    with pytest.raises(FileNotFoundError, match="does not exist"):
+        get_sqdt("Rb")._load_models(tmp_path / "missing")  # noqa: SLF001
+
+
+def _create_uncached_model_set(model_set_class: type[ModelSetSQDT]) -> ModelSetSQDT:
+    """Create a new instance, bypassing the instance cache (and get_sqdt), so that patched class variables are used."""
+    model_set = model_set_class.__new__(model_set_class)
+    model_set.__init__()  # type: ignore [misc]
+    return model_set
+
+
+def test_models_given_directly(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Instead of a models_directory, the models can also be given directly as class variable."""
+    model_set_class = type(get_sqdt("Rb"))
+    model = ModelSQDT("Rb", "ns_1/2", [3.1311807, 0.1787])
+    monkeypatch.setattr(model_set_class, "models", [model])
+    monkeypatch.setattr(model_set_class, "models_directory", None)
+    model_set = _create_uncached_model_set(model_set_class)
+    assert model_set.models == [model]
+    assert model_set.get_model(50, model.channel) is model
+
+
+def test_models_and_models_directory_given(monkeypatch: pytest.MonkeyPatch) -> None:
+    model_set_class = type(get_sqdt("Rb"))
+    monkeypatch.setattr(model_set_class, "models", [ModelSQDT("Rb", "ns_1/2", [3.1311807, 0.1787])])
+    with pytest.raises(ValueError, match="must not define both models and models_directory"):
+        _create_uncached_model_set(model_set_class)

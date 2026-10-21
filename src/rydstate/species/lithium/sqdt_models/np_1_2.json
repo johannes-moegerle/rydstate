@@ -1,0 +1,7 @@
+{
+  "model_class": "ModelSQDT",
+  "species": "Li",
+  "channel": "np_1/2",
+  "quantum_defects": [0.047178, -0.024, 0, 0, 0],
+  "reference": "Phys. Rev. A 34, 2889 (1986) (Li 7)"
+}

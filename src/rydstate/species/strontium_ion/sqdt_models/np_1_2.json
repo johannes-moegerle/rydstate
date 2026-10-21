@@ -1,0 +1,8 @@
+{
+  "model_class": "ModelSQDT",
+  "species": "Sr88_ion",
+  "channel": "np_1/2",
+  "quantum_defects": [2.3265, 0.47, 0, 0, 0],
+  "reference": ["Pokorny 2020, Doctoral thesis, Stockholm University, ISBN 978-91-7911-293-6", "Lange 1991, Z. Phys. D 18, 319, https://doi.org/10.1007/BF01426593"],
+  "comment": "d0 [1], d2 from mu(7p1/2) [3]"
+}

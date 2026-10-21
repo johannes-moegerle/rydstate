@@ -1,0 +1,7 @@
+{
+  "model_class": "ModelSQDT",
+  "species": "Sr88",
+  "channel": "5s ns 1S0",
+  "quantum_defects": [3.2688559, -0.0879, -3.36, 0.0, 0.0],
+  "reference": "Brienza 2023, Phys. Rev. A 108, 022815"
+}

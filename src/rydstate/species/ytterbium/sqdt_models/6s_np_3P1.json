@@ -1,0 +1,8 @@
+{
+  "model_class": "ModelSQDT",
+  "species": "Yb174",
+  "channel": "6s np 3P1",
+  "quantum_defects": [3.982084772, -5.45063476, 0.0, 0.0, 0.0],
+  "reference": "Kuroda 2025, https://arxiv.org/abs/2507.11487",
+  "comment": "see Table S4"
+}

@@ -1,0 +1,7 @@
+{
+  "model_class": "ModelSQDT",
+  "species": "Rb",
+  "channel": "np_3/2",
+  "quantum_defects": [2.6416737, 0.295, 0, 0, 0],
+  "reference": "Phys. Rev. A 67, 052502 (2003) - Rb85"
+}

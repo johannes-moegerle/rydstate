@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import logging
 from functools import cache
 from typing import TYPE_CHECKING, Any, ClassVar
@@ -12,6 +13,8 @@ from rydstate.qdt.sqdt.nist import parse_nist_energy_levels, resolve_species_dat
 from rydstate.utils import calc_nu_from_energy, get_all_subclasses
 
 if TYPE_CHECKING:
+    from pathlib import Path
+
     from rydstate.angular.angular_ket import AngularKetBase
     from rydstate.qdt.sqdt.nist import NistEnergyLevels
 
@@ -29,12 +32,25 @@ class ModelSetSQDT(ModelSet):
     models: ClassVar[list[ModelSQDT] | None] = None
     """List of the :class:`~rydstate.qdt.ModelSQDT` models, each describing the quantum defects of one channel
     (in its range of validity). Channels without a model have zero quantum defects, see :meth:`get_model`.
+    The models can either be given directly or be loaded from the json files in the :attr:`models_directory`.
     The default None means that no quantum defects are available for this species at all.
     """
+
+    models_directory: ClassVar[str | None] = None
+    """Name of the directory (in the species directory) with the json files of the :class:`~rydstate.qdt.ModelSQDT`
+    models (see :meth:`~rydstate.qdt.ModelSQDT.to_dict`), usually ``"sqdt_models"``.
+    If given, the models are loaded from this directory in ``__init__`` and stored in :attr:`models`,
+    which then must not be given directly."""
 
     def __init__(self) -> None:
         super().__init__()
         self._trivial_models: dict[AngularKetBase[Any], ModelSQDT] = {}
+
+        if self.models_directory is not None:
+            if self.models is not None:
+                raise ValueError(f"{type(self).__name__} must not define both models and models_directory.")
+            directory = resolve_species_data_file(type(self), self.models_directory)
+            self.models = self._load_models(directory)  # type: ignore [misc]
 
         self._nist_energy_levels: NistEnergyLevels = {}
         if self.nist_data_file is not None:
@@ -44,6 +60,19 @@ class ModelSetSQDT(ModelSet):
 
     def __repr__(self) -> str:
         return f"ModelSetSQDT({self.species})"
+
+    def _load_models(self, directory: Path) -> list[ModelSQDT]:
+        """Load all models from the json files in the given directory (sorted by the file names)."""
+        if not directory.is_dir():
+            raise FileNotFoundError(f"The directory {directory} with the SQDT models of {self.species} does not exist.")
+        models = []
+        for file in sorted(directory.glob("*.json")):
+            with file.open(encoding="utf-8") as f:
+                model = ModelSQDT.from_dict(json.load(f))
+            if model.species != self.species:
+                raise ValueError(f"The model {model} in {file} is not a model of the species {self.species}.")
+            models.append(model)
+        return models
 
     def get_models(self, angular_ket: AngularKetBase[Any]) -> list[ModelSQDT]:
         """Return all models whose channel is the given angular ket (up to the magnetic quantum number m).

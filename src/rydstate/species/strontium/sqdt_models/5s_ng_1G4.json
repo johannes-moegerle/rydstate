@@ -1,0 +1,7 @@
+{
+  "model_class": "ModelSQDT",
+  "species": "Sr88",
+  "channel": "5s ng 1G4",
+  "quantum_defects": [0.038, 0.0, 0.0, 0.0, 0.0],
+  "reference": "Patsch 2021, http://dx.doi.org/10.17169/refubium-34581"
+}

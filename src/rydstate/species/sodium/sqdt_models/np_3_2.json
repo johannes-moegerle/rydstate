@@ -1,0 +1,7 @@
+{
+  "model_class": "ModelSQDT",
+  "species": "Na",
+  "channel": "np_3/2",
+  "quantum_defects": [0.85462615, 0.112344, 0.0497, 0.0406, 0],
+  "reference": "Quantum Electron. 25 914 (1995)"
+}

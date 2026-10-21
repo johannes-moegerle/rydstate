@@ -1,0 +1,8 @@
+{
+  "model_class": "ModelSQDT",
+  "species": "Yb174",
+  "channel": "6s nd 3D1",
+  "quantum_defects": [2.75258093, 0.3826, -483.1, 0.0, 0.0],
+  "reference": "Peper 2024, http://arxiv.org/abs/2406.01482",
+  "comment": "see Table I"
+}

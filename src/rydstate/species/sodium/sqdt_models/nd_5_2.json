@@ -1,0 +1,7 @@
+{
+  "model_class": "ModelSQDT",
+  "species": "Na",
+  "channel": "nd_5/2",
+  "quantum_defects": [0.01492422, -0.042585, 0.0084, 0, 0],
+  "reference": ["Quantum Electron. 25 914 (1995)", "J. Phys. B: At. Mol. Opt. Phys. 30 2345 (1997)"]
+}

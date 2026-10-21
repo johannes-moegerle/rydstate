@@ -1,0 +1,7 @@
+{
+  "model_class": "ModelSQDT",
+  "species": "Cs",
+  "channel": "ng_7/2",
+  "quantum_defects": [0.00703865, -0.049252, 0.01291, 0.0, 0.0],
+  "reference": "Phys. Rev. A 35, 4650 (1987)"
+}

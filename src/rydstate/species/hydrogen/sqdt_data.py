@@ -1,15 +1,13 @@
-from typing import ClassVar
-
 from rydstate.qdt.sqdt import ModelSetSQDT
 
 
 class SQDTHydrogen(ModelSetSQDT):
     species = "H"
 
-    models: ClassVar = []
+    models_directory = "sqdt_models"
 
 
 class SQDTHydrogenTextBook(ModelSetSQDT):
     species = "H_textbook"
 
-    models: ClassVar = []
+    models_directory = "sqdt_models"
