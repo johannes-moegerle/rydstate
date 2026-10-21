@@ -18,6 +18,7 @@ from rydstate.basis.basis_mqdt import get_mqdt_states_from_model
 from rydstate.element_properties import get_element_properties
 from rydstate.qdt import get_mqdt, get_sqdt
 from rydstate.qdt.mqdt import ModelSetMQDT
+from rydstate.qdt.sqdt import ModelSQDT
 from rydstate.qdt.sqdt.model_set_sqdt import _SQDT_MODEL_SETS
 from rydstate.radial.potential import get_potential_class
 from rydstate.units import ureg
@@ -45,7 +46,10 @@ def _nist_levels(species: str, threshold_au: float) -> Iterator[tuple[int, Angul
     """
     sqdt = get_sqdt(species)
     element_properties = get_element_properties(species)
-    for (n, l, j_tot, s_tot), energy_nist_au in sorted(sqdt._nist_energy_levels.items()):  # noqa: SLF001
+    levels = {
+        (n, m.channel.l_r, m.channel.j_tot, m.channel.s_tot): e for m in sqdt.nist_models for n, e in m.energies.items()
+    }
+    for (n, l, j_tot, s_tot), energy_nist_au in sorted(levels.items()):
         binding_energy_au = energy_nist_au - threshold_au
         nu = calc_nu_from_energy(element_properties.reduced_mass_au, binding_energy_au, element_properties.net_charge)
         angular = AngularKetLS(l_r=l, s_tot=s_tot, j_tot=j_tot, f_tot=j_tot + element_properties.i_c, species=species)
@@ -98,18 +102,19 @@ def _assert_no_constant_offset(label: str, deviations: Deviations) -> None:
 def test_sqdt_energies_match_nist(species: str) -> None:
     """The energies from the quantum defects and the ionization energy must match the NIST levels."""
     sqdt = get_sqdt(species)
-    if sqdt.models is None or not sqdt._nist_energy_levels:  # noqa: SLF001
+    if sqdt.models is None or not sqdt.nist_models:
         pytest.skip(f"{species} has no quantum defects and/or no NIST data.")
     element_properties = get_element_properties(species)
 
     deviations: Deviations = {}
     reference_threshold_au = element_properties.get_reference_ionization_threshold("a.u.")
     for n, angular, nu, energy_nist_au in _nist_levels(species, reference_threshold_au):
-        if nu < NU_MIN or len(sqdt.get_models(angular)) == 0:
+        qd_models = [model for model in sqdt.get_models(angular) if isinstance(model, ModelSQDT)]
+        if nu < NU_MIN or len(qd_models) == 0:
             continue
-        nui = sqdt.calc_nui(n, angular, use_nist_data=False)
+        nui = qd_models[0].calc_nui(n)
         binding_energy_au = calc_energy_from_nu(element_properties.reduced_mass_au, nui, element_properties.net_charge)
-        energy_au = sqdt.get_model(n, angular).ionization_threshold_au + binding_energy_au
+        energy_au = qd_models[0].ionization_threshold_au + binding_energy_au
         deviations[n, angular.l_r, angular.j_tot, angular.s_tot] = (nu, (energy_au - energy_nist_au) * HARTREE_TO_GHZ)
 
     _assert_no_constant_offset(f"{species} - SQDT", deviations)
@@ -128,7 +133,7 @@ def test_mqdt_energies_match_nist(species: str) -> None:
         sqdt = get_sqdt(species)
     except ValueError:
         pytest.skip(f"{species} has no SQDT class and therefore no NIST data.")
-    if not sqdt._nist_energy_levels:  # noqa: SLF001
+    if not sqdt.nist_models:
         pytest.skip(f"{species} has no NIST data.")
     potential_class = get_potential_class(species)
 

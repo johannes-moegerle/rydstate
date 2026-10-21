@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 from rydstate.angular import AngularKetJJ, AngularKetLS
-from rydstate.qdt import ModelSetSQDT, ModelSQDT, get_sqdt, register_model_set_sqdt
+from rydstate.qdt import ModelSetSQDT, ModelSQDT, ModelSQDTNist, get_sqdt, register_model_set_sqdt
 from rydstate.qdt.sqdt.model_set_sqdt import _SQDT_MODEL_SETS
 
 
@@ -66,20 +66,21 @@ def test_model_set_uses_model_of_nu_range(monkeypatch: pytest.MonkeyPatch) -> No
     angular = AngularKetLS(l_r=0, j_tot=0.5, f_tot=0.5, species="Rb")
     with monkeypatch.context() as patch:
         patch.setattr(sqdt, "models", [low_n, high_n])
+        patch.setattr(sqdt, "nist_models", [])
         assert sqdt.get_models(angular) == [low_n, high_n]
         # the models are found independent of m
         angular_m = AngularKetLS(l_r=0, j_tot=0.5, f_tot=0.5, m=-0.5, species="Rb")
         assert sqdt.get_models(angular_m) == [low_n, high_n]
-        assert sqdt.calc_nui(50, angular_m, use_nist_data=False) == pytest.approx(50 - 3.2)
+        assert sqdt.calc_nui(50, angular_m) == pytest.approx(50 - 3.2)
         # kets in other coupling schemes are converted to LS by calc_nui, but not by get_models
         angular_jj = AngularKetJJ(l_r=0, j_r=0.5, j_tot=0.5, f_tot=0.5, species="Rb")
-        assert sqdt.calc_nui(50, angular_jj, use_nist_data=False) == pytest.approx(50 - 3.2)
+        assert sqdt.calc_nui(50, angular_jj) == pytest.approx(50 - 3.2)
         with pytest.raises(ValueError, match="must be in LS coupling"):
             sqdt.get_models(angular_jj)
-        assert sqdt.calc_nui(20, angular, use_nist_data=False) == pytest.approx(20 - 3.1)
-        assert sqdt.calc_nui(50, angular, use_nist_data=False) == pytest.approx(50 - 3.2)
+        assert sqdt.calc_nui(20, angular) == pytest.approx(20 - 3.1)
+        assert sqdt.calc_nui(50, angular) == pytest.approx(50 - 3.2)
         with pytest.raises(ValueError, match="None of the SQDT models"):
-            sqdt.calc_nui(120, angular, use_nist_data=False)
+            sqdt.calc_nui(120, angular)
 
         assert sqdt.get_model(20, angular) is low_n
         assert sqdt.get_model(50, angular_m) is high_n
@@ -88,9 +89,10 @@ def test_model_set_uses_model_of_nu_range(monkeypatch: pytest.MonkeyPatch) -> No
         angular_p = AngularKetLS(l_r=1, j_tot=0.5, f_tot=0.5, species="Rb")
         assert sqdt.get_models(angular_p) == []
         trivial_model = sqdt.get_model(20, angular_p)
+        assert isinstance(trivial_model, ModelSQDT)
         assert trivial_model.quantum_defects == [0.0]
         assert sqdt.get_model(30, angular_p) is trivial_model
-        assert sqdt.calc_nui(20, angular_p, use_nist_data=False) == 20
+        assert sqdt.calc_nui(20, angular_p) == 20
 
 
 def test_ionization_thresholds() -> None:
@@ -236,3 +238,44 @@ def test_models_must_be_of_the_species(tmp_path: Path) -> None:
 def test_load_models_missing_directory(tmp_path: Path) -> None:
     with pytest.raises(FileNotFoundError, match="does not exist"):
         ModelSetSQDT.load_models(tmp_path / "missing")
+
+
+def test_nist_models_are_loaded() -> None:
+    """The NIST levels are loaded as one ModelSQDTNist per channel (and f_tot), valid in the nist_nu_range."""
+    sqdt = get_sqdt("Rb")
+    assert all(model.nu_range == sqdt.nist_nu_range for model in sqdt.nist_models)
+    angular = AngularKetLS(l_r=0, j_tot=0.5, f_tot=0.5, species="Rb")
+    nist_model, qd_model = sqdt.get_models(angular)
+    assert isinstance(nist_model, ModelSQDTNist)
+    assert isinstance(qd_model, ModelSQDT)
+    assert nist_model.name == "ns_1/2"
+    assert nist_model.energies[5] == 0  # 5s ground state
+
+    # one model per f_tot for species with nuclear spin
+    sqdt_hfs = get_sqdt("Yb171_ion")
+    f_tots = [model.f_tot for model in sqdt_hfs.nist_models if model.name.startswith("np_3/2")]
+    assert f_tots == [1, 2]
+
+
+def test_model_set_prefers_nist_model_in_its_nu_range() -> None:
+    """Within the nist_nu_range the NIST levels are used, otherwise the quantum defects."""
+    sqdt = get_sqdt("Rb")
+    angular = AngularKetLS(l_r=0, j_tot=0.5, f_tot=0.5, species="Rb")
+    nist_model, qd_model = sqdt.get_models(angular)
+    assert sqdt.get_model(5, angular) is nist_model
+    assert sqdt.calc_nui(5, angular) == nist_model.calc_nui(5)
+    assert sqdt.calc_nui(5, angular) != pytest.approx(qd_model.calc_nui(5), abs=1e-3)
+    with pytest.raises(ValueError, match="no energy level for n=1000"):
+        nist_model.calc_nui(1000)
+    assert sqdt.get_model(60, angular) is qd_model
+    assert sqdt.calc_nui(60, angular) == qd_model.calc_nui(60)
+
+
+def test_model_set_without_quantum_defects_uses_nist_models() -> None:
+    """Without quantum defects, only the NIST levels in the nist_nu_range are available."""
+    sqdt = get_sqdt("Yb174_ion")
+    assert sqdt.models is None
+    angular = AngularKetLS(l_r=0, j_tot=0.5, f_tot=0.5, species="Yb174_ion")
+    assert sqdt.calc_nui(6, angular) == sqdt.get_models(angular)[0].calc_nui(6)
+    with pytest.raises(ValueError, match="No quantum defect data available"):
+        sqdt.calc_nui(60, angular)

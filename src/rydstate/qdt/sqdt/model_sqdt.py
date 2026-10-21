@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+from abc import abstractmethod
 from typing import TYPE_CHECKING, Any, Literal
 
 from typing_extensions import NotRequired, TypedDict
@@ -37,29 +38,18 @@ class ModelSQDTDict(TypedDict):
     It is only meant for the reader of the json file and ignored by :meth:`ModelSQDT.from_dict`."""
 
 
-class ModelSQDT(Model):
-    r"""SQDT model describing the quantum defects of a single channel of a species.
+class ModelSQDTBase(Model):
+    """Base class for the SQDT models, each describing a single channel of a species.
 
-    In contrast to :class:`~rydstate.qdt.ModelMQDT`, the parameters of an SQDT model are not defined
-    in a subclass, but simply given when constructing the model, e.g.
-
-    .. code-block:: python
-
-        ModelSQDT("Rb", "ns_1/2", [3.1311807, 0.1787], reference="Phys. Rev. A 83, 052515 (2011)")
-
-    The quantum defect of the channel is given by the modified Ritz formula
-
-    .. math::
-        \delta(n) = \delta_0 + \frac{\delta_2}{(n - \delta_0)^2} + \frac{\delta_4}{(n - \delta_0)^4} + ...
-
-    see :meth:`calc_quantum_defect`.
+    The concrete models differ in how they calculate the effective principal quantum number nui
+    of the state with a given n, see :class:`~rydstate.qdt.ModelSQDT` (via quantum defects)
+    and :class:`~rydstate.qdt.ModelSQDTNist` (via measured energy levels).
     """
 
     def __init__(
         self,
         species: str,
         channel: AngularKetBase[Any] | str,
-        quantum_defects: ExpansionCoefficients,
         reference: str | tuple[str, ...] | None = None,
         nu_range: tuple[float, float | Literal["inf"]] = (0, math.inf),
     ) -> None:
@@ -72,9 +62,7 @@ class ModelSQDT(Model):
                 see :meth:`~rydstate.angular.angular_ket.AngularKetBase.from_short_label`).
                 The channel must be a single LS ket, i.e. have well defined l_r, j_tot and s_tot,
                 and its magnetic quantum number m must be NotSet.
-            quantum_defects: The expansion coefficients [d0, d2, d4, ...] of the quantum defect,
-                see :meth:`calc_quantum_defect`.
-            reference: Reference for the model, e.g., a publication doi where the quantum defects are given.
+            reference: Reference for the model, e.g., a publication doi where the data of the model are given.
             nu_range: Range (nu_min, nu_max) of effective principal quantum numbers nu for which the model is valid.
                 nu_min must be finite, an infinite nu_max can also be given as the string "inf".
                 Default is (0, inf), i.e. the model is valid for all (positive) nu.
@@ -107,13 +95,66 @@ class ModelSQDT(Model):
             raise ValueError(f"{self.full_name}: nu_min must be finite, but got {nu_min}.")
         self.nu_range = (nu_min, nu_max)
         self.outer_channels = [self.channel]
-        self.quantum_defects = quantum_defects
         super().__init__()
 
         self.ionization_threshold_au = self.ionization_thresholds_au[0]
         """Ionization threshold of the single outer channel in atomic units (Hartree), with respect to which
         the effective principal quantum number nui of the channel is defined."""
 
+    @abstractmethod
+    def calc_nui(self, n: int) -> float:
+        """Calculate the effective principal quantum number nui of the state with the given n.
+
+        Args:
+            n: The principal quantum number of the Rydberg state.
+
+        Returns:
+            The effective principal quantum number nui.
+            Whether the model is valid for the returned nui, must be checked against its :attr:`nu_range`.
+
+        """
+
+
+class ModelSQDT(ModelSQDTBase):
+    r"""SQDT model describing the quantum defects of a single channel of a species.
+
+    In contrast to :class:`~rydstate.qdt.ModelMQDT`, the parameters of an SQDT model are not defined
+    in a subclass, but simply given when constructing the model, e.g.
+
+    .. code-block:: python
+
+        ModelSQDT("Rb", "ns_1/2", [3.1311807, 0.1787], reference="Phys. Rev. A 83, 052515 (2011)")
+
+    The quantum defect of the channel is given by the modified Ritz formula
+
+    .. math::
+        \delta(n) = \delta_0 + \frac{\delta_2}{(n - \delta_0)^2} + \frac{\delta_4}{(n - \delta_0)^4} + ...
+
+    see :meth:`calc_quantum_defect`.
+    """
+
+    def __init__(
+        self,
+        species: str,
+        channel: AngularKetBase[Any] | str,
+        quantum_defects: ExpansionCoefficients,
+        reference: str | tuple[str, ...] | None = None,
+        nu_range: tuple[float, float | Literal["inf"]] = (0, math.inf),
+    ) -> None:
+        """Initialize the SQDT model.
+
+        Args:
+            species: The species for which the model is defined.
+            channel: The channel described by the model, see :class:`ModelSQDTBase`.
+            quantum_defects: The expansion coefficients [d0, d2, d4, ...] of the quantum defect,
+                see :meth:`calc_quantum_defect`.
+            reference: Reference for the model, e.g., a publication doi where the quantum defects are given.
+            nu_range: Range (nu_min, nu_max) of effective principal quantum numbers nu for which the model is valid,
+                see :class:`ModelSQDTBase`. Default is (0, inf), i.e. the model is valid for all (positive) nu.
+
+        """
+        super().__init__(species, channel, reference, nu_range)
+        self.quantum_defects = quantum_defects
         check_expansion_coefficients(quantum_defects, f"{self.full_name}: quantum_defects")
 
     def to_dict(self) -> ModelSQDTDict:

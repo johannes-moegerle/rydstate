@@ -1,27 +1,22 @@
 from __future__ import annotations
 
 import json
-import logging
 from functools import cached_property
 from os import PathLike
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 from rydstate.angular import NotSet
-from rydstate.angular.utils import is_not_set, is_unknown
+from rydstate.angular.utils import is_not_set
 from rydstate.qdt.model_set import ModelSet
 from rydstate.qdt.sqdt.model_sqdt import ModelSQDT
-from rydstate.qdt.sqdt.nist import parse_nist_energy_levels
-from rydstate.utils import calc_nu_from_energy
+from rydstate.qdt.sqdt.model_sqdt_nist import ModelSQDTNist
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
     from rydstate.angular.angular_ket import AngularKetBase
-    from rydstate.qdt.sqdt.nist import NistEnergyLevels
-
-
-logger = logging.getLogger(__name__)
+    from rydstate.qdt.sqdt.model_sqdt import ModelSQDTBase
 
 
 class ModelSetSQDT(ModelSet):
@@ -37,6 +32,14 @@ class ModelSetSQDT(ModelSet):
 
     The models and the NIST energy levels are only loaded when they are needed for the first time,
     so that creating the model sets of all species (e.g. when importing rydstate) is cheap.
+
+    Each channel can be described by several :class:`~rydstate.qdt.ModelSQDTBase` models, whose nu ranges may overlap:
+    the :attr:`nist_models` with the measured energy levels (valid in the :attr:`nist_nu_range`)
+    and the quantum defect :attr:`models` (usually valid for all nu).
+    The models are tried in the order given by :meth:`get_models`, i.e. the NIST models first,
+    and the first model that has data for n and whose nu range contains the resulting nu is used.
+    Since a NIST model only has data for the n with a measured level, the quantum defects are used
+    for all other states, also inside the :attr:`nist_nu_range`.
     """
 
     def __init__(
@@ -44,6 +47,7 @@ class ModelSetSQDT(ModelSet):
         species: str,
         models: Sequence[ModelSQDT] | str | PathLike[str] | None = None,
         nist_data_file: str | PathLike[str] | None = None,
+        nist_nu_range: tuple[float, float] = (0, 15),
     ) -> None:
         """Initialize the SQDT model set.
 
@@ -57,11 +61,15 @@ class ModelSetSQDT(ModelSet):
             nist_data_file: The file with the low-lying NIST energy levels (see
                 :func:`~rydstate.qdt.sqdt.nist.parse_nist_energy_levels`), which is parsed on first use.
                 Default is None, i.e. no NIST energy levels are available for this species.
+                The levels are loaded as :class:`~rydstate.qdt.ModelSQDTNist` models, see :attr:`nist_models`.
+            nist_nu_range: Range of effective principal quantum numbers nu for which the NIST energy levels are used.
+                Default is (0, 15).
 
         """
         self.species = species
         self._models_source = models
         self._nist_data_file = nist_data_file
+        self.nist_nu_range = nist_nu_range
         self._trivial_models: dict[AngularKetBase[Any], ModelSQDT] = {}
 
     def __repr__(self) -> str:
@@ -72,7 +80,7 @@ class ModelSetSQDT(ModelSet):
         """List of the :class:`~rydstate.qdt.ModelSQDT` models (loaded on first access).
 
         Each model describes the quantum defects of one channel (in its range of validity).
-        Channels without a model have zero quantum defects, see :meth:`get_model`.
+        Channels without such a model have zero quantum defects, see :meth:`get_model`.
         None means that no quantum defects are available for this species at all.
         """
         source = self._models_source
@@ -104,14 +112,21 @@ class ModelSetSQDT(ModelSet):
         return models
 
     @cached_property
-    def _nist_energy_levels(self) -> NistEnergyLevels:
-        """The low-lying NIST energy levels, empty if no NIST data file is given."""
-        if self._nist_data_file is None:
-            return {}
-        return parse_nist_energy_levels(Path(self._nist_data_file), self.element_properties)
+    def nist_models(self) -> list[ModelSQDTNist]:
+        """List of the :class:`~rydstate.qdt.ModelSQDTNist` models (loaded on first access).
 
-    def get_models(self, angular_ket: AngularKetBase[Any]) -> list[ModelSQDT]:
+        Each model holds the NIST energy levels of one channel and is valid in the :attr:`nist_nu_range`.
+        Empty if no NIST data file is given.
+        """
+        if self._nist_data_file is None:
+            return []
+        return ModelSQDTNist.from_nist_file(self.species, Path(self._nist_data_file), self.nist_nu_range)
+
+    def get_models(self, angular_ket: AngularKetBase[Any]) -> list[ModelSQDTBase]:
         """Return all models whose channel is the given angular ket (up to the magnetic quantum number m).
+
+        The :attr:`nist_models` come first, so that they take precedence over the quantum defect :attr:`models`
+        in their range of validity.
 
         Args:
             angular_ket: The angular ket of the channel, which must be in LS coupling.
@@ -120,36 +135,46 @@ class ModelSetSQDT(ModelSet):
         if angular_ket.coupling_scheme != "LS":
             raise ValueError(f"The angular ket {angular_ket!r} must be in LS coupling.")
         channel = angular_ket if is_not_set(angular_ket.m) else angular_ket.replace_m(NotSet)
-        return [model for model in self.models or [] if model.channel == channel]
+        return [model for model in [*self.nist_models, *(self.models or [])] if model.channel == channel]
 
-    def get_model(
-        self, n: int, angular_ket: AngularKetBase[Any], *, use_nist_data: bool = True, nist_n_max: int = 15
-    ) -> ModelSQDT:
+    def get_model(self, n: int, angular_ket: AngularKetBase[Any]) -> ModelSQDTBase:
         """Return the model describing the state with principal quantum number n and the given angular ket.
 
-        This is the model of the channel (see :meth:`get_models`), whose nu range contains the nui of the state.
-        As in :meth:`calc_nui`, the nui of the state is taken from the NIST energy levels if available,
-        and otherwise calculated by the model itself.
-        If there is no model for the channel, a model with zero quantum defects is returned.
+        This is the first of the models of the channel (see :meth:`get_models`),
+        which has data for n and whose nu range contains the resulting nui of the state.
+        I.e. for low lying states this is usually a :class:`~rydstate.qdt.ModelSQDTNist` model
+        with the NIST energy levels, otherwise a :class:`~rydstate.qdt.ModelSQDT` model with the quantum defects.
+        If there is no quantum defect model for the channel, a model with zero quantum defects is returned.
 
         Args:
             n: The principal quantum number of the Rydberg state.
             angular_ket: The angular ket of the Rydberg state,
                 it is converted to LS coupling if it is a single LS ket in another coupling scheme.
-            use_nist_data: Whether to use NIST energy data, see :meth:`calc_nui`.
-            nist_n_max: Maximum principal quantum number for which to use the NIST energy data, see :meth:`calc_nui`.
 
         """
-        angular_ket = self._to_ls(angular_ket)
-        models = self.get_models(angular_ket)
-        if len(models) == 0:
-            return self._get_trivial_model(angular_ket)
+        return self._get_model_and_nui(n, angular_ket)[0]
 
-        nui_nist = self._calc_nist_nui(n, angular_ket, nist_n_max) if use_nist_data else None
+    def _get_model_and_nui(self, n: int, angular_ket: AngularKetBase[Any]) -> tuple[ModelSQDTBase, float]:
+        """Return the model describing the state (see :meth:`get_model`) and the nui of the state."""
+        angular_ket = self._to_ls(angular_ket)
+        if angular_ket.contains_unknown:
+            raise ValueError(f"Cannot calculate nui for unknown quantum numbers of {angular_ket!r}.")
+
+        models = self.get_models(angular_ket)
         for model in models:
-            nui = nui_nist if nui_nist is not None else model.calc_nui(n)
+            if isinstance(model, ModelSQDTNist) and n not in model.energies:
+                continue
+            nui = model.calc_nui(n)
             if model.nu_min <= nui <= model.nu_max:
-                return model
+                return model, nui
+
+        if not any(isinstance(model, ModelSQDT) for model in models):
+            if self.models is None:
+                raise ValueError(
+                    f"No quantum defect data available for species {self.species} "
+                    f"and no NIST energy level of the channel {angular_ket!r} for n={n}."
+                )
+            return self._get_trivial_model(angular_ket), float(n)
         raise ValueError(
             f"None of the SQDT models {models} of the channel {angular_ket!r} is valid for n={n}, "
             f"their nu ranges are {[model.nu_range for model in models]}."
@@ -172,14 +197,7 @@ class ModelSetSQDT(ModelSet):
             raise NotImplementedError("calc_nui is only implemented for AngularKetLS.")
         return angular_state.kets[0]
 
-    def calc_nui(
-        self,
-        n: int,
-        angular_ket: AngularKetBase[Any],
-        *,
-        use_nist_data: bool = True,
-        nist_n_max: int = 15,
-    ) -> float:
+    def calc_nui(self, n: int, angular_ket: AngularKetBase[Any]) -> float:
         r"""Calculate the effective principal quantum number nui of a Rydberg state with the given n and angular ket.
 
         The effective principal quantum number nui is defined with reference to the ionization threshold
@@ -188,70 +206,19 @@ class ModelSetSQDT(ModelSet):
         :math:`E = I_i - \frac{Z^2 R_M}{\nu_i^2}`
         with the mass corrected Rydberg constant :math:`R_M = R_\infty \mu/m_e`.
 
-        I.e. either look up the energy for low lying states in the nist data (if use_nist_data is True),
-        and calculate nui from the energy via (see also `calc_nu_from_energy`):
-
-        .. math::
-            \nu_i = Z \sqrt{\frac{1}{2} \frac{\mu/m_e}{-(E - I)/E_H}}
-
-        Or calculate nui via the quantum defect theory,
+        nui is calculated by the model returned by :meth:`get_model`.
+        I.e. for low lying states nui is usually calculated from the NIST energy levels
+        (see :class:`~rydstate.qdt.ModelSQDTNist`), otherwise via the quantum defect theory,
         where nui is defined as :math:`\nu_i = n^* = n - \delta_{lj}(n)`
-        with the quantum defect :math:`\delta_{lj}(n)` given by the :class:`~rydstate.qdt.ModelSQDT` model
-        whose channel is the angular ket (see :meth:`get_models`) and whose nu range contains nui
-        (see :meth:`~rydstate.qdt.ModelSQDT.calc_quantum_defect`).
-        If there is no model for the channel, the quantum defect is zero.
+        with the quantum defect :math:`\delta_{lj}(n)` (see :class:`~rydstate.qdt.ModelSQDT`).
+        If there is no quantum defect model for the channel, the quantum defect is zero.
 
         Args:
             n: The principal quantum number of the Rydberg state.
             angular_ket: The angular ket specifying l, j_tot, and s_tot of the Rydberg state.
-            use_nist_data: Whether to use NIST energy data.
-                Default is True.
-            nist_n_max: Maximum principal quantum number for which to use the NIST energy data.
-                Default is 15.
 
         """
-        angular_ket = self._to_ls(angular_ket)
-
-        if use_nist_data:
-            nui_nist = self._calc_nist_nui(n, angular_ket, nist_n_max)
-            if nui_nist is not None:
-                return nui_nist
-
-        if self.models is None:
-            raise ValueError(f"No quantum defect data available for species {self.species}.")
-
-        return self.get_model(n, angular_ket, use_nist_data=False).calc_nui(n)
-
-    def _calc_nist_nui(self, n: int, angular_ket: AngularKetBase[Any], nist_n_max: int) -> float | None:
-        """Return the nui of the state from the NIST energy levels, or None if they do not contain the state.
-
-        Args:
-            n: The principal quantum number of the Rydberg state.
-            angular_ket: The angular ket of the Rydberg state in LS coupling.
-            nist_n_max: Maximum principal quantum number for which to use the NIST energy data.
-
-        """
-        l_r = angular_ket.l_r
-        j_tot = angular_ket.get_qn("j_tot", allow_unknown=True)
-        s_tot = angular_ket.get_qn("s_tot", allow_unknown=True)
-        if is_unknown(j_tot) or is_unknown(s_tot):
-            raise ValueError(f"Cannot calculate nui for unknown j_tot or s_tot of {angular_ket!r}.")
-
-        if n > nist_n_max or (n, l_r, j_tot, s_tot) not in self._nist_energy_levels:
-            if n <= nist_n_max:
-                logger.debug(
-                    "NIST energy levels for (n=%d, l_r=%d, j_tot=%s, s_tot=%s) not found, using quantum defect theory.",
-                    *(n, l_r, j_tot, s_tot),
-                )
-            return None
-
-        energy_au = self._nist_energy_levels[(n, l_r, j_tot, s_tot)]
-        # all models of a channel share its ionization threshold, so the nu range does not matter here
-        models = self.get_models(angular_ket) or [self._get_trivial_model(angular_ket)]
-        energy_au -= models[0].ionization_threshold_au
-        return calc_nu_from_energy(
-            self.element_properties.reduced_mass_au, energy_au, self.element_properties.net_charge
-        )
+        return self._get_model_and_nui(n, angular_ket)[1]
 
 
 _SQDT_MODEL_SETS: dict[str, ModelSetSQDT] = {}

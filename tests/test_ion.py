@@ -4,11 +4,20 @@ import pytest
 from rydstate import RydbergStateSQDT
 from rydstate.angular import AngularKetLS
 from rydstate.element_properties import ElementProperties, get_element_properties
-from rydstate.qdt import get_sqdt
+from rydstate.qdt import ModelSetSQDT, ModelSQDT, get_sqdt
 from rydstate.radial.potential import get_potential_class
 from rydstate.utils import calc_energy_from_nu, calc_nu_from_energy, get_all_subclasses
 
 ALL_AVAILABLE_ION_SPECIES = sorted([cls.species for cls in get_all_subclasses(ElementProperties) if cls.net_charge > 1])
+
+
+def _get_nist_levels(sqdt: ModelSetSQDT) -> dict[tuple[int, int, float, float], float]:
+    """Return the NIST level energies (in Hartree) of all NIST models, keyed by (n, l_r, j_tot, s_tot)."""
+    return {
+        (n, model.channel.l_r, model.channel.j_tot, model.channel.s_tot): energy
+        for model in sqdt.nist_models
+        for n, energy in model.energies.items()
+    }
 
 
 @pytest.mark.parametrize("species", ALL_AVAILABLE_ION_SPECIES)
@@ -37,7 +46,7 @@ def test_ion_coulomb_potential_uses_net_charge(species: str) -> None:
 @pytest.mark.parametrize("species", ALL_AVAILABLE_ION_SPECIES)
 def test_ion_nist_data_is_loaded(species: str) -> None:
     sqdt = get_sqdt(species)
-    levels = sqdt._nist_energy_levels  # noqa: SLF001
+    levels = _get_nist_levels(sqdt)
     assert len(levels) > 0
 
     if "Yb" in species:
@@ -150,7 +159,7 @@ def test_electric_monopole_matrix_elements() -> None:
 def test_strontium_ion_nist_levels_match_quantum_defects() -> None:
     """For the highest NIST levels (n >= 9), nu from the NIST energies and from the quantum defects agree."""
     sqdt = get_sqdt("Sr88_ion")
-    levels = sqdt._nist_energy_levels  # noqa: SLF001
+    levels = _get_nist_levels(sqdt)
     for (n, l_r, j_tot, s_tot), energy in levels.items():
         if n < 9:
             continue
@@ -162,6 +171,8 @@ def test_strontium_ion_nist_levels_match_quantum_defects() -> None:
             # Fine structure not resolved in NIST (identical energies for both J): only compare the J = l - 1/2 entry
             continue
         angular = AngularKetLS(l_r=l_r, j_tot=j_tot, f_tot=j_tot, species="Sr88_ion")
-        nu_nist = sqdt.calc_nui(n, angular, use_nist_data=True)
-        nu_qd = sqdt.calc_nui(n, angular, use_nist_data=False)
+        nist_model, qd_model = sqdt.get_models(angular)
+        assert isinstance(qd_model, ModelSQDT)
+        nu_nist = nist_model.calc_nui(n)
+        nu_qd = qd_model.calc_nui(n)
         assert nu_nist == pytest.approx(nu_qd, abs=0.007), f"n={n}, l={l_r}, j={j_tot}"

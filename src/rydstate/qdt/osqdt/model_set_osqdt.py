@@ -147,7 +147,7 @@ class ModelSetOSQDT(ModelSetSQDT, metaclass=CachedABCMeta):
             )
         return osqdt_models[0]
 
-    def calc_nui(self, n: int, angular_ket: AngularKetBase[Any]) -> float:  # type: ignore [override]
+    def calc_nui(self, n: int, angular_ket: AngularKetBase[Any]) -> float:
         r"""Calculate the effective principal quantum number nui of the state with principal quantum number n.
 
         The state is given by the root of the OSQDT condition (see :meth:`ModelOSQDT.calc_condition`)

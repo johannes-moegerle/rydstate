@@ -623,8 +623,10 @@ def _get_nist_triplet_f_levels(j_tot: int) -> list[tuple[int, float]]:
     hartree_to_inverse_cm = ureg.Quantity(1, "hartree").to("1/cm", "spectroscopy").magnitude
     return [
         (n, energy_au * hartree_to_inverse_cm)
-        for (n, l_r, j, s_tot), energy_au in sorted(sqdt._nist_energy_levels.items())  # noqa: SLF001
-        if l_r == 3 and j == j_tot and s_tot == 1 and 10 <= n <= 20
+        for model in sqdt.nist_models
+        if (model.channel.l_r, model.channel.j_tot, model.channel.s_tot) == (3, j_tot, 1)
+        for n, energy_au in sorted(model.energies.items())
+        if 10 <= n <= 20
     ]
 
 

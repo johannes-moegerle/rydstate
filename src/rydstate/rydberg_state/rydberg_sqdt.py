@@ -18,7 +18,7 @@ from rydstate.rydberg_state.rydberg_ket import RydbergKet
 from rydstate.utils import calc_energy_from_nu, calc_nu_from_energy
 
 if TYPE_CHECKING:
-    from rydstate.qdt import ModelOSQDT, ModelSQDT
+    from rydstate.qdt import ModelOSQDT, ModelSQDTBase
     from rydstate.units import PintFloat
 
 GenericT_AngularKet = TypeVar("GenericT_AngularKet", bound=AngularKetBase[AllKnown])
@@ -95,7 +95,7 @@ class RydbergStateSQDT(RydbergState, Generic[GenericT_AngularKet]):
         return f"{self.__class__.__name__}({self.species}, n={self.n}, {self.angular!r})"
 
     @cached_property
-    def model(self) -> ModelSQDT | ModelOSQDT:
+    def model(self) -> ModelSQDTBase | ModelOSQDT:
         """The model describing this state.
 
         This is the model of the SQDT model set of the species, see :meth:`~rydstate.qdt.ModelSetSQDT.get_model`.
