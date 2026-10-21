@@ -4,12 +4,12 @@ from rydstate.species.lithium.potential_data import (
     PotentialFei2009Lithium,
     PotentialMarinescu1994Lithium,
 )
-from rydstate.species.lithium.sqdt_data import SQDTLithium
+from rydstate.species.lithium.sqdt_data import model_set_sqdt_lithium
 
 __all__ = [
     "ElementPropertiesLithium",
     "PotentialCoulombLithium",
     "PotentialFei2009Lithium",
     "PotentialMarinescu1994Lithium",
-    "SQDTLithium",
+    "model_set_sqdt_lithium",
 ]

@@ -5,10 +5,9 @@ from rydstate import RydbergStateSQDT, RydbergStateSQDTDivalent
 from rydstate.angular import AngularKetLS
 from rydstate.element_properties import ElementProperties, get_element_properties
 from rydstate.qdt import get_sqdt
-from rydstate.qdt.sqdt import ModelSetSQDT
-from rydstate.utils import get_all_subclasses
+from rydstate.qdt.sqdt.model_set_sqdt import _SQDT_MODEL_SETS
 
-ALL_AVAILABLE_SQDT_SPECIES = sorted([cls.species for cls in get_all_subclasses(ModelSetSQDT)])
+ALL_AVAILABLE_SQDT_SPECIES = sorted(_SQDT_MODEL_SETS)
 
 
 @pytest.mark.parametrize("species", ALL_AVAILABLE_SQDT_SPECIES)

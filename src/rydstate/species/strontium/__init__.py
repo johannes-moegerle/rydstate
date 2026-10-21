@@ -16,7 +16,7 @@ from rydstate.species.strontium.potential_data import (
     PotentialFei2009Strontium88,
     PotentialFei2009Strontium88Vaillant2024,
 )
-from rydstate.species.strontium.sqdt_data import SQDTStrontium88
+from rydstate.species.strontium.sqdt_data import model_set_sqdt_strontium88
 
 from rydstate.species.strontium import (  # isort: skip  # must be imported last
     sr87_eigen_channel_model_data,
@@ -37,7 +37,7 @@ __all__ = [
     "PotentialFei2009Strontium87",
     "PotentialFei2009Strontium88",
     "PotentialFei2009Strontium88Vaillant2024",
-    "SQDTStrontium88",
+    "model_set_sqdt_strontium88",
     "sr87_eigen_channel_model_data",
     "sr88_eigen_channel_model_data",
     "sr88_vaillant2024_k_matrix_model_data",

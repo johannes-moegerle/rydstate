@@ -1,23 +1,28 @@
 from __future__ import annotations
 
 from abc import ABC
-from typing import ClassVar
+from functools import cached_property
+from typing import TYPE_CHECKING
 
 from rydstate.element_properties import get_element_properties
-from rydstate.metaclass_cache import CachedABCMeta
+
+if TYPE_CHECKING:
+    from rydstate.element_properties import ElementProperties
 
 
-class ModelSet(ABC, metaclass=CachedABCMeta):
+class ModelSet(ABC):
     """Base class for the sets of quantum defect theory models of a species.
 
     This holds what all model sets have in common, independent of the quantum defect theory used,
     see e.g. :class:`~rydstate.qdt.ModelSetMQDT` and :class:`~rydstate.qdt.ModelSetSQDT`.
-    The concrete model sets of the different species are subclasses of these,
-    which are identified by their :attr:`species`, i.e. there is at most one MQDT and one SQDT model set per species.
+    There is at most one MQDT and one SQDT model set per species, see :func:`~rydstate.qdt.get_mqdt`
+    and :func:`~rydstate.qdt.get_sqdt`.
     """
 
-    species: ClassVar[str]
+    species: str
     """The short name of the atomic species."""
 
-    def __init__(self) -> None:
-        self.element_properties = get_element_properties(self.species)
+    @cached_property
+    def element_properties(self) -> ElementProperties:
+        """The element properties of the species."""
+        return get_element_properties(self.species)

@@ -1,14 +1,14 @@
 from __future__ import annotations
 
-import inspect
 import re
 from fractions import Fraction
-from pathlib import Path
 from typing import TYPE_CHECKING
 
 import numpy as np
 
 if TYPE_CHECKING:
+    from pathlib import Path
+
     from rydstate.element_properties import ElementProperties
 
 # A parsed NIST energy level is keyed by (n, l, j_tot, s_tot) and maps to the level energy in Hartree.
@@ -24,23 +24,6 @@ NIST_REQUIRED_COLUMNS = {
     "j_tot": "J",
     "energy": "Level (Hartree)",
 }
-
-
-def resolve_species_data_file(cls: type, filename: str) -> Path:
-    """Resolve a data file located next to the module defining ``cls``.
-
-    The species specific classes (e.g. the SQDT and MQDT subclasses) live in the species directory
-    together with their data files. This helper returns the absolute path of ``filename`` in that directory.
-
-    Args:
-        cls: The class whose defining module directory contains the data file.
-        filename: The name of the data file (relative to the species directory).
-
-    Returns:
-        The absolute path of the data file.
-
-    """
-    return Path(inspect.getfile(cls)).resolve().parent / filename
 
 
 def parse_nist_energy_levels(file: Path, element_properties: ElementProperties) -> NistEnergyLevels:  # noqa: C901, PLR0912

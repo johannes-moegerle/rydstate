@@ -8,7 +8,7 @@ from rydstate.species.strontium_ion.potential_data import (
     PotentialMarinescu1994Strontium87Ion,
     PotentialMarinescu1994Strontium88Ion,
 )
-from rydstate.species.strontium_ion.sqdt_data import SQDTStrontium87Ion, SQDTStrontium88Ion
+from rydstate.species.strontium_ion.sqdt_data import model_set_sqdt_strontium87_ion, model_set_sqdt_strontium88_ion
 
 __all__ = [
     "ElementPropertiesStrontium87Ion",
@@ -17,6 +17,6 @@ __all__ = [
     "PotentialCoulombStrontium88Ion",
     "PotentialMarinescu1994Strontium87Ion",
     "PotentialMarinescu1994Strontium88Ion",
-    "SQDTStrontium87Ion",
-    "SQDTStrontium88Ion",
+    "model_set_sqdt_strontium87_ion",
+    "model_set_sqdt_strontium88_ion",
 ]

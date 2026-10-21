@@ -10,7 +10,7 @@ from rydstate.qdt.mqdt import (
     get_mqdt,
 )
 from rydstate.qdt.osqdt import ModelOSQDT, ModelSetOSQDT
-from rydstate.qdt.sqdt import ModelSetSQDT, ModelSQDT, get_sqdt
+from rydstate.qdt.sqdt import ModelSetSQDT, ModelSQDT, get_sqdt, register_model_set_sqdt
 
 __all__ = [
     "Model",
@@ -27,4 +27,5 @@ __all__ = [
     "TrivialModel",
     "get_mqdt",
     "get_sqdt",
+    "register_model_set_sqdt",
 ]

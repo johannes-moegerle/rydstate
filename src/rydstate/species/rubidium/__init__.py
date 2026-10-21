@@ -4,12 +4,12 @@ from rydstate.species.rubidium.potential_data import (
     PotentialFei2009Rubidium,
     PotentialMarinescu1994Rubidium,
 )
-from rydstate.species.rubidium.sqdt_data import SQDTRubidium
+from rydstate.species.rubidium.sqdt_data import model_set_sqdt_rubidium
 
 __all__ = [
     "ElementPropertiesRubidium",
     "PotentialCoulombRubidium",
     "PotentialFei2009Rubidium",
     "PotentialMarinescu1994Rubidium",
-    "SQDTRubidium",
+    "model_set_sqdt_rubidium",
 ]

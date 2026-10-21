@@ -2,18 +2,20 @@ from __future__ import annotations
 
 import json
 import logging
-from functools import cache
-from typing import TYPE_CHECKING, Any, ClassVar
+from functools import cached_property
+from os import PathLike
+from pathlib import Path
+from typing import TYPE_CHECKING, Any
 
 from rydstate.angular import NotSet
 from rydstate.angular.utils import is_not_set, is_unknown
 from rydstate.qdt.model_set import ModelSet
 from rydstate.qdt.sqdt.model_sqdt import ModelSQDT
-from rydstate.qdt.sqdt.nist import parse_nist_energy_levels, resolve_species_data_file
-from rydstate.utils import calc_nu_from_energy, get_all_subclasses
+from rydstate.qdt.sqdt.nist import parse_nist_energy_levels
+from rydstate.utils import calc_nu_from_energy
 
 if TYPE_CHECKING:
-    from pathlib import Path
+    from collections.abc import Sequence
 
     from rydstate.angular.angular_ket import AngularKetBase
     from rydstate.qdt.sqdt.nist import NistEnergyLevels
@@ -23,56 +25,90 @@ logger = logging.getLogger(__name__)
 
 
 class ModelSetSQDT(ModelSet):
-    """Base class for the SQDT model sets of the different species."""
+    """SQDT model set of a species, i.e. the SQDT models of its channels and its low-lying NIST energy levels.
 
-    nist_data_file: ClassVar[str | None] = None
-    """Name of the file (in the species directory) with the low-lying NIST energy levels,
-    usually ``"nist_data.txt"``. Left as None for species without a NIST data file."""
+    The model sets of the species are instances of this class, which are registered via
+    :func:`register_model_set_sqdt` and looked up via :func:`get_sqdt`, e.g.
 
-    models: ClassVar[list[ModelSQDT] | None] = None
-    """List of the :class:`~rydstate.qdt.ModelSQDT` models, each describing the quantum defects of one channel
-    (in its range of validity). Channels without a model have zero quantum defects, see :meth:`get_model`.
-    The models can either be given directly or be loaded from the json files in the :attr:`models_directory`.
-    The default None means that no quantum defects are available for this species at all.
+    .. code-block:: python
+
+        model_set = ModelSetSQDT("Rb", models=directory / "sqdt_models", nist_data_file=directory / "nist_data.txt")
+        register_model_set_sqdt(model_set)
+
+    The models and the NIST energy levels are only loaded when they are needed for the first time,
+    so that creating the model sets of all species (e.g. when importing rydstate) is cheap.
     """
 
-    models_directory: ClassVar[str | None] = None
-    """Name of the directory (in the species directory) with the json files of the :class:`~rydstate.qdt.ModelSQDT`
-    models (see :meth:`~rydstate.qdt.ModelSQDT.to_dict`), usually ``"sqdt_models"``.
-    If given, the models are loaded from this directory in ``__init__`` and stored in :attr:`models`,
-    which then must not be given directly."""
+    def __init__(
+        self,
+        species: str,
+        models: Sequence[ModelSQDT] | str | PathLike[str] | None = None,
+        nist_data_file: str | PathLike[str] | None = None,
+    ) -> None:
+        """Initialize the SQDT model set.
 
-    def __init__(self) -> None:
-        super().__init__()
+        Args:
+            species: The short name of the atomic species.
+            models: The :class:`~rydstate.qdt.ModelSQDT` models of the species,
+                either directly as a sequence of models or as the directory with their json files
+                (which are loaded on first use via :meth:`load_models`).
+                Default is None, i.e. no quantum defects are available for this species,
+                in which case only the NIST energy levels can be used.
+            nist_data_file: The file with the low-lying NIST energy levels (see
+                :func:`~rydstate.qdt.sqdt.nist.parse_nist_energy_levels`), which is parsed on first use.
+                Default is None, i.e. no NIST energy levels are available for this species.
+
+        """
+        self.species = species
+        self._models_source = models
+        self._nist_data_file = nist_data_file
         self._trivial_models: dict[AngularKetBase[Any], ModelSQDT] = {}
-
-        if self.models_directory is not None:
-            if self.models is not None:
-                raise ValueError(f"{type(self).__name__} must not define both models and models_directory.")
-            directory = resolve_species_data_file(type(self), self.models_directory)
-            self.models = self._load_models(directory)  # type: ignore [misc]
-
-        self._nist_energy_levels: NistEnergyLevels = {}
-        if self.nist_data_file is not None:
-            # Load the NIST energy levels if a NIST data file is specified
-            file = resolve_species_data_file(type(self), self.nist_data_file)
-            self._nist_energy_levels = parse_nist_energy_levels(file, self.element_properties)
 
     def __repr__(self) -> str:
         return f"ModelSetSQDT({self.species})"
 
-    def _load_models(self, directory: Path) -> list[ModelSQDT]:
-        """Load all models from the json files in the given directory (sorted by the file names)."""
+    @cached_property
+    def models(self) -> list[ModelSQDT] | None:
+        """List of the :class:`~rydstate.qdt.ModelSQDT` models (loaded on first access).
+
+        Each model describes the quantum defects of one channel (in its range of validity).
+        Channels without a model have zero quantum defects, see :meth:`get_model`.
+        None means that no quantum defects are available for this species at all.
+        """
+        source = self._models_source
+        if source is None:
+            return None
+        models = self.load_models(source) if isinstance(source, (str, PathLike)) else list(source)
+        for model in models:
+            if model.species != self.species:
+                raise ValueError(f"The model {model} is not a model of the species {self.species}.")
+        return models
+
+    @classmethod
+    def load_models(cls, directory: str | PathLike[str]) -> list[ModelSQDT]:
+        """Load all models from the json files in the given directory (sorted by the file names).
+
+        Each json file describes one model, see :meth:`~rydstate.qdt.ModelSQDT.to_dict`.
+
+        Args:
+            directory: The directory with the json files of the models.
+
+        """
+        directory = Path(directory)
         if not directory.is_dir():
-            raise FileNotFoundError(f"The directory {directory} with the SQDT models of {self.species} does not exist.")
+            raise FileNotFoundError(f"The directory {directory} with the SQDT models does not exist.")
         models = []
         for file in sorted(directory.glob("*.json")):
             with file.open(encoding="utf-8") as f:
-                model = ModelSQDT.from_dict(json.load(f))
-            if model.species != self.species:
-                raise ValueError(f"The model {model} in {file} is not a model of the species {self.species}.")
-            models.append(model)
+                models.append(ModelSQDT.from_dict(json.load(f)))
         return models
+
+    @cached_property
+    def _nist_energy_levels(self) -> NistEnergyLevels:
+        """The low-lying NIST energy levels, empty if no NIST data file is given."""
+        if self._nist_data_file is None:
+            return {}
+        return parse_nist_energy_levels(Path(self._nist_data_file), self.element_properties)
 
     def get_models(self, angular_ket: AngularKetBase[Any]) -> list[ModelSQDT]:
         """Return all models whose channel is the given angular ket (up to the magnetic quantum number m).
@@ -218,16 +254,39 @@ class ModelSetSQDT(ModelSet):
         )
 
 
-@cache
-def get_sqdt(species: str) -> ModelSetSQDT:
-    """Get an instance of the subclass of ModelSetSQDT for the given species.
+_SQDT_MODEL_SETS: dict[str, ModelSetSQDT] = {}
+"""The registered SQDT model sets by their species, see :func:`register_model_set_sqdt`."""
 
-    The instance is kept alive for the whole process (and not only as long as it is referenced, as for
-    other cached classes), since the states only store their models and look up the model set when needed.
+
+def register_model_set_sqdt(model_set: ModelSetSQDT) -> ModelSetSQDT:
+    """Register the SQDT model set of a species, so that it is returned by :func:`get_sqdt`.
+
+    The species data register their model sets when they are imported, e.g.
+
+    .. code-block:: python
+
+        model_set_sqdt_rubidium = ModelSetSQDT("Rb", models=..., nist_data_file=...)
+        register_model_set_sqdt(model_set_sqdt_rubidium)
+
+    Args:
+        model_set: The model set to register. There can only be one registered model set per species.
+
+    Returns:
+        The registered model set.
+
     """
-    subclasses = get_all_subclasses(ModelSetSQDT, species)
-    if len(subclasses) == 0:
-        raise ValueError(f"No subclass of ModelSetSQDT found for {species=}.")
-    if len(subclasses) == 1:
-        return subclasses[0]()
-    raise ValueError(f"Multiple subclasses of ModelSetSQDT found for {species=}: {subclasses}.")
+    if model_set.species in _SQDT_MODEL_SETS:
+        raise ValueError(f"An SQDT model set for the species {model_set.species} is already registered.")
+    _SQDT_MODEL_SETS[model_set.species] = model_set
+    return model_set
+
+
+def get_sqdt(species: str) -> ModelSetSQDT:
+    """Get the registered SQDT model set of the given species, see :func:`register_model_set_sqdt`.
+
+    The same instance is returned for every call, since the states only store their models
+    and look up the model set when needed.
+    """
+    if species not in _SQDT_MODEL_SETS:
+        raise ValueError(f"No ModelSetSQDT registered for {species=}.")
+    return _SQDT_MODEL_SETS[species]

@@ -1,13 +1,12 @@
-from rydstate.qdt.sqdt import ModelSetSQDT
+from pathlib import Path
 
+from rydstate.qdt.sqdt import ModelSetSQDT, register_model_set_sqdt
 
-class SQDTHydrogen(ModelSetSQDT):
-    species = "H"
+DIRECTORY = Path(__file__).parent
 
-    models_directory = "sqdt_models"
+# the directory only contains a README, i.e. hydrogen has zero quantum defects
+model_set_sqdt_hydrogen = ModelSetSQDT("H", models=DIRECTORY / "sqdt_models")
+register_model_set_sqdt(model_set_sqdt_hydrogen)
 
-
-class SQDTHydrogenTextBook(ModelSetSQDT):
-    species = "H_textbook"
-
-    models_directory = "sqdt_models"
+model_set_sqdt_hydrogen_textbook = ModelSetSQDT("H_textbook", models=DIRECTORY / "sqdt_models")
+register_model_set_sqdt(model_set_sqdt_hydrogen_textbook)

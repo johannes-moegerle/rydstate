@@ -4,7 +4,7 @@
 
 {% set own_methods = methods | reject("in", inherited_members) | list %}
 {% if module.endswith("_model_data") or ((name.startswith("MQDT") or name.startswith("SQDT")) and own_methods | length == 0) %}
-.. The species data classes (ModelMQDT / ModelSetMQDT / ModelSetSQDT subclasses) only store
+.. The species data classes (ModelMQDT / ModelSetMQDT subclasses) only store
    parameters (class attributes) for a given species; they inherit all of their
    behaviour (methods and computed properties) from their respective base class.
    Here we only document the parameters that are actually defined on the

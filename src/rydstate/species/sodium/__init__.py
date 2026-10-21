@@ -4,12 +4,12 @@ from rydstate.species.sodium.potential_data import (
     PotentialFei2009Sodium,
     PotentialMarinescu1994Sodium,
 )
-from rydstate.species.sodium.sqdt_data import SQDTSodium
+from rydstate.species.sodium.sqdt_data import model_set_sqdt_sodium
 
 __all__ = [
     "ElementPropertiesSodium",
     "PotentialCoulombSodium",
     "PotentialFei2009Sodium",
     "PotentialMarinescu1994Sodium",
-    "SQDTSodium",
+    "model_set_sqdt_sodium",
 ]

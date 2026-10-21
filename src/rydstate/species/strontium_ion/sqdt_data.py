@@ -1,19 +1,18 @@
-from abc import ABC
+from pathlib import Path
 
-from rydstate.qdt.sqdt import ModelSetSQDT
+from rydstate.qdt.sqdt import ModelSetSQDT, register_model_set_sqdt
 
+DIRECTORY = Path(__file__).parent
 
-class _SQDTStrontiumIon(ModelSetSQDT, ABC):
-    # Sr II (Sr+) energy levels, referenced to the Sr+ ground state (4p6.5s 2S1/2)
-    nist_data_file = "nist_data.txt"
+# Sr II (Sr+) energy levels, referenced to the Sr+ ground state (4p6.5s 2S1/2)
+NIST_DATA_FILE = DIRECTORY / "nist_data.txt"
 
+# no quantum defects (they would have to account for the hyperfine structure), i.e. only the NIST levels are used
+model_set_sqdt_strontium87_ion = ModelSetSQDT("Sr87_ion", nist_data_file=NIST_DATA_FILE)
+register_model_set_sqdt(model_set_sqdt_strontium87_ion)
 
-class SQDTStrontium87Ion(_SQDTStrontiumIon):
-    species = "Sr87_ion"
-    # no quantum defects (they would have to account for the hyperfine structure), i.e. only the NIST levels are used
-
-
-class SQDTStrontium88Ion(_SQDTStrontiumIon):
-    species = "Sr88_ion"
-    # see sqdt_models/README.md for the references and how the quantum defects are derived from them
-    models_directory = "sqdt_models"
+# see sqdt_models/README.md for the references and how the quantum defects are derived from them
+model_set_sqdt_strontium88_ion = ModelSetSQDT(
+    "Sr88_ion", models=DIRECTORY / "sqdt_models", nist_data_file=NIST_DATA_FILE
+)
+register_model_set_sqdt(model_set_sqdt_strontium88_ion)

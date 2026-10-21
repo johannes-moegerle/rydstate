@@ -4,12 +4,12 @@ from rydstate.species.potassium.potential_data import (
     PotentialFei2009Potassium,
     PotentialMarinescu1994Potassium,
 )
-from rydstate.species.potassium.sqdt_data import SQDTPotassium
+from rydstate.species.potassium.sqdt_data import model_set_sqdt_potassium
 
 __all__ = [
     "ElementPropertiesPotassium",
     "PotentialCoulombPotassium",
     "PotentialFei2009Potassium",
     "PotentialMarinescu1994Potassium",
-    "SQDTPotassium",
+    "model_set_sqdt_potassium",
 ]

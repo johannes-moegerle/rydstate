@@ -21,6 +21,7 @@ Single channel quantum defect theory (SQDT)
     ModelSetSQDT
     ModelSQDT
     get_sqdt
+    register_model_set_sqdt
 
 Multichannel quantum defect theory (MQDT)
 -----------------------------------------

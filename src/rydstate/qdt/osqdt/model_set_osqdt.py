@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, Any
 
 from rydstate.angular import NotSet
 from rydstate.angular.utils import is_unknown
+from rydstate.metaclass_cache import CachedABCMeta
 from rydstate.qdt.osqdt.model_osqdt import ModelOSQDT
 from rydstate.qdt.sqdt.model_set_sqdt import ModelSetSQDT
 
@@ -20,7 +21,7 @@ class NoOSQDTStateError(ValueError):
     """Raised if the OSQDT models do not contain a state with the requested principal quantum number."""
 
 
-class ModelSetOSQDT(ModelSetSQDT):
+class ModelSetOSQDT(ModelSetSQDT, metaclass=CachedABCMeta):
     r"""Outer single channel quantum defects for a specific channel derived from the MQDT models.
 
     In contrast to a normal :class:`~rydstate.qdt.ModelSetSQDT`, the quantum defects are not taken from
@@ -51,8 +52,7 @@ class ModelSetOSQDT(ModelSetSQDT):
             raise ValueError(f"No MQDT model given for the channel {channel}.")
         if not all(model.species == models[0].species for model in models):
             raise ValueError("All models must have the same species.")
-        self.species = models[0].species  # type: ignore [misc]
-        super().__init__()
+        super().__init__(models[0].species)
 
         self.nu_range = nu_range
         self.channel = channel

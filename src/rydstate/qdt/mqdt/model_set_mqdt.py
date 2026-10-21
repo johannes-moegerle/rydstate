@@ -4,6 +4,7 @@ from functools import cache
 from typing import TYPE_CHECKING, Any, ClassVar
 
 from rydstate.angular.utils import is_not_set
+from rydstate.metaclass_cache import CachedABCMeta
 from rydstate.qdt.model_set import ModelSet
 from rydstate.qdt.mqdt.model_eigen_channel import TrivialModel
 from rydstate.utils import get_all_subclasses
@@ -14,7 +15,7 @@ if TYPE_CHECKING:
     from rydstate.qdt.mqdt.model_mqdt import ModelMQDT
 
 
-class ModelSetMQDT(ModelSet):
+class ModelSetMQDT(ModelSet, metaclass=CachedABCMeta):
     """Base class for the MQDT model sets of the different species."""
 
     model_classes: ClassVar[list[type[ModelMQDT]]]
