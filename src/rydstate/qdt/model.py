@@ -1,11 +1,16 @@
 from __future__ import annotations
 
 from abc import ABC
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 
 from rydstate.element_properties import get_element_properties
 
 if TYPE_CHECKING:
+    from collections.abc import Mapping
+    from os import PathLike
+
+    from typing_extensions import Self
+
     from rydstate.angular.angular_ket import AngularKetBase
 
 
@@ -58,6 +63,33 @@ class Model(ABC):
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.full_name})"
 
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any], directory: str | PathLike[str] | None = None) -> Self:
+        """Create a model from a dictionary describing it, e.g. as loaded from a json file.
+
+        The "model_class" of the dictionary is the name of the class of the model,
+        which must be this class or one of its subclasses.
+        The model is created by the ``from_dict`` of that class, see e.g. :meth:`~rydstate.qdt.ModelSQDT.from_dict`
+        and :meth:`~rydstate.qdt.ModelSQDTNist.from_dict`.
+
+        Args:
+            data: The dictionary describing the model.
+            directory: The directory relative to which file paths in the dictionary are resolved,
+                e.g. the directory of the json file. Default is None, i.e. the current working directory.
+
+        """
+        model_class = data.get("model_class")
+        subclasses = [subclass for subclass in _get_subclasses(cls) if subclass.__name__ == model_class]
+        if len(subclasses) != 1:
+            raise ValueError(
+                f"Expected exactly one subclass of {cls.__name__} named {model_class!r}, "
+                f"but found {len(subclasses)}: {data}"
+            )
+        subclass = subclasses[0]
+        if subclass.from_dict.__func__ is Model.from_dict.__func__:  # type: ignore [attr-defined]
+            raise NotImplementedError(f"{subclass.__name__} cannot be created from a dictionary.")
+        return cast("Self", subclass.from_dict(data, directory))
+
     @property
     def full_name(self) -> str:
         """Return the full name of the model, combining species and model name."""
@@ -72,3 +104,11 @@ class Model(ABC):
     def nu_max(self) -> float:
         """Maximum nu for which the model is valid."""
         return self.nu_range[1]
+
+
+def _get_subclasses(cls: type[Model]) -> list[type[Model]]:
+    """Return the class itself and all its (direct and indirect) subclasses."""
+    subclasses = [cls]
+    for subclass in cls.__subclasses__():
+        subclasses.extend(_get_subclasses(subclass))
+    return subclasses
