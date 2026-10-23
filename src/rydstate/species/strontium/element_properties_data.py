@@ -16,7 +16,7 @@ class _ElementPropertiesStrontiumAbstract(ElementProperties, ABC):
 
 class ElementPropertiesStrontium87(_ElementPropertiesStrontiumAbstract):
     species = "Sr87"
-    ion_species = "Sr87_ion"
+    core_radial_species = "Sr88_ion"
     i_c = 9 / 2
 
     mass_number = 87
@@ -37,7 +37,7 @@ class ElementPropertiesStrontium87(_ElementPropertiesStrontiumAbstract):
 
 class ElementPropertiesStrontium88(_ElementPropertiesStrontiumAbstract):
     species = "Sr88"
-    ion_species = "Sr88_ion"
+    core_radial_species = "Sr88_ion"
     i_c = 0
 
     mass_number = 88

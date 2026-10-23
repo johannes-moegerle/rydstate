@@ -366,7 +366,7 @@ class RydbergKet:
         r"""Calculate the radial matrix element :math:`\langle self_c | r^{k_{radial}} | other_c \rangle` in a.u.
 
         The core electron is treated as the low-lying valence electron of the corresponding singly charged SQDT ion
-        (e.g. Yb174_ion for Yb174):
+        without nuclear spin (e.g. Yb174_ion for Yb171):
         the Rydberg electron is ignored and the radial matrix element is calculated between the two core states,
         where the principal quantum number of each core electron is given by the lowest allowed shell of the ion
         for the given l_c.
@@ -380,38 +380,38 @@ class RydbergKet:
     def radial_core(self) -> Radial | None:
         """Get the radial part of the inner valence (core) electron of the Rydberg ket.
 
-        The core electron is treated as the valence electron of the corresponding singly charged SQDT ion,
-        see :meth:`_calc_core_radial_matrix_element_au`.
+        The core electron is treated as the valence electron of the corresponding singly charged SQDT ion
+        without nuclear spin (see :attr:`~rydstate.element_properties.ElementProperties.core_radial_species`),
+        see also :meth:`_calc_core_radial_matrix_element_au`.
         """
         s_c = self.angular.s_c
         l_c = self.angular.l_c
         j_c = self.angular.get_qn("j_c", allow_unknown=True)
-        f_c = self.angular.get_qn("f_c", allow_unknown=True)
         n_c = self.angular.n_c
         if s_c == 0:
             return None
-        if is_unknown(l_c) or is_unknown(j_c) or is_unknown(f_c) or is_unknown(n_c):
+        if is_unknown(l_c) or is_unknown(j_c) or is_unknown(n_c):
             return None
         if n_c is None:
             raise RuntimeError("The principal quantum number n_c of the core electron is not set in the angular ket.")
 
-        ion_species = get_element_properties(self.species).ion_species
+        core_radial_species = self.element_properties.core_radial_species
         core_sqdt = None
-        if ion_species is not None:
+        if core_radial_species is not None:
             with contextlib.suppress(ValueError):
-                core_sqdt = get_sqdt(ion_species)
-        if ion_species is None or core_sqdt is None:
+                core_sqdt = get_sqdt(core_radial_species)
+        if core_radial_species is None or core_sqdt is None:
             logger.warning(
-                "No SQDT data available for the ion species of %s, "
+                "No SQDT data available for the core radial species of %s, "
                 "thus we cannot calculate the core radial ket and its matrix elements.",
                 self.species,
             )
             return None
 
         # The core electron of the neutral atom is the valence electron of the ion, with total angular momentum j_c.
-        core_angular_ket = AngularKetLS(l_r=l_c, j_tot=j_c, f_tot=f_c, species=ion_species)
+        core_angular_ket = AngularKetLS(l_r=l_c, j_tot=j_c, species=core_radial_species)
         nui_c = core_sqdt.calc_nui(n_c, core_angular_ket)
-        potential = get_potential_class(ion_species)(l_c)
+        potential = get_potential_class(core_radial_species)(l_c)
         return RadialKet(nui_c, potential, n_expected=n_c, sign_convention="n_l_1")
 
     @cached_property

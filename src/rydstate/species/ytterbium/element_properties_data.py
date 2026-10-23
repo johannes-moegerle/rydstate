@@ -16,7 +16,7 @@ class _ElementPropertiesYtterbiumAbstract(ElementProperties, ABC):
 
 class ElementPropertiesYtterbium171(_ElementPropertiesYtterbiumAbstract):
     species = "Yb171"
-    ion_species = "Yb171_ion"
+    core_radial_species = "Yb174_ion"
     i_c = 1 / 2
 
     mass_number = 171
@@ -39,7 +39,7 @@ class ElementPropertiesYtterbium171(_ElementPropertiesYtterbiumAbstract):
 
 class ElementPropertiesYtterbium173(_ElementPropertiesYtterbiumAbstract):
     species = "Yb173"
-    ion_species = "Yb173_ion"
+    core_radial_species = "Yb174_ion"
     i_c = 5 / 2
 
     mass_number = 173
@@ -61,7 +61,7 @@ class ElementPropertiesYtterbium173(_ElementPropertiesYtterbiumAbstract):
 
 class ElementPropertiesYtterbium174(_ElementPropertiesYtterbiumAbstract):
     species = "Yb174"
-    ion_species = "Yb174_ion"
+    core_radial_species = "Yb174_ion"
     i_c = 0
 
     mass_number = 174
