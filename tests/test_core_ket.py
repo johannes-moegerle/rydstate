@@ -103,7 +103,7 @@ def test_transformations_preserve_n_c(ket_name: str, coupling_scheme: CouplingSc
     Neither replacing m nor changing the coupling scheme changes which core shell the state is built
     on. The rebuilt kets are constructed without a species, i.e. n_c cannot be re-derived: a dropped
     n_c silently becomes None (or None instead of Unknown) and only surfaces much later,
-    in get_core_ket / core_state / __eq__.
+    in get_core_ket / radial_core / __eq__.
     """
     ket = SOURCE_KETS[ket_name]
     assert ket.n_c is not None

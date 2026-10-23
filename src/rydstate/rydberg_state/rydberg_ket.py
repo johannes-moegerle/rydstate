@@ -25,7 +25,6 @@ if TYPE_CHECKING:
     from rydstate.angular.angular_ket import AngularKetBase
     from rydstate.angular.utils import AngularMomentumQuantumNumbers, AngularOperatorType
     from rydstate.radial.radial_base import Radial
-    from rydstate.rydberg_state.rydberg_sqdt import RydbergStateSQDT
     from rydstate.units import MatrixElementOperator, MatrixElementPart, PintFloat
 
 
@@ -246,8 +245,8 @@ class RydbergKet:
             matrix_element = self._calc_electric_reduced_matrix_element_au(other, operator, part="rydberg")
             if (
                 self.element_properties.number_valence_electrons == 2
-                and self.core_state is not None
-                and other.core_state is not None
+                and self.radial_core is not None
+                and other.radial_core is not None
             ):
                 matrix_element += self._calc_electric_reduced_matrix_element_au(other, operator, part="inner_valence")
             if operator == "electric_dipole" and self.element_properties.alpha_closed_shell_core != 0:
@@ -370,14 +369,18 @@ class RydbergKet:
         where the principal quantum number of each core electron is given by the lowest allowed shell of the ion
         for the given l_c.
         """
-        if self.core_state is None or other.core_state is None:
-            raise RuntimeError("Cannot calculate core radial matrix element: core state is not available.")
+        if self.radial_core is None or other.radial_core is None:
+            raise RuntimeError("Cannot calculate core radial matrix element: core radial ket is not available.")
 
-        return self.core_state.radial.calc_matrix_element(other.core_state.radial, k_radial, unit="a.u.")
+        return self.radial_core.calc_matrix_element(other.radial_core, k_radial, unit="a.u.")
 
     @cached_property
-    def core_state(self) -> RydbergStateSQDT[Any] | None:
-        """Get the corresponding ion state of the Rydberg ket."""
+    def radial_core(self) -> Radial | None:
+        """Get the radial part of the inner valence (core) electron of the Rydberg ket.
+
+        The core electron is treated as the valence electron of the corresponding singly charged SQDT ion,
+        see :meth:`_calc_core_radial_matrix_element_au`.
+        """
         from rydstate.rydberg_state.rydberg_sqdt import RydbergStateSQDT  # noqa: PLC0415
 
         s_c = self.angular.s_c
@@ -407,7 +410,7 @@ class RydbergKet:
 
         # The core electron of the neutral atom is the valence electron of the ion, with total angular momentum j_c.
         core_angular_ket = AngularKetLS(l_r=l_c, j_tot=j_c, f_tot=f_c, species=ion_species)
-        return RydbergStateSQDT(ion_species, n_c, angular=core_angular_ket)
+        return RydbergStateSQDT(ion_species, n_c, angular=core_angular_ket).radial
 
     @cached_property
     def valence_electrons_are_in_the_same_shell(self) -> bool:
@@ -420,9 +423,9 @@ class RydbergKet:
         j_c = self.angular.get_qn("j_c", allow_unknown=True)
         if is_unknown(j_r) or is_unknown(j_c) or j_r != j_c:
             return False
-        if self.core_state is None:
+        if self.radial_core is None:
             return False
-        overlap = abs(self.radial.calc_overlap(self.core_state.radial))
+        overlap = abs(self.radial.calc_overlap(self.radial_core))
         if overlap < 0.5:
             return False
         if overlap < 0.8:
