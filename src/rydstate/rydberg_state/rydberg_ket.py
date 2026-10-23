@@ -19,6 +19,8 @@ from rydstate.angular.utils import (
 )
 from rydstate.element_properties import get_element_properties
 from rydstate.qdt.sqdt import get_sqdt
+from rydstate.radial import RadialKet
+from rydstate.radial.potential import get_potential_class
 from rydstate.units import MatrixElementOperatorRanks
 
 if TYPE_CHECKING:
@@ -381,8 +383,6 @@ class RydbergKet:
         The core electron is treated as the valence electron of the corresponding singly charged SQDT ion,
         see :meth:`_calc_core_radial_matrix_element_au`.
         """
-        from rydstate.rydberg_state.rydberg_sqdt import RydbergStateSQDT  # noqa: PLC0415
-
         s_c = self.angular.s_c
         l_c = self.angular.l_c
         j_c = self.angular.get_qn("j_c", allow_unknown=True)
@@ -403,14 +403,16 @@ class RydbergKet:
         if ion_species is None or core_sqdt is None:
             logger.warning(
                 "No SQDT data available for the ion species of %s, "
-                "thus we cannot calculate the ion state and its matrix elements.",
+                "thus we cannot calculate the core radial ket and its matrix elements.",
                 self.species,
             )
             return None
 
         # The core electron of the neutral atom is the valence electron of the ion, with total angular momentum j_c.
         core_angular_ket = AngularKetLS(l_r=l_c, j_tot=j_c, f_tot=f_c, species=ion_species)
-        return RydbergStateSQDT(ion_species, n_c, angular=core_angular_ket).radial
+        nui_c = core_sqdt.calc_nui(n_c, core_angular_ket)
+        potential = get_potential_class(ion_species)(l_c)
+        return RadialKet(nui_c, potential, n_expected=n_c, sign_convention="n_l_1")
 
     @cached_property
     def valence_electrons_are_in_the_same_shell(self) -> bool:
