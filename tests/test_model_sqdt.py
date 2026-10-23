@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 from rydstate.angular import AngularKetJJ, AngularKetLS
-from rydstate.qdt import ModelSetSQDT, ModelSQDT, get_sqdt, register_model_set_sqdt
+from rydstate.qdt import Model, ModelSetSQDT, ModelSQDT, get_sqdt, register_model_set_sqdt
 from rydstate.qdt.sqdt.model_set_sqdt import _SQDT_MODEL_SETS
 
 
@@ -168,6 +168,15 @@ def test_from_dict_wrong_model_class() -> None:
         ModelSQDT.from_dict(
             {"model_class": "ModelEigenChannel", "species": "Rb", "channel": "ns_1/2", "quantum_defects": [3.13]}
         )
+
+
+def test_model_from_dict_dispatches_by_model_class() -> None:
+    data = {"model_class": "ModelSQDT", "species": "Rb", "channel": "ns_1/2", "quantum_defects": [3.13]}
+    assert isinstance(Model.from_dict(data), ModelSQDT)
+    with pytest.raises(ValueError, match="Expected exactly one subclass of Model named 'ModelUnknown'"):
+        Model.from_dict({**data, "model_class": "ModelUnknown"})
+    with pytest.raises(NotImplementedError, match="ModelOSQDT cannot be created from a dictionary"):
+        Model.from_dict({**data, "model_class": "ModelOSQDT"})
 
 
 @pytest.mark.parametrize("model_set", ALL_SQDT_MODEL_SETS, ids=lambda model_set: model_set.species)

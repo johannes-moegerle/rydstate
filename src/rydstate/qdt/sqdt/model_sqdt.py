@@ -12,6 +12,7 @@ from rydstate.qdt.utils import calc_modified_ritz_formula, check_expansion_coeff
 
 if TYPE_CHECKING:
     from collections.abc import Mapping
+    from os import PathLike
 
     from typing_extensions import Self
 
@@ -149,13 +150,14 @@ class ModelSQDT(Model):
         return data
 
     @classmethod
-    def from_dict(cls, data: Mapping[str, Any]) -> Self:
+    def from_dict(cls, data: Mapping[str, Any], directory: str | PathLike[str] | None = None) -> Self:  # noqa: ARG003
         """Create a model from a dictionary, as returned by :meth:`to_dict`.
 
         Args:
             data: The dictionary describing the model, see :class:`ModelSQDTDict`.
                 Its "model_class" must be "ModelSQDT".
                 The keys "reference", "nu_range" and "comment" are optional, where "comment" is ignored.
+            directory: Not used, since the dictionary contains no file paths, see :meth:`~rydstate.qdt.Model.from_dict`.
 
         """
         unknown_keys = set(data) - set(ModelSQDTDict.__annotations__)
