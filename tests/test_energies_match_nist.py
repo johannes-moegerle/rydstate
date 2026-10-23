@@ -40,7 +40,7 @@ Deviations = dict[tuple[int, int, float, float], tuple[float, float]]
 
 def _nist_models(sqdt: ModelSetSQDT) -> list[ModelSQDTNist]:
     """Return the models of the model set, which describe a channel by its NIST levels."""
-    return [model for model in sqdt.models or [] if isinstance(model, ModelSQDTNist)]
+    return [model for model in sqdt.models if isinstance(model, ModelSQDTNist)]
 
 
 def _nist_levels(species: str, threshold_au: float) -> Iterator[tuple[int, AngularKetLS[AllKnown], float, float]]:
@@ -109,7 +109,7 @@ def _assert_no_constant_offset(label: str, deviations: Deviations) -> None:
 def test_sqdt_energies_match_nist(species: str) -> None:
     """The energies from the quantum defects and the ionization energy must match the NIST levels."""
     sqdt = get_sqdt(species)
-    if not any(isinstance(model, ModelSQDT) for model in sqdt.models or []) or not _nist_models(sqdt):
+    if not any(isinstance(model, ModelSQDT) for model in sqdt.models) or not _nist_models(sqdt):
         pytest.skip(f"{species} has no quantum defects and/or no NIST data.")
     element_properties = get_element_properties(species)
 

@@ -52,7 +52,8 @@ class ModelSetOSQDT(ModelSetSQDT, metaclass=CachedABCMeta):
             raise ValueError(f"No MQDT model given for the channel {channel}.")
         if not all(model.species == models[0].species for model in models):
             raise ValueError("All models must have the same species.")
-        super().__init__(models[0].species)
+        # the states are described by the OSQDT models (see get_model), not by SQDT models
+        super().__init__(models[0].species, models=[])
 
         self.nu_range = nu_range
         self.channel = channel

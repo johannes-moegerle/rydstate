@@ -42,7 +42,7 @@ class ModelSetSQDT(ModelSet):
     def __init__(
         self,
         species: str,
-        models: Sequence[ModelSQDTBase] | str | PathLike[str] | None = None,
+        models: Sequence[ModelSQDTBase] | str | PathLike[str],
     ) -> None:
         """Initialize the SQDT model set.
 
@@ -51,7 +51,7 @@ class ModelSetSQDT(ModelSet):
             models: The SQDT models of the species,
                 either directly as a sequence of models or as the directory with their json files
                 (which are loaded on first use via :meth:`load_models`).
-                Default is None, i.e. no models are available for this species.
+                Channels without any model have zero quantum defects, e.g. no models at all for hydrogen.
 
         """
         self.species = species
@@ -62,18 +62,15 @@ class ModelSetSQDT(ModelSet):
         return f"ModelSetSQDT({self.species})"
 
     @cached_property
-    def models(self) -> list[ModelSQDTBase] | None:
+    def models(self) -> list[ModelSQDTBase]:
         """List of the SQDT models (loaded on first access).
 
         Each model describes one channel in its range of validity, either by its quantum defects
         (:class:`~rydstate.qdt.ModelSQDT`) or by its measured energy levels (:class:`~rydstate.qdt.ModelSQDTNist`).
         The nu ranges of the models of the same channel must not overlap.
         Channels without any model have zero quantum defects, see :meth:`get_model`.
-        None means that no models are available for this species at all.
         """
         source = self._models_source
-        if source is None:
-            return None
         models = self.load_models(source) if isinstance(source, (str, PathLike)) else list(source)
         for model in models:
             if model.species != self.species:
@@ -128,7 +125,7 @@ class ModelSetSQDT(ModelSet):
         if angular_ket.coupling_scheme != "LS":
             raise ValueError(f"The angular ket {angular_ket!r} must be in LS coupling.")
         channel = angular_ket if is_not_set(angular_ket.m) else angular_ket.replace_m(NotSet)
-        models = [model for model in self.models or [] if model.channel == channel]
+        models = [model for model in self.models if model.channel == channel]
         return sorted(models, key=lambda model: model.nu_min)
 
     def get_model(self, n: int, angular_ket: AngularKetBase[Any]) -> ModelSQDTBase:
@@ -138,8 +135,7 @@ class ModelSetSQDT(ModelSet):
         which has data for n and whose nu range contains the resulting nui of the state.
         I.e. for low lying states this is usually a :class:`~rydstate.qdt.ModelSQDTNist` model
         with the NIST energy levels, otherwise a :class:`~rydstate.qdt.ModelSQDT` model with the quantum defects.
-        If there is no model for the channel at all, a model with zero quantum defects is returned
-        (unless the species has no models at all, see :attr:`models`).
+        If there is no model for the channel at all, a model with zero quantum defects is returned.
 
         Args:
             n: The principal quantum number of the Rydberg state.
@@ -164,8 +160,6 @@ class ModelSetSQDT(ModelSet):
                 return model, nui
 
         if not models:
-            if self.models is None:
-                raise ValueError(f"No SQDT models available for species {self.species}.")
             return self._get_trivial_model(angular_ket), float(n)
         raise ValueError(
             f"None of the SQDT models {models} of the channel {angular_ket!r} is valid for n={n}, "

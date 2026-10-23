@@ -14,7 +14,7 @@ ALL_AVAILABLE_SQDT_SPECIES = sorted(_SQDT_MODEL_SETS)
 def test_sqdt_species(species: str) -> None:
     element_properties = get_element_properties(species)
     sqdt = get_sqdt(species)
-    if sqdt.models is None or (sqdt.models and all(isinstance(model, ModelSQDTNist) for model in sqdt.models)):
+    if sqdt.models and all(isinstance(model, ModelSQDTNist) for model in sqdt.models):
         pytest.skip(f"Species {species} does not have quantum defects defined.")
     i_c = element_properties.i_c
 
