@@ -3,10 +3,6 @@ from typing import ClassVar
 from rydstate.radial.potential import PotentialCoulomb, PotentialMarinescu1994
 
 
-class PotentialCoulombStrontium87Ion(PotentialCoulomb):
-    species = "Sr87_ion"
-
-
 class PotentialCoulombStrontium88Ion(PotentialCoulomb):
     species = "Sr88_ion"
 
@@ -36,10 +32,6 @@ class _PotentialMarinescu1994StrontiumIonAbstract(PotentialMarinescu1994):
         2: (3.2533, 1.5996, -3.2330, 0),
         3: (3.8700, 2.6800, -7.9517, 0),  # a_1, a_2 refitted (see above), a_3 as in Greene, Aymar (1991)
     }
-
-
-class PotentialMarinescu1994Strontium87Ion(_PotentialMarinescu1994StrontiumIonAbstract):
-    species = "Sr87_ion"
 
 
 class PotentialMarinescu1994Strontium88Ion(_PotentialMarinescu1994StrontiumIonAbstract):

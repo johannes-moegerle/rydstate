@@ -93,13 +93,6 @@ def test_get_label_divalent_jj(species: str, n: int, ket_kwargs: dict[str, Any],
 @pytest.mark.parametrize(
     ("species", "angular", "n", "label"),
     [
-        # one valence electron and a nuclear spin (e.g. the ions used as MQDT cores): F is appended
-        (
-            "Yb171_ion",
-            AngularKetLS(species="Yb171_ion", l_r=1, j_tot=1.5, f_tot=1, m=0),
-            60,
-            "Yb171_ion:60P_3/2,F=1,m=0",
-        ),
         # divalent atom with a nuclear spin
         (
             "Sr87",

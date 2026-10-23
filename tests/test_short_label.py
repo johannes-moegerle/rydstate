@@ -84,8 +84,6 @@ def test_parse_short_label() -> None:
         ("Rb", AngularKetJJ(species="Rb", l_r=1, j_r=1.5, m=0.5), "np_3/2 m=1/2"),
         ("Rb", AngularKetFJ(species="Rb", l_r=1, j_r=1.5, m=0.5), "np_3/2 m=1/2"),
         ("Cs", AngularKetJJ(species="Cs", l_r=7, j_r=6.5, m=-5.5), "n(l=7)_6.5 m=-5.5"),
-        ("Yb171_ion", AngularKetLS(species="Yb171_ion", l_r=1, j_tot=1.5, f_tot=1, m=0), "np_3/2 F=1 m=0"),
-        ("Yb171_ion", AngularKetFJ(species="Yb171_ion", l_r=1, j_r=1.5, f_tot=2), "np_3/2 F=2"),
         # LS coupling
         ("Sr88", AngularKetLS(species="Sr88", l_r=0, s_tot=0, j_tot=0, m=0), "5s ns 1S0 m=0"),
         ("Sr88", AngularKetLS(species="Sr88", l_r=2, s_tot=1, j_tot=3), "5s nd 3D3"),
@@ -187,8 +185,6 @@ def test_from_short_label_invalid_format(ket_class: type[AngularKetBase[Any]], l
     ("ket_class", "label", "species", "match"),
     [
         (AngularKetLS, "5s np 3P3", "Sr88", r"spin addition rule"),  # j_tot not allowed
-        # F missing for a non-zero nuclear spin
-        (AngularKetLS, "np_3/2", "Yb171_ion", r"Unknown quantum numbers detected \(f_tot\)"),
         (AngularKetBase, "5s np 3P1 m=0", "Sr87", r"Unknown quantum numbers detected \(f_tot\)"),
         (AngularKetFJ, "6s_1/2(Fc=2) np_3/2 F=3/2", "Yb171", r"spin addition rule"),  # f_c not allowed
         # Fc missing for a non-zero nuclear spin

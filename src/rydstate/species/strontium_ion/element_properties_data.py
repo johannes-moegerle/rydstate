@@ -32,19 +32,6 @@ class _ElementPropertiesStrontiumAbstractIon(ElementProperties, ABC):
     r_c_dipole_operator = 3.46
 
 
-class ElementPropertiesStrontium87Ion(_ElementPropertiesStrontiumAbstractIon):
-    species = "Sr87_ion"
-    i_c = 9 / 2
-
-    mass_number = 87
-    atomic_mass_u = 86.90887749454
-
-    # https://nds.iaea.org/nuclearmoments/isotope_measurement_results.php?A=87&Z=38
-    nuclear_dipole = -1.09316
-
-    ionization_threshold_dict: ClassVar = {CoreKet(i_c=9 / 2, s_c=0, l_c=0): _IONIZATION_THRESHOLD}
-
-
 class ElementPropertiesStrontium88Ion(_ElementPropertiesStrontiumAbstractIon):
     species = "Sr88_ion"
     i_c = 0

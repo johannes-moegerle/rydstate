@@ -17,32 +17,6 @@ class _ElementPropertiesYtterbiumAbstractIon(ElementProperties, ABC):
     core_electron_configuration = "4f14"
 
 
-class ElementPropertiesYtterbium171Ion(_ElementPropertiesYtterbiumAbstractIon):
-    species = "Yb171_ion"
-    i_c = 1 / 2
-
-    mass_number = 171
-    atomic_mass_u = 170.936331515
-
-    # https://nds.iaea.org/nuclearmoments/isotope_measurement_results.php?A=171&Z=70
-    nuclear_dipole = 0.4923
-
-    ionization_threshold_dict: ClassVar = {CoreKet(i_c=1 / 2, s_c=0, l_c=0): _IONIZATION_THRESHOLD}
-
-
-class ElementPropertiesYtterbium173Ion(_ElementPropertiesYtterbiumAbstractIon):
-    species = "Yb173_ion"
-    i_c = 5 / 2
-
-    mass_number = 173
-    atomic_mass_u = 172.938216211
-
-    # https://nds.iaea.org/nuclearmoments/isotope_measurement_results.php?A=173&Z=70
-    nuclear_dipole = -0.6780
-
-    ionization_threshold_dict: ClassVar = {CoreKet(i_c=5 / 2, s_c=0, l_c=0): _IONIZATION_THRESHOLD}
-
-
 class ElementPropertiesYtterbium174Ion(_ElementPropertiesYtterbiumAbstractIon):
     species = "Yb174_ion"
     i_c = 0

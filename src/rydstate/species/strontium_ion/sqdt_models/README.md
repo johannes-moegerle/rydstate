@@ -2,7 +2,6 @@
 
 Each json file describes one `ModelSQDT`, i.e. the quantum defects of one channel, see `ModelSQDT.to_dict`.
 The comments of the models refer to the references below by their number.
-Sr87_ion has no SQDT models (they would have to account for the hyperfine structure), i.e. only its NIST levels are used.
 
 ## Parametrization
 
