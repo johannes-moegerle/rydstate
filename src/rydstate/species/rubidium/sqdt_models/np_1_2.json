@@ -3,5 +3,6 @@
   "species": "Rb",
   "channel": "np_1/2",
   "quantum_defects": [2.6548849, 0.29, 0, 0, 0],
-  "reference": "Phys. Rev. A 67, 052502 (2003) - Rb85"
+  "reference": "Phys. Rev. A 67, 052502 (2003) - Rb85",
+  "nu_range": [15, "inf"]
 }

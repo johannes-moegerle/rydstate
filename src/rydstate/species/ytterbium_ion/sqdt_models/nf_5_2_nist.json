@@ -1,0 +1,7 @@
+{
+  "model_class": "ModelSQDTNist",
+  "species": "Yb174_ion",
+  "channel": "nf_5/2",
+  "nist_data_file": "../nist_data.txt",
+  "nu_range": [0, 15]
+}

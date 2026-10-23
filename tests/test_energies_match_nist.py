@@ -18,7 +18,7 @@ from rydstate.basis.basis_mqdt import get_mqdt_states_from_model
 from rydstate.element_properties import get_element_properties
 from rydstate.qdt import get_mqdt, get_sqdt
 from rydstate.qdt.mqdt import ModelSetMQDT
-from rydstate.qdt.sqdt import ModelSQDT
+from rydstate.qdt.sqdt import ModelSetSQDT, ModelSQDT, ModelSQDTNist
 from rydstate.qdt.sqdt.model_set_sqdt import _SQDT_MODEL_SETS
 from rydstate.radial.potential import get_potential_class
 from rydstate.units import ureg
@@ -38,6 +38,11 @@ HARTREE_TO_GHZ = ureg.Quantity(1, "hartree").to("GHz", "spectroscopy").magnitude
 Deviations = dict[tuple[int, int, float, float], tuple[float, float]]
 
 
+def _nist_models(sqdt: ModelSetSQDT) -> list[ModelSQDTNist]:
+    """Return the models of the model set, which describe a channel by its NIST levels."""
+    return [model for model in sqdt.models or [] if isinstance(model, ModelSQDTNist)]
+
+
 def _nist_levels(species: str, threshold_au: float) -> Iterator[tuple[int, AngularKetLS[AllKnown], float, float]]:
     """Yield (n, angular ket, nu, NIST energy in hartree) for all NIST levels.
 
@@ -47,7 +52,9 @@ def _nist_levels(species: str, threshold_au: float) -> Iterator[tuple[int, Angul
     sqdt = get_sqdt(species)
     element_properties = get_element_properties(species)
     levels = {
-        (n, m.channel.l_r, m.channel.j_tot, m.channel.s_tot): e for m in sqdt.nist_models for n, e in m.energies.items()
+        (n, model.channel.l_r, model.channel.j_tot, model.channel.s_tot): energy
+        for model in _nist_models(sqdt)
+        for n, energy in model.energies.items()
     }
     for (n, l, j_tot, s_tot), energy_nist_au in sorted(levels.items()):
         binding_energy_au = energy_nist_au - threshold_au
@@ -102,7 +109,7 @@ def _assert_no_constant_offset(label: str, deviations: Deviations) -> None:
 def test_sqdt_energies_match_nist(species: str) -> None:
     """The energies from the quantum defects and the ionization energy must match the NIST levels."""
     sqdt = get_sqdt(species)
-    if sqdt.models is None or not sqdt.nist_models:
+    if not any(isinstance(model, ModelSQDT) for model in sqdt.models or []) or not _nist_models(sqdt):
         pytest.skip(f"{species} has no quantum defects and/or no NIST data.")
     element_properties = get_element_properties(species)
 
@@ -133,7 +140,7 @@ def test_mqdt_energies_match_nist(species: str) -> None:
         sqdt = get_sqdt(species)
     except ValueError:
         pytest.skip(f"{species} has no SQDT class and therefore no NIST data.")
-    if not sqdt.nist_models:
+    if not _nist_models(sqdt):
         pytest.skip(f"{species} has no NIST data.")
     potential_class = get_potential_class(species)
 

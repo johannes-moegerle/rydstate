@@ -1,0 +1,7 @@
+{
+  "model_class": "ModelSQDTNist",
+  "species": "Na",
+  "channel": "nh_5.5",
+  "nist_data_file": "../nist_data.txt",
+  "nu_range": [0, 15]
+}

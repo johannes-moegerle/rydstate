@@ -103,6 +103,10 @@ class ModelSQDTBase(Model):
         the effective principal quantum number nui of the channel is defined."""
 
     @abstractmethod
+    def to_dict(self) -> Mapping[str, Any]:
+        """Return a JSON serializable dictionary describing the model, see :meth:`~rydstate.qdt.Model.from_dict`."""
+
+    @abstractmethod
     def calc_nui(self, n: int) -> float:
         """Calculate the effective principal quantum number nui of the state with the given n.
 

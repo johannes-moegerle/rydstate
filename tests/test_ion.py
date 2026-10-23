@@ -4,7 +4,7 @@ import pytest
 from rydstate import RydbergStateSQDT
 from rydstate.angular import AngularKetLS
 from rydstate.element_properties import ElementProperties, get_element_properties
-from rydstate.qdt import ModelSetSQDT, ModelSQDT, get_sqdt
+from rydstate.qdt import ModelSetSQDT, ModelSQDT, ModelSQDTNist, get_sqdt
 from rydstate.radial.potential import get_potential_class
 from rydstate.utils import calc_energy_from_nu, calc_nu_from_energy, get_all_subclasses
 
@@ -15,7 +15,8 @@ def _get_nist_levels(sqdt: ModelSetSQDT) -> dict[tuple[int, int, float, float], 
     """Return the NIST level energies (in Hartree) of all NIST models, keyed by (n, l_r, j_tot, s_tot)."""
     return {
         (n, model.channel.l_r, model.channel.j_tot, model.channel.s_tot): energy
-        for model in sqdt.nist_models
+        for model in sqdt.models or []
+        if isinstance(model, ModelSQDTNist)
         for n, energy in model.energies.items()
     }
 
@@ -46,6 +47,8 @@ def test_ion_coulomb_potential_uses_net_charge(species: str) -> None:
 @pytest.mark.parametrize("species", ALL_AVAILABLE_ION_SPECIES)
 def test_ion_nist_data_is_loaded(species: str) -> None:
     sqdt = get_sqdt(species)
+    if sqdt.models is None:
+        pytest.skip(f"{species} has no SQDT models yet (they would have to account for the hyperfine structure).")
     levels = _get_nist_levels(sqdt)
     assert len(levels) > 0
 

@@ -4,5 +4,6 @@
   "channel": "6s ns 3S1",
   "quantum_defects": [4.4382, 4, -10000.0, 8000000.0, -3000000000.0],
   "reference": "Wilson 2019, https://arxiv.org/abs/1912.08754",
+  "nu_range": [15, "inf"],
   "comment": "see Table S2, but adjusted for non-Rydberg Ritz"
 }

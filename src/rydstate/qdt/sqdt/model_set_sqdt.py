@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import itertools
 import json
 from functools import cached_property
 from os import PathLike
@@ -9,79 +10,66 @@ from typing import TYPE_CHECKING, Any
 from rydstate.angular import NotSet
 from rydstate.angular.utils import is_not_set
 from rydstate.qdt.model_set import ModelSet
-from rydstate.qdt.sqdt.model_sqdt import ModelSQDT
+from rydstate.qdt.sqdt.model_sqdt import ModelSQDT, ModelSQDTBase
 from rydstate.qdt.sqdt.model_sqdt_nist import ModelSQDTNist
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
     from rydstate.angular.angular_ket import AngularKetBase
-    from rydstate.qdt.sqdt.model_sqdt import ModelSQDTBase
 
 
 class ModelSetSQDT(ModelSet):
-    """SQDT model set of a species, i.e. the SQDT models of its channels and its low-lying NIST energy levels.
+    """SQDT model set of a species, i.e. the SQDT models of its channels.
 
     The model sets of the species are instances of this class, which are registered via
     :func:`register_model_set_sqdt` and looked up via :func:`get_sqdt`, e.g.
 
     .. code-block:: python
 
-        model_set = ModelSetSQDT("Rb", models=directory / "sqdt_models", nist_data_file=directory / "nist_data.txt")
+        model_set = ModelSetSQDT("Rb", models=directory / "sqdt_models")
         register_model_set_sqdt(model_set)
 
-    The models and the NIST energy levels are only loaded when they are needed for the first time,
+    The models are only loaded when they are needed for the first time,
     so that creating the model sets of all species (e.g. when importing rydstate) is cheap.
 
-    Each channel can be described by several :class:`~rydstate.qdt.ModelSQDTBase` models, whose nu ranges may overlap:
-    the :attr:`nist_models` with the measured energy levels (valid in the :attr:`nist_nu_range`)
-    and the quantum defect :attr:`models` (usually valid for all nu).
-    The models are tried in the order given by :meth:`get_models`, i.e. the NIST models first,
-    and the first model that has data for n and whose nu range contains the resulting nu is used.
-    Since a NIST model only has data for the n with a measured level, the quantum defects are used
-    for all other states, also inside the :attr:`nist_nu_range`.
+    Each channel can be described by several :class:`~rydstate.qdt.ModelSQDTBase` models with non-overlapping
+    nu ranges, e.g. a :class:`~rydstate.qdt.ModelSQDTNist` model with the measured energy levels for low nu
+    and a :class:`~rydstate.qdt.ModelSQDT` model with the quantum defects for high nu.
+    The state with a given n is described by the model whose nu range contains the resulting nu, see :meth:`get_model`.
     """
 
     def __init__(
         self,
         species: str,
-        models: Sequence[ModelSQDT] | str | PathLike[str] | None = None,
-        nist_data_file: str | PathLike[str] | None = None,
-        nist_nu_range: tuple[float, float] = (0, 15),
+        models: Sequence[ModelSQDTBase] | str | PathLike[str] | None = None,
     ) -> None:
         """Initialize the SQDT model set.
 
         Args:
             species: The short name of the atomic species.
-            models: The :class:`~rydstate.qdt.ModelSQDT` models of the species,
+            models: The SQDT models of the species,
                 either directly as a sequence of models or as the directory with their json files
                 (which are loaded on first use via :meth:`load_models`).
-                Default is None, i.e. no quantum defects are available for this species,
-                in which case only the NIST energy levels can be used.
-            nist_data_file: The file with the low-lying NIST energy levels (see
-                :func:`~rydstate.qdt.sqdt.nist.parse_nist_energy_levels`), which is parsed on first use.
-                Default is None, i.e. no NIST energy levels are available for this species.
-                The levels are loaded as :class:`~rydstate.qdt.ModelSQDTNist` models, see :attr:`nist_models`.
-            nist_nu_range: Range of effective principal quantum numbers nu for which the NIST energy levels are used.
-                Default is (0, 15).
+                Default is None, i.e. no models are available for this species.
 
         """
         self.species = species
         self._models_source = models
-        self._nist_data_file = nist_data_file
-        self.nist_nu_range = nist_nu_range
         self._trivial_models: dict[AngularKetBase[Any], ModelSQDT] = {}
 
     def __repr__(self) -> str:
         return f"ModelSetSQDT({self.species})"
 
     @cached_property
-    def models(self) -> list[ModelSQDT] | None:
-        """List of the :class:`~rydstate.qdt.ModelSQDT` models (loaded on first access).
+    def models(self) -> list[ModelSQDTBase] | None:
+        """List of the SQDT models (loaded on first access).
 
-        Each model describes the quantum defects of one channel (in its range of validity).
-        Channels without such a model have zero quantum defects, see :meth:`get_model`.
-        None means that no quantum defects are available for this species at all.
+        Each model describes one channel in its range of validity, either by its quantum defects
+        (:class:`~rydstate.qdt.ModelSQDT`) or by its measured energy levels (:class:`~rydstate.qdt.ModelSQDTNist`).
+        The nu ranges of the models of the same channel must not overlap.
+        Channels without any model have zero quantum defects, see :meth:`get_model`.
+        None means that no models are available for this species at all.
         """
         source = self._models_source
         if source is None:
@@ -90,13 +78,30 @@ class ModelSetSQDT(ModelSet):
         for model in models:
             if model.species != self.species:
                 raise ValueError(f"The model {model} is not a model of the species {self.species}.")
+        self._check_nu_ranges_do_not_overlap(models)
         return models
 
+    @staticmethod
+    def _check_nu_ranges_do_not_overlap(models: Sequence[ModelSQDTBase]) -> None:
+        """Raise an error if the nu ranges of two models of the same channel overlap (touching is allowed)."""
+        models_by_channel: dict[AngularKetBase[Any], list[ModelSQDTBase]] = {}
+        for model in models:
+            models_by_channel.setdefault(model.channel, []).append(model)
+        for channel_models in models_by_channel.values():
+            sorted_models = sorted(channel_models, key=lambda model: model.nu_min)
+            for lower, upper in itertools.pairwise(sorted_models):
+                if lower.nu_max > upper.nu_min:
+                    raise ValueError(
+                        f"The nu ranges {lower.nu_range} of {lower!r} and {upper.nu_range} of {upper!r} overlap."
+                    )
+
     @classmethod
-    def load_models(cls, directory: str | PathLike[str]) -> list[ModelSQDT]:
+    def load_models(cls, directory: str | PathLike[str]) -> list[ModelSQDTBase]:
         """Load all models from the json files in the given directory (sorted by the file names).
 
-        Each json file describes one model, see :meth:`~rydstate.qdt.ModelSQDT.to_dict`.
+        Each json file describes one model, see :meth:`~rydstate.qdt.Model.from_dict`
+        (e.g. :meth:`~rydstate.qdt.ModelSQDT.to_dict` or :meth:`~rydstate.qdt.ModelSQDTNist.to_dict`).
+        Relative file paths in the json files are relative to the directory.
 
         Args:
             directory: The directory with the json files of the models.
@@ -108,25 +113,13 @@ class ModelSetSQDT(ModelSet):
         models = []
         for file in sorted(directory.glob("*.json")):
             with file.open(encoding="utf-8") as f:
-                models.append(ModelSQDT.from_dict(json.load(f)))
+                models.append(ModelSQDTBase.from_dict(json.load(f), directory))
         return models
-
-    @cached_property
-    def nist_models(self) -> list[ModelSQDTNist]:
-        """List of the :class:`~rydstate.qdt.ModelSQDTNist` models (loaded on first access).
-
-        Each model holds the NIST energy levels of one channel and is valid in the :attr:`nist_nu_range`.
-        Empty if no NIST data file is given.
-        """
-        if self._nist_data_file is None:
-            return []
-        return ModelSQDTNist.from_nist_file(self.species, Path(self._nist_data_file), self.nist_nu_range)
 
     def get_models(self, angular_ket: AngularKetBase[Any]) -> list[ModelSQDTBase]:
         """Return all models whose channel is the given angular ket (up to the magnetic quantum number m).
 
-        The :attr:`nist_models` come first, so that they take precedence over the quantum defect :attr:`models`
-        in their range of validity.
+        The models are sorted by their nu range.
 
         Args:
             angular_ket: The angular ket of the channel, which must be in LS coupling.
@@ -135,16 +128,18 @@ class ModelSetSQDT(ModelSet):
         if angular_ket.coupling_scheme != "LS":
             raise ValueError(f"The angular ket {angular_ket!r} must be in LS coupling.")
         channel = angular_ket if is_not_set(angular_ket.m) else angular_ket.replace_m(NotSet)
-        return [model for model in [*self.nist_models, *(self.models or [])] if model.channel == channel]
+        models = [model for model in self.models or [] if model.channel == channel]
+        return sorted(models, key=lambda model: model.nu_min)
 
     def get_model(self, n: int, angular_ket: AngularKetBase[Any]) -> ModelSQDTBase:
         """Return the model describing the state with principal quantum number n and the given angular ket.
 
-        This is the first of the models of the channel (see :meth:`get_models`),
+        This is the model of the channel (see :meth:`get_models`),
         which has data for n and whose nu range contains the resulting nui of the state.
         I.e. for low lying states this is usually a :class:`~rydstate.qdt.ModelSQDTNist` model
         with the NIST energy levels, otherwise a :class:`~rydstate.qdt.ModelSQDT` model with the quantum defects.
-        If there is no quantum defect model for the channel, a model with zero quantum defects is returned.
+        If there is no model for the channel at all, a model with zero quantum defects is returned
+        (unless the species has no models at all, see :attr:`models`).
 
         Args:
             n: The principal quantum number of the Rydberg state.
@@ -168,12 +163,9 @@ class ModelSetSQDT(ModelSet):
             if model.nu_min <= nui <= model.nu_max:
                 return model, nui
 
-        if not any(isinstance(model, ModelSQDT) for model in models):
+        if not models:
             if self.models is None:
-                raise ValueError(
-                    f"No quantum defect data available for species {self.species} "
-                    f"and no NIST energy level of the channel {angular_ket!r} for n={n}."
-                )
+                raise ValueError(f"No SQDT models available for species {self.species}.")
             return self._get_trivial_model(angular_ket), float(n)
         raise ValueError(
             f"None of the SQDT models {models} of the channel {angular_ket!r} is valid for n={n}, "
@@ -211,7 +203,7 @@ class ModelSetSQDT(ModelSet):
         (see :class:`~rydstate.qdt.ModelSQDTNist`), otherwise via the quantum defect theory,
         where nui is defined as :math:`\nu_i = n^* = n - \delta_{lj}(n)`
         with the quantum defect :math:`\delta_{lj}(n)` (see :class:`~rydstate.qdt.ModelSQDT`).
-        If there is no quantum defect model for the channel, the quantum defect is zero.
+        If there is no model for the channel at all, the quantum defect is zero.
 
         Args:
             n: The principal quantum number of the Rydberg state.

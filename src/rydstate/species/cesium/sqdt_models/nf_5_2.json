@@ -3,5 +3,6 @@
   "species": "Cs",
   "channel": "nf_5/2",
   "quantum_defects": [0.03341424, -0.198674, 0.28953, -0.2601, 0.0],
-  "reference": "Phys. Rev. A 35, 4650 (1987)"
+  "reference": "Phys. Rev. A 35, 4650 (1987)",
+  "nu_range": [15, "inf"]
 }

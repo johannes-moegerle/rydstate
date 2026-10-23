@@ -3,5 +3,6 @@
   "species": "Li",
   "channel": "nf_5/2",
   "quantum_defects": [0.000305, -0.00126, 0, 0, 0],
-  "reference": ["T. F. Gallagher, Rydberg Atoms, Cambridge University Press (2005), ISBN: 978-0-52-102166-1", "Johansson I 1958 Ark. Fysik 15 169"]
+  "reference": ["T. F. Gallagher, Rydberg Atoms, Cambridge University Press (2005), ISBN: 978-0-52-102166-1", "Johansson I 1958 Ark. Fysik 15 169"],
+  "nu_range": [15, "inf"]
 }

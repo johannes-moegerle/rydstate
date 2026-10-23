@@ -1,0 +1,7 @@
+{
+  "model_class": "ModelSQDTNist",
+  "species": "Sr88",
+  "channel": "5s ns 1S0",
+  "nist_data_file": "../nist_data.txt",
+  "nu_range": [0, 15]
+}

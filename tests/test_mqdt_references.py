@@ -14,7 +14,7 @@ from rydstate import RydbergStateSQDTDivalent, units
 from rydstate.angular.angular_ket import AngularKetFJ, AngularKetJJ, AngularKetLS
 from rydstate.angular.utils import NotSet, is_unknown
 from rydstate.basis.basis_mqdt import get_mqdt_states_from_model
-from rydstate.qdt import ModelEigenChannel, ModelKMatrix, get_mqdt, get_sqdt
+from rydstate.qdt import ModelEigenChannel, ModelKMatrix, ModelSQDTNist, get_mqdt, get_sqdt
 from rydstate.qdt.utils import calc_modified_ritz_formula_in_nu
 from rydstate.radial.potential import get_potential_class
 from rydstate.units import ureg
@@ -623,7 +623,8 @@ def _get_nist_triplet_f_levels(j_tot: int) -> list[tuple[int, float]]:
     hartree_to_inverse_cm = ureg.Quantity(1, "hartree").to("1/cm", "spectroscopy").magnitude
     return [
         (n, energy_au * hartree_to_inverse_cm)
-        for model in sqdt.nist_models
+        for model in sqdt.models or []
+        if isinstance(model, ModelSQDTNist)
         if (model.channel.l_r, model.channel.j_tot, model.channel.s_tot) == (3, j_tot, 1)
         for n, energy_au in sorted(model.energies.items())
         if 10 <= n <= 20
