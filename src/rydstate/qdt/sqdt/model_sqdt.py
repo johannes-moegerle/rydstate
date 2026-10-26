@@ -49,7 +49,8 @@ class ModelSQDTBase(Model):
     """Base class for the SQDT models, each describing a single channel of a species.
 
     The concrete models differ in how they calculate the effective principal quantum number nui
-    of the state with a given n, see e.g. :class:`~rydstate.qdt.ModelSQDT` (via quantum defects).
+    of the state with a given n, see :class:`~rydstate.qdt.ModelSQDT` (via quantum defects)
+    and :class:`~rydstate.qdt.ModelSQDTNist` (via measured energy levels).
     Each model describes the states of its channel with principal quantum number n in its :attr:`n_range`.
     """
 

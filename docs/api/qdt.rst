@@ -22,6 +22,7 @@ Single channel quantum defect theory (SQDT)
     ModelSQDTBase
     ModelSQDT
     ModelSQDTFit
+    ModelSQDTNist
     get_sqdt
     register_model_set_sqdt
 

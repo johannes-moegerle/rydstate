@@ -5,9 +5,11 @@ import math
 from pathlib import Path
 
 import pytest
+import rydstate.species.rubidium
 from rydstate.angular import AngularKetJJ, AngularKetLS
-from rydstate.qdt import Model, ModelSetSQDT, ModelSQDT, ModelSQDTBase, get_sqdt, register_model_set_sqdt
+from rydstate.qdt import Model, ModelSetSQDT, ModelSQDT, ModelSQDTBase, ModelSQDTNist, get_sqdt, register_model_set_sqdt
 from rydstate.qdt.sqdt.model_set_sqdt import _SQDT_MODEL_SETS
+from rydstate.qdt.sqdt.model_sqdt_nist import _load_nist_energies_by_channel
 
 
 def test_channel_from_short_label() -> None:
@@ -114,6 +116,7 @@ def test_ionization_thresholds() -> None:
 
 ALL_SQDT_MODEL_SETS = list(_SQDT_MODEL_SETS.values())
 ALL_SQDT_MODELS = [model for model_set in ALL_SQDT_MODEL_SETS for model in model_set.models or []]
+RUBIDIUM_NIST_DATA_FILE = Path(rydstate.species.rubidium.__file__).parent / "nist_data.txt"
 
 
 @pytest.mark.parametrize("model", ALL_SQDT_MODELS, ids=lambda model: model.full_name)
@@ -189,6 +192,50 @@ def test_model_from_dict_dispatches_by_model_class() -> None:
         Model.from_dict({**data, "model_class": "ModelUnknown"})
     with pytest.raises(NotImplementedError, match="ModelSQDTBase cannot be created from a dictionary"):
         Model.from_dict({**data, "model_class": "ModelSQDTBase"})
+
+
+def test_nist_model_of_single_channel() -> None:
+    """A NIST model is loaded for a single channel, the NIST data file is only parsed once."""
+    model = ModelSQDTNist.from_nist_file("Rb", "ns_1/2", RUBIDIUM_NIST_DATA_FILE, n_range=(5, 20))
+    assert model.n_range == (5, 20)
+    assert model.reference is None
+    assert model.energies[5] == 0  # 5s ground state
+    assert model.calc_nui(5) == pytest.approx(5 - 3.195, abs=0.01)
+    with pytest.raises(ValueError, match="no energy level for n=4"):
+        model.calc_nui(4)
+    hits = _load_nist_energies_by_channel.cache_info().hits
+    other = ModelSQDTNist.from_nist_file("Rb", "ns_1/2", RUBIDIUM_NIST_DATA_FILE)
+    assert _load_nist_energies_by_channel.cache_info().hits == hits + 1
+    assert other.energies == model.energies
+    assert other.energies is not model.energies
+    channel = AngularKetLS(l_r=20, j_tot=20.5, f_tot=20.5, species="Rb")
+    with pytest.raises(ValueError, match="has no energy levels of this channel"):
+        ModelSQDTNist.from_nist_file("Rb", channel, RUBIDIUM_NIST_DATA_FILE)
+
+
+def test_nist_model_json_round_trip(tmp_path: Path) -> None:
+    """A NIST model is stored with the path of its NIST data file, relative paths are relative to the json file."""
+    (tmp_path / "nist_data.txt").write_text(RUBIDIUM_NIST_DATA_FILE.read_text())
+    model = ModelSQDTNist.from_nist_file("Rb", "np_1/2", tmp_path / "nist_data.txt", n_range=(5, 20))
+    assert model.to_dict()["nist_data_file"] == (tmp_path / "nist_data.txt").as_posix()
+
+    data = {
+        "model_class": "ModelSQDTNist",
+        "species": "Rb",
+        "channel": "np_1/2",
+        "reference": "NIST Atomic Spectra Database",
+        "nist_data_file": "nist_data.txt",
+        "n_range": [5, 20],
+    }
+    loaded = Model.from_dict(json.loads(json.dumps(data)), tmp_path)
+    assert isinstance(loaded, ModelSQDTNist)
+    assert loaded.energies == model.energies
+    assert loaded.to_dict() == data
+    # the reference is None by default and stays None in the round trip
+    assert model.reference is None
+    assert Model.from_dict(model.to_dict()).reference is None
+    with pytest.raises(ValueError, match="only models loaded from a NIST data file"):
+        ModelSQDTNist("Rb", "np_1/2", {5: 0.0}).to_dict()
 
 
 @pytest.mark.parametrize("model_set", ALL_SQDT_MODEL_SETS, ids=lambda model_set: model_set.species)

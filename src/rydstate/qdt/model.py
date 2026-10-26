@@ -65,7 +65,8 @@ class Model(ABC):
 
         The "model_class" of the dictionary is the name of the class of the model,
         which must be this class or one of its subclasses.
-        The model is created by the ``from_dict`` of that class, see e.g. :meth:`~rydstate.qdt.ModelSQDT.from_dict`.
+        The model is created by the ``from_dict`` of that class, see e.g. :meth:`~rydstate.qdt.ModelSQDT.from_dict`
+        and :meth:`~rydstate.qdt.ModelSQDTNist.from_dict`.
 
         Args:
             data: The dictionary describing the model.
