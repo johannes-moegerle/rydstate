@@ -52,7 +52,8 @@ class ModelSetOSQDT(ModelSetSQDT, metaclass=CachedABCMeta):
             raise ValueError(f"No MQDT model given for the channel {channel}.")
         if not all(model.species == models[0].species for model in models):
             raise ValueError("All models must have the same species.")
-        super().__init__(models[0].species)
+        # the states are described by the OSQDT models (see get_model), not by SQDT models
+        super().__init__(models[0].species, models=[])
 
         self.nu_range = nu_range
         self.channel = channel
@@ -147,7 +148,7 @@ class ModelSetOSQDT(ModelSetSQDT, metaclass=CachedABCMeta):
             )
         return osqdt_models[0]
 
-    def calc_nui(self, n: int, angular_ket: AngularKetBase[Any]) -> float:  # type: ignore [override]
+    def calc_nui(self, n: int, angular_ket: AngularKetBase[Any]) -> float:
         r"""Calculate the effective principal quantum number nui of the state with principal quantum number n.
 
         The state is given by the root of the OSQDT condition (see :meth:`ModelOSQDT.calc_condition`)

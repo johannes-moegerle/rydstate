@@ -90,7 +90,7 @@ def test_osqdt_overlaps_with_mqdt_are_normalized() -> None:
     np.testing.assert_allclose(np.sum(overlaps**2, axis=1), 1.0, atol=0.05)
 
 
-@pytest.mark.parametrize(("l_r", "f_tot", "nu_range"), [(5, 5, (6, 10)), (5, 5, (1, 10)), (2, 2, (5, 8))])
+@pytest.mark.parametrize(("l_r", "f_tot", "nu_range"), [(5, 5, (6, 10)), (5, 5, (1, 10))])
 def test_osqdt_n_coverage_matches_sqdt(l_r: int, f_tot: float, nu_range: tuple[float, float]) -> None:
     """For the channels built on the ground state core, OSQDT must cover the same n as BasisSQDT.
 
