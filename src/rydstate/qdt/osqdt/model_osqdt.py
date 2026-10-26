@@ -55,7 +55,8 @@ class ModelOSQDT(Model):
         self.reference = model.reference
         self.f_tot = channel.f_tot
         self.parity = channel.parity
-        self.nu_range = (max(model.nu_min, nu_range[0]), min(model.nu_max, nu_range[1]))
+        self.nu_range: tuple[float, float] = (max(model.nu_min, nu_range[0]), min(model.nu_max, nu_range[1]))
+        """Range of effective principal quantum numbers nu for which the model is valid."""
         if self.nu_range[0] > self.nu_range[1]:
             raise ValueError(
                 f"The requested nu range {nu_range} does not overlap with the range of validity "
@@ -87,6 +88,16 @@ class ModelOSQDT(Model):
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.model.full_name}, {self.channel})"
+
+    @property
+    def nu_min(self) -> float:
+        """Minimum nu for which the model is valid."""
+        return self.nu_range[0]
+
+    @property
+    def nu_max(self) -> float:
+        """Maximum nu for which the model is valid."""
+        return self.nu_range[1]
 
     @staticmethod
     def get_channel_index(model: ModelMQDT, channel: AngularKetBase[Any]) -> int:

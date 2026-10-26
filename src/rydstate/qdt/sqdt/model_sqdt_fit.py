@@ -39,7 +39,7 @@ class ModelSQDTFit(ModelSQDT):
             model.channel,
             model.quantum_defects,
             reference=model.reference,
-            nu_range=model.nu_range,
+            n_range=model.n_range,
         )
 
     @property

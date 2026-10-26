@@ -29,9 +29,22 @@ class ModelMQDT(Model):
     see :meth:`calc_m_matrix`.
     """
 
+    nu_range: tuple[float, float]
+    """Range of effective principal quantum numbers nu for which the model is valid."""
+
     def __init__(self) -> None:
         super().__init__()
         self._check_channels(self.outer_channels)
+
+    @property
+    def nu_min(self) -> float:
+        """Minimum nu for which the model is valid."""
+        return self.nu_range[0]
+
+    @property
+    def nu_max(self) -> float:
+        """Maximum nu for which the model is valid."""
+        return self.nu_range[1]
 
     def _check_channels(self, channels: list[AngularKetBase[Any]]) -> None:
         """Check that the given channels have the f_tot and parity of the model.

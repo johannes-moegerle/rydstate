@@ -17,7 +17,6 @@ if TYPE_CHECKING:
 class Model(ABC):
     """Base class for a quantum defect theory model of one symmetry block (f_tot and parity) of a species.
 
-    The model is valid in a limited range of nu.
     This class holds what all models have in common, independent of the quantum defect theory used,
     see e.g. :class:`~rydstate.qdt.ModelMQDT` and :class:`~rydstate.qdt.ModelSQDT`.
     The attributes are either defined as class attributes of a subclass (as for the MQDT models)
@@ -37,9 +36,6 @@ class Model(ABC):
 
     parity: int
     """Parity (-1 or +1) of the Rydberg state, i.e. (-1)^(l_c + l_r) of its channels."""
-
-    nu_range: tuple[float, float]
-    """Range of effective principal quantum numbers nu for which the model is valid."""
 
     outer_channels: list[AngularKetBase[Any]]
     """List of outer channels of the model (a single channel for SQDT models)."""
@@ -93,16 +89,6 @@ class Model(ABC):
     def full_name(self) -> str:
         """Return the full name of the model, combining species and model name."""
         return f"{self.species} {self.name}"
-
-    @property
-    def nu_min(self) -> float:
-        """Minimum nu for which the model is valid."""
-        return self.nu_range[0]
-
-    @property
-    def nu_max(self) -> float:
-        """Maximum nu for which the model is valid."""
-        return self.nu_range[1]
 
 
 def _get_subclasses(cls: type[Model]) -> list[type[Model]]:

@@ -32,8 +32,8 @@ class ModelSQDTDict(TypedDict):
     """Short label of the channel, see :meth:`~rydstate.angular.angular_ket.AngularKetBase.get_short_label`."""
     quantum_defects: list[float]
     reference: NotRequired[str | list[str] | None]
-    nu_range: NotRequired[list[float | Literal["inf"]]]
-    """[nu_min, nu_max], where an infinite nu_max is given as the string "inf" (JSON has no infinity)."""
+    n_range: NotRequired[list[int | Literal["inf"]]]
+    """[n_min, n_max], where an infinite n_max is given as the string "inf" (JSON has no infinity)."""
     comment: NotRequired[str]
     """Optional comment, e.g. how the quantum defects were derived from the reference.
     It is only meant for the reader of the json file and ignored by :meth:`ModelSQDT.from_dict`."""
@@ -63,7 +63,7 @@ class ModelSQDT(Model):
         channel: AngularKetBase[Any] | str,
         quantum_defects: ExpansionCoefficients,
         reference: str | tuple[str, ...] | None = None,
-        nu_range: tuple[float, float | Literal["inf"]] = (0, math.inf),
+        n_range: tuple[int, float | Literal["inf"]] = (1, math.inf),
     ) -> None:
         """Initialize the SQDT model.
 
@@ -77,9 +77,9 @@ class ModelSQDT(Model):
             quantum_defects: The expansion coefficients [d0, d2, d4, ...] of the quantum defect,
                 see :meth:`calc_quantum_defect`.
             reference: Reference for the model, e.g., a publication doi where the quantum defects are given.
-            nu_range: Range (nu_min, nu_max) of effective principal quantum numbers nu for which the model is valid.
-                nu_min must be finite, an infinite nu_max can also be given as the string "inf".
-                Default is (0, inf), i.e. the model is valid for all (positive) nu.
+            n_range: Range (n_min, n_max) of principal quantum numbers n (both inclusive) for which the model is valid.
+                n_min must be an integer, n_max an integer or infinite (which can also be given as the string "inf").
+                Default is (1, inf), i.e. the model is valid for all n.
 
         """
         if isinstance(channel, str):
@@ -100,14 +100,17 @@ class ModelSQDT(Model):
         self.reference = reference
         self.f_tot = self.channel.f_tot
         self.parity = self.channel.parity
-        nu_min, nu_max = nu_range
-        if nu_max == "inf":
-            nu_max = math.inf
-        elif isinstance(nu_max, str):
-            raise ValueError(f'{self.full_name}: nu_max must be a number or the string "inf", but got {nu_max!r}.')
-        if not math.isfinite(nu_min):
-            raise ValueError(f"{self.full_name}: nu_min must be finite, but got {nu_min}.")
-        self.nu_range = (nu_min, nu_max)
+        n_min, n_max = n_range
+        if n_max == "inf":
+            n_max = math.inf
+        if not isinstance(n_min, int) or not (isinstance(n_max, int) or n_max == math.inf):
+            raise ValueError(
+                f"{self.full_name}: n_range must be (n_min, n_max) with integers or n_max = inf, but got {n_range!r}."
+            )
+        if n_min > n_max:
+            raise ValueError(f"{self.full_name}: n_min must not be larger than n_max, but got {n_range!r}.")
+        self.n_range: tuple[int, float] = (n_min, n_max)
+        """Range (n_min, n_max) of principal quantum numbers n (both inclusive) for which the model is valid."""
         self.outer_channels = [self.channel]
         check_expansion_coefficients(quantum_defects, f"{self.full_name}: quantum_defects")
         self.quantum_defects: tuple[float, ...] = tuple(quantum_defects)
@@ -118,6 +121,16 @@ class ModelSQDT(Model):
         self.ionization_threshold_au = self.ionization_thresholds_au[0]
         """Ionization threshold of the single outer channel in atomic units (Hartree), with respect to which
         the effective principal quantum number nui of the channel is defined."""
+
+    @property
+    def n_min(self) -> int:
+        """Minimum n for which the model is valid."""
+        return self.n_range[0]
+
+    @property
+    def n_max(self) -> float:
+        """Maximum n for which the model is valid (inclusive, may be infinite)."""
+        return self.n_range[1]
 
     def to_dict(self) -> ModelSQDTDict:
         """Return a JSON serializable dictionary describing the model.
@@ -131,9 +144,9 @@ class ModelSQDT(Model):
             with open("model.json") as file:
                 model = ModelSQDT.from_dict(json.load(file))
 
-        The optional keys "reference" and "nu_range" are only included,
-        if they differ from their default value (None and (0, inf), respectively).
-        An infinite nu_max is given as the string "inf", since JSON has no infinity.
+        The optional keys "reference" and "n_range" are only included,
+        if they differ from their default value (None and (1, inf), respectively).
+        An infinite n_max is given as the string "inf", since JSON has no infinity.
 
         """
         data: ModelSQDTDict = {
@@ -144,9 +157,9 @@ class ModelSQDT(Model):
         }
         if self.reference is not None:
             data["reference"] = list(self.reference) if isinstance(self.reference, tuple) else self.reference
-        nu_min, nu_max = self.nu_range
-        if (nu_min, nu_max) != (0, math.inf):
-            data["nu_range"] = [nu_min, "inf" if math.isinf(nu_max) else nu_max]
+        n_min, n_max = self.n_range
+        if (n_min, n_max) != (1, math.inf):
+            data["n_range"] = [n_min, "inf" if math.isinf(n_max) else int(n_max)]
         return data
 
     @classmethod
@@ -156,7 +169,7 @@ class ModelSQDT(Model):
         Args:
             data: The dictionary describing the model, see :class:`ModelSQDTDict`.
                 Its "model_class" must be "ModelSQDT".
-                The keys "reference", "nu_range" and "comment" are optional, where "comment" is ignored.
+                The keys "reference", "n_range" and "comment" are optional, where "comment" is ignored.
             directory: Not used, since the dictionary contains no file paths, see :meth:`~rydstate.qdt.Model.from_dict`.
 
         """
@@ -167,13 +180,13 @@ class ModelSQDT(Model):
             raise ValueError(f"The description is of a {data['model_class']}, but ModelSQDT was expected: {data}")
 
         reference = data.get("reference")
-        nu_min, nu_max = data.get("nu_range", (0, math.inf))
+        n_min, n_max = data.get("n_range", (1, math.inf))
         return cls(
             data["species"],
             data["channel"],
             list(data["quantum_defects"]),
             reference=tuple(reference) if isinstance(reference, list) else reference,
-            nu_range=(nu_min, nu_max),
+            n_range=(n_min, n_max),
         )
 
     def calc_quantum_defect(self, n: int) -> float:

@@ -37,14 +37,19 @@ def test_channel_must_not_set_m() -> None:
         ModelSQDT("Rb", AngularKetLS(l_r=0, j_tot=0.5, f_tot=0.5, m=0.5, species="Rb"), [3.13])
 
 
-def test_nu_range() -> None:
-    """The default nu range is (0, inf), an infinite nu_max can also be given as the string "inf"."""
-    assert ModelSQDT("Rb", "ns_1/2", [3.13]).nu_range == (0, math.inf)
-    assert ModelSQDT("Rb", "ns_1/2", [3.13], nu_range=(10, "inf")).nu_range == (10, math.inf)
-    with pytest.raises(ValueError, match='nu_max must be a number or the string "inf"'):
-        ModelSQDT("Rb", "ns_1/2", [3.13], nu_range=(10, "infinity"))  # type: ignore [arg-type]
-    with pytest.raises(ValueError, match="nu_min must be finite"):
-        ModelSQDT("Rb", "ns_1/2", [3.13], nu_range=(-math.inf, 10))
+def test_n_range() -> None:
+    """The default n range is (1, inf), an infinite n_max can also be given as the string "inf"."""
+    assert ModelSQDT("Rb", "ns_1/2", [3.13]).n_range == (1, math.inf)
+    assert ModelSQDT("Rb", "ns_1/2", [3.13], n_range=(10, "inf")).n_range == (10, math.inf)
+    assert ModelSQDT("Rb", "ns_1/2", [3.13], n_range=(10, 10)).n_range == (10, 10)
+    with pytest.raises(ValueError, match="n_range must be"):
+        ModelSQDT("Rb", "ns_1/2", [3.13], n_range=(10, "infinity"))  # type: ignore [arg-type]
+    with pytest.raises(ValueError, match="n_range must be"):
+        ModelSQDT("Rb", "ns_1/2", [3.13], n_range=(10, 20.5))
+    with pytest.raises(ValueError, match="n_range must be"):
+        ModelSQDT("Rb", "ns_1/2", [3.13], n_range=(-math.inf, 10))  # type: ignore [arg-type]
+    with pytest.raises(ValueError, match="n_min must not be larger than n_max"):
+        ModelSQDT("Rb", "ns_1/2", [3.13], n_range=(20, 10))
 
 
 def test_quantum_defects_are_checked() -> None:
@@ -58,11 +63,11 @@ def test_calc_nui() -> None:
     assert model.calc_nui(n) == pytest.approx(n - 3.1311807 - 0.1787 / (n - 3.1311807) ** 2)
 
 
-def test_model_set_uses_model_of_nu_range(monkeypatch: pytest.MonkeyPatch) -> None:
-    """The model set picks the model of the channel, whose nu range contains the state."""
+def test_model_set_uses_model_of_n_range(monkeypatch: pytest.MonkeyPatch) -> None:
+    """The model set picks the model of the channel, whose n range contains n."""
     sqdt = get_sqdt("Rb")  # note: this is a process wide cached instance, so we have to clean up carefully
-    low_n = ModelSQDT("Rb", "ns_1/2", [3.1], nu_range=(0, 30))
-    high_n = ModelSQDT("Rb", "ns_1/2", [3.2], nu_range=(30, 100))
+    low_n = ModelSQDT("Rb", "ns_1/2", [3.1], n_range=(1, 30))
+    high_n = ModelSQDT("Rb", "ns_1/2", [3.2], n_range=(31, 100))
     angular = AngularKetLS(l_r=0, j_tot=0.5, f_tot=0.5, species="Rb")
     with monkeypatch.context() as patch:
         patch.setattr(sqdt, "models", [low_n, high_n])
@@ -82,6 +87,9 @@ def test_model_set_uses_model_of_nu_range(monkeypatch: pytest.MonkeyPatch) -> No
             sqdt.calc_nui(120, angular, use_nist_data=False)
 
         assert sqdt.get_model(20, angular) is low_n
+        assert sqdt.get_model(30, angular) is low_n  # both bounds are inclusive
+        assert sqdt.get_model(31, angular) is high_n
+        assert sqdt.get_model(100, angular) is high_n
         assert sqdt.get_model(50, angular_m) is high_n
 
         # channels without a model have a vanishing quantum defect
@@ -117,19 +125,19 @@ def test_json_round_trip(model: ModelSQDT) -> None:
     assert loaded.channel == model.channel
     assert loaded.quantum_defects == model.quantum_defects
     assert loaded.reference == model.reference
-    assert loaded.nu_range == model.nu_range
+    assert loaded.n_range == model.n_range
     assert loaded.to_dict() == model.to_dict()
 
 
 def test_to_dict() -> None:
-    model = ModelSQDT("Sr88", "5s np 3P1", [2.88265, 0.39398], reference=("Ref A", "Ref B"), nu_range=(10, math.inf))
+    model = ModelSQDT("Sr88", "5s np 3P1", [2.88265, 0.39398], reference=("Ref A", "Ref B"), n_range=(10, math.inf))
     assert model.to_dict() == {
         "model_class": "ModelSQDT",
         "species": "Sr88",
         "channel": "5s np 3P1",
         "quantum_defects": [2.88265, 0.39398],
         "reference": ["Ref A", "Ref B"],
-        "nu_range": [10, "inf"],
+        "n_range": [10, "inf"],
     }
     # optional keys with their default value are not included
     assert ModelSQDT("Rb", "ns_1/2", [3.1311807]).to_dict() == {
@@ -145,7 +153,7 @@ def test_from_dict_optional_keys() -> None:
         {"model_class": "ModelSQDT", "species": "Rb", "channel": "ns_1/2", "quantum_defects": [3.1311807]}
     )
     assert model.reference is None
-    assert model.nu_range == (0, math.inf)
+    assert model.n_range == (1, math.inf)
 
 
 def test_from_dict_ignores_comment() -> None:
@@ -245,3 +253,15 @@ def test_models_must_be_of_the_species(tmp_path: Path) -> None:
 def test_load_models_missing_directory(tmp_path: Path) -> None:
     with pytest.raises(FileNotFoundError, match="does not exist"):
         ModelSetSQDT.load_models(tmp_path / "missing")
+
+
+def test_n_ranges_of_a_channel_must_not_overlap() -> None:
+    """The n ranges are inclusive, so they overlap if they share a single n."""
+    low_n = ModelSQDT("Rb", "ns_1/2", [3.1], n_range=(1, 30))
+    high_n = ModelSQDT("Rb", "ns_1/2", [3.2], n_range=(30, math.inf))
+    with pytest.raises(ValueError, match="overlap"):
+        _ = ModelSetSQDT("Rb", models=[high_n, low_n]).models
+    # adjacent n ranges and overlapping n ranges of different channels are fine
+    other_channel = ModelSQDT("Rb", "np_1/2", [2.6])
+    high_n = ModelSQDT("Rb", "ns_1/2", [3.2], n_range=(31, math.inf))
+    assert ModelSetSQDT("Rb", models=[high_n, low_n, other_channel]).models == [high_n, low_n, other_channel]
