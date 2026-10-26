@@ -24,7 +24,8 @@ class ModelSQDTDict(TypedDict):
     """JSON serializable description of a :class:`ModelSQDT`, see :meth:`ModelSQDT.to_dict`."""
 
     model_class: str
-    """Name of the model class, i.e. "ModelSQDT", which allows to recreate the model with the correct class."""
+    """Name of the model class, i.e. "ModelSQDT" (also for a :class:`~rydstate.qdt.ModelSQDTFit`),
+    which allows to recreate the model with the correct class."""
     species: str
     channel: str
     """Short label of the channel, see :meth:`~rydstate.angular.angular_ket.AngularKetBase.get_short_label`."""
@@ -107,14 +108,15 @@ class ModelSQDT(Model):
             raise ValueError(f"{self.full_name}: nu_min must be finite, but got {nu_min}.")
         self.nu_range = (nu_min, nu_max)
         self.outer_channels = [self.channel]
-        self.quantum_defects = quantum_defects
+        check_expansion_coefficients(quantum_defects, f"{self.full_name}: quantum_defects")
+        self.quantum_defects: tuple[float, ...] = tuple(quantum_defects)
+        """The expansion coefficients (d0, d2, d4, ...) of the quantum defect, see :meth:`calc_quantum_defect`.
+        They are stored as a tuple, since the models are shared, see :class:`~rydstate.qdt.ModelSQDTFit`."""
         super().__init__()
 
         self.ionization_threshold_au = self.ionization_thresholds_au[0]
         """Ionization threshold of the single outer channel in atomic units (Hartree), with respect to which
         the effective principal quantum number nui of the channel is defined."""
-
-        check_expansion_coefficients(quantum_defects, f"{self.full_name}: quantum_defects")
 
     def to_dict(self) -> ModelSQDTDict:
         """Return a JSON serializable dictionary describing the model.
@@ -134,7 +136,7 @@ class ModelSQDT(Model):
 
         """
         data: ModelSQDTDict = {
-            "model_class": type(self).__name__,
+            "model_class": "ModelSQDT",
             "species": self.species,
             "channel": self.channel.get_short_label(),
             "quantum_defects": list(self.quantum_defects),
@@ -152,15 +154,15 @@ class ModelSQDT(Model):
 
         Args:
             data: The dictionary describing the model, see :class:`ModelSQDTDict`.
-                Its "model_class" must be the name of this class.
+                Its "model_class" must be "ModelSQDT".
                 The keys "reference", "nu_range" and "comment" are optional, where "comment" is ignored.
 
         """
         unknown_keys = set(data) - set(ModelSQDTDict.__annotations__)
         if unknown_keys:
             raise ValueError(f"Unknown keys {sorted(unknown_keys)} in the description of an SQDT model: {data}")
-        if data["model_class"] != cls.__name__:
-            raise ValueError(f"The description is of a {data['model_class']}, but {cls.__name__} was expected: {data}")
+        if data["model_class"] != "ModelSQDT":
+            raise ValueError(f"The description is of a {data['model_class']}, but ModelSQDT was expected: {data}")
 
         reference = data.get("reference")
         nu_min, nu_max = data.get("nu_range", (0, math.inf))

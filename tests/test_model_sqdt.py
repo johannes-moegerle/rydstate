@@ -88,7 +88,7 @@ def test_model_set_uses_model_of_nu_range(monkeypatch: pytest.MonkeyPatch) -> No
         angular_p = AngularKetLS(l_r=1, j_tot=0.5, f_tot=0.5, species="Rb")
         assert sqdt.get_models(angular_p) == []
         trivial_model = sqdt.get_model(20, angular_p)
-        assert trivial_model.quantum_defects == [0.0]
+        assert trivial_model.quantum_defects == (0.0,)
         assert sqdt.get_model(30, angular_p) is trivial_model
         assert sqdt.calc_nui(20, angular_p, use_nist_data=False) == 20
 

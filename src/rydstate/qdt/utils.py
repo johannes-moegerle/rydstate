@@ -2,27 +2,27 @@ from __future__ import annotations
 
 from typing import TypeAlias
 
-ExpansionCoefficients: TypeAlias = list[float]
+ExpansionCoefficients: TypeAlias = list[float] | tuple[float, ...]
 
 
 def check_expansion_coefficients(coefficients: ExpansionCoefficients, name: str = "Expansion coefficients") -> None:
-    """Check that the expansion coefficients are a non-empty list of floats.
+    """Check that the expansion coefficients are a non-empty list (or tuple) of floats.
 
     This is meant to be called once when a model is constructed, so that the functions evaluating
-    the expansions can simply assume a non-empty list of coefficients.
+    the expansions can simply assume a non-empty sequence of coefficients.
 
     Args:
         coefficients: The expansion coefficients to check.
         name: How to refer to the checked coefficients in the error message.
 
     Raises:
-        TypeError: If the coefficients are not a list.
+        TypeError: If the coefficients are not a list or tuple.
         ValueError: If the coefficients are an empty list.
 
     """
-    if not isinstance(coefficients, list):
+    if not isinstance(coefficients, (list, tuple)):
         raise TypeError(
-            f"{name} must be a list of floats, got {type(coefficients).__name__}. "
+            f"{name} must be a list (or tuple) of floats, got {type(coefficients).__name__}. "
             "A constant value must be given as a single element list [p₀]."
         )
     if len(coefficients) == 0:
