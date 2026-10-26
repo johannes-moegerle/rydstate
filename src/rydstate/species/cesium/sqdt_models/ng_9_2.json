@@ -1,0 +1,9 @@
+{
+  "model_class": "ModelSQDT",
+  "species": "Cs",
+  "channel": "ng_9/2",
+  "quantum_defects": [0.0],
+  "reference": null,
+  "n_range": [12, "inf"],
+  "comment": "no quantum defects known, assumed to be zero"
+}

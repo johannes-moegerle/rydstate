@@ -3,5 +3,6 @@
   "species": "K",
   "channel": "np_3/2",
   "quantum_defects": [1.710848, 0.2354, 0.11551, 1.105, -2.0356],
-  "reference": "Phys. Scr. 27, 300 (1983)"
+  "reference": "Phys. Scr. 27, 300 (1983)",
+  "n_range": [17, "inf"]
 }

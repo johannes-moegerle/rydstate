@@ -3,5 +3,6 @@
   "species": "Sr88",
   "channel": "5s np 1P1",
   "quantum_defects": [2.7314851, -5.1501, -140.0, 0.0, 0.0],
-  "reference": "Brienza 2023, Phys. Rev. A 108, 022815"
+  "reference": "Brienza 2023, Phys. Rev. A 108, 022815",
+  "n_range": [18, "inf"]
 }

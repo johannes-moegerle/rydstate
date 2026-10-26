@@ -3,5 +3,6 @@
   "species": "Sr88_ion",
   "channel": "ng_9/2",
   "quantum_defects": [0.011, -0.132, 0, 0, 0],
-  "reference": "Lange 1991, Z. Phys. D 18, 319, https://doi.org/10.1007/BF01426593"
+  "reference": "Lange 1991, Z. Phys. D 18, 319, https://doi.org/10.1007/BF01426593",
+  "n_range": [12, "inf"]
 }

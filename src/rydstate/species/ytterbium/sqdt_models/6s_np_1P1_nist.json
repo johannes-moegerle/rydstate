@@ -1,0 +1,8 @@
+{
+  "model_class": "ModelSQDTNist",
+  "species": "Yb174",
+  "channel": "6s np 1P1",
+  "reference": "NIST Atomic Spectra Database",
+  "nist_data_file": "../nist_data.txt",
+  "n_range": [6, 9]
+}

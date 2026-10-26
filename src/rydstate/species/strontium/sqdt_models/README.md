@@ -1,6 +1,10 @@
 # SQDT models of Sr88
 
-Each json file describes one `ModelSQDT`, i.e. the quantum defects of one channel, see `ModelSQDT.to_dict`.
+Each json file describes one model of one channel, see `ModelSQDT.to_dict` and `ModelSQDTNist.to_dict`:
+the `*_nist.json` files describe the channels by their NIST energy levels (`../nist_data.txt`),
+the other files by their quantum defects.
+Each model is used for the principal quantum numbers n in its `n_range` (both bounds inclusive):
+the NIST levels up to the highest n with nu < 15, and the quantum defects from the next n on.
 
 ## References
 

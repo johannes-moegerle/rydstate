@@ -3,5 +3,6 @@
   "species": "Li",
   "channel": "np_3/2",
   "quantum_defects": [0.0471665, -0.024, 0, 0, 0],
-  "reference": "Phys. Rev. A 34, 2889 (1986) (Li 7)"
+  "reference": "Phys. Rev. A 34, 2889 (1986) (Li 7)",
+  "n_range": [16, "inf"]
 }

@@ -1,0 +1,8 @@
+{
+  "model_class": "ModelSQDTNist",
+  "species": "Sr88_ion",
+  "channel": "nd_5/2",
+  "reference": "NIST Atomic Spectra Database",
+  "nist_data_file": "../nist_data.txt",
+  "n_range": [4, 14]
+}

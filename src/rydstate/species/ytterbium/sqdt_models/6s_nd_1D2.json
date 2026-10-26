@@ -4,5 +4,6 @@
   "channel": "6s nd 1D2",
   "quantum_defects": [2.729513646, -0.0377841183, 0.0, 0.0, 0.0],
   "reference": "Kuroda 2025, https://arxiv.org/abs/2507.11487",
+  "n_range": [10, "inf"],
   "comment": "see Table S6"
 }

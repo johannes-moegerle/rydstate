@@ -4,5 +4,6 @@
   "channel": "ns_1/2",
   "quantum_defects": [2.7062, 0.22, 0, 0, 0],
   "reference": ["Pokorny 2020, Doctoral thesis, Stockholm University, ISBN 978-91-7911-293-6", "Lange 1991, Z. Phys. D 18, 319, https://doi.org/10.1007/BF01426593"],
+  "n_range": [14, "inf"],
   "comment": "d0 [1], d2 [3]"
 }

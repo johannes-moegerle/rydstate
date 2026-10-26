@@ -3,5 +3,6 @@
   "species": "Sr88",
   "channel": "5s np 3P2",
   "quantum_defects": [2.88163, -2.462, 145.18, 0.0, 0.0],
-  "reference": "Robertson 2021, Comput. Phys. Commun. 261, 107814 (2021)"
+  "reference": "Robertson 2021, Comput. Phys. Commun. 261, 107814 (2021)",
+  "n_range": [18, "inf"]
 }

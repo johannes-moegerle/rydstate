@@ -3,5 +3,6 @@
   "species": "Na",
   "channel": "np_1/2",
   "quantum_defects": [0.85544502, 0.112067, 0.0479, 0.0457, 0],
-  "reference": "Quantum Electron. 25 914 (1995)"
+  "reference": "Quantum Electron. 25 914 (1995)",
+  "n_range": [16, "inf"]
 }
