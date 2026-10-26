@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import math
-from typing import TYPE_CHECKING, Any, Literal
+from abc import abstractmethod
+from typing import TYPE_CHECKING, Any, ClassVar, Literal
 
 from typing_extensions import NotRequired, TypedDict
 
@@ -21,47 +22,44 @@ if TYPE_CHECKING:
     from rydstate.qdt.utils import ExpansionCoefficients
 
 
-class ModelSQDTDict(TypedDict):
-    """JSON serializable description of a :class:`ModelSQDT`, see :meth:`ModelSQDT.to_dict`."""
+class ModelSQDTBaseDict(TypedDict):
+    """The keys of the JSON serializable description common to all SQDT models, see :meth:`ModelSQDTBase.to_dict`."""
 
     model_class: str
-    """Name of the model class, i.e. "ModelSQDT" (also for a :class:`~rydstate.qdt.ModelSQDTFit`),
-    which allows to recreate the model with the correct class."""
+    """Name of the model class, e.g. "ModelSQDT" (also for a :class:`~rydstate.qdt.ModelSQDTFit`),
+    which allows to recreate the model with the correct class, see :meth:`~rydstate.qdt.Model.from_dict`."""
     species: str
     channel: str
     """Short label of the channel, see :meth:`~rydstate.angular.angular_ket.AngularKetBase.get_short_label`."""
-    quantum_defects: list[float]
     reference: NotRequired[str | list[str] | None]
     n_range: NotRequired[list[int | Literal["inf"]]]
     """[n_min, n_max], where an infinite n_max is given as the string "inf" (JSON has no infinity)."""
     comment: NotRequired[str]
-    """Optional comment, e.g. how the quantum defects were derived from the reference.
-    It is only meant for the reader of the json file and ignored by :meth:`ModelSQDT.from_dict`."""
+    """Optional comment, e.g. how the data of the model were derived from the reference.
+    It is only meant for the reader of the json file and ignored when creating the model from the description."""
 
 
-class ModelSQDT(Model):
-    r"""SQDT model describing the quantum defects of a single channel of a species.
+class ModelSQDTDict(ModelSQDTBaseDict):
+    """JSON serializable description of a :class:`ModelSQDT`, see :meth:`ModelSQDT.to_dict`."""
 
-    In contrast to :class:`~rydstate.qdt.ModelMQDT`, the parameters of an SQDT model are not defined
-    in a subclass, but simply given when constructing the model, e.g.
+    quantum_defects: list[float]
 
-    .. code-block:: python
 
-        ModelSQDT("Rb", "ns_1/2", [3.1311807, 0.1787], reference="Phys. Rev. A 83, 052515 (2011)")
+class ModelSQDTBase(Model):
+    """Base class for the SQDT models, each describing a single channel of a species.
 
-    The quantum defect of the channel is given by the modified Ritz formula
-
-    .. math::
-        \delta(n) = \delta_0 + \frac{\delta_2}{(n - \delta_0)^2} + \frac{\delta_4}{(n - \delta_0)^4} + ...
-
-    see :meth:`calc_quantum_defect`.
+    The concrete models differ in how they calculate the effective principal quantum number nui
+    of the state with a given n, see e.g. :class:`~rydstate.qdt.ModelSQDT` (via quantum defects).
+    Each model describes the states of its channel with principal quantum number n in its :attr:`n_range`.
     """
+
+    _model_class: ClassVar[str]
+    """The "model_class" of the description of the model, see :meth:`to_dict`."""
 
     def __init__(
         self,
         species: str,
         channel: AngularKetBase[Any] | str,
-        quantum_defects: ExpansionCoefficients,
         reference: str | tuple[str, ...] | None = None,
         n_range: tuple[int, float | Literal["inf"]] = (1, math.inf),
     ) -> None:
@@ -74,9 +72,7 @@ class ModelSQDT(Model):
                 see :meth:`~rydstate.angular.angular_ket.AngularKetBase.from_short_label`).
                 The channel must be a single LS ket, i.e. have well defined l_r, j_tot and s_tot,
                 and its magnetic quantum number m must be NotSet.
-            quantum_defects: The expansion coefficients [d0, d2, d4, ...] of the quantum defect,
-                see :meth:`calc_quantum_defect`.
-            reference: Reference for the model, e.g., a publication doi where the quantum defects are given.
+            reference: Reference for the model, e.g., a publication doi where the data of the model are given.
             n_range: Range (n_min, n_max) of principal quantum numbers n (both inclusive) for which the model is valid.
                 n_min must be an integer, n_max an integer or infinite (which can also be given as the string "inf").
                 Default is (1, inf), i.e. the model is valid for all n.
@@ -112,15 +108,69 @@ class ModelSQDT(Model):
         self.n_range: tuple[int, float] = (n_min, n_max)
         """Range (n_min, n_max) of principal quantum numbers n (both inclusive) for which the model is valid."""
         self.outer_channels = [self.channel]
-        check_expansion_coefficients(quantum_defects, f"{self.full_name}: quantum_defects")
-        self.quantum_defects: tuple[float, ...] = tuple(quantum_defects)
-        """The expansion coefficients (d0, d2, d4, ...) of the quantum defect, see :meth:`calc_quantum_defect`.
-        They are stored as a tuple, since the models are shared, see :class:`~rydstate.qdt.ModelSQDTFit`."""
         super().__init__()
 
         self.ionization_threshold_au = self.ionization_thresholds_au[0]
         """Ionization threshold of the single outer channel in atomic units (Hartree), with respect to which
         the effective principal quantum number nui of the channel is defined."""
+
+    def to_dict(self) -> ModelSQDTBaseDict:
+        """Return the keys of the JSON serializable description common to all SQDT models.
+
+        The subclasses add their own keys, so that the model can be recreated via their ``from_dict``,
+        see :meth:`~rydstate.qdt.Model.from_dict`.
+        The key "reference" is always included (None if no reference is given),
+        the optional key "n_range" only if it differs from its default value (1, inf).
+        An infinite n_max is given as the string "inf", since JSON has no infinity.
+
+        """
+        data: ModelSQDTBaseDict = {
+            "model_class": self._model_class,
+            "species": self.species,
+            "channel": self.channel.get_short_label(),
+            "reference": list(self.reference) if isinstance(self.reference, tuple) else self.reference,
+        }
+        n_min, n_max = self.n_range
+        if (n_min, n_max) != (1, math.inf):
+            data["n_range"] = [n_min, "inf" if math.isinf(n_max) else int(n_max)]
+        return data
+
+    @classmethod
+    def _parse_dict(cls, data: Mapping[str, Any], dict_type: type[ModelSQDTBaseDict]) -> dict[str, Any]:
+        """Check the description of a model and return the keyword arguments common to all SQDT models.
+
+        Args:
+            data: The description of the model, as returned by :meth:`to_dict`.
+            dict_type: The TypedDict of the description, whose keys are allowed in the description.
+
+        Returns:
+            The keyword arguments "species", "channel", "reference" and "n_range".
+
+        """
+        unknown_keys = set(data) - set(dict_type.__annotations__)
+        if unknown_keys:
+            raise ValueError(f"Unknown keys {sorted(unknown_keys)} in the description of a {cls._model_class}: {data}")
+        if data["model_class"] != cls._model_class:
+            raise ValueError(
+                f"The description is of a {data['model_class']}, but {cls._model_class} was expected: {data}"
+            )
+        n_min, n_max = data.get("n_range", (1, math.inf))
+        reference = data.get("reference")
+        return {
+            "species": data["species"],
+            "channel": data["channel"],
+            "reference": tuple(reference) if isinstance(reference, list) else reference,
+            "n_range": (n_min, n_max),
+        }
+
+    @abstractmethod
+    def calc_nui(self, n: int) -> float:
+        """Calculate the effective principal quantum number nui of the state with the given n.
+
+        Args:
+            n: The principal quantum number of the Rydberg state.
+
+        """
 
     @property
     def n_min(self) -> int:
@@ -131,6 +181,53 @@ class ModelSQDT(Model):
     def n_max(self) -> float:
         """Maximum n for which the model is valid (inclusive, may be infinite)."""
         return self.n_range[1]
+
+
+class ModelSQDT(ModelSQDTBase):
+    r"""SQDT model describing the quantum defects of a single channel of a species.
+
+    In contrast to :class:`~rydstate.qdt.ModelMQDT`, the parameters of an SQDT model are not defined
+    in a subclass, but simply given when constructing the model, e.g.
+
+    .. code-block:: python
+
+        ModelSQDT("Rb", "ns_1/2", [3.1311807, 0.1787], reference="Phys. Rev. A 83, 052515 (2011)")
+
+    The quantum defect of the channel is given by the modified Ritz formula
+
+    .. math::
+        \delta(n) = \delta_0 + \frac{\delta_2}{(n - \delta_0)^2} + \frac{\delta_4}{(n - \delta_0)^4} + ...
+
+    see :meth:`calc_quantum_defect`.
+    """
+
+    _model_class = "ModelSQDT"
+
+    def __init__(
+        self,
+        species: str,
+        channel: AngularKetBase[Any] | str,
+        quantum_defects: ExpansionCoefficients,
+        reference: str | tuple[str, ...] | None = None,
+        n_range: tuple[int, float | Literal["inf"]] = (1, math.inf),
+    ) -> None:
+        """Initialize the SQDT model.
+
+        Args:
+            species: The species for which the model is defined.
+            channel: The channel described by the model, see :class:`ModelSQDTBase`.
+            quantum_defects: The expansion coefficients [d0, d2, d4, ...] of the quantum defect,
+                see :meth:`calc_quantum_defect`.
+            reference: Reference for the model, e.g., a publication doi where the quantum defects are given.
+            n_range: Range (n_min, n_max) of principal quantum numbers n (both inclusive) for which the model is valid,
+                see :class:`ModelSQDTBase`. Default is (1, inf), i.e. the model is valid for all n.
+
+        """
+        super().__init__(species, channel, reference, n_range)
+        check_expansion_coefficients(quantum_defects, f"{self.full_name}: quantum_defects")
+        self.quantum_defects: tuple[float, ...] = tuple(quantum_defects)
+        """The expansion coefficients (d0, d2, d4, ...) of the quantum defect, see :meth:`calc_quantum_defect`.
+        They are stored as a tuple, since the models are shared, see :class:`~rydstate.qdt.ModelSQDTFit`."""
 
     def to_dict(self) -> ModelSQDTDict:
         """Return a JSON serializable dictionary describing the model.
@@ -144,23 +241,10 @@ class ModelSQDT(Model):
             with open("model.json") as file:
                 model = ModelSQDT.from_dict(json.load(file))
 
-        The optional keys "reference" and "n_range" are only included,
-        if they differ from their default value (None and (1, inf), respectively).
-        An infinite n_max is given as the string "inf", since JSON has no infinity.
+        See :meth:`ModelSQDTBase.to_dict` for the keys common to all SQDT models.
 
         """
-        data: ModelSQDTDict = {
-            "model_class": "ModelSQDT",
-            "species": self.species,
-            "channel": self.channel.get_short_label(),
-            "quantum_defects": list(self.quantum_defects),
-        }
-        if self.reference is not None:
-            data["reference"] = list(self.reference) if isinstance(self.reference, tuple) else self.reference
-        n_min, n_max = self.n_range
-        if (n_min, n_max) != (1, math.inf):
-            data["n_range"] = [n_min, "inf" if math.isinf(n_max) else int(n_max)]
-        return data
+        return {**super().to_dict(), "quantum_defects": list(self.quantum_defects)}
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any], directory: str | PathLike[str] | None = None) -> Self:  # noqa: ARG003
@@ -173,21 +257,8 @@ class ModelSQDT(Model):
             directory: Not used, since the dictionary contains no file paths, see :meth:`~rydstate.qdt.Model.from_dict`.
 
         """
-        unknown_keys = set(data) - set(ModelSQDTDict.__annotations__)
-        if unknown_keys:
-            raise ValueError(f"Unknown keys {sorted(unknown_keys)} in the description of an SQDT model: {data}")
-        if data["model_class"] != "ModelSQDT":
-            raise ValueError(f"The description is of a {data['model_class']}, but ModelSQDT was expected: {data}")
-
-        reference = data.get("reference")
-        n_min, n_max = data.get("n_range", (1, math.inf))
-        return cls(
-            data["species"],
-            data["channel"],
-            list(data["quantum_defects"]),
-            reference=tuple(reference) if isinstance(reference, list) else reference,
-            n_range=(n_min, n_max),
-        )
+        kwargs = cls._parse_dict(data, ModelSQDTDict)
+        return cls(quantum_defects=list(data["quantum_defects"]), **kwargs)
 
     def calc_quantum_defect(self, n: int) -> float:
         r"""Calculate the quantum defect of the state with principal quantum number n via the modified Ritz formula.

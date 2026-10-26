@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 from rydstate.angular import AngularKetJJ, AngularKetLS
-from rydstate.qdt import Model, ModelSetSQDT, ModelSQDT, get_sqdt, register_model_set_sqdt
+from rydstate.qdt import Model, ModelSetSQDT, ModelSQDT, ModelSQDTBase, get_sqdt, register_model_set_sqdt
 from rydstate.qdt.sqdt.model_set_sqdt import _SQDT_MODEL_SETS
 
 
@@ -139,12 +139,13 @@ def test_to_dict() -> None:
         "reference": ["Ref A", "Ref B"],
         "n_range": [10, "inf"],
     }
-    # optional keys with their default value are not included
+    # the reference is always included, n_range only if it differs from its default value
     assert ModelSQDT("Rb", "ns_1/2", [3.1311807]).to_dict() == {
         "model_class": "ModelSQDT",
         "species": "Rb",
         "channel": "ns_1/2",
         "quantum_defects": [3.1311807],
+        "reference": None,
     }
 
 
@@ -181,10 +182,13 @@ def test_from_dict_wrong_model_class() -> None:
 def test_model_from_dict_dispatches_by_model_class() -> None:
     data = {"model_class": "ModelSQDT", "species": "Rb", "channel": "ns_1/2", "quantum_defects": [3.13]}
     assert isinstance(Model.from_dict(data), ModelSQDT)
-    with pytest.raises(ValueError, match="Expected exactly one subclass of Model named 'ModelUnknown'"):
+    assert isinstance(ModelSQDTBase.from_dict(data), ModelSQDT)
+    with pytest.raises(ValueError, match="Expected exactly one subclass of ModelSQDTBase named 'ModelEigenChannel'"):
+        ModelSQDTBase.from_dict({**data, "model_class": "ModelEigenChannel"})
+    with pytest.raises(ValueError, match="named 'ModelUnknown'"):
         Model.from_dict({**data, "model_class": "ModelUnknown"})
-    with pytest.raises(NotImplementedError, match="ModelOSQDT cannot be created from a dictionary"):
-        Model.from_dict({**data, "model_class": "ModelOSQDT"})
+    with pytest.raises(NotImplementedError, match="ModelSQDTBase cannot be created from a dictionary"):
+        Model.from_dict({**data, "model_class": "ModelSQDTBase"})
 
 
 @pytest.mark.parametrize("model_set", ALL_SQDT_MODEL_SETS, ids=lambda model_set: model_set.species)
