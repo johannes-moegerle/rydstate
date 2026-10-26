@@ -5,6 +5,9 @@ the `*_nist.json` files describe the channels by their NIST energy levels (`../n
 the other files by their quantum defects.
 Each model is used for the principal quantum numbers n in its `n_range` (both bounds inclusive):
 the NIST levels up to the highest n with nu < 15, and the quantum defects from the next n on.
+An exception is the 6sns 3S1 channel: its Rydberg-Ritz formula diverges at low n (e.g. nu = 43.2 for n = 14),
+so its quantum defects are only used from n = 20 on, where |delta(n) - delta_0| < 1/2,
+i.e. the states with n = 14 to 19 between the highest NIST level (6s13s) and n = 20 are not available.
 The comments of the models name the table of the reference, from which the quantum defects are taken.
 
 ## References

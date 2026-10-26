@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import itertools
 import json
 import math
 from pathlib import Path
@@ -368,6 +369,22 @@ def test_n_ranges_of_a_channel_must_not_overlap() -> None:
     assert ModelSetSQDT("Rb", models=[high_n, low_n, other_channel]).models == [high_n, low_n, other_channel]
 
 
+@pytest.mark.parametrize(
+    ("model_set", "model"),
+    [(model_set, model) for model_set, model in ALL_SQDT_MODELS if isinstance(model, ModelSQDT)],
+    ids=lambda x: x.full_name if isinstance(x, ModelSQDTBase) else "",
+)
+def test_ritz_formula_does_not_diverge_in_n_range(model_set: ModelSetSQDT, model: ModelSQDT) -> None:
+    """At the lowest n of the n range, the quantum defect is still close to its leading term delta_0."""
+    channel = model.channel
+    n_min = next(
+        n
+        for n in itertools.count(model.n_min)
+        if model_set.element_properties.is_allowed_shell(n, channel.l_r, channel.s_tot)
+    )
+    assert abs(model.calc_quantum_defect(n_min) - model.quantum_defects[0]) < 0.6
+
+
 def test_model_set_uses_nist_model_in_its_n_range() -> None:
     """Within the n range of the NIST model the NIST levels are used, otherwise the quantum defects."""
     sqdt = get_sqdt("Rb")
@@ -391,6 +408,17 @@ def test_missing_nist_level_in_n_range_raises() -> None:
     angular = AngularKetLS(l_r=2, s_tot=0, j_tot=2, f_tot=2, species="Yb174")
     with pytest.raises(ValueError, match="no energy level for n=8"):
         sqdt.calc_nui(8, angular)
+
+
+def test_states_between_nist_and_quantum_defect_models_raise() -> None:
+    """The Rydberg-Ritz formula of Yb174 6sns 3S1 diverges for n < 20, so these states are not available."""
+    sqdt = get_sqdt("Yb174")
+    angular = AngularKetLS(l_r=0, s_tot=1, j_tot=1, f_tot=1, species="Yb174")
+    assert isinstance(sqdt.get_model(13, angular), ModelSQDTNist)
+    for n in range(14, 20):
+        with pytest.raises(ValueError, match="None of the SQDT models"):
+            sqdt.calc_nui(n, angular)
+    assert sqdt.calc_nui(20, angular) == pytest.approx(16.02, abs=0.01)
 
 
 def test_model_set_without_quantum_defects_uses_nist_models() -> None:
