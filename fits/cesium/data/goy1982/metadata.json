@@ -1,0 +1,19 @@
+{
+  "dataset": "goy1982",
+  "species": "Cs",
+  "reference": "Goy 1982, Phys. Rev. A 26, 2733, https://doi.org/10.1103/PhysRevA.26.2733",
+  "authors": "P. Goy, J. M. Raimond, G. Vitrant, S. Haroche",
+  "title": "Millimeter-wave spectroscopy in cesium Rydberg states. Quantum defects, fine- and hyperfine-structure measurements",
+  "year": 1982,
+  "doi": "10.1103/PhysRevA.26.2733",
+  "url": "https://doi.org/10.1103/PhysRevA.26.2733",
+  "method": "one- and two-photon millimeter-wave transitions between Rydberg states in an atomic beam, field-ionization detection",
+  "uncertainty": "per-transition estimated uncertainty (0.14 MHz to 20 MHz) as printed",
+  "conversion": [
+    "The source gives the intervals as magnitudes; their signs E(level) - E(lower_level) are taken from rydstate's quantum defect models (the intervals are much larger than any model error)."
+  ],
+  "caveats": [
+    "values are positive magnitudes of intervals (no sign); for nD5/2 -> (n-3)F the F level is the lower one",
+    "compared with modern data, S->P and D->F intervals deviate by several MHz, beyond some quoted uncertainties; give low weight relative to Shen2024/2025, Deiglmayr2016"
+  ]
+}

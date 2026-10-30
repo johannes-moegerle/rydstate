@@ -1,0 +1,23 @@
+{
+  "dataset": "deiglmayr2016",
+  "species": "Cs",
+  "reference": "Deiglmayr 2016, Phys. Rev. A 93, 013424, https://doi.org/10.1103/PhysRevA.93.013424",
+  "authors": "J. Deiglmayr, H. Herburger, H. Saßmannshausen, P. Jansen, H. Schmutz, F. Merkt",
+  "title": "Precision measurement of the ionization energy of Cs I",
+  "year": 2016,
+  "doi": "10.1103/PhysRevA.93.013424",
+  "url": "https://doi.org/10.1103/PhysRevA.93.013424",
+  "method": "one-photon UV spectroscopy (np <- 6s1/2) of ultracold Cs in an optical dipole trap, frequency-comb referenced; Table III intervals from mm-wave spectroscopy of Ref. [27] (Saßmannshausen et al. PRA 87, 032519 (2013))",
+  "uncertainty": "Table I: estimated standard deviation 2e-6 cm^-1 for all line positions (caption); fit residuals per level given; Erratum: systematic uncertainty raised to 100 kHz; Table III intervals 10 kHz",
+  "conversion": [
+    "5 rows with the quantities ['binding energy'] are not exported (derived values).",
+    "Energies from '6s1/2 hyperfine center of gravity', energy zero: Table III intervals are between hyperfine centres of gravity of the Rydberg levels. Erratum (Phys. Rev. A 112, 049902 (2025)): add +485(16) kHz to every Table I transition frequency (levels.csv holds the uncorrected 2016 values).",
+    "Added 0.485 MHz to the rows with {'location': 'Table I'}: the erroneously subtracted ODT ac-Stark correction of 485(16) kHz has to be added to all Table I transition frequencies; common to all rows, i.e. a systematic shift, not part of the per-row uncertainty (Erratum, Phys. Rev. A 112, 049902 (2025), raw/Deiglmayr2025_erratum_Cs_ionization_energy_PRA112_049902.pdf)"
+  ],
+  "caveats": [
+    "levels.csv holds the values as printed in 2016; ADD +485(16) kHz to every Table I value before fitting (Erratum PRA 112, 049902 (2025))",
+    "reference level is the 6s1/2 hyperfine center of gravity, not a hyperfine component",
+    "Table III binding energies are derived quantities (use the original EI and the uncorrected Table I), not independent measurements; the intervals themselves are the primary data (originally from Saßmannshausen et al. 2013)",
+    "the caption notes the statistical standard deviations of the line fits underestimate true uncertainties by ~2"
+  ]
+}

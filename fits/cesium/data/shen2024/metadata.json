@@ -1,0 +1,21 @@
+{
+  "dataset": "shen2024",
+  "species": "Cs",
+  "reference": "Shen 2024, Phys. Rev. Lett. 133, 233005, https://doi.org/10.1103/PhysRevLett.133.233005",
+  "authors": "P. Shen, D. Booth, C. Liu, S. Beattie, C. Marceau, J. P. Shaffer, M. Pawlak, H. R. Sadeghpour",
+  "title": "Ultraprecise Determination of Cs(nS1/2) and Cs(nDJ) Quantum Defects for Sensing and Computing: Evaluation of Core Contributions",
+  "year": 2024,
+  "doi": "10.1103/PhysRevLett.133.233005",
+  "url": "https://doi.org/10.1103/PhysRevLett.133.233005",
+  "method": "two-photon (852 nm + 509 nm) excitation of laser-cooled Cs released from a MOT, lasers referenced to a GPS-steered frequency comb, pulsed field ionization detection",
+  "uncertainty": "per-level statistical uncertainty (kHz) in brackets; systematic budget Table S2 (DC Stark < 49 kHz, Zeeman < 14.3 kHz, ...), total < 59 kHz",
+  "conversion": [
+    "Energies from '6S1/2 F=3 hyperfine level', energy zero: levels.csv unit is kHz: the shift is -5170855.370625 kHz. The 36.0(4.8) kHz ac-Stark shift of the ground state by the 852 nm laser is already subtracted. The two-photon recoil shift (~6.2 kHz, Deiglmayr et al. erratum 2025) is not corrected.",
+    "Shifted by -5.170855370625 GHz to the ground state hyperfine centre of gravity (Shen et al. 2024 main text: splitting between the 6S1/2 centre of gravity and |6S1/2, F=3> (their Ref. [48]), subtracted before the fit; = 9/16 x 9192.631770 MHz)."
+  ],
+  "caveats": [
+    "values are referenced to the 6S1/2 F=3 hyperfine level, NOT the center of gravity: subtract 5.170855370625 GHz for energies relative to the ground-state center of gravity",
+    "uncertainties in levels.csv are statistical only; add systematic (Table S2)",
+    "photon-recoil shift (~6.2 kHz) not corrected (per Deiglmayr et al. erratum)"
+  ]
+}

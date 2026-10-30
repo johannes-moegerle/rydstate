@@ -1,0 +1,23 @@
+{
+  "dataset": "nist_asd",
+  "species": "Cs",
+  "reference": "Kramida 2024, NIST Atomic Spectra Database (ver. 5.12), https://doi.org/10.18434/T4W30F",
+  "authors": "A. Kramida, Yu. Ralchenko, J. Reader, and NIST ASD Team",
+  "title": "NIST Atomic Spectra Database (ver. 5.12)",
+  "year": 2024,
+  "doi": "10.18434/T4W30F",
+  "url": "https://doi.org/10.18434/T4W30F",
+  "method": "NIST critically evaluated compilation (see asd_compilation and asd_references for the original measurements)",
+  "uncertainty": "per-level ASD uncertainties in column 'Uncertainty (cm-1)' (empty where ASD gives none)",
+  "conversion": [
+    "Rows without uncertainty are not exported: ['5p6.6s 2S 1/2'].",
+    "Rows that are no single valence electron level are not exported: ['Cs II (5s2.5p6 1S<0>) Limit ---', '5p5.6s2 2P* 3/2', '5p5.6s2 2P* 1/2', '5p5.6s.(3P*).5d 4P* 5/2', '5p5.6s.(3P*).5d 4D* 1/2'].",
+    "Energies from 'ground state 5p6.6s 2S 1/2', energy zero: The ASD output does not state a hyperfine reference. The main underlying Rydberg sources (Weber & Sansonetti 1987, L7057, 143 levels; Lorenzen & Niemax 1984) give energies relative to the 6S1/2 hyperfine centre of gravity."
+  ],
+  "caveats": [
+    "Energies are term energies in cm^-1 relative to the ASD ground state 5p6.6s 2S 1/2; the ionization limit is a separate 'Limit' row and in ionization_energy.",
+    "ASD levels are not isotope resolved: the compilation mixes data from different isotopes and natural samples; isotope shifts and hyperfine structure are not separated. RydState 'Cs' uses mass number 133; hyperfine structure is not resolved in ASD (centroid / fine-structure energies).",
+    "Energy precision is ASD's (compilation) precision; for many Rydberg series more precise modern measurements exist (e.g. mm-wave or laser spectroscopy) and should be preferred in fits.",
+    "Column j in levels.csv is the total J of the level as given by ASD; s is the total spin from the LS term multiplicity; for jj/jK-coupled terms only n and l are assigned. n, l are filled only when the configuration has exactly one electron outside the RydState core configuration '5p6' (same rule as rydstate.species.nist.parse_nist_energy_levels)."
+  ]
+}

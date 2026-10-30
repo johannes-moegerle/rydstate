@@ -1,0 +1,17 @@
+{
+  "dataset": "sansonetti1984",
+  "species": "Cs",
+  "reference": "Sansonetti 1984, Phys. Rev. A 30, 1805, https://doi.org/10.1103/PhysRevA.30.1805",
+  "authors": "C. J. Sansonetti, C.-J. Lorenzen",
+  "title": "Doppler-free resonantly enhanced two-photon spectroscopy of np and nf Rydberg states in atomic cesium",
+  "year": 1984,
+  "doi": "10.1103/PhysRevA.30.1805",
+  "url": "https://doi.org/10.1103/PhysRevA.30.1805",
+  "method": "Doppler-free resonantly enhanced two-photon spectroscopy (6s-5d-nf, 6s-5d-np) in thermionic diodes",
+  "uncertainty": "per value in parentheses (estimated, incl. 3x standard error and drift)",
+  "conversion": [],
+  "caveats": [
+    "the 18, 25, 33, 44 nP intervals (footnote a) are differences of absolute levels of Weber & Sansonetti (same data as weber1987), not independent",
+    "intervals only (no absolute positions)"
+  ]
+}

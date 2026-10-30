@@ -1,0 +1,18 @@
+{
+  "dataset": "allinson2025",
+  "species": "Cs",
+  "reference": "Allinson 2025, Phys. Rev. A 111, 062802, https://doi.org/10.1103/PhysRevA.111.062802",
+  "authors": "G. Allinson, L. A. Downes, C. S. Adams, K. J. Weatherill",
+  "title": "Determination of quantum defects and core polarizability of atomic cesium via terahertz and radio-frequency spectroscopy in thermal vapor",
+  "year": 2025,
+  "doi": "10.1103/PhysRevA.111.062802",
+  "url": "https://doi.org/10.1103/PhysRevA.111.062802",
+  "method": "THz and rf electromagnetically-induced-transparency spectroscopy of Rydberg states in a room-temperature Cs vapor cell (two- and three-photon schemes)",
+  "uncertainty": "Table IV p->s, p->d: 0.5 MHz unless given; d->f and Table V: per value in parentheses",
+  "conversion": [],
+  "caveats": [
+    "row \"30p3/2 -> 30s1/2 = -516.1775 GHz\" is inconsistent (30p3/2-30s1/2 = -179.43 GHz); the value matches 31p3/2 -> 30s1/2 (-516.21 GHz): probable label typo",
+    "thermal vapor measurements; systematic deviations of a few MHz relative to cold-atom data",
+    "for l>=5 the J label is omitted (j=l+1/2 assumed by the authors)"
+  ]
+}
