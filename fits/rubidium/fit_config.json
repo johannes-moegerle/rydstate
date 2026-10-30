@@ -1,0 +1,55 @@
+{
+  "species": "Rb",
+  "comment": [
+    "Global SQDT fit of the 87Rb s, p, d, f and g series; every dataset of energies from the ground state has its own ionization threshold (free offset), so the quantum defects only describe binding energies and intervals and are used with the threshold of rydstate.",
+    "The 85Rb data are converted to 87Rb by the export: intervals scaled with the reduced masses (1 + 1.5e-7), energies from the ground state with a free offset.",
+    "n_min: the lowest measured level of each series, or the next n after the NIST levels of the channel where the data start higher (nf, ng) or the NIST levels have a gap (ns: 13s-38s, nd: 11d-36d missing). The nd models below n = 19 rest only on the fine-structure intervals of Stoicheff 1979: they deviate from its fine-structure averaged nD levels (not used, no single J) by -0.4, -0.2 GHz at n = 11, 12 and by less than 0.1 GHz from n = 13 on.",
+    "orders: as many coefficients as are significant (ng_7/2: 2, its fine structure to ng_9/2 is then hydrogenic; with only 1, nf_5/2 would need a large third coefficient fixed by the three Berl 2020 intervals at n = 17-19)."
+  ],
+  "data_directory": "data",
+  "models_directory": "../../src/rydstate/species/rubidium/sqdt_models",
+  "report_file": "fit_report.json",
+  "series": {
+    "ns_1/2": {"orders": 2, "n_min": 13},
+    "np_1/2": {"orders": 2, "n_min": 13},
+    "np_3/2": {"orders": 2, "n_min": 13},
+    "nd_3/2": {"orders": 3, "n_min": 11},
+    "nd_5/2": {"orders": 3, "n_min": 11},
+    "nf_5/2": {"orders": 2, "n_min": 9},
+    "nf_7/2": {"orders": 2, "n_min": 9},
+    "ng_7/2": {"orders": 2, "n_min": 6},
+    "ng_9/2": {"orders": 2, "n_min": 6}
+  },
+  "datasets": {
+    "mack2011": {"free_offset": true},
+    "li2003": {
+      "exclude": {
+        "28p fine structure": "derived from the Table I intervals (not independent)",
+        "29p fine structure": "derived from the Table I intervals (not independent)",
+        "30p fine structure": "derived from the Table I intervals (not independent)",
+        "31p fine structure": "derived from the Table I intervals (not independent)",
+        "32p fine structure": "derived from the Table I intervals (not independent)",
+        "33p fine structure": "derived from the Table I intervals (not independent)"
+      }
+    },
+    "han2006": {},
+    "lee2016": {},
+    "moore2020": {
+      "exclude": {
+        "38g-40g (Table III)": "Method B uses partly the same data as Method A (Table II)",
+        "39g-41g (Table III)": "Method B uses partly the same data as Method A (Table II)",
+        "40g-42g (Table III)": "Method B uses partly the same data as Method A (Table II)",
+        "41g-43g (Table III)": "Method B uses partly the same data as Method A (Table II)"
+      }
+    },
+    "berl2020": {},
+    "johnson2010": {"free_offset": true},
+    "sanguinetti2009": {"free_offset": true},
+    "lorenzen1983": {"free_offset": true},
+    "stoicheff1979": {
+      "free_offset": true,
+      "exclude": {"32 2D5/2 - 32 2D3/2": "8 MHz above the fine structure of Mack 2011 (370.9(11) MHz from its 32d levels) and the fit"},
+      "comment": "the term values have a stated accuracy of 0.003 cm^-1 (100 MHz)"
+    }
+  }
+}

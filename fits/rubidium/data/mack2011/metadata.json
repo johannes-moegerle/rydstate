@@ -1,0 +1,22 @@
+{
+  "dataset": "mack2011",
+  "species": "Rb",
+  "reference": "Mack 2011, Phys. Rev. A 83, 052515, https://doi.org/10.1103/PhysRevA.83.052515",
+  "authors": "M. Mack, F. Karlewski, H. Hattermann, S. Höckh, F. Jessen, D. Cano, J. Fortágh",
+  "title": "Measurement of absolute transition frequencies of 87Rb to nS and nD Rydberg states by means of electromagnetically induced transparency",
+  "year": 2011,
+  "doi": "10.1103/PhysRevA.83.052515",
+  "url": "https://doi.org/10.1103/PhysRevA.83.052515",
+  "method": "two-step EIT ladder spectroscopy (780 nm + 480 nm) in a room-temperature vapor cell; coupling laser locked to a frequency comb / calibrated wavelength meter",
+  "uncertainty": "0.8 MHz per line (8 in the last digit, one row 9); fit residuals rms < 0.75 MHz; quantum defects of nS include a hyperfine correction (text Sec. IV)",
+  "conversion": [
+    "Energies from '87Rb 5P3/2 F=3', energy zero: Adding only 384.2281152 THz refers the values to 87Rb 5S1/2 F=2. Upper levels: nS1/2 rows are the F=2 hyperfine level (hfs shift 3.2(3) MHz at n=19, removed only in the quantum-defect fit); nD hfs negligible.",
+    "Shifted by 384.2306782 THz to the ground state hyperfine centre of gravity (computed here from the paper's numbers: 384.2281152 THz (5S1/2 F=2 -> 5P3/2 F=3, Sec. II, Ye et al. 1996) + 3/8 x 6.8346 GHz (87Rb ground hfs = Table II E_i(5S1/2 F=1) - E_i(5P3/2 F=3) - 384.2281152 THz); converts the omega_c frequencies into term energies above the 87Rb 5S1/2 centre of gravity).",
+    "Rows with {'l': '0', 'F': '2'} are hyperfine components: shifted by -3.2(0.3) MHz x (nu(19) / nu)^3 with nu = n - 3.1312 to the centre of gravity, the uncertainty of the shift added in quadrature (the paper: the nS F=2 lines include the hyperfine shift of 3.2(3) MHz at n = 19 (Sec. IV), scaled with nu^-3 (consistent with the 87Rb nS hyperfine intervals of Li 2003 at n = 28-33))."
+  ],
+  "caveats": [
+    "values are transition frequencies from 5P3/2(F=3), not term energies",
+    "nS rows refer to the F=2 hyperfine level, not to the fine-structure centre",
+    "87Rb, whereas several other Rb datasets are 85Rb"
+  ]
+}

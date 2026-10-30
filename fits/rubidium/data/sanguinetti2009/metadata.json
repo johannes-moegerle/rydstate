@@ -1,0 +1,22 @@
+{
+  "dataset": "sanguinetti2009",
+  "species": "Rb",
+  "reference": "Sanguinetti 2009, J. Phys. B: At. Mol. Opt. Phys. 42, 165004, https://doi.org/10.1088/0953-4075/42/16/165004",
+  "authors": "B. Sanguinetti, H. O. Majeed, M. L. Jones, B. T. H. Varcoe",
+  "title": "Precision measurements of quantum defects in the nP3/2 Rydberg states of 85Rb",
+  "year": 2009,
+  "doi": "10.1088/0953-4075/42/16/165004",
+  "url": "https://doi.org/10.1088/0953-4075/42/16/165004",
+  "method": "three-step excitation 5S1/2 -> 5P3/2 -> 5D5/2 -> nP3/2 in a thermal atomic beam (dispenser oven) with field-ionization detection; third step measured with a calibrated wavemeter",
+  "uncertainty": "no per-level uncertainty; total systematic error 5.7 MHz stated in the text, repeatability 1 MHz",
+  "conversion": [
+    "Energies from '85Rb 5S1/2 hyperfine centre of gravity', energy zero: Caption: 'E_n is measured from the centre of mass of the lower and upper states'. The text quotes 5S1/2 -> 5D5/2 = 770 570 285(1) MHz, but the tabulated E_n minus third-step frequency is 770 571 548.5 +- 0.5 MHz for every row (checked on levels.csv), i.e. about +1264 MHz more, consistent with 5/12 x 3035.73 MHz (85Rb 5S1/2 F=3 -> centre of gravity); so the caption's hyperfine centre-of-gravity correction is already included in E_n (the text value presumably refers to 5S1/2 F=3, not stated).",
+    "Rows without uncertainty: the total uncertainty of 5.7 MHz stated in the text (no per-level values).",
+    "The data are 85Rb, rydstate's Rb has the atomic mass 86.909180529 u: intervals are multiplied by the ratio of the reduced masses mu(Rb) / mu(85Rb) = 1.000000148480 (the quantum defects are the same); energies from the ground state are not scaled, they need a free offset in the fit (their binding energies differ by the same relative amount, less than 1 MHz for n >= 20)."
+  ],
+  "caveats": [
+    "no per-level uncertainties",
+    "85Rb",
+    "Table 3 fit parameters (not in levels.csv): Method 1/3 columns interchanged between arXiv and published version; quote with the version"
+  ]
+}

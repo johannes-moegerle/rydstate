@@ -1,0 +1,115 @@
+level,lower_level,value,uncertainty,unit,source_label,source_location,note
+19s_1/2,,996.9595131,8.5e-7,THz,19S1/2 F=2,Table III,87Rb; delta=3.1318908(5) (hfs-corrected); fit residual -0.8 MHz; hyperfine shift -0.0000032 THz to the centre of gravity
+20s_1/2,,998.46282973603,8.4e-7,THz,20S1/2 F=2,Table III,87Rb; delta=3.1318083(6) (hfs-corrected); fit residual 0.5 MHz; hyperfine shift -0.00000266 THz to the centre of gravity
+21s_1/2,,999.72084465872,8.3e-7,THz,21S1/2 F=2,Table III,87Rb; delta=3.1317405(7) (hfs-corrected); fit residual -0.2 MHz; hyperfine shift -0.00000224 THz to the centre of gravity
+22s_1/2,,1000.78416879652,8.2e-7,THz,22S1/2 F=2,Table III,87Rb; delta=3.1316819(8) (hfs-corrected); fit residual 0.7 MHz; hyperfine shift -0.00000190 THz to the centre of gravity
+23s_1/2,,1001.69099796970,8.1e-7,THz,23S1/2 F=2,Table III,87Rb; delta=3.1316328(10) (hfs-corrected); fit residual 0.5 MHz; hyperfine shift -0.00000163 THz to the centre of gravity
+24s_1/2,,1002.47060319301,8.1e-7,THz,24S1/2 F=2,Table III,87Rb; delta=3.1315896(11) (hfs-corrected); fit residual 1.0 MHz; hyperfine shift -0.00000141 THz to the centre of gravity
+25s_1/2,,1003.14571517734,8.1e-7,THz,25S1/2 F=2,Table III,87Rb; delta=3.1315541(13) (hfs-corrected); fit residual 0.2 MHz; hyperfine shift -0.00000122 THz to the centre of gravity
+26s_1/2,,1003.73420983082,8.1e-7,THz,26S1/2 F=2,Table III,87Rb; delta=3.131521(2) (hfs-corrected); fit residual 0.7 MHz; hyperfine shift -0.00000107 THz to the centre of gravity
+27s_1/2,,1004.25029205965,8.0e-7,THz,27S1/2 F=2,Table III,87Rb; delta=3.131496(2) (hfs-corrected); fit residual -1.0 MHz; hyperfine shift -9.40e-7 THz to the centre of gravity
+28s_1/2,,1004.70537726859,8.0e-7,THz,28S1/2 F=2,Table III,87Rb; delta=3.131469(2) (hfs-corrected); fit residual 0.3 MHz; hyperfine shift -8.31e-7 THz to the centre of gravity
+29s_1/2,,1005.10870926133,8.0e-7,THz,29S1/2 F=2,Table III,87Rb; delta=3.131448(2) (hfs-corrected); fit residual 0.0 MHz; hyperfine shift -7.39e-7 THz to the centre of gravity
+30s_1/2,,1005.46784864077,8.0e-7,THz,30S1/2 F=2,Table III,87Rb; delta=3.131430(2) (hfs-corrected); fit residual -0.6 MHz; hyperfine shift -6.59e-7 THz to the centre of gravity
+31s_1/2,,1005.78902490922,8.0e-7,THz,31S1/2 F=2,Table III,87Rb; delta=3.131412(3) (hfs-corrected); fit residual -0.4 MHz; hyperfine shift -5.91e-7 THz to the centre of gravity
+32s_1/2,,1006.07740566851,8.0e-7,THz,32S1/2 F=2,Table III,87Rb; delta=3.131395(3) (hfs-corrected); fit residual 0.2 MHz; hyperfine shift -5.31e-7 THz to the centre of gravity
+33s_1/2,,1006.33730812012,8.0e-7,THz,33S1/2 F=2,Table III,87Rb; delta=3.131380(3) (hfs-corrected); fit residual 0.3 MHz; hyperfine shift -4.80e-7 THz to the centre of gravity
+34s_1/2,,1006.57236276527,8.0e-7,THz,34S1/2 F=2,Table III,87Rb; delta=3.131365(4) (hfs-corrected); fit residual 0.8 MHz; hyperfine shift -4.35e-7 THz to the centre of gravity
+35s_1/2,,1006.78563730492,8.0e-7,THz,35S1/2 F=2,Table III,87Rb; delta=3.131358(4) (hfs-corrected); fit residual -0.2 MHz; hyperfine shift -3.95e-7 THz to the centre of gravity
+36s_1/2,,1006.97974413989,8.0e-7,THz,36S1/2 F=2,Table III,87Rb; delta=3.131347(4) (hfs-corrected); fit residual -0.1 MHz; hyperfine shift -3.60e-7 THz to the centre of gravity
+37s_1/2,,1007.15691127086,8.0e-7,THz,37S1/2 F=2,Table III,87Rb; delta=3.131342(5) (hfs-corrected); fit residual -1.0 MHz; hyperfine shift -3.29e-7 THz to the centre of gravity
+38s_1/2,,1007.31905629837,8.0e-7,THz,38S1/2 F=2,Table III,87Rb; delta=3.131330(5) (hfs-corrected); fit residual -0.4 MHz; hyperfine shift -3.02e-7 THz to the centre of gravity
+39s_1/2,,1007.46782942290,8.0e-7,THz,39S1/2 F=2,Table III,87Rb; delta=3.131319(6) (hfs-corrected); fit residual 0.1 MHz; hyperfine shift -2.77e-7 THz to the centre of gravity
+40s_1/2,,1007.60466254484,8.0e-7,THz,40S1/2 F=2,Table III,87Rb; delta=3.131301(6) (hfs-corrected); fit residual 1.4 MHz; hyperfine shift -2.55e-7 THz to the centre of gravity
+41s_1/2,,1007.73079556453,8.0e-7,THz,41S1/2 F=2,Table III,87Rb; delta=3.131314(7) (hfs-corrected); fit residual -1.0 MHz; hyperfine shift -2.35e-7 THz to the centre of gravity
+42s_1/2,,1007.84732248224,8.0e-7,THz,42S1/2 F=2,Table III,87Rb; delta=3.131297(7) (hfs-corrected); fit residual 0.3 MHz; hyperfine shift -2.18e-7 THz to the centre of gravity
+43s_1/2,,1007.95518869822,8.0e-7,THz,43S1/2 F=2,Table III,87Rb; delta=3.131305(8) (hfs-corrected); fit residual -1.2 MHz; hyperfine shift -2.02e-7 THz to the centre of gravity
+44s_1/2,,1008.05523781267,9.0e-7,THz,44S1/2 F=2,Table III,87Rb; delta=3.131277(9) (hfs-corrected); fit residual 1.0 MHz; hyperfine shift -1.87e-7 THz to the centre of gravity
+45s_1/2,,1008.14820152577,8.0e-7,THz,45S1/2 F=2,Table III,87Rb; delta=3.131275(9) (hfs-corrected); fit residual 0.6 MHz; hyperfine shift -1.74e-7 THz to the centre of gravity
+46s_1/2,,1008.23473573769,8.0e-7,THz,46S1/2 F=2,Table III,87Rb; delta=3.131274(10) (hfs-corrected); fit residual 0.3 MHz; hyperfine shift -1.62e-7 THz to the centre of gravity
+47s_1/2,,1008.31541964853,8.0e-7,THz,47S1/2 F=2,Table III,87Rb; delta=3.131276(11) (hfs-corrected); fit residual -0.2 MHz; hyperfine shift -1.51e-7 THz to the centre of gravity
+48s_1/2,,1008.39076955844,8.0e-7,THz,48S1/2 F=2,Table III,87Rb; delta=3.131274(11) (hfs-corrected); fit residual -0.3 MHz; hyperfine shift -1.42e-7 THz to the centre of gravity
+49s_1/2,,1008.46124556750,8.0e-7,THz,49S1/2 F=2,Table III,87Rb; delta=3.131266(12) (hfs-corrected); fit residual -0.0 MHz; hyperfine shift -1.33e-7 THz to the centre of gravity
+50s_1/2,,1008.52725917580,8.0e-7,THz,50S1/2 F=2,Table III,87Rb; delta=3.131252(13) (hfs-corrected); fit residual 0.6 MHz; hyperfine shift -1.24e-7 THz to the centre of gravity
+51s_1/2,,1008.58917758342,8.0e-7,THz,51S1/2 F=2,Table III,87Rb; delta=3.131261(14) (hfs-corrected); fit residual -0.1 MHz; hyperfine shift -1.17e-7 THz to the centre of gravity
+52s_1/2,,1008.64733439043,8.0e-7,THz,52S1/2 F=2,Table III,87Rb; delta=3.131261(14) (hfs-corrected); fit residual -0.3 MHz; hyperfine shift -1.10e-7 THz to the centre of gravity
+53s_1/2,,1008.70202799689,8.0e-7,THz,53S1/2 F=2,Table III,87Rb; delta=3.13126(2) (hfs-corrected); fit residual -0.3 MHz; hyperfine shift -1.03e-7 THz to the centre of gravity
+54s_1/2,,1008.75352710285,8.0e-7,THz,54S1/2 F=2,Table III,87Rb; delta=3.13127(2) (hfs-corrected); fit residual -1.1 MHz; hyperfine shift -9.71e-8 THz to the centre of gravity
+55s_1/2,,1008.80207810836,8.0e-7,THz,55S1/2 F=2,Table III,87Rb; delta=3.13125(2) (hfs-corrected); fit residual -0.0 MHz; hyperfine shift -9.16e-8 THz to the centre of gravity
+56s_1/2,,1008.84789931347,8.0e-7,THz,56S1/2 F=2,Table III,87Rb; delta=3.13124(2) (hfs-corrected); fit residual 0.1 MHz; hyperfine shift -8.65e-8 THz to the centre of gravity
+57s_1/2,,1008.89119211820,8.0e-7,THz,57S1/2 F=2,Table III,87Rb; delta=3.13125(2) (hfs-corrected); fit residual -0.2 MHz; hyperfine shift -8.18e-8 THz to the centre of gravity
+58s_1/2,,1008.93213952259,8.0e-7,THz,58S1/2 F=2,Table III,87Rb; delta=3.13125(2) (hfs-corrected); fit residual -0.4 MHz; hyperfine shift -7.74e-8 THz to the centre of gravity
+59s_1/2,,1008.97090822667,8.0e-7,THz,59S1/2 F=2,Table III,87Rb; delta=3.13124(2) (hfs-corrected); fit residual -0.3 MHz; hyperfine shift -7.33e-8 THz to the centre of gravity
+60s_1/2,,1009.00765013047,8.0e-7,THz,60S1/2 F=2,Table III,87Rb; delta=3.13123(2) (hfs-corrected); fit residual 0.3 MHz; hyperfine shift -6.95e-8 THz to the centre of gravity
+61s_1/2,,1009.04250153401,8.0e-7,THz,61S1/2 F=2,Table III,87Rb; delta=3.13128(2) (hfs-corrected); fit residual -1.6 MHz; hyperfine shift -6.60e-8 THz to the centre of gravity
+62s_1/2,,1009.07559443732,8.0e-7,THz,62S1/2 F=2,Table III,87Rb; delta=3.13126(3) (hfs-corrected); fit residual -0.9 MHz; hyperfine shift -6.27e-8 THz to the centre of gravity
+63s_1/2,,1009.10704294041,8.0e-7,THz,63S1/2 F=2,Table III,87Rb; delta=3.13124(3) (hfs-corrected); fit residual -0.2 MHz; hyperfine shift -5.96e-8 THz to the centre of gravity
+64s_1/2,,1009.13695314330,8.0e-7,THz,64S1/2 F=2,Table III,87Rb; delta=3.13125(3) (hfs-corrected); fit residual -0.5 MHz; hyperfine shift -5.67e-8 THz to the centre of gravity
+65s_1/2,,1009.16542514600,8.0e-7,THz,65S1/2 F=2,Table III,87Rb; delta=3.13125(3) (hfs-corrected); fit residual -0.6 MHz; hyperfine shift -5.40e-8 THz to the centre of gravity
+19d_3/2,,999.4690353,0.0000008,THz,19D3/2,Table IV,87Rb; delta=1.3461520(7); fit residual -0.1 MHz
+20d_3/2,,1000.5702562,0.0000008,THz,20D3/2,Table IV,87Rb; delta=1.3463543(8); fit residual 0.3 MHz
+21d_3/2,,1001.5077551,0.0000008,THz,21D3/2,Table IV,87Rb; delta=1.3465269(10); fit residual 0.3 MHz
+22d_3/2,,1002.3124423,0.0000008,THz,22D3/2,Table IV,87Rb; delta=1.3466765(11); fit residual -0.9 MHz
+23d_3/2,,1003.0082682,0.0000008,THz,23D3/2,Table IV,87Rb; delta=1.3468033(13); fit residual 0.1 MHz
+24d_3/2,,1003.6140143,0.0000008,THz,24D3/2,Table IV,87Rb; delta=1.3469144(14); fit residual 0.3 MHz
+25d_3/2,,1004.1445816,0.0000008,THz,25D3/2,Table IV,87Rb; delta=1.347013(2); fit residual -0.4 MHz
+26d_3/2,,1004.6119151,0.0000008,THz,26D3/2,Table IV,87Rb; delta=1.347100(2); fit residual -0.4 MHz
+27d_3/2,,1005.0256773,0.0000008,THz,27D3/2,Table IV,87Rb; delta=1.347174(2); fit residual 0.2 MHz
+28d_3/2,,1005.3937525,0.0000008,THz,28D3/2,Table IV,87Rb; delta=1.347241(2); fit residual 0.5 MHz
+29d_3/2,,1005.7226271,0.0000008,THz,29D3/2,Table IV,87Rb; delta=1.347301(3); fit residual 0.6 MHz
+30d_3/2,,1006.0176757,0.0000008,THz,30D3/2,Table IV,87Rb; delta=1.347356(3); fit residual 0.3 MHz
+31d_3/2,,1006.2833827,0.0000008,THz,31D3/2,Table IV,87Rb; delta=1.347407(3); fit residual -0.2 MHz
+32d_3/2,,1006.5235139,0.0000008,THz,32D3/2,Table IV,87Rb; delta=1.347452(4); fit residual -0.3 MHz
+33d_3/2,,1006.7412500,0.0000008,THz,33D3/2,Table IV,87Rb; delta=1.347488(4); fit residual 0.6 MHz
+34d_3/2,,1006.9392883,0.0000008,THz,34D3/2,Table IV,87Rb; delta=1.347533(4); fit residual -1.1 MHz
+35d_3/2,,1007.1199403,0.0000008,THz,35D3/2,Table IV,87Rb; delta=1.347556(5); fit residual 0.8 MHz
+37d_3/2,,1007.4367087,0.0000008,THz,37D3/2,Table IV,87Rb; delta=1.347618(6); fit residual 0.1 MHz
+38d_3/2,,1007.5760079,0.0000008,THz,38D3/2,Table IV,87Rb; delta=1.347640(6); fit residual 0.6 MHz
+39d_3/2,,1007.7043558,0.0000008,THz,39D3/2,Table IV,87Rb; delta=1.347668(7); fit residual -0.0 MHz
+40d_3/2,,1007.8228724,0.0000008,THz,40D3/2,Table IV,87Rb; delta=1.347689(7); fit residual 0.1 MHz
+41d_3/2,,1007.9325360,0.0000008,THz,41D3/2,Table IV,87Rb; delta=1.347711(8); fit residual -0.1 MHz
+42d_3/2,,1008.0342075,0.0000008,THz,42D3/2,Table IV,87Rb; delta=1.347727(8); fit residual 0.1 MHz
+43d_3/2,,1008.1286449,0.0000008,THz,43D3/2,Table IV,87Rb; delta=1.347740(9); fit residual 0.5 MHz
+44d_3/2,,1008.2165160,0.0000008,THz,44D3/2,Table IV,87Rb; delta=1.347778(10); fit residual -1.4 MHz
+45d_3/2,,1008.2984208,0.0000008,THz,45D3/2,Table IV,87Rb; delta=1.347778(10); fit residual -0.1 MHz
+46d_3/2,,1008.3748838,0.0000008,THz,46D3/2,Table IV,87Rb; delta=1.347789(11); fit residual 0.2 MHz
+47d_3/2,,1008.4463768,0.0000008,THz,47D3/2,Table IV,87Rb; delta=1.347808(12); fit residual -0.3 MHz
+48d_3/2,,1008.5133220,0.0000008,THz,48D3/2,Table IV,87Rb; delta=1.347827(13); fit residual -0.7 MHz
+51d_3/2,,1008.6904626,0.0000008,THz,51D3/2,Table IV,87Rb; delta=1.34784(2); fit residual 0.7 MHz
+53d_3/2,,1008.7917994,0.0000008,THz,53D3/2,Table IV,87Rb; delta=1.34788(2); fit residual -0.7 MHz
+54d_3/2,,1008.8381939,0.0000008,THz,54D3/2,Table IV,87Rb; delta=1.34788(2); fit residual -0.2 MHz
+55d_3/2,,1008.8820192,0.0000008,THz,55D3/2,Table IV,87Rb; delta=1.34786(2); fit residual 0.9 MHz
+57d_3/2,,1008.9626864,0.0000008,THz,57D3/2,Table IV,87Rb; delta=1.34789(2); fit residual 0.4 MHz
+19d_5/2,,999.4709442,0.0000008,THz,19D5/2,Table V,87Rb; delta=1.3445555(7); fit residual 0.6 MHz
+20d_5/2,,1000.5718772,0.0000008,THz,20D5/2,Table V,87Rb; delta=1.3447550(8); fit residual -0.1 MHz
+21d_5/2,,1001.5091446,0.0000008,THz,21D5/2,Table V,87Rb; delta=1.3449236(9); fit residual 0.6 MHz
+22d_5/2,,1002.3136421,0.0000008,THz,22D5/2,Table V,87Rb; delta=1.3450698(11); fit residual -0.2 MHz
+23d_5/2,,1003.0093096,0.0000008,THz,23D5/2,Table V,87Rb; delta=1.3451963(13); fit residual -0.7 MHz
+24d_5/2,,1003.6149245,0.0000008,THz,24D5/2,Table V,87Rb; delta=1.3453060(15); fit residual -0.8 MHz
+25d_5/2,,1004.1453828,0.0000008,THz,25D5/2,Table V,87Rb; delta=1.345402(2); fit residual -0.7 MHz
+26d_5/2,,1004.6126246,0.0000008,THz,26D5/2,Table V,87Rb; delta=1.345484(2); fit residual 0.5 MHz
+27d_5/2,,1005.0263065,0.0000008,THz,27D5/2,Table V,87Rb; delta=1.345560(2); fit residual -0.2 MHz
+28d_5/2,,1005.3943126,0.0000008,THz,28D5/2,Table V,87Rb; delta=1.345629(2); fit residual -1.1 MHz
+29d_5/2,,1005.7231300,0.0000008,THz,29D5/2,Table V,87Rb; delta=1.345685(3); fit residual 0.2 MHz
+30d_5/2,,1006.0181282,0.0000008,THz,30D5/2,Table V,87Rb; delta=1.345738(3); fit residual 0.1 MHz
+31d_5/2,,1006.2837925,0.0000008,THz,31D5/2,Table V,87Rb; delta=1.345783(3); fit residual 1.0 MHz
+32d_5/2,,1006.5238848,0.0000008,THz,32D5/2,Table V,87Rb; delta=1.345828(4); fit residual 0.4 MHz
+33d_5/2,,1006.7415864,0.0000008,THz,33D5/2,Table V,87Rb; delta=1.345866(4); fit residual 0.6 MHz
+34d_5/2,,1006.9395967,0.0000008,THz,34D5/2,Table V,87Rb; delta=1.345901(4); fit residual 0.8 MHz
+35d_5/2,,1007.1202207,0.0000008,THz,35D5/2,Table V,87Rb; delta=1.345931(5); fit residual 1.2 MHz
+37d_5/2,,1007.4369448,0.0000008,THz,37D5/2,Table V,87Rb; delta=1.345992(6); fit residual 0.5 MHz
+38d_5/2,,1007.5762243,0.0000008,THz,38D5/2,Table V,87Rb; delta=1.346020(6); fit residual -0.0 MHz
+39d_5/2,,1007.7045561,0.0000008,THz,39D5/2,Table V,87Rb; delta=1.346042(7); fit residual 0.1 MHz
+40d_5/2,,1007.8230584,0.0000008,THz,40D5/2,Table V,87Rb; delta=1.346057(7); fit residual 0.9 MHz
+41d_5/2,,1007.9327077,0.0000008,THz,41D5/2,Table V,87Rb; delta=1.346084(8); fit residual 0.0 MHz
+42d_5/2,,1008.0343665,0.0000008,THz,42D5/2,Table V,87Rb; delta=1.346104(8); fit residual -0.1 MHz
+43d_5/2,,1008.1287931,0.0000008,THz,43D5/2,Table V,87Rb; delta=1.346112(9); fit residual 0.7 MHz
+44d_5/2,,1008.2166568,0.0000008,THz,44D5/2,Table V,87Rb; delta=1.346118(10); fit residual 1.5 MHz
+45d_5/2,,1008.2985486,0.0000008,THz,45D5/2,Table V,87Rb; delta=1.346162(10); fit residual -0.9 MHz
+46d_5/2,,1008.3750046,0.0000008,THz,46D5/2,Table V,87Rb; delta=1.346155(11); fit residual 0.7 MHz
+48d_5/2,,1008.5134284,0.0000008,THz,48D5/2,Table V,87Rb; delta=1.346185(13); fit residual 0.3 MHz
+51d_5/2,,1008.6905496,0.0000008,THz,51D5/2,Table V,87Rb; delta=1.34622(2); fit residual 0.3 MHz
+53d_5/2,,1008.7918777,0.0000008,THz,53D5/2,Table V,87Rb; delta=1.34624(2); fit residual -0.2 MHz
+54d_5/2,,1008.8382672,0.0000008,THz,54D5/2,Table V,87Rb; delta=1.34626(2); fit residual -0.4 MHz
+55d_5/2,,1008.8820886,0.0000008,THz,55D5/2,Table V,87Rb; delta=1.34623(2); fit residual 0.9 MHz
+57d_5/2,,1008.9627486,0.0000008,THz,57D5/2,Table V,87Rb; delta=1.34626(2); fit residual 0.5 MHz

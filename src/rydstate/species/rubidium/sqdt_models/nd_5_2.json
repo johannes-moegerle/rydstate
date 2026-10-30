@@ -2,7 +2,13 @@
   "model_class": "ModelSQDT",
   "species": "Rb",
   "channel": "nd_5/2",
-  "quantum_defects": [1.3464622, -0.594, 0, 0, 0],
-  "reference": "Phys. Rev. A 83, 052515 (2011) - Rb87",
-  "n_range": [11, "inf"]
+  "reference": ["Mack 2011, Phys. Rev. A 83, 052515, https://doi.org/10.1103/PhysRevA.83.052515", "Li 2003, Phys. Rev. A 67, 052502, https://doi.org/10.1103/PhysRevA.67.052502", "Han 2006, Phys. Rev. A 74, 054502, https://doi.org/10.1103/PhysRevA.74.054502", "Lee 2016, Phys. Rev. A 94, 022505, https://doi.org/10.1103/PhysRevA.94.022505", "Stoicheff 1979, Can. J. Phys. 57, 2143, https://doi.org/10.1139/p79-293"],
+  "n_range": [11, "inf"],
+  "quantum_defects": [1.3464583825786358, -0.5904867486054822, -0.8285556141670429],
+  "fit_info": {
+    "method": "rydstate.fit.fit_sqdt_models",
+    "rydstate version": "0.14.0",
+    "n range of the data": [11, 70],
+    "config": "fits/rubidium/fit_config.json"
+  }
 }

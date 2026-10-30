@@ -1,0 +1,10 @@
+level,lower_level,value,uncertainty,unit,source_label,source_location,note
+17g_7/2,17f_5/2,16528.7,0.2,MHz,17f5/2-17g7/2,Table I,"measured interval; upper level is the high-l state; thermal Rb beam, isotope not stated (analysis uses 85Rb Rydberg constant)"
+17h_9/2,17f_5/2,19929.5,0.5,MHz,17f5/2-17h9/2,Table I,"measured interval; upper level is the high-l state; thermal Rb beam, isotope not stated (analysis uses 85Rb Rydberg constant)"
+17i_5.5,17f_5/2,20992.5,1.0,MHz,17f5/2-17i11/2,Table I,"measured interval; upper level is the high-l state; thermal Rb beam, isotope not stated (analysis uses 85Rb Rydberg constant)"
+18g_7/2,18f_5/2,13945.2,0.2,MHz,18f5/2-18g7/2,Table I,"measured interval; upper level is the high-l state; thermal Rb beam, isotope not stated (analysis uses 85Rb Rydberg constant)"
+18h_9/2,18f_5/2,16815.6,0.6,MHz,18f5/2-18h9/2,Table I,"measured interval; upper level is the high-l state; thermal Rb beam, isotope not stated (analysis uses 85Rb Rydberg constant)"
+18i_5.5,18f_5/2,17713.2,1.2,MHz,18f5/2-18i11/2,Table I,"measured interval; upper level is the high-l state; thermal Rb beam, isotope not stated (analysis uses 85Rb Rydberg constant)"
+19g_7/2,19f_5/2,11872.3,0.3,MHz,19f5/2-19g7/2,Table I,"measured interval; upper level is the high-l state; thermal Rb beam, isotope not stated (analysis uses 85Rb Rydberg constant)"
+19h_9/2,19f_5/2,14317.0,0.8,MHz,19f5/2-19h9/2,Table I,"measured interval; upper level is the high-l state; thermal Rb beam, isotope not stated (analysis uses 85Rb Rydberg constant)"
+19i_5.5,19f_5/2,15082.9,1.8,MHz,19f5/2-19i11/2,Table I,"measured interval; upper level is the high-l state; thermal Rb beam, isotope not stated (analysis uses 85Rb Rydberg constant)"

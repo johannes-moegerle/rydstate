@@ -1,0 +1,35 @@
+level,lower_level,value,uncertainty,unit,source_label,source_location,note
+27p_1/2,27s_1/2,223664.2972096,0.022,MHz,27s1/2-27p1/2,Table I,85Rb; upper level 27p1/2 (hfs center of gravity); residual -0.010 MHz
+28p_1/2,28s_1/2,197990.6153975,0.025,MHz,28s1/2-28p1/2,Table I,85Rb; upper level 28p1/2 (hfs center of gravity); residual 0.015 MHz
+29p_1/2,29s_1/2,176100.6121473,0.020,MHz,29s1/2-29p1/2,Table I,85Rb; upper level 29p1/2 (hfs center of gravity); residual 0.023 MHz
+30p_1/2,30s_1/2,157322.1313591,0.022,MHz,30s1/2-30p1/2,Table I,85Rb; upper level 30p1/2 (hfs center of gravity); residual -0.009 MHz
+31p_1/2,31s_1/2,141121.4659536,0.021,MHz,31s1/2-31p1/2,Table I,85Rb; upper level 31p1/2 (hfs center of gravity); residual 0.005 MHz
+32p_1/2,32s_1/2,127070.9748674,0.025,MHz,32s1/2-32p1/2,Table I,85Rb; upper level 32p1/2 (hfs center of gravity); residual -0.006 MHz
+33p_1/2,33s_1/2,114825.4830492,0.026,MHz,33s1/2-33p1/2,Table I,85Rb; upper level 33p1/2 (hfs center of gravity); residual -0.005 MHz
+34p_1/2,34s_1/2,104104.2094573,0.027,MHz,34s1/2-34p1/2,Table I,85Rb; upper level 34p1/2 (hfs center of gravity); residual 0.009 MHz
+28p_3/2,28s_1/2,203322.7921893,0.040,MHz,28s1/2-28p3/2,Table I,85Rb; upper level 28p3/2 (hfs center of gravity); residual -0.033 MHz
+29p_3/2,29s_1/2,180848.6668523,0.038,MHz,29s1/2-29p3/2,Table I,85Rb; upper level 29p3/2 (hfs center of gravity); residual -0.005 MHz
+30p_3/2,30s_1/2,161568.4299896,0.029,MHz,30s1/2-30p3/2,Table I,85Rb; upper level 30p3/2 (hfs center of gravity); residual 0.050 MHz
+31p_3/2,31s_1/2,144934.1415197,0.047,MHz,31s1/2-31p3/2,Table I,85Rb; upper level 31p3/2 (hfs center of gravity); residual -0.014 MHz
+32p_3/2,32s_1/2,130507.1713776,0.034,MHz,32s1/2-32p3/2,Table I,85Rb; upper level 32p3/2 (hfs center of gravity); residual -0.025 MHz
+33p_3/2,33s_1/2,117933.2045107,0.032,MHz,33s1/2-33p3/2,Table I,85Rb; upper level 33p3/2 (hfs center of gravity); residual 0.003 MHz
+28p_3/2,28p_1/2,5332.1767917,0.064,MHz,28p fine structure,Table III,85Rb 28p3/2-28p1/2 interval derived from Table I; residual -0.002 MHz
+29p_3/2,29p_1/2,4748.0547050,0.058,MHz,29p fine structure,Table III,85Rb 29p3/2-29p1/2 interval derived from Table I; residual 0.005 MHz
+30p_3/2,30p_1/2,4246.2986305,0.051,MHz,30p fine structure,Table III,85Rb 30p3/2-30p1/2 interval derived from Table I; residual 0.083 MHz; omitted from fs fit in source
+31p_3/2,31p_1/2,3812.6765661,0.068,MHz,31p fine structure,Table III,85Rb 31p3/2-31p1/2 interval derived from Table I; residual -0.004 MHz
+32p_3/2,32p_1/2,3436.1965102,0.059,MHz,32p fine structure,Table III,85Rb 32p3/2-32p1/2 interval derived from Table I; residual -0.011 MHz
+33p_3/2,33p_1/2,3107.7214614,0.058,MHz,33p fine structure,Table III,85Rb 33p3/2-33p1/2 interval derived from Table I; residual 0.010 MHz
+35s_1/2,34s_1/2,213275.5256670,0.020,MHz,34s1/2-35s1/2,Table IV,85Rb two-photon mm-wave; value = corrected interval between hfs centers of gravity (source gives no separate uncertainty; uncertainty column = that of observed interval); observed (F=3 mF=3 sublevel) interval 213275.475(20) MHz; residual -0.002 MHz
+36s_1/2,35s_1/2,194106.6478209,0.016,MHz,35s1/2-36s1/2,Table IV,85Rb two-photon mm-wave; value = corrected interval between hfs centers of gravity (source gives no separate uncertainty; uncertainty column = that of observed interval); observed (F=3 mF=3 sublevel) interval 194106.602(16) MHz; residual -0.001 MHz
+37s_1/2,36s_1/2,177167.9853058,0.010,MHz,36s1/2-37s1/2,Table IV,85Rb two-photon mm-wave; value = corrected interval between hfs centers of gravity (source gives no separate uncertainty; uncertainty column = that of observed interval); observed (F=3 mF=3 sublevel) interval 177167.944(10) MHz; residual 0.007 MHz
+38s_1/2,37s_1/2,162144.3510751,0.010,MHz,37s1/2-38s1/2,Table IV,85Rb two-photon mm-wave; value = corrected interval between hfs centers of gravity (source gives no separate uncertainty; uncertainty column = that of observed interval); observed (F=3 mF=3 sublevel) interval 162144.314(10) MHz; residual -0.006 MHz
+31d_5/2,30d_5/2,265663.4834456,0.030,MHz,30d5/2-31d5/2,Table V,85Rb two-photon mm-wave; residual -0.003 MHz
+32d_5/2,31d_5/2,240092.8356489,0.010,MHz,31d5/2-32d5/2,Table V,85Rb two-photon mm-wave; residual -0.001 MHz
+33d_5/2,32d_5/2,217701.4023242,0.010,MHz,32d5/2-33d5/2,Table V,85Rb two-photon mm-wave; residual 0.002 MHz
+34d_5/2,33d_5/2,198010.0514004,0.010,MHz,33d5/2-34d5/2,Table V,85Rb two-photon mm-wave; residual 0.009 MHz
+35d_5/2,34d_5/2,180623.7298189,0.010,MHz,34d5/2-35d5/2,Table V,85Rb two-photon mm-wave; residual -0.002 MHz
+36d_5/2,35d_5/2,165214.8065310,0.010,MHz,35d5/2-36d5/2,Table V,85Rb two-photon mm-wave; residual -0.007 MHz
+33d_3/2,32d_3/2,217735.2533292,0.010,MHz,32d3/2-33d3/2,Table V,85Rb two-photon mm-wave; residual 0.002 MHz
+34d_3/2,33d_3/2,198039.8834049,0.010,MHz,33d3/2-34d3/2,Table V,85Rb two-photon mm-wave; residual -0.004 MHz
+35d_3/2,34d_3/2,180650.1458228,0.010,MHz,34d3/2-35d3/2,Table V,85Rb two-photon mm-wave; residual 0.001 MHz
+36d_3/2,35d_3/2,165238.2765345,0.010,MHz,35d3/2-36d3/2,Table V,85Rb two-photon mm-wave; residual 0.002 MHz

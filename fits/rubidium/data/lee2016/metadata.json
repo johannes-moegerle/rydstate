@@ -1,0 +1,21 @@
+{
+  "dataset": "lee2016",
+  "species": "Rb",
+  "reference": "Lee 2016, Phys. Rev. A 94, 022505, https://doi.org/10.1103/PhysRevA.94.022505",
+  "authors": "J. Lee, J. Nunkaew, T. F. Gallagher",
+  "title": "Microwave spectroscopy of the cold rubidium (n+1)d5/2 -> ng and nh transitions",
+  "year": 2016,
+  "doi": "10.1103/PhysRevA.94.022505",
+  "url": "https://doi.org/10.1103/PhysRevA.94.022505",
+  "method": "microwave spectroscopy (single microwave photon plus a static field to allow the d->g and d->h transitions) of cold 85Rb in a MOT, zero-field intervals from signal-amplitude method",
+  "uncertainty": "per-interval, 0.28-2.2 MHz",
+  "conversion": [
+    "No J in the source from l = 4 on (fine structure unresolved): j = l + 1/2 assumed (the fine structure of these levels is far below the uncertainties).",
+    "The data are 85Rb, rydstate's Rb has the atomic mass 86.909180529 u: intervals are multiplied by the ratio of the reduced masses mu(Rb) / mu(85Rb) = 1.000000148480 (the quantum defects are the same); energies from the ground state are not scaled, they need a free offset in the fit (their binding energies differ by the same relative amount, less than 1 MHz for n >= 20)."
+  ],
+  "caveats": [
+    "high-l fine structure unresolved",
+    "intervals relative to nd5/2",
+    "85Rb"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "dataset": "berl2020",
+  "species": "Rb",
+  "reference": "Berl 2020, Phys. Rev. A 102, 062818, https://doi.org/10.1103/PhysRevA.102.062818",
+  "authors": "S. J. Berl, C. A. Sackett, T. F. Gallagher, J. Nunkaew",
+  "title": "Core polarizability of rubidium using spectroscopy of the ng to nh, ni Rydberg transitions",
+  "year": 2020,
+  "doi": "10.1103/PhysRevA.102.062818",
+  "url": "https://doi.org/10.1103/PhysRevA.102.062818",
+  "method": "microwave and rf multiphoton spectroscopy in a thermal Rb beam, nf5/2 excited by pulsed dye lasers 5s1/2 -> 6p1/2, spontaneous decay to 4d3/2, then 4d3/2 -> nf5/2; extrapolation to zero power",
+  "uncertainty": "per-interval, 0.2-1.8 MHz (statistical plus 0.1 V/cm stray field and Zeeman shift in quadrature)",
+  "conversion": [
+    "Not exported, intervals from a reference that is no single level: 9 rows (17fcg-17gcg, 17fcg-17hcg, 17fcg-17icg, 18fcg-18gcg, 18fcg-18hcg, 18fcg-18icg, 19fcg-19gcg, 19fcg-19hcg, ...)."
+  ],
+  "caveats": [
+    "cg columns derived from measured columns (correlated)",
+    "isotope composition not stated",
+    "low n (17-19)"
+  ]
+}

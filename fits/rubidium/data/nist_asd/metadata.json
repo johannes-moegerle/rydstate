@@ -1,0 +1,23 @@
+{
+  "dataset": "nist_asd",
+  "species": "Rb",
+  "reference": "Kramida 2024, NIST Atomic Spectra Database (ver. 5.12), https://doi.org/10.18434/T4W30F",
+  "authors": "A. Kramida, Yu. Ralchenko, J. Reader, and NIST ASD Team",
+  "title": "NIST Atomic Spectra Database (ver. 5.12)",
+  "year": 2024,
+  "doi": "10.18434/T4W30F",
+  "url": "https://doi.org/10.18434/T4W30F",
+  "method": "NIST critically evaluated compilation (see asd_compilation and asd_references for the original measurements)",
+  "uncertainty": "per-level ASD uncertainties in column 'Uncertainty (cm-1)' (empty where ASD gives none)",
+  "conversion": [
+    "Not exported, no single valence electron level: 9 rows (Rb II (4p6 1S<0>) Limit ---, 4p5.5s.5p 4S 3/2, 4p5.5s.4d 4P* 5/2, 4p5.4d.(3D).5s 2D* 3/2, 4p5.5s.6s 4P* 5/2, 4p5.5s.6s 4P* 3/2, 4p5.5s.(1P).6s 2P* 1/2, 4p5.5p2 4D* 5/2, ...).",
+    "Energies from 'ground state 4p6.5s 2S 1/2', energy zero: ASD (Sansonetti 2006 compilation) does not state the hyperfine reference; the IE sources (Johansson 1961, Lorenzen and Niemax 1983) refer to the ground-state centre of gravity (Lorenzen 1983 Table II caption). Not isotope resolved."
+  ],
+  "caveats": [
+    "Energies are term energies in cm^-1 relative to the ASD ground state 4p6.5s 2S 1/2; the ionization limit is a separate 'Limit' row and in ionization_energy.",
+    "ASD levels are not isotope resolved: the compilation mixes data from different isotopes and natural samples; isotope shifts and hyperfine structure are not separated. RydState 'Rb' uses mass number 87; hyperfine structure is not resolved in ASD (centroid / fine-structure energies).",
+    "Energy precision is ASD's (compilation) precision; for many Rydberg series more precise modern measurements exist (e.g. mm-wave or laser spectroscopy) and should be preferred in fits.",
+    "Column j in levels.csv is the total J of the level as given by ASD; s is the total spin from the LS term multiplicity; for jj/jK-coupled terms only n and l are assigned. n, l are filled only when the configuration has exactly one electron outside the RydState core configuration '4p6' (same rule as rydstate.species.nist.parse_nist_energy_levels).",
+    "ASD Rb I levels (Sansonetti 2006) are given to 0.01 cm^-1 for most Rydberg levels, far less precise than the modern data RydState's quantum defects come from (Mack 2011, Li 2003)."
+  ]
+}

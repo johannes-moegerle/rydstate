@@ -1,0 +1,21 @@
+{
+  "dataset": "li2003",
+  "species": "Rb",
+  "reference": "Li 2003, Phys. Rev. A 67, 052502, https://doi.org/10.1103/PhysRevA.67.052502",
+  "authors": "W. Li, I. Mourachko, M. W. Noel, T. F. Gallagher",
+  "title": "Millimeter-wave spectroscopy of cold Rb Rydberg atoms in a magneto-optical trap: Quantum defects of the ns, np, and nd series",
+  "year": 2003,
+  "doi": "10.1103/PhysRevA.67.052502",
+  "url": "https://doi.org/10.1103/PhysRevA.67.052502",
+  "method": "single-photon ns-np and two-photon ns-(n+1)s, nd-(n+1)d millimeter-wave resonance spectroscopy; ns-np in 300 K background vapour with trap field off, two-photon transitions in a 85Rb MOT",
+  "uncertainty": "per-interval values given (10-47 kHz for intervals; Table IV corrected values without own uncertainty)",
+  "conversion": [
+    "Not exported, quantity 'hyperfine interval' (derived values): 12 rows (28s1/2 hfs, 29s1/2 hfs, 30s1/2 hfs, 31s1/2 hfs, 32s1/2 hfs, 33s1/2 hfs, 28s1/2 hfs, 29s1/2 hfs, ...).",
+    "The data are 85Rb, rydstate's Rb has the atomic mass 86.909180529 u: intervals are multiplied by the ratio of the reduced masses mu(Rb) / mu(85Rb) = 1.000000148480 (the quantum defects are the same); energies from the ground state are not scaled, they need a free offset in the fit (their binding energies differ by the same relative amount, less than 1 MHz for n >= 20)."
+  ],
+  "caveats": [
+    "intervals only; absolute energies require an anchor (e.g. mack2011 or NIST)",
+    "Table III and Table I are not independent",
+    "85Rb"
+  ]
+}

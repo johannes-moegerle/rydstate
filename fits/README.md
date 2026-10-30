@@ -42,3 +42,5 @@ data or the config needs a rerun of the fit.
 - Cs (`cesium/`): global fit of the s, p, d, f, g series (505 values from 7 datasets, chi2/dof = 2.3), every
   dataset of absolute energies with its own ionization threshold. The measured data were collected and converted
   in the rydstate_qdt project (T002).
+- Rb (`rubidium/`): global fit of the s, p, d, f, g series (395 values from 10 datasets, chi2/dof = 0.66), the
+  85Rb data converted to 87Rb, every dataset of absolute energies with its own ionization threshold.

@@ -1,0 +1,20 @@
+{
+  "dataset": "johnson2010",
+  "species": "Rb",
+  "reference": "Johnson 2010, New J. Phys. 12, 063028, https://doi.org/10.1088/1367-2630/12/6/063028",
+  "authors": "L. A. M. Johnson, H. O. Majeed, B. Sanguinetti, Th. Becker, B. T. H. Varcoe",
+  "title": "Absolute frequency measurements of 85Rb nF7/2 Rydberg states using purely optical detection",
+  "year": 2010,
+  "doi": "10.1088/1367-2630/12/6/063028",
+  "url": "https://doi.org/10.1088/1367-2630/12/6/063028",
+  "method": "three-step cw excitation 5S1/2 -> 5P3/2 -> 5D5/2 -> nF7/2 in a vapour cell with purely optical (first-step absorption) detection; third-step frequency from a calibrated wavemeter",
+  "uncertainty": "8.0 MHz total for all levels (Table 2: wavemeter 6.2 MHz random, systematic pressure/power/laser-lock)",
+  "conversion": [
+    "Energies from '85Rb 5S1/2 hyperfine centre of gravity', energy zero: 'measured from the centre of mass of the two 5S1/2 hyperfine ground states': E_n = third-step frequency + 770 571 549.6 MHz (5S1/2 c.o.g. -> 5D5/2, literature). Excitation path ends on the nF7/2 F=6 hyperfine level (upper-level hfs not corrected; ~MHz).",
+    "The data are 85Rb, rydstate's Rb has the atomic mass 86.909180529 u: intervals are multiplied by the ratio of the reduced masses mu(Rb) / mu(85Rb) = 1.000000148480 (the quantum defects are the same); energies from the ground state are not scaled, they need a free offset in the fit (their binding energies differ by the same relative amount, less than 1 MHz for n >= 20)."
+  ],
+  "caveats": [
+    "8 MHz uncertainty, much larger than microwave data",
+    "85Rb"
+  ]
+}

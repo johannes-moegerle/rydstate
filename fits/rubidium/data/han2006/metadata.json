@@ -1,0 +1,20 @@
+{
+  "dataset": "han2006",
+  "species": "Rb",
+  "reference": "Han 2006, Phys. Rev. A 74, 054502, https://doi.org/10.1103/PhysRevA.74.054502",
+  "authors": "J. Han, Y. Jamil, D. V. L. Norum, P. J. Tanner, T. F. Gallagher",
+  "title": "Rb nf quantum defects from millimeter-wave spectroscopy of cold 85Rb Rydberg atoms",
+  "year": 2006,
+  "doi": "10.1103/PhysRevA.74.054502",
+  "url": "https://doi.org/10.1103/PhysRevA.74.054502",
+  "method": "millimeter-wave resonance spectroscopy of cold 85Rb in a MOT (trap field off, residual B nulled), 5 us pulses, field-ionization detection",
+  "uncertainty": "per-interval; corrected values include the Stark shift of an assumed 20 mV/cm residual field in quadrature (30-90 kHz)",
+  "conversion": [
+    "The source gives the intervals as magnitudes; their signs E(level) - E(lower_level) are taken from rydstate's quantum defect models (the intervals are much larger than any model error).",
+    "The data are 85Rb, rydstate's Rb has the atomic mass 86.909180529 u: intervals are multiplied by the ratio of the reduced masses mu(Rb) / mu(85Rb) = 1.000000148480 (the quantum defects are the same); energies from the ground state are not scaled, they need a free offset in the fit (their binding energies differ by the same relative amount, less than 1 MHz for n >= 20)."
+  ],
+  "caveats": [
+    "intervals only, relative to nd5/2 levels",
+    "85Rb"
+  ]
+}

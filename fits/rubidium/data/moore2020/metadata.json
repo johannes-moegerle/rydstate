@@ -1,0 +1,20 @@
+{
+  "dataset": "moore2020",
+  "species": "Rb",
+  "reference": "Moore 2020, Phys. Rev. A 102, 062817, https://doi.org/10.1103/PhysRevA.102.062817",
+  "authors": "K. Moore, A. Duspayev, R. Cardman, G. Raithel",
+  "title": "Measurement of the Rb g-series quantum defect using two-photon microwave spectroscopy",
+  "year": 2020,
+  "doi": "10.1103/PhysRevA.102.062817",
+  "url": "https://doi.org/10.1103/PhysRevA.102.062817",
+  "method": "two-photon microwave spectroscopy of cold 85Rb in a MOT, ng prepared by three-photon excitation with electric-field mixing, 40 us pulses, 3D stray-field cancellation",
+  "uncertainty": "per-interval total uncertainties 4.6-14 kHz (Table I contributions)",
+  "conversion": [
+    "No J in the source from l = 4 on (fine structure unresolved): j = l + 1/2 assumed (the fine structure of these levels is far below the uncertainties).",
+    "The data are 85Rb, rydstate's Rb has the atomic mass 86.909180529 u: intervals are multiplied by the ratio of the reduced masses mu(Rb) / mu(85Rb) = 1.000000148480 (the quantum defects are the same); energies from the ground state are not scaled, they need a free offset in the fit (their binding energies differ by the same relative amount, less than 1 MHz for n >= 20)."
+  ],
+  "caveats": [
+    "Method A and B rows are correlated: use one of them in a fit",
+    "85Rb"
+  ]
+}

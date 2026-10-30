@@ -310,8 +310,8 @@ def test_load_models_missing_directory(tmp_path: Path) -> None:
 def test_nist_models_are_loaded() -> None:
     """The NIST levels are given as ModelSQDTNist models for low n, the quantum defects for high n.
 
-    Usually the models switch at nu = 15, but for Rb ns the NIST levels are only used below the
-    NIST levels missing from 13s to 38s, i.e. up to 12s.
+    For Rb ns the NIST levels are only used below the NIST levels missing from 13s to 38s, i.e. up to 12s,
+    and for np below the lowest measured level of the fit (13p, see fits/rubidium).
     """
     sqdt = get_sqdt("Rb")
     angular = AngularKetLS(l_r=0, j_tot=0.5, f_tot=0.5, species="Rb")
@@ -323,8 +323,8 @@ def test_nist_models_are_loaded() -> None:
     assert nist_model.n_range == (5, 12)
     assert qd_model.n_range == (13, math.inf)
     nist_model, qd_model = sqdt.get_models(AngularKetLS(l_r=1, j_tot=0.5, f_tot=0.5, species="Rb"))
-    assert nist_model.n_range == (5, 17)  # 17p has nu = 14.3
-    assert qd_model.n_range == (18, math.inf)
+    assert nist_model.n_range == (5, 12)
+    assert qd_model.n_range == (13, math.inf)
 
 
 def test_nist_model_of_single_channel() -> None:

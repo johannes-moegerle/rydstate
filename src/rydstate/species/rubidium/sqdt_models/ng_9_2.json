@@ -2,7 +2,13 @@
   "model_class": "ModelSQDT",
   "species": "Rb",
   "channel": "ng_9/2",
-  "quantum_defects": [0.004, 0, 0, 0, 0],
-  "reference": "Phys. Rev. A 74, 062712 (2006) - Rb85",
-  "n_range": [6, "inf"]
+  "reference": ["Lee 2016, Phys. Rev. A 94, 022505, https://doi.org/10.1103/PhysRevA.94.022505", "Moore 2020, Phys. Rev. A 102, 062817, https://doi.org/10.1103/PhysRevA.102.062817"],
+  "n_range": [6, "inf"],
+  "quantum_defects": [0.004003445962120604, -0.024677876515837773],
+  "fit_info": {
+    "method": "rydstate.fit.fit_sqdt_models",
+    "rydstate version": "0.14.0",
+    "n range of the data": [27, 43],
+    "config": "fits/rubidium/fit_config.json"
+  }
 }

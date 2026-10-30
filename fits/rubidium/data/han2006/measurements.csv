@@ -1,0 +1,17 @@
+level,lower_level,value,uncertainty,unit,source_label,source_location,note
+30f_5/2,32d_5/2,-158353.833512,0.05,MHz,32d5/2-30f5/2,Table I,85Rb; value = corrected interval (Stark shift of 20 mV/cm residual field removed); observed 158353.829(42) MHz; nf below (n+2)d5/2
+31f_5/2,33d_5/2,-143655.351330,0.04,MHz,33d5/2-31f5/2,Table I,85Rb; value = corrected interval (Stark shift of 20 mV/cm residual field removed); observed 143655.355(29) MHz; nf below (n+2)d5/2
+32f_5/2,34d_5/2,-130721.389409,0.05,MHz,34d5/2-32f5/2,Table I,85Rb; value = corrected interval (Stark shift of 20 mV/cm residual field removed); observed 130721.395(37) MHz; nf below (n+2)d5/2
+33f_5/2,35d_5/2,-119294.797713,0.05,MHz,35d5/2-33f5/2,Table I,85Rb; value = corrected interval (Stark shift of 20 mV/cm residual field removed); observed 119294.819(29) MHz; nf below (n+2)d5/2
+34f_5/2,36d_5/2,-109162.246208,0.06,MHz,36d5/2-34f5/2,Table I,85Rb; value = corrected interval (Stark shift of 20 mV/cm residual field removed); observed 109162.277(34) MHz; nf below (n+2)d5/2
+35f_5/2,37d_5/2,-100145.584870,0.06,MHz,37d5/2-35f5/2,Table I,85Rb; value = corrected interval (Stark shift of 20 mV/cm residual field removed); observed 100145.626(26) MHz; nf below (n+2)d5/2
+36f_5/2,38d_5/2,-92095.333674,0.08,MHz,38d5/2-36f5/2,Table I,85Rb; value = corrected interval (Stark shift of 20 mV/cm residual field removed); observed 92095.381(48) MHz; nf below (n+2)d5/2
+37f_5/2,39d_5/2,-84885.382604,0.09,MHz,39d5/2-37f5/2,Table I,85Rb; value = corrected interval (Stark shift of 20 mV/cm residual field removed); observed 84885.449(45) MHz; nf below (n+2)d5/2
+30f_7/2,32d_5/2,-158359.553513,0.03,MHz,32d5/2-30f7/2,Table I,85Rb; value = corrected interval (Stark shift of 20 mV/cm residual field removed); observed 158359.549(18) MHz; nf below (n+2)d5/2
+31f_7/2,33d_5/2,-143660.601331,0.03,MHz,33d5/2-31f7/2,Table I,85Rb; value = corrected interval (Stark shift of 20 mV/cm residual field removed); observed 143660.599(14) MHz; nf below (n+2)d5/2
+32f_7/2,34d_5/2,-130726.169410,0.07,MHz,34d5/2-32f7/2,Table I,85Rb; value = corrected interval (Stark shift of 20 mV/cm residual field removed); observed 130726.182(68) MHz; nf below (n+2)d5/2
+33f_7/2,35d_5/2,-119299.147713,0.04,MHz,35d5/2-33f7/2,Table I,85Rb; value = corrected interval (Stark shift of 20 mV/cm residual field removed); observed 119299.161(14) MHz; nf below (n+2)d5/2
+34f_7/2,36d_5/2,-109166.246209,0.05,MHz,36d5/2-34f7/2,Table I,85Rb; value = corrected interval (Stark shift of 20 mV/cm residual field removed); observed 109166.271(11) MHz; nf below (n+2)d5/2
+35f_7/2,37d_5/2,-100149.244870,0.06,MHz,37d5/2-35f7/2,Table I,85Rb; value = corrected interval (Stark shift of 20 mV/cm residual field removed); observed 100149.284(28) MHz; nf below (n+2)d5/2
+36f_7/2,38d_5/2,-92098.673675,0.07,MHz,38d5/2-36f7/2,Table I,85Rb; value = corrected interval (Stark shift of 20 mV/cm residual field removed); observed 92098.727(28) MHz; nf below (n+2)d5/2
+37f_7/2,39d_5/2,-84888.472604,0.09,MHz,39d5/2-37f7/2,Table I,85Rb; value = corrected interval (Stark shift of 20 mV/cm residual field removed); observed 84888.544(42) MHz; nf below (n+2)d5/2

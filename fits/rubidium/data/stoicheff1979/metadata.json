@@ -1,0 +1,29 @@
+{
+  "dataset": "stoicheff1979",
+  "species": "Rb",
+  "reference": "Stoicheff 1979, Can. J. Phys. 57, 2143, https://doi.org/10.1139/p79-293",
+  "authors": "B. P. Stoicheff, E. Weinberger",
+  "title": "Doppler-free two-photon absorption spectrum of rubidium",
+  "year": 1979,
+  "doi": "10.1139/p79-293",
+  "url": "https://doi.org/10.1139/p79-293",
+  "method": "Doppler-free two-photon absorption with counter-propagating cw dye-laser beams (Spectra-Physics 580 and Coherent 599-21), thermionic (space-charge-limited diode) detection in a Rb cell at 5-65 mTorr; wavelengths from a travelling Michelson wavemeter referenced to a calibrated He-Ne laser (6329.91406 A); levels 56S-98S measured relative to (n-2)D lines in the same scan, levels 101D-124D and 99S-116S relative to 100D; values corrected for air dispersion and for Rb pressure (red) shifts (< 30 MHz for n < 30, ~35 MHz for n = 30-85, ~95 MHz for n = 86-90, ~135 MHz for n = 91-98, ~30 MHz for n > 98).",
+  "uncertainty": "Tables 1, 2: wavelengths 'better than +-6e-4 A', term values 'accurate to better than +-0.003 cm^-1 (+-100 MHz)' (written in the uncertainty column of every row); fit residuals scatter +-80 MHz (Fig. 4). Tables 3-5: one-sigma values in parentheses (MHz).",
+  "conversion": [
+    "Not exported, fine structure not resolved (no J): 118 rows (7 2D (J=3/2,5/2 weighted mean), 8 2D (J=3/2,5/2 weighted mean), 9 2D (J=3/2,5/2 weighted mean), 10 2D (J=3/2,5/2 weighted mean), 11 2D (J=3/2,5/2 weighted mean), 12 2D (J=3/2,5/2 weighted mean), 13 2D (J=3/2,5/2 weighted mean), 14 2D (J=3/2,5/2 weighted mean), ...).",
+    "Not exported, hyperfine components: 10 rows (9 2S1/2 F=3 - F=2 (85Rb), 9 2S1/2 F=2 - F=1 (87Rb), 10 2S1/2 F=3 - F=2 (85Rb), 10 2S1/2 F=2 - F=1 (87Rb), 11 2S1/2 F=3 - F=2 (85Rb), 11 2S1/2 F=2 - F=1 (87Rb), 12 2S1/2 F=3 - F=2 (85Rb), 12 2S1/2 F=2 - F=1 (87Rb), ...).",
+    "Not exported, intervals from a reference that is no single level: 13 rows (7 2D line spacing c - c' (a - a'), 85Rb - 87Rb, 8 2D line spacing c - c' (a - a'), 85Rb - 87Rb, 9 2D line spacing c - c' (a - a'), 85Rb - 87Rb, 10 2D line spacing c - c' (a - a'), 85Rb - 87Rb, 11 2D line spacing c - c' (a - a'), 85Rb - 87Rb, 20 2D line spacing c - c' (a - a'), 85Rb - 87Rb, 30 2D line spacing c - c' (a - a'), 85Rb - 87Rb, 40 2D line spacing c - c' (a - a'), 85Rb - 87Rb, ...).",
+    "Energies from '85Rb 5s 2S1/2 F=2 (lower ground-state hyperfine level)', energy zero: nS n >= 12 refer to the F=3 two-photon line (Rydberg hfs < 25 MHz, uncorrected); nD values are 2J+1 weighted fine-structure means. For 87Rb the paper gives T + 0.0890 cm^-1 (2668 MHz) relative to 87Rb 5S1/2 F=1.",
+    "Shifted by -1770.8 MHz to the ground state hyperfine centre of gravity (Sect. 5A: values relative to the F=2 sublevel; the ground-state centre of gravity differs by 1770.8 MHz or 0.059 cm^-1 (= 7/12 x 3035.73 MHz); F=2 is the lower hfs level of 85Rb 5S1/2, so subtract (-0.05907 cm^-1)).",
+    "The data are 85Rb, rydstate's Rb has the atomic mass 86.909180529 u: intervals are multiplied by the ratio of the reduced masses mu(Rb) / mu(85Rb) = 1.000000148480 (the quantum defects are the same); energies from the ground state are not scaled, they need a free offset in the fit (their binding energies differ by the same relative amount, less than 1 MHz for n >= 20)."
+  ],
+  "caveats": [
+    "energy zero is the 85Rb 5S1/2 F=2 hyperfine level, not the centre of gravity: subtract 1770.8 MHz (0.05907 cm^-1) for the c.o.g. reference",
+    "nD values are fine-structure weighted means (2J+1 weights), not single J levels; nS n >= 12 refer to the F=3 line (hfs < 25 MHz, not corrected), n = 9-11 hyperfine-averaged",
+    "uncertainty column is the global stated accuracy +-0.003 cm^-1 (+-100 MHz), not a per-level value; levels near n = 86-98 carried the largest pressure-shift corrections (95-135 MHz)",
+    "levels 56S-98S, 99S-116S and 101D-124D were measured relative to reference lines ((n-2)D and 100D); Fig. 4 shows systematic trends for n > 100 'arising from their measurements relative to the level 100D'",
+    "Table 4 column header says 'Spacing A - B' but the caption says 'B - A' (sign convention only; values positive)",
+    "Table 4 includes 87Rb hyperfine intervals and Table 5 85Rb-87Rb line spacings: check the comment/label for the isotope",
+    "printed n_eff are consistent with T_inf = 33690.8567 cm^-1 rather than the quoted 33690.8565(15) (difference within the quoted error)"
+  ]
+}

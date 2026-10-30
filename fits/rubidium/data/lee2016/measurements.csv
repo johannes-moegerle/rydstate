@@ -1,0 +1,8 @@
+level,lower_level,value,uncertainty,unit,source_label,source_location,note
+27g_9/2,28d_5/2,116464.557293,0.35,MHz,28d5/2-27g,Table I,"85Rb (MOT); zero-field interval from signal-amplitude method; ng lies above 28d5/2; ng j unresolved; quantum defect 0.0039737(11); j not resolved in the source, j = l + 1/2 assumed"
+28g_9/2,29d_5/2,104372.715497,0.28,MHz,29d5/2-28g,Table I,"85Rb (MOT); zero-field interval from signal-amplitude method; ng lies above 29d5/2; ng j unresolved; quantum defect 0.0039701(10); j not resolved in the source, j = l + 1/2 assumed"
+29g_9/2,30d_5/2,93895.763942,0.34,MHz,30d5/2-29g,Table I,"85Rb (MOT); zero-field interval from signal-amplitude method; ng lies above 30d5/2; ng j unresolved; quantum defect 0.0039746(13); j not resolved in the source, j = l + 1/2 assumed"
+30g_9/2,31d_5/2,84775.272587,0.65,MHz,31d5/2-30g,Table I,"85Rb (MOT); zero-field interval from signal-amplitude method; ng lies above 31d5/2; ng j unresolved; quantum defect 0.0039778(27); j not resolved in the source, j = l + 1/2 assumed"
+28h_5.5,29d_5/2,105140.91561,0.8,MHz,29d5/2-28h,Table II,"85Rb (MOT); zero-field interval from signal-amplitude method; nh lies above 29d5/2; nh j unresolved; quantum defect 0.0014078(27); j not resolved in the source, j = l + 1/2 assumed"
+29h_5.5,30d_5/2,94591.01404,2.2,MHz,30d5/2-29h,Table II,"85Rb (MOT); zero-field interval from signal-amplitude method; nh lies above 30d5/2; nh j unresolved; quantum defect 0.0013982(82); j not resolved in the source, j = l + 1/2 assumed"
+30h_5.5,31d_5/2,85400.31268,1.5,MHz,31d5/2-30h,Table II,"85Rb (MOT); zero-field interval from signal-amplitude method; nh lies above 31d5/2; nh j unresolved; quantum defect 0.0014137(62); j not resolved in the source, j = l + 1/2 assumed"
