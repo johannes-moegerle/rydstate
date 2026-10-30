@@ -8,6 +8,8 @@ from typing import TYPE_CHECKING, Any
 import numpy as np
 from scipy.optimize import least_squares
 
+from rydstate.angular.angular_ket import AngularKetBase, AngularKetLS
+from rydstate.angular.short_label import format_short_label, parse_short_label
 from rydstate.qdt.sqdt.model_sqdt_fit import ModelSQDTFit
 
 if TYPE_CHECKING:
@@ -29,6 +31,29 @@ class SQDTLevel:
 
     def __str__(self) -> str:
         return self.channel.replace("n", str(self.n), 1)
+
+    @classmethod
+    def from_label(cls, label: str, species: str) -> SQDTLevel:
+        """Create a level from its short label including n, e.g. "45p_3/2" or "5s 40d 1D2".
+
+        The label is the short label of the channel (see
+        :meth:`~rydstate.angular.angular_ket.AngularKetBase.get_short_label`) with the principal quantum number n
+        in place of the placeholder "n". The channel is stored with its canonical short label.
+
+        Args:
+            label: The short label of the level.
+            species: The species, which determines the format of the label (single or two valence electrons).
+
+        """
+        for template in (AngularKetLS.short_label_template_single_valence, AngularKetLS.short_label_template):
+            try:
+                values = parse_short_label(template, label)
+            except ValueError:
+                continue
+            if "n" in values:
+                channel = AngularKetBase.from_short_label(format_short_label(template, {**values, "n": None}), species)
+                return cls(channel.get_short_label(), int(values["n"]))
+        raise ValueError(f"The label {label!r} is no short label of a level with principal quantum number n.")
 
 
 @dataclass(frozen=True)
