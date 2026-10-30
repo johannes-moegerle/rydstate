@@ -40,6 +40,7 @@ class ModelSQDTFit(ModelSQDT):
             model.quantum_defects,
             reference=model.reference,
             n_range=model.n_range,
+            fit_info=None,
         )
 
     @property

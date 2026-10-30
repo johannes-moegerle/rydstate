@@ -8,7 +8,16 @@ from pathlib import Path
 import pytest
 import rydstate.species.rubidium
 from rydstate.angular import AngularKetJJ, AngularKetLS
-from rydstate.qdt import Model, ModelSetSQDT, ModelSQDT, ModelSQDTBase, ModelSQDTNist, get_sqdt, register_model_set_sqdt
+from rydstate.qdt import (
+    Model,
+    ModelSetSQDT,
+    ModelSQDT,
+    ModelSQDTBase,
+    ModelSQDTFit,
+    ModelSQDTNist,
+    get_sqdt,
+    register_model_set_sqdt,
+)
 from rydstate.qdt.sqdt.model_set_sqdt import _SQDT_MODEL_SETS
 from rydstate.qdt.sqdt.model_sqdt_nist import _load_nist_energies_by_channel
 from rydstate.rydberg_state import RydbergStateSQDTAlkali
@@ -182,6 +191,20 @@ def test_to_dict() -> None:
         "quantum_defects": [3.1311807],
         "reference": None,
     }
+
+
+def test_fit_info() -> None:
+    """The optional fit info is stored in the description, but not copied into a fittable model."""
+    fit_info = {"method": "rydstate.fit.fit_sqdt_models", "datasets": {"Rb/test": 10}}
+    model = ModelSQDT("Rb", "ns_1/2", [3.1311807, 0.1787], fit_info=fit_info)
+    data = model.to_dict()
+    assert data["fit_info"] == fit_info
+    assert "fit_info" not in ModelSQDT("Rb", "ns_1/2", [3.1311807, 0.1787]).to_dict()
+    loaded = ModelSQDT.from_dict(json.loads(json.dumps(data)))
+    assert loaded.fit_info == fit_info
+
+    assert ModelSQDTFit.from_model(model).fit_info is None
+    assert model.fit_info == fit_info
 
 
 def test_from_dict_optional_keys() -> None:

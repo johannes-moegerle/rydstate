@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import math
 from abc import abstractmethod
-from typing import TYPE_CHECKING, Any, ClassVar, Literal
+from typing import TYPE_CHECKING, Any, ClassVar, Literal, cast
 
 from typing_extensions import NotRequired, TypedDict
 
@@ -44,6 +44,7 @@ class ModelSQDTDict(ModelSQDTBaseDict):
     """JSON serializable description of a :class:`ModelSQDT`, see :meth:`ModelSQDT.to_dict`."""
 
     quantum_defects: list[float]
+    fit_info: NotRequired[dict[str, Any]]
 
 
 class ModelSQDTBase(Model):
@@ -239,6 +240,8 @@ class ModelSQDT(ModelSQDTBase):
         quantum_defects: ExpansionCoefficients,
         reference: str | tuple[str, ...] | None = None,
         n_range: tuple[int, float | Literal["inf"]] = (1, math.inf),
+        *,
+        fit_info: Mapping[str, Any] | None = None,
     ) -> None:
         """Initialize the SQDT model.
 
@@ -250,6 +253,8 @@ class ModelSQDT(ModelSQDTBase):
             reference: Reference for the model, e.g., a publication doi where the quantum defects are given.
             n_range: Range (n_min, n_max) of principal quantum numbers n (both inclusive) for which the model is valid,
                 see :class:`ModelSQDTBase`. Default is (1, inf), i.e. the model is valid for all n.
+            fit_info: JSON serializable information on how the quantum defects were fitted,
+                see :func:`~rydstate.fit.fit_sqdt_models`. Default is None.
 
         """
         super().__init__(species, channel, reference, n_range)
@@ -257,6 +262,8 @@ class ModelSQDT(ModelSQDTBase):
         self.quantum_defects: tuple[float, ...] = tuple(quantum_defects)
         """The expansion coefficients (d0, d2, d4, ...) of the quantum defect, see :meth:`calc_quantum_defect`.
         They are stored as a tuple, since the models are shared, see :class:`~rydstate.qdt.ModelSQDTFit`."""
+        self.fit_info: dict[str, Any] | None = None if fit_info is None else dict(fit_info)
+        """Information on how the quantum defects were fitted (e.g. the datasets), or None."""
 
     def to_dict(self) -> ModelSQDTDict:
         """Return a JSON serializable dictionary describing the model.
@@ -271,9 +278,13 @@ class ModelSQDT(ModelSQDTBase):
                 model = ModelSQDT.from_dict(json.load(file))
 
         See :meth:`ModelSQDTBase.to_dict` for the keys common to all SQDT models.
+        The optional key "fit_info" is only included if it is not None.
 
         """
-        return {**super().to_dict(), "quantum_defects": list(self.quantum_defects)}
+        data = cast("ModelSQDTDict", {**super().to_dict(), "quantum_defects": list(self.quantum_defects)})
+        if self.fit_info is not None:
+            data["fit_info"] = self.fit_info
+        return data
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any], directory: str | PathLike[str] | None = None) -> Self:  # noqa: ARG003
@@ -281,13 +292,17 @@ class ModelSQDT(ModelSQDTBase):
 
         Args:
             data: The dictionary describing the model, see :class:`ModelSQDTDict`.
-                Its "model_class" must be "ModelSQDT".
-                The keys "reference", "n_range" and "comment" are optional, where "comment" is ignored.
+                Its "model_class" must be "ModelSQDT". The keys "reference", "n_range", "fit_info" and "comment"
+                are optional, where "comment" is ignored.
             directory: Not used, since the dictionary contains no file paths, see :meth:`~rydstate.qdt.Model.from_dict`.
 
         """
         kwargs = cls._parse_dict(data, ModelSQDTDict)
-        return cls(quantum_defects=list(data["quantum_defects"]), **kwargs)
+        return cls(
+            quantum_defects=list(data["quantum_defects"]),
+            fit_info=data.get("fit_info"),
+            **kwargs,
+        )
 
     def calc_quantum_defect(self, n: int) -> float:
         r"""Calculate the quantum defect of the state with principal quantum number n via the modified Ritz formula.
