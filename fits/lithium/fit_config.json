@@ -1,0 +1,35 @@
+{
+  "species": "Li",
+  "comment": [
+    "SQDT fit of the 7Li s and p series; every dataset of energies from the ground state has its own ionization threshold (free offset), so the quantum defects only describe binding energies and intervals and are used with the threshold of rydstate.",
+    "The nd and nf models are not fitted: the measured d and f levels (Sautenkov 2016, Zelener 2016, Saakyan 2016, MOT spectroscopy at n = 38-48 with 30-90 MHz) give delta_0 only to +-4.5e-4 (delta_0 = 0.002 and 0.0003), far less precise than the present models.",
+    "n_min: the data start at n = 18 (p) and 22 (s); the models are used from n = 7, just above the levels of Radziemski 1995 (FTS, n <= 6, not fitted), which they describe within 0.5 GHz (5s, 6s) and 4 GHz (6p), while the NIST levels at n = 8-17 (Kelly 1987 compilation, not critically evaluated) lie 8-100 GHz off the fit. orders: 2 coefficients; a third one lowers chi2 (mostly through the Goy 1986 two-photon p lines), but gives delta_4 = 5 for np, and the extrapolation misses 6p of Radziemski 1995 by 100 GHz."
+  ],
+  "data_directory": "data",
+  "models_directory": "../../src/rydstate/species/lithium/sqdt_models",
+  "report_file": "fit_report.json",
+  "series": {
+    "ns_1/2": {"orders": 2, "n_min": 7},
+    "np_1/2": {"orders": 2, "n_min": 7},
+    "np_3/2": {"orders": 2, "n_min": 7}
+  },
+  "datasets": {
+    "goy1986": {
+      "exclude": {
+        "7Li 31p3/2 down 31s": "probably misprinted (79735.0 for 79535.0, metadata caveats): 198 MHz off the series",
+        "7Li 28p3/2 up 30s": "one-photon p-s line above n = 25, Stark broadened (residuals up to 10 MHz); also not used by the fit of the source",
+        "7Li 31p3/2 up 32s": "one-photon p-s line above n = 25, Stark broadened (residuals up to 10 MHz); also not used by the fit of the source",
+        "7Li 31p3/2 up 33s": "one-photon p-s line above n = 25, Stark broadened (residuals up to 10 MHz); also not used by the fit of the source",
+        "7Li 32p3/2 up 33s": "one-photon p-s line above n = 25, Stark broadened (residuals up to 10 MHz); also not used by the fit of the source",
+        "7Li 33p3/2 up 34s": "one-photon p-s line above n = 25, Stark broadened (residuals up to 10 MHz); also not used by the fit of the source"
+      },
+      "comment": "only the 7Li rows (the 6Li quantum defects differ by 5e-6 beyond the reduced-mass scaling)"
+    },
+    "zelener2015": {
+      "free_offset": true
+    },
+    "zelener2016": {
+      "free_offset": true
+    }
+  }
+}

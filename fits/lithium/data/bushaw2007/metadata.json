@@ -1,0 +1,20 @@
+{
+  "dataset": "bushaw2007",
+  "species": "Li",
+  "reference": "Bushaw 2007, Phys. Rev. A 75, 052503, https://doi.org/10.1103/PhysRevA.75.052503",
+  "authors": "B. A. Bushaw, W. Nörtershäuser, G. W. F. Drake, H.-J. Kluge",
+  "title": "Ionization energy of 6,7Li determined by triple-resonance laser spectroscopy",
+  "year": 2007,
+  "doi": "10.1103/PhysRevA.75.052503",
+  "url": "https://doi.org/10.1103/PhysRevA.75.052503",
+  "method": "cw triple-resonance excitation 2s-2p1/2-3s-np in an atomic beam, drifted rf field ionization with mass filter; series-limit analysis of np (n=28-175), ns and hydrogenic Stark manifolds",
+  "uncertainty": "EI(7Li) = 43487.15940(18) cm^-1 (total)",
+  "conversion": [
+    "Not exported, no single valence electron level: 1 rows (2s 2S1/2 - ionization limit (EI)).",
+    "Energies from '7Li 2s 2S1/2', energy zero: EI(7Li) is 'given with respect to the hfs c.g. in the 2 2S ground level' (text after Eq. (5)); the reference level 76 2P is also given above the c.g. of the ground hfs (43468.13843(17) cm^-1). Table IV transition energies (2S-2P1/2, 2S-3S) are literature values for 7Li; the paper does not state their hfs reference explicitly (Table IV header: 'bound transition energies and EI of 7Li')."
+  ],
+  "caveats": [
+    "Rydberg levels figure-only (not tabulated) -> not usable as level list",
+    "2s-2p1/2 and 2s-3s rows are literature values quoted by this paper, not new measurements"
+  ]
+}

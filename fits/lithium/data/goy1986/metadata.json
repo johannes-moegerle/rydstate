@@ -1,0 +1,24 @@
+{
+  "dataset": "goy1986",
+  "species": "Li",
+  "reference": "Goy 1986, Phys. Rev. A 34, 2889, https://doi.org/10.1103/PhysRevA.34.2889",
+  "authors": "P. Goy, J. Liang, M. Gross, S. Haroche",
+  "title": "Quantum defects and specific-isotopic-shift measurements in ns and np highly excited states of lithium: Exchange effects between Rydberg and core electrons",
+  "year": 1986,
+  "doi": "10.1103/PhysRevA.34.2889",
+  "url": "https://doi.org/10.1103/PhysRevA.34.2889",
+  "method": "millimetre-wave double-resonance spectroscopy in an atomic beam (pulsed dye-laser excitation 2s-2p-3d-nl, Fabry-Perot microwave cavity, field-ionization detection)",
+  "uncertainty": "per value in parentheses; two-photon lines ~10-60 kHz, one-photon lines 0.3-4 MHz (Stark broadened); three Table III 6Li entries have no uncertainty",
+  "conversion": [
+    "Only the rows of 7Li: 24 rows of other isotopes left out.",
+    "Not exported, no uncertainty: 1 rows (7Li 21p3/2->22p3/2 (two-photon))."
+  ],
+  "caveats": [
+    "values are microwave frequencies F; for two-photon lines (Tables I, III) the level interval is 2F",
+    "only intervals between Rydberg levels; no absolute energies (absolute scale needs an ionization energy)",
+    "one-photon p-s lines are Stark broadened/asymmetric (residuals up to 10 MHz); the source fit uses only 18<=n<=25 for p",
+    "Table IV rows do not state the isotope",
+    "Table III 6Li 21->22, 28->29, 30->31 have no uncertainty in the source",
+    "two values appear misprinted in the source (6Li 33s->34s 90476.964, probably 90746.964; 7Li 31p3/2-31s 79735.0, probably 79535.0); kept as printed and flagged"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "dataset": "zelener2016",
+  "species": "Li",
+  "reference": "Zelener 2016, J. Exp. Theor. Phys. 122, 645, https://doi.org/10.1134/S1063776116040099",
+  "authors": "B. B. Zelener, S. A. Saakyan, V. A. Sautenkov, E. A. Manykin, B. V. Zelener, V. E. Fortov",
+  "title": "Forbidden 2P-nP and 2P-nF transitions in the energy spectrum of ultracold Rydberg lithium-7 atoms",
+  "year": 2016,
+  "doi": "10.1134/S1063776116040099",
+  "url": "https://doi.org/10.1134/S1063776116040099",
+  "method": "as zelener2015 (MOT fluorescence-loss spectroscopy with cw UV laser); nP and nF observed as electric-field-induced forbidden lines from 2p 2P3/2",
+  "uncertainty": "no per-level uncertainty (wavemeter ~2 MHz; linewidths >= 100 MHz)",
+  "conversion": [
+    "Energies from '7Li 2s 2S1/2 hyperfine centre of gravity', energy zero: Eq. (1): En = Euv + (nu_c - Delta + Delta_c.g)/c, nu_c = 446809874.988(27) MHz (2S1/2-2P3/2 [24]), Delta = 10 MHz, Delta_c.g = 301.31 MHz ('the ionization potential is measured from the center of gravity of the level of the ground state, which is Delta_c.g = 301.31 MHz below the 2S1/2 (F=2) level'), already applied.",
+    "Rows without uncertainty: the scatter of +-3e-3 cm^-1 around the fit of the source (no per-level values).",
+    "No J in the source from l = 1 on (fine structure unresolved): j = l + 1/2 assumed (the fine structure of these levels is far below the uncertainties)."
+  ],
+  "caveats": [
+    "forbidden lines are induced by residual electric field; Stark shifts not corrected",
+    "the reference constant differs from zelener2015 by +1.7e-4 cm^-1 (5 MHz) and from sautenkov2016 by -1.6e-4 cm^-1; recompute from the tabulated wavelengths for a common reference",
+    "EI from these data 3.7e-3 cm^-1 below Bushaw 2007",
+    "Table 1 uncertainty of delta(nP) differs between versions: 0.04714(14) (English JETP) vs 0.04714(17) (Russian ZhETF); the levels themselves are identical"
+  ]
+}

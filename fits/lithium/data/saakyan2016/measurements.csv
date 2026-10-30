@@ -1,0 +1,6 @@
+level,lower_level,value,uncertainty,unit,source_label,source_location,note
+38f_7/2,38d_5/2,175.2,6,MHz,38F - 38D,Table 1,"isotope=7Li; interval nF - nD from simultaneously recorded 2P3/2-nD and forbidden 2P3/2-nF lines; source states accuracy better than 0.5 MHz; j not resolved in the source, j = l + 1/2 assumed"
+39f_7/2,39d_5/2,152.0,6,MHz,39F - 39D,Table 1,"isotope=7Li; interval nF - nD from simultaneously recorded 2P3/2-nD and forbidden 2P3/2-nF lines; source states accuracy better than 0.5 MHz; j not resolved in the source, j = l + 1/2 assumed"
+41f_7/2,41d_5/2,142.5,6,MHz,41F - 41D,Table 1,"isotope=7Li; interval nF - nD from simultaneously recorded 2P3/2-nD and forbidden 2P3/2-nF lines; source states accuracy better than 0.5 MHz; j not resolved in the source, j = l + 1/2 assumed"
+44f_7/2,44d_5/2,110.3,6,MHz,44F - 44D,Table 1,"isotope=7Li; interval nF - nD from simultaneously recorded 2P3/2-nD and forbidden 2P3/2-nF lines; source states accuracy better than 0.5 MHz; j not resolved in the source, j = l + 1/2 assumed"
+48f_7/2,48d_5/2,89.5,6,MHz,48F - 48D,Table 1,"isotope=7Li; interval nF - nD from simultaneously recorded 2P3/2-nD and forbidden 2P3/2-nF lines; source states accuracy better than 0.5 MHz; j not resolved in the source, j = l + 1/2 assumed"

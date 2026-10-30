@@ -1,0 +1,24 @@
+{
+  "dataset": "lorenzen1983",
+  "species": "Li",
+  "reference": "Lorenzen 1983, Phys. Scr. 27, 300, https://doi.org/10.1088/0031-8949/27/4/012",
+  "authors": "C.-J. Lorenzen, K. Niemax",
+  "title": "Quantum Defects of the n2P1/2,3/2 Levels in 39K I and 85Rb I",
+  "year": 1983,
+  "doi": "10.1088/0031-8949/27/4/012",
+  "url": "https://doi.org/10.1088/0031-8949/27/4/012",
+  "method": "Table I: Doppler-limited one-photon ns-nP transitions excited by frequency-doubled cw dye laser (ADA crystal), detected in a thermionic heat-pipe diode with shielding grid, wavelengths measured with a vacuum wavemeter calibrated on 85Rb 5s-nS two-photon lines of Lee et al. (1978); self-pressure-shift corrections < 0.0007 cm^-1 applied. Rb: lines measured on the 5s F=2 hyperfine component of 85Rb and reduced to centres of gravity; for n=25-46 the partial overlap of the fine-structure components was taken into account. K: Doppler-blended ground-state hfs deconvolved to the centre of gravity. Table III: Doppler-free two-photon transitions from 2s in a thermionic heat-pipe diode.",
+  "uncertainty": "Table I own values: +-0.003 cm^-1 (text; printed as (30) only on the first measured entry of each column); Table I secondary values: (3) i.e. 0.03 cm^-1 (Risberg, K n=4-8) and (10) i.e. 0.010 cm^-1 (Johansson, Rb n=5,6); Table III: (7) i.e. 0.0007 cm^-1",
+  "conversion": [
+    "Only the rows of Li of the dataset (stored with Rb).",
+    "Energies from '7Li 2s 2S1/2 (centres of gravity of ground and excited states)', energy zero: Table III caption: 'referring to the centres of gravity of the ground and excited states'."
+  ],
+  "caveats": [
+    "Table I includes 14 values that are not from this work (K n=4-8 from Risberg 1956, Rb n=5,6 from Johansson 1961); they are flagged 'SECONDARY' in the comment column and carry their larger uncertainties.",
+    "Rb data are 85Rb; RydState's single 'Rb' species uses the 87Rb mass. Isotope shifts of Rb Rydberg levels relative to the ground state are small, but at the 0.003 cm^-1 level the mass (reduced-Rydberg) effect between 85Rb and 87Rb should be considered.",
+    "Doppler-limited measurement: the +-0.003 cm^-1 (about 90 MHz) uncertainty is far larger than modern cold-atom data (Mack 2011, Peper 2019, Sanguinetti 2009), so these values have low weight for high-precision fits; for K they cover low n (9-21) where Peper 2019 quotes values from this paper.",
+    "Thermionic-diode measurement: pressure shifts corrected (<0.0007 cm^-1); residual electric fields limited the Rb data to n<=68.",
+    "Table III lists only the decimals of older NBS and Johansson values for comparison; these are kept in the comment column, not as rows.",
+    "The PDF carries an IOP cover page stamped with the download IP address and date."
+  ]
+}

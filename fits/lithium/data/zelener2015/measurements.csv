@@ -1,0 +1,21 @@
+level,lower_level,value,uncertainty,unit,source_label,source_location,note
+38s_1/2,,43409.54343,0.003,1/cm,38S,"Table 2 (JETP 121, 952; ZhETF 148, 1090)",isotope=7Li; measured UV wavelength (vacuum) 350.8087458 nm for 2p 2P3/2 -> nS; fit value E_fit 43409.54504 cm^-1
+41s_1/2,,43420.59421,0.003,1/cm,41S,"Table 2 (JETP 121, 952; ZhETF 148, 1090)",isotope=7Li; measured UV wavelength (vacuum) 350.6728000 nm for 2p 2P3/2 -> nS; fit value E_fit 43420.59093 cm^-1
+50s_1/2,,43442.55485,0.003,1/cm,50S,"Table 2 (JETP 121, 952; ZhETF 148, 1090)",isotope=7Li; measured UV wavelength (vacuum) 350.4029548 nm for 2p 2P3/2 -> nS; fit value E_fit 43442.55619 cm^-1
+60s_1/2,,43456.26584,0.003,1/cm,60S,"Table 2 (JETP 121, 952; ZhETF 148, 1090)",isotope=7Li; measured UV wavelength (vacuum) 350.2346890 nm for 2p 2P3/2 -> nS; fit value E_fit 43456.2673 cm^-1
+80s_1/2,,43469.83851,0.003,1/cm,80S,"Table 2 (JETP 121, 952; ZhETF 148, 1090)",isotope=7Li; measured UV wavelength (vacuum) 350.0682799 nm for 2p 2P3/2 -> nS; fit value E_fit 43469.83976 cm^-1
+101s_1/2,,43476.31581,0.003,1/cm,101S,"Table 2 (JETP 121, 952; ZhETF 148, 1090)",isotope=7Li; measured UV wavelength (vacuum) 349.9889200 nm for 2p 2P3/2 -> nS; fit value E_fit 43476.31497 cm^-1
+105s_1/2,,43477.12894,0.003,1/cm,105S,"Table 2 (JETP 121, 952; ZhETF 148, 1090)",isotope=7Li; measured UV wavelength (vacuum) 349.9789600 nm for 2p 2P3/2 -> nS; fit value E_fit 43477.12829 cm^-1
+114s_1/2,,43478.65411,0.003,1/cm,114S,"Table 2 (JETP 121, 952; ZhETF 148, 1090)",isotope=7Li; measured UV wavelength (vacuum) 349.9602800 nm for 2p 2P3/2 -> nS; fit value E_fit 43478.65423 cm^-1
+141s_1/2,,43481.60618,0.003,1/cm,141S,"Table 2 (JETP 121, 952; ZhETF 148, 1090)",isotope=7Li; measured UV wavelength (vacuum) 349.9241290 nm for 2p 2P3/2 -> nS; fit value E_fit 43481.60487 cm^-1
+142s_1/2,,43481.68312,0.003,1/cm,142S,"Table 2 (JETP 121, 952; ZhETF 148, 1090)",isotope=7Li; measured UV wavelength (vacuum) 349.9231870 nm for 2p 2P3/2 -> nS; fit value E_fit 43481.6829 cm^-1
+143s_1/2,,43481.75973,0.003,1/cm,143S,"Table 2 (JETP 121, 952; ZhETF 148, 1090)",isotope=7Li; measured UV wavelength (vacuum) 349.9222489 nm for 2p 2P3/2 -> nS; fit value E_fit 43481.75929 cm^-1
+157s_1/2,,43482.67844,0.003,1/cm,157S,"Table 2 (JETP 121, 952; ZhETF 148, 1090)",isotope=7Li; measured UV wavelength (vacuum) 349.9110000 nm for 2p 2P3/2 -> nS; fit value E_fit 43482.67909 cm^-1
+158s_1/2,,43482.73588,0.003,1/cm,158S,"Table 2 (JETP 121, 952; ZhETF 148, 1090)",isotope=7Li; measured UV wavelength (vacuum) 349.9102968 nm for 2p 2P3/2 -> nS; fit value E_fit 43482.73552 cm^-1
+159s_1/2,,43482.79068,0.003,1/cm,159S,"Table 2 (JETP 121, 952; ZhETF 148, 1090)",isotope=7Li; measured UV wavelength (vacuum) 349.9096258 nm for 2p 2P3/2 -> nS; fit value E_fit 43482.79087 cm^-1
+160s_1/2,,43482.84474,0.003,1/cm,160S,"Table 2 (JETP 121, 952; ZhETF 148, 1090)",isotope=7Li; measured UV wavelength (vacuum) 349.9089639 nm for 2p 2P3/2 -> nS; fit value E_fit 43482.84517 cm^-1
+161s_1/2,,43482.89851,0.003,1/cm,161S,"Table 2 (JETP 121, 952; ZhETF 148, 1090)",isotope=7Li; measured UV wavelength (vacuum) 349.9083056 nm for 2p 2P3/2 -> nS; fit value E_fit 43482.89845 cm^-1
+162s_1/2,,43482.95023,0.003,1/cm,162S,"Table 2 (JETP 121, 952; ZhETF 148, 1090)",isotope=7Li; measured UV wavelength (vacuum) 349.9076723 nm for 2p 2P3/2 -> nS; fit value E_fit 43482.95073 cm^-1
+163s_1/2,,43483.00204,0.003,1/cm,163S,"Table 2 (JETP 121, 952; ZhETF 148, 1090)",isotope=7Li; measured UV wavelength (vacuum) 349.9070380 nm for 2p 2P3/2 -> nS; fit value E_fit 43483.00204 cm^-1
+164s_1/2,,43483.0526,0.003,1/cm,164S,"Table 2 (JETP 121, 952; ZhETF 148, 1090)",isotope=7Li; measured UV wavelength (vacuum) 349.9064189 nm for 2p 2P3/2 -> nS; fit value E_fit 43483.0524 cm^-1
+165s_1/2,,43483.10195,0.003,1/cm,165S,"Table 2 (JETP 121, 952; ZhETF 148, 1090)",isotope=7Li; measured UV wavelength (vacuum) 349.9058148 nm for 2p 2P3/2 -> nS; fit value E_fit 43483.10183 cm^-1

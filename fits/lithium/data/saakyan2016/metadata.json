@@ -1,0 +1,20 @@
+{
+  "dataset": "saakyan2016",
+  "species": "Li",
+  "reference": "Saakyan 2016, J. Phys.: Conf. Ser. 774, 012165, https://doi.org/10.1088/1742-6596/774/1/012165",
+  "authors": "S. A. Saakyan, V. A. Sautenkov, B. B. Zelener",
+  "title": "Energy intervals between Rydberg states nD and nF in lithium-7",
+  "year": 2016,
+  "doi": "10.1088/1742-6596/774/1/012165",
+  "url": "https://doi.org/10.1088/1742-6596/774/1/012165",
+  "method": "MOT fluorescence-loss spectroscopy, cw UV from 2p 2P3/2; residual-field-induced 2P-nF lines",
+  "uncertainty": "'better than 0.5 MHz' (global statement)",
+  "conversion": [
+    "Rows without uncertainty: 6 MHz, the differences to the nF - nD intervals implied by zelener2016 and sautenkov2016 (the stated 'better than 0.5 MHz' is doubtful, metadata caveats).",
+    "No J in the source from l = 2 on (fine structure unresolved): j = l + 1/2 assumed (the fine structure of these levels is far below the uncertainties)."
+  ],
+  "caveats": [
+    "the 0.5 MHz accuracy claim is doubtful given ~100 MHz linewidths and the 6 MHz differences to the nF-nD differences implied by zelener2016 Table 3 minus sautenkov2016 Table 1 (e.g. n=38: 191 MHz vs 175.2 MHz)",
+    "both levels Stark-mixed by residual field (nF observable only through mixing)"
+  ]
+}

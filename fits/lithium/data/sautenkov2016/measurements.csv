@@ -1,0 +1,6 @@
+level,lower_level,value,uncertainty,unit,source_label,source_location,note
+38d_5/2,,43411.15946,0.001,1/cm,38D,Table 1,"isotope=7Li; 2p 2P3/2 -> nD; measured UV wavelength 350.788 8630 nm; fine structure unresolved; j not resolved in the source, j = l + 1/2 assumed"
+39d_5/2,,43415.00761,0.001,1/cm,39D,Table 1,"isotope=7Li; 2p 2P3/2 -> nD; measured UV wavelength 350.741 5168 nm; fine structure unresolved; j not resolved in the source, j = l + 1/2 assumed"
+41d_5/2,,43421.8751,0.001,1/cm,41D,Table 1,"isotope=7Li; 2p 2P3/2 -> nD; measured UV wavelength 350.657 0536 nm; fine structure unresolved; j not resolved in the source, j = l + 1/2 assumed"
+44d_5/2,,43430.47392,0.001,1/cm,44D,Table 1,"isotope=7Li; 2p 2P3/2 -> nD; measured UV wavelength 350.551 3541 nm; fine structure unresolved; j not resolved in the source, j = l + 1/2 assumed"
+48d_5/2,,43439.52767,0.001,1/cm,48D,Table 1,"isotope=7Li; 2p 2P3/2 -> nD; measured UV wavelength 350.440 1312 nm; fine structure unresolved; j not resolved in the source, j = l + 1/2 assumed"

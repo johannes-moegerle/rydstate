@@ -48,3 +48,5 @@ data or the config needs a rerun of the fit.
   dataset of absolute energies with its own ionization threshold; f and g fine structure unresolved (same_as).
 - Na (`sodium/`): global fit of the s, p, d, f, g, h series to microwave intervals between Rydberg levels (161 values
   from 6 datasets, chi2/dof = 0.50); no absolute energies, so no threshold enters.
+- Li (`lithium/`): fit of the s and p series (58 values from 3 datasets, chi2/dof = 1.35), the d and f models
+  are not fitted (the measured d and f levels are too imprecise).

@@ -1,0 +1,97 @@
+{
+  "config": "fits/lithium/fit_config.json",
+  "species": "Li",
+  "success": true,
+  "message": "`xtol` termination condition is satisfied.",
+  "chi2": 67.58258029703117,
+  "dof": 50,
+  "reduced_chi2": 1.3516516059406234,
+  "datasets": {
+    "goy1986": {
+      "loaded": 33,
+      "used": 27,
+      "excluded": 6
+    },
+    "zelener2015": {
+      "loaded": 20,
+      "used": 20
+    },
+    "zelener2016": {
+      "loaded": 16,
+      "used": 11,
+      "level without fitted series": 5
+    }
+  },
+  "models": [
+    {
+      "model_class": "ModelSQDT",
+      "species": "Li",
+      "channel": "ns_1/2",
+      "reference": ["Goy 1986, Phys. Rev. A 34, 2889, https://doi.org/10.1103/PhysRevA.34.2889", "Zelener 2015, J. Exp. Theor. Phys. 121, 950, https://doi.org/10.1134/S1063776115120171"],
+      "n_range": [7, "inf"],
+      "quantum_defects": [0.39950893689359324, 0.029260335774845075],
+      "fit_info": {
+        "method": "rydstate.fit.fit_sqdt_models",
+        "rydstate version": "0.14.0",
+        "n range of the data": [18, 165],
+        "config": "fits/lithium/fit_config.json"
+      }
+    },
+    {
+      "model_class": "ModelSQDT",
+      "species": "Li",
+      "channel": "np_1/2",
+      "reference": ["Goy 1986, Phys. Rev. A 34, 2889, https://doi.org/10.1103/PhysRevA.34.2889"],
+      "n_range": [7, "inf"],
+      "quantum_defects": [0.04717943239627237, -0.026228445419933744],
+      "fit_info": {
+        "method": "rydstate.fit.fit_sqdt_models",
+        "rydstate version": "0.14.0",
+        "n range of the data": [18, 35],
+        "config": "fits/lithium/fit_config.json"
+      }
+    },
+    {
+      "model_class": "ModelSQDT",
+      "species": "Li",
+      "channel": "np_3/2",
+      "reference": ["Goy 1986, Phys. Rev. A 34, 2889, https://doi.org/10.1103/PhysRevA.34.2889", "Zelener 2016, J. Exp. Theor. Phys. 122, 645, https://doi.org/10.1134/S1063776116040099"],
+      "n_range": [7, "inf"],
+      "quantum_defects": [0.04716658916652824, -0.025298134343137817],
+      "fit_info": {
+        "method": "rydstate.fit.fit_sqdt_models",
+        "rydstate version": "0.14.0",
+        "n range of the data": [18, 114],
+        "config": "fits/lithium/fit_config.json"
+      }
+    }
+  ],
+  "offsets_au": {
+    "zelener2015": 1.996455670758644e-08,
+    "zelener2016": 1.7435014475078186e-08
+  },
+  "offset_uncertainties_au": {
+    "zelener2015": 3.0564834891441487e-09,
+    "zelener2016": 4.1213669889065126e-09
+  },
+  "parameter_names": [
+    "Li ns_1/2: quantum_defects[0]",
+    "Li ns_1/2: quantum_defects[1]",
+    "Li np_1/2: quantum_defects[0]",
+    "Li np_1/2: quantum_defects[1]",
+    "Li np_3/2: quantum_defects[0]",
+    "Li np_3/2: quantum_defects[1]",
+    "offset zelener2015",
+    "offset zelener2016"
+  ],
+  "covariance": [
+    [1.0988809818721095e-12, -4.032957343457606e-10, 3.0897232290535945e-13, -1.1915278931860924e-10, 3.0897289923042436e-13, -1.1915320175199326e-10, -2.4313741888655242e-18, -1.1911165712267447e-18],
+    [-4.032957343457606e-10, 1.5746862062631828e-07, -1.4307874482276888e-10, 6.205437400002618e-08, -1.4307902602980226e-10, 6.20545906208647e-08, 8.792269128323783e-16, 5.389766625868123e-16],
+    [3.0897232290535945e-13, -1.4307874482276888e-10, 4.921601109899353e-12, -2.225854340683247e-09, 3.937992722718394e-12, -1.7722731652649113e-09, -6.425042528364367e-19, -1.4716449554961936e-17],
+    [-1.1915278931860924e-10, 6.205437400002618e-08, -2.225854340683247e-09, 1.0580765527020198e-06, -1.7722705655205523e-09, 8.257432883057899e-07, 2.382490005835793e-16, 6.57147082525737e-15],
+    [3.089728992304243e-13, -1.4307902602980226e-10, 3.937992722718394e-12, -1.7722705655205525e-09, 3.9380005964326745e-12, -1.7722767673993087e-09, -6.425054314563606e-19, -1.4716478871944052e-17],
+    [-1.1915320175199326e-10, 6.20545906208647e-08, -1.7722731652649113e-09, 8.257432883057899e-07, -1.7722767673993087e-09, 8.257461843157053e-07, 2.38249822724206e-16, 6.571493809701e-15],
+    [-2.4313741888655242e-18, 8.792269128323782e-16, -6.425042528364367e-19, 2.382490005835793e-16, -6.425054314563606e-19, 2.38249822724206e-16, 9.342091319410788e-18, 2.4943759868950077e-24],
+    [-1.1911165712267447e-18, 5.389766625868123e-16, -1.4716449554961936e-17, 6.57147082525737e-15, -1.4716478871944055e-17, 6.571493809701e-15, 2.4943759870035282e-24, 1.6985665857248333e-17]
+  ]
+}

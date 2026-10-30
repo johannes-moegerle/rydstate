@@ -1,0 +1,25 @@
+level,lower_level,value,uncertainty,unit,source_label,source_location,note
+3s_1/2,,27206.0952,0.0010,1/cm,7Li 3s 2S1/2,Table IV,isotope=7Li; level isotope shift 7Li-6Li = 0.3823 cm^-1 (source)
+4s_1/2,,35012.0326,0.0010,1/cm,7Li 4s 2S1/2,Table IV,isotope=7Li; level isotope shift 7Li-6Li = 0.4894 cm^-1 (source)
+5s_1/2,,38299.4627,0.0010,1/cm,7Li 5s 2S1/2,Table IV,isotope=7Li; level isotope shift 7Li-6Li = 0.5344 cm^-1 (source)
+6s_1/2,,39987.586,0.003,1/cm,7Li 6s 2S1/2,Table IV,isotope=7Li; level isotope shift 7Li-6Li = 0.559 cm^-1 (source); 7Li-specific uncertainty given in parentheses in source
+2p_1/2,,14903.648130,0.000014,1/cm,7Li 2p 2P1/2,Table IV,"isotope=7Li; footnote a: values from Ref. [19] of the source (Sansonetti et al., PRA 52, 2682 (1995)); level isotope shift 7Li-6Li = 0.351338(21) cm^-1 (source); 7Li-specific uncertainty given in parentheses in source"
+2p_3/2,,14903.983468,0.000014,1/cm,7Li 2p 2P3/2,Table IV,"isotope=7Li; footnote a: values from Ref. [19] of the source (Sansonetti et al., PRA 52, 2682 (1995)); level isotope shift 7Li-6Li = 0.351352(15) cm^-1 (source); 7Li-specific uncertainty given in parentheses in source"
+3p_1/2,,30925.5530,0.0010,1/cm,7Li 3p 2P1/2,Table IV,isotope=7Li; level isotope shift 7Li-6Li = 0.4766 cm^-1 (source)
+3p_3/2,,30925.6494,0.0010,1/cm,7Li 3p 2P3/2,Table IV,isotope=7Li
+4p_1/2,,36469.7542,0.0015,1/cm,7Li 4p 2P1/2,Table IV,isotope=7Li; level isotope shift 7Li-6Li = 0.5283 cm^-1 (source)
+4p_3/2,,36469.7943,0.0015,1/cm,7Li 4p 2P3/2,Table IV,isotope=7Li
+5p_1/2,,39015.6988,0.0020,1/cm,7Li 5p 2P1/2,Table IV,isotope=7Li; footnote b: fine-structure splitting taken from Table I of the source; level isotope shift 7Li-6Li = 0.5549 cm^-1 (source)
+5p_3/2,,39015.7199,0.0020,1/cm,7Li 5p 2P3/2,Table IV,isotope=7Li
+6p_1/2,,40391.283,0.010,1/cm,7Li 6p 2P1/2,Table IV,isotope=7Li; footnote b: fine-structure splitting taken from Table I of the source; level isotope shift 7Li-6Li = 0.572 cm^-1 (source)
+6p_3/2,,40391.295,0.010,1/cm,7Li 6p 2P3/2,Table IV,isotope=7Li
+3d_3/2,,31283.0505,0.0010,1/cm,7Li 3d 2D3/2,Table IV,isotope=7Li; level isotope shift 7Li-6Li = 0.4443 cm^-1 (source); 7Li-specific uncertainty given in parentheses in source
+3d_5/2,,31283.0866,0.0010,1/cm,7Li 3d 2D5/2,Table IV,isotope=7Li; 7Li-specific uncertainty given in parentheses in source
+4d_3/2,,36623.3360,0.0010,1/cm,7Li 4d 2D3/2,Table IV,isotope=7Li; level isotope shift 7Li-6Li = 0.5143 cm^-1 (source); 7Li-specific uncertainty given in parentheses in source
+4d_5/2,,36623.3511,0.0010,1/cm,7Li 4d 2D5/2,Table IV,isotope=7Li; 7Li-specific uncertainty given in parentheses in source
+5d_3/2,,39094.861,0.010,1/cm,7Li 5d 2D3/2,Table IV,isotope=7Li; level isotope shift 7Li-6Li = 0.551 cm^-1 (source)
+5d_5/2,,39094.869,0.010,1/cm,7Li 5d 2D5/2,Table IV,isotope=7Li
+4f_5/2,,36628.329,0.003,1/cm,7Li 4f 2F5/2,Table IV,isotope=7Li; footnote b: fine-structure splitting taken from Table I of the source; level isotope shift 7Li-6Li = 0.513 cm^-1 (source)
+4f_7/2,,36628.336,0.003,1/cm,7Li 4f 2F7/2,Table IV,isotope=7Li
+5f_5/2,,39097.499,0.015,1/cm,7Li 5f 2F5/2,Table IV,isotope=7Li; footnote b: fine-structure splitting taken from Table I of the source; level isotope shift 7Li-6Li = 0.559 cm^-1 (source)
+5f_7/2,,39097.503,0.015,1/cm,7Li 5f 2F7/2,Table IV,isotope=7Li

@@ -1,0 +1,21 @@
+{
+  "dataset": "zelener2015",
+  "species": "Li",
+  "reference": "Zelener 2015, J. Exp. Theor. Phys. 121, 950, https://doi.org/10.1134/S1063776115120171",
+  "authors": "B. B. Zelener, S. A. Saakyan, V. A. Sautenkov, E. A. Manykin, B. V. Zelener, V. E. Fortov",
+  "title": "Laser diagnostics of the energy spectrum of Rydberg states of the lithium-7 atom",
+  "year": 2015,
+  "doi": "10.1134/S1063776115120171",
+  "url": "https://doi.org/10.1134/S1063776115120171",
+  "method": "cw two-step excitation of ultracold atoms in a MOT (671 nm cooling light + tunable ~350 nm UV), detection by loss of MOT fluorescence; UV wavelength from a calibrated wavemeter (Angstrom WS-U, ~2 MHz)",
+  "uncertainty": "no per-level uncertainty; wavemeter accuracy ~2 MHz, resonance width ~0.1 GHz; fit residuals of +-3e-3 cm^-1 with systematic trend below n=80 (Fig. 6)",
+  "conversion": [
+    "Energies from '7Li 2s 2S1/2 hyperfine centre of gravity', energy zero: Eq. (1): En = Euv + Ec - Delta + Delta_cg, Ec = 14903.9730012 cm^-1 (2S1/2-2P3/2 [36]), Delta = 10 MHz, Delta_cg = 301.31 MHz ('the ionization potential is measured from the center of gravity of levels located by Delta_cg = 301.31 MHz lower than the 2S1/2(F=2) level'), already applied.",
+    "Rows without uncertainty: the scatter of +-3e-3 cm^-1 around the fit of the source (no per-level values)."
+  ],
+  "caveats": [
+    "EI from this data set is 2e-3 cm^-1 (60 MHz) below Bushaw 2007; levels likely carry a common offset and residual quadratic Stark shifts (scaling as n^7), important at n > 100",
+    "no per-level uncertainties",
+    "English JETP Table 2 caption is truncated ('... for nS levels from'); the table itself is identical to the Russian original"
+  ]
+}

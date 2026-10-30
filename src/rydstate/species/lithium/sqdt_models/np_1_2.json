@@ -2,7 +2,13 @@
   "model_class": "ModelSQDT",
   "species": "Li",
   "channel": "np_1/2",
-  "quantum_defects": [0.047178, -0.024, 0, 0, 0],
-  "reference": "Phys. Rev. A 34, 2889 (1986) (Li 7)",
-  "n_range": [16, "inf"]
+  "reference": ["Goy 1986, Phys. Rev. A 34, 2889, https://doi.org/10.1103/PhysRevA.34.2889"],
+  "n_range": [7, "inf"],
+  "quantum_defects": [0.04717943239627237, -0.026228445419933744],
+  "fit_info": {
+    "method": "rydstate.fit.fit_sqdt_models",
+    "rydstate version": "0.14.0",
+    "n range of the data": [18, 35],
+    "config": "fits/lithium/fit_config.json"
+  }
 }

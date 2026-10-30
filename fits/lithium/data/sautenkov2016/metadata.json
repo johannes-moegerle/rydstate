@@ -1,0 +1,21 @@
+{
+  "dataset": "sautenkov2016",
+  "species": "Li",
+  "reference": "Sautenkov 2016, Laser Phys. 26, 115701, https://doi.org/10.1088/1054-660X/26/11/115701",
+  "authors": "V. A. Sautenkov, S. A. Saakyan, E. V. Vilshanskaya, D. A. Murashkin, B. B. Zelener, B. V. Zelener",
+  "title": "Quantum defects in Rydberg nD states of optically cooled 7Li atoms",
+  "year": 2016,
+  "doi": "10.1088/1054-660X/26/11/115701",
+  "url": "https://doi.org/10.1088/1054-660X/26/11/115701",
+  "method": "MOT fluorescence-loss spectroscopy, cw UV excitation from 2p 2P3/2",
+  "uncertainty": "none per level; wavemeter 1e-4 cm^-1, laser linewidth ~1e-3 cm^-1",
+  "conversion": [
+    "Energies from '7Li 2s 2S1/2 hyperfine centre of gravity', energy zero: Eq. (2): En = Euv + EC - Delta + Delta_cg, EC = 2S1/2(F=2)-2P3/2(F=3) [20], Delta = 4e-4 cm^-1, Delta_cg = difference between 2S1/2(F=2) and the ground-state centre of gravity (already applied; its value is not printed in this paper). Eq. (3) En = EI - Rm/(n-mu)^2 is used for the quantum defect mu = 0.00192(17), but the EI value used (fixed or fitted) is not stated; murashkin2016 fits EI = 43487.15692(56) cm^-1 to the same nD levels.",
+    "Rows without uncertainty: the laser linewidth of 1e-3 cm^-1 (no per-level values; wavemeter 1e-4 cm^-1).",
+    "No J in the source from l = 2 on (fine structure unresolved): j = l + 1/2 assumed (the fine structure of these levels is far below the uncertainties)."
+  ],
+  "caveats": [
+    "reference constant 14903.98305 differs from zelener2015 (14903.98272) and zelener2016 (14903.98289) for the same scheme; inter-paper offsets of 5-10 MHz",
+    "only 5 levels, no uncertainties; 41D value has fewer digits in source"
+  ]
+}
