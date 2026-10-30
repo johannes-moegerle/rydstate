@@ -20,4 +20,5 @@ All the available classes, methods and functions are documented below:
     api/radial.rst
     api/species.rst
     api/qdt.rst
+    api/fit.rst
     api/generate_database.rst
