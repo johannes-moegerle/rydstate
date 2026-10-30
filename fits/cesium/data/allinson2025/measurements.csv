@@ -1,0 +1,112 @@
+level,lower_level,value,uncertainty,unit,source_label,source_location,note
+20s_1/2,20p_1/2,-710.9264,0.0005,GHz,20p1/2 -> 20s1/2,Table IV (np -> n's),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+13d_3/2,14p_1/2,685.8714,0.0005,GHz,14p1/2 -> 13d3/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+15f_5/2,18d_3/2,-1034.94423,0.00007,GHz,18d3/2 -> 15f5/2,Table IV (nd -> n'f),negative = final state lower; hyperfine unresolved
+21s_1/2,20p_1/2,770.1388,0.0005,GHz,20p1/2 -> 21s1/2,Table IV (np -> n's),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+14d_5/2,15p_3/2,548.6153,0.0005,GHz,15p3/2 -> 14d5/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+16f_5/2,18d_3/2,746.66404,0.00009,GHz,18d3/2 -> 16f5/2,Table IV (nd -> n'f),negative = final state lower; hyperfine unresolved
+21s_1/2,20p_3/2,721.8937,0.0005,GHz,20p3/2 -> 21s1/2,Table IV (np -> n's),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+14d_3/2,15p_1/2,519.0775,0.0005,GHz,15p1/2 -> 14d3/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+15f_5/2,18d_5/2,-1050.97405,0.00008,GHz,18d5/2 -> 15f5/2,Table IV (nd -> n'f),negative = final state lower; hyperfine unresolved
+15f_7/2,18d_5/2,-1051.24888,0.00009,GHz,18d5/2 -> 15f7/2,Table IV (nd -> n'f),negative = final state lower; hyperfine unresolved
+21s_1/2,21p_1/2,-593.8743,0.0005,GHz,21p1/2 -> 21s1/2,Table IV (np -> n's),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+20d_5/2,22p_3/2,-1025.9229,0.0002,GHz,22p3/2 -> 20d5/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+16f_5/2,18d_5/2,730.63472,0.00008,GHz,18d5/2 -> 16f5/2,Table IV (nd -> n'f),negative = final state lower; hyperfine unresolved
+22s_1/2,21p_1/2,646.5781,0.0005,GHz,21p1/2 -> 22s1/2,Table IV (np -> n's),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+16f_7/2,18d_5/2,730.40683,0.00006,GHz,18d5/2 -> 16f7/2,Table IV (nd -> n'f),negative = final state lower; hyperfine unresolved
+22s_1/2,21p_3/2,606.1677,0.0005,GHz,21p3/2 -> 22s1/2,Table IV (np -> n's),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+22d_3/2,24p_1/2,-730.6733,0.0005,GHz,24p1/2 -> 22d3/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+21s_1/2,21p_3/2,-634.2831,0.0005,GHz,21p3/2 -> 21s1/2,Table IV (np -> n's),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+22d_5/2,24p_3/2,-747.7028,0.0005,GHz,24p3/2 -> 22d5/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+17f_5/2,19d_3/2,620.57851,0.00008,GHz,19d3/2 -> 17f5/2,Table IV (nd -> n'f),negative = final state lower; hyperfine unresolved
+17f_5/2,19d_5/2,607.2809,0.0001,GHz,19d5/2 -> 17f5/2,Table IV (nd -> n'f),negative = final state lower; hyperfine unresolved
+22s_1/2,22p_1/2,-501.1722,0.0005,GHz,22p1/2 -> 22s1/2,Table IV (np -> n's),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+23d_3/2,25p_1/2,-631.0236,0.0005,GHz,25p1/2 -> 23d3/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+17f_7/2,19d_5/2,607.09149,0.00005,GHz,19d5/2 -> 17f7/2,Table IV (nd -> n'f),negative = final state lower; hyperfine unresolved
+23s_1/2,22p_1/2,548.1043,0.0005,GHz,22p1/2 -> 23s1/2,Table IV (np -> n's),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+25d_3/2,25p_1/2,694.2632,0.0005,GHz,25p1/2 -> 25d3/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+23s_1/2,22p_3/2,513.9218,0.0005,GHz,22p3/2 -> 23s1/2,Table IV (np -> n's),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+23d_5/2,25p_3/2,-645.8232,0.0005,GHz,25p3/2 -> 23d5/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+17f_5/2,20d_3/2,-715.18566,0.00009,GHz,20d3/2 -> 17f5/2,Table IV (nd -> n'f),negative = final state lower; hyperfine unresolved
+22s_1/2,22p_3/2,-535.3544,0.0005,GHz,22p3/2 -> 22s1/2,Table IV (np -> n's),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+25d_5/2,25p_3/2,677.7750,0.0005,GHz,25p3/2 -> 25d5/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+18f_5/2,20d_3/2,521.36182,0.00009,GHz,20d3/2 -> 18f5/2,Table IV (nd -> n'f),negative = final state lower; hyperfine unresolved
+17f_5/2,20d_5/2,-726.3370,0.0001,GHz,20d5/2 -> 17f5/2,Table IV (nd -> n'f),negative = final state lower; hyperfine unresolved
+23s_1/2,23p_3/2,-455.9748,0.0005,GHz,23p3/2 -> 23s1/2,Table IV (np -> n's),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+24d_3/2,26p_1/2,-548.7019,0.0005,GHz,26p1/2 -> 24d3/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+17f_7/2,20d_5/2,-726.52729,0.00008,GHz,20d5/2 -> 17f7/2,Table IV (nd -> n'f),negative = final state lower; hyperfine unresolved
+26d_3/2,26p_1/2,607.3581,0.0005,GHz,26p1/2 -> 26d3/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+18f_5/2,20d_5/2,510.2102,0.0001,GHz,20d5/2 -> 18f5/2,Table IV (nd -> n'f),negative = final state lower; hyperfine unresolved
+29s_1/2,27p_1/2,719.4515,0.0005,GHz,27p1/2 -> 29s1/2,Table IV (np -> n's),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+24d_5/2,26p_3/2,-561.6441,0.0005,GHz,26p3/2 -> 24d5/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+18f_7/2,20d_5/2,510.0500,0.0001,GHz,20d5/2 -> 18f7/2,Table IV (nd -> n'f),negative = final state lower; hyperfine unresolved
+29s_1/2,27p_3/2,702.8132,0.0005,GHz,27p3/2 -> 29s1/2,Table IV (np -> n's),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+26d_5/2,26p_3/2,593.0072,0.0005,GHz,26p3/2 -> 26d5/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+18f_5/2,21d_3/2,-603.9741,0.0001,GHz,21d3/2 -> 18f5/2,Table IV (nd -> n'f),negative = final state lower; hyperfine unresolved
+30s_1/2,28p_1/2,636.9761,0.0005,GHz,28p1/2 -> 30s1/2,Table IV (np -> n's),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+25d_3/2,27p_1/2,-480.0988,0.0005,GHz,27p1/2 -> 25d3/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+18f_7/2,21d_5/2,-613.5782,0.0001,GHz,21d5/2 -> 18f7/2,Table IV (nd -> n'f),negative = final state lower; hyperfine unresolved
+27s_1/2,28p_1/2,-723.7312,0.0005,GHz,28p1/2 -> 27s1/2,Table IV (np -> n's),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+27d_3/2,27p_1/2,534.3773,0.0005,GHz,27p1/2 -> 27d3/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+30s_1/2,28p_3/2,622.2992,0.0005,GHz,28p3/2 -> 30s1/2,Table IV (np -> n's),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+25d_5/2,27p_3/2,-491.4822,0.0005,GHz,27p3/2 -> 25d5/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+19f_5/2,22d_3/2,-514.6726,0.0001,GHz,22d3/2 -> 19f5/2,Table IV (nd -> n'f),negative = final state lower; hyperfine unresolved
+27s_1/2,28p_3/2,-738.4080,0.0005,GHz,28p3/2 -> 27s1/2,Table IV (np -> n's),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+27d_5/2,27p_3/2,521.8114,0.0005,GHz,27p3/2 -> 27d5/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+19f_7/2,22d_5/2,-522.87675,0.00009,GHz,22d5/2 -> 19f7/2,Table IV (nd -> n'f),negative = final state lower; hyperfine unresolved
+31s_1/2,29p_1/2,566.6445,0.0005,GHz,29p1/2 -> 31s1/2,Table IV (np -> n's),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+31d_3/2,30p_1/2,674.1317,0.0005,GHz,30p1/2 -> 31d3/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+28s_1/2,29p_1/2,-639.1752,0.0005,GHz,29p1/2 -> 28s1/2,Table IV (np -> n's),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+31d_5/2,30p_3/2,665.1313,0.0005,GHz,30p3/2 -> 31d5/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+31s_1/2,29p_3/2,553.6318,0.0005,GHz,29p3/2 -> 31s1/2,Table IV (np -> n's),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+28s_1/2,29p_3/2,-652.1882,0.0005,GHz,29p3/2 -> 28s1/2,Table IV (np -> n's),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+32d_5/2,31p_3/2,597.3845,0.0005,GHz,31p3/2 -> 32d5/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+29s_1/2,30p_1/2,-567.2976,0.0005,GHz,30p1/2 -> 29s1/2,Table IV (np -> n's),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+33d_3/2,32p_1/2,545.7370,0.0005,GHz,32p1/2 -> 33d3/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+32s_1/2,30p_3/2,494.7101,0.0005,GHz,30p3/2 -> 32s1/2,Table IV (np -> n's),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+33d_5/2,32p_3/2,538.5382,0.0005,GHz,32p3/2 -> 33d5/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+29s_1/2,30p_3/2,-578.8893,0.0005,GHz,30p3/2 -> 29s1/2,Table IV (np -> n's),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+30s_1/2,30p_3/2,-516.1775,0.0005,GHz,30p3/2 -> 30s1/2,Table IV (np -> n's),"negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses; WARNING: as printed the label is inconsistent with the value: 30p3/2-30s1/2 is about -179.43 GHz (Weber1987/Deiglmayr2016/Shen2024), whereas -516.18 GHz matches 31p3/2 -> 30s1/2 (predicted -516.21 GHz); probable label typo in source"
+34d_3/2,33p_1/2,493.6529,0.0005,GHz,33p1/2 -> 34d3/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+32s_1/2,34p_1/2,-653.2059,0.0005,GHz,34p1/2 -> 32s1/2,Table IV (np -> n's),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+35d_3/2,33p_1/2,694.0853,0.0005,GHz,33p1/2 -> 35d3/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+34d_5/2,33p_3/2,487.1777,0.0005,GHz,33p3/2 -> 34d5/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+33s_1/2,35p_1/2,-590.2641,0.0005,GHz,35p1/2 -> 33s1/2,Table IV (np -> n's),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+35d_5/2,33p_3/2,687.4378,0.0005,GHz,33p3/2 -> 35d5/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+33s_1/2,35p_3/2,-597.1567,0.0005,GHz,35p3/2 -> 33s1/2,Table IV (np -> n's),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+36d_3/2,34p_1/2,630.7592,0.0005,GHz,34p1/2 -> 36d3/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+34s_1/2,36p_3/2,-541.4330,0.0005,GHz,36p3/2 -> 34s1/2,Table IV (np -> n's),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+36d_5/2,34p_3/2,624.7619,0.0005,GHz,34p3/2 -> 36d5/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+37d_3/2,35p_1/2,574.9137,0.0005,GHz,35p1/2 -> 37d3/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+37d_5/2,35p_3/2,569.4835,0.0005,GHz,35p3/2 -> 37d5/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+38d_5/2,36p_3/2,520.5438,0.0005,GHz,36p3/2 -> 38d5/2,Table IV (np -> n'd),negative = final state lower; uncertainty 0.5 MHz per caption unless given in parentheses
+15g_7/2,15f_5/2,50.3241,0.0002,GHz,15f5/2 -> 15g7/2,Table V (f -> g),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower"
+15h_5.5,15g_9/2,8700.8,0.4,MHz,15g9/2 -> 15h,Table V (g -> h),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower; j not resolved in the source, j = l + 1/2 assumed"
+15i_6.5,15h_5.5,2675.1,0.5,MHz,15h -> 15i,Table V (h -> i),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower; j not resolved in the source, j = l + 1/2 assumed"
+15(l=7)_7.5,15i_6.5,1016,1,MHz,15i -> 15k,Table V (i -> k),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower; j not resolved in the source, j = l + 1/2 assumed"
+15(l=8)_8.5,15(l=7)_7.5,439,1,MHz,15k -> 15l,Table V (k -> l),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower; j not resolved in the source, j = l + 1/2 assumed"
+15g_9/2,15f_7/2,50.6009,0.0001,GHz,15f7/2 -> 15g9/2,Table V (f -> g),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower"
+16g_7/2,16f_5/2,41.5844,0.0002,GHz,16f5/2 -> 16g7/2,Table V (f -> g),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower"
+16h_5.5,16g_9/2,7190.5,0.5,MHz,16g9/2 -> 16h,Table V (g -> h),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower; j not resolved in the source, j = l + 1/2 assumed"
+16i_6.5,16h_5.5,2206.9,0.5,MHz,16h -> 16i,Table V (h -> i),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower; j not resolved in the source, j = l + 1/2 assumed"
+16(l=7)_7.5,16i_6.5,840,1,MHz,16i -> 16k,Table V (i -> k),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower; j not resolved in the source, j = l + 1/2 assumed"
+16(l=8)_8.5,16(l=7)_7.5,365,1,MHz,16k -> 16l,Table V (k -> l),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower; j not resolved in the source, j = l + 1/2 assumed"
+16g_9/2,16f_7/2,41.8139,0.0001,GHz,16f7/2 -> 16g9/2,Table V (f -> g),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower"
+17g_7/2,17f_5/2,34.7509,0.0001,GHz,17f5/2 -> 17g7/2,Table V (f -> g),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower"
+17h_5.5,17g_9/2,6007.2,0.5,MHz,17g9/2 -> 17h,Table V (g -> h),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower; j not resolved in the source, j = l + 1/2 assumed"
+17i_6.5,17h_5.5,1851.3,0.4,MHz,17h -> 17i,Table V (h -> i),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower; j not resolved in the source, j = l + 1/2 assumed"
+17(l=7)_7.5,17i_6.5,705,1,MHz,17i -> 17k,Table V (i -> k),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower; j not resolved in the source, j = l + 1/2 assumed"
+17(l=8)_8.5,17(l=7)_7.5,306,1,MHz,17k -> 17l,Table V (k -> l),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower; j not resolved in the source, j = l + 1/2 assumed"
+17g_9/2,17f_7/2,34.9430,0.0001,GHz,17f7/2 -> 17g9/2,Table V (f -> g),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower"
+18g_7/2,18f_5/2,29.3321,0.0001,GHz,18f5/2 -> 18g7/2,Table V (f -> g),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower"
+18h_5.5,18g_9/2,5071.8,0.5,MHz,18g9/2 -> 18h,Table V (g -> h),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower; j not resolved in the source, j = l + 1/2 assumed"
+18i_6.5,18h_5.5,1563.4,0.5,MHz,18h -> 18i,Table V (h -> i),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower; j not resolved in the source, j = l + 1/2 assumed"
+18(l=7)_7.5,18i_6.5,594,1,MHz,18i -> 18k,Table V (i -> k),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower; j not resolved in the source, j = l + 1/2 assumed"
+18g_9/2,18f_7/2,29.4946,0.0001,GHz,18f7/2 -> 18g9/2,Table V (f -> g),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower"
+19g_9/2,18f_7/2,1071.33778,0.00007,GHz,18f7/2 -> 19g9/2,Table V (f -> g),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower"
+19h_5.5,18g_9/2,1046163.2,0.3,MHz,18g9/2 -> 19h,Table V (g -> h),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower; j not resolved in the source, j = l + 1/2 assumed"
+19i_6.5,18h_5.5,1042424.5,0.4,MHz,18h -> 19i,Table V (h -> i),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower; j not resolved in the source, j = l + 1/2 assumed"
+19g_7/2,19f_5/2,24.981,0.001,GHz,19f5/2 -> 19g7/2,Table V (f -> g),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower"
+19h_5.5,19g_9/2,4320.6,0.5,MHz,19g9/2 -> 19h,Table V (g -> h),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower; j not resolved in the source, j = l + 1/2 assumed"
+19g_9/2,19f_7/2,25.1200,0.0008,GHz,19f7/2 -> 19g9/2,Table V (f -> g),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower"
+18g_9/2,19f_7/2,-1016.7236,0.0001,GHz,19f7/2 -> 18g9/2,Table V (f -> g),"EIT ladder scheme; fine structure beyond f unresolved, g J labels as in source, beyond g j=l+1/2 assumed; negative = final state lower"

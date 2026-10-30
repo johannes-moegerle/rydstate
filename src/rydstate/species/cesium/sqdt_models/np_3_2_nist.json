@@ -4,5 +4,5 @@
   "channel": "np_3/2",
   "reference": "NIST Atomic Spectra Database",
   "nist_data_file": "../nist_data.txt",
-  "n_range": [6, 18]
+  "n_range": [6, 17]
 }

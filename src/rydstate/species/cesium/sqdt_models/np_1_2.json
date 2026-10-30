@@ -2,7 +2,13 @@
   "model_class": "ModelSQDT",
   "species": "Cs",
   "channel": "np_1/2",
-  "quantum_defects": [3.5915871, 0.36273, 0.0, 0.0, 0.0],
-  "reference": "Phys. Rev. A 93, 013424 (2016)",
-  "n_range": [19, "inf"]
+  "reference": ["Deiglmayr 2016, Phys. Rev. A 93, 013424, https://doi.org/10.1103/PhysRevA.93.013424", "Sansonetti 1984, Phys. Rev. A 30, 1805, https://doi.org/10.1103/PhysRevA.30.1805", "Weber 1987, Phys. Rev. A 35, 4650, https://doi.org/10.1103/PhysRevA.35.4650"],
+  "n_range": [11, "inf"],
+  "quantum_defects": [3.591588882452706, 0.3609652875822405, 0.4307392991240801],
+  "fit_info": {
+    "method": "rydstate.fit.fit_sqdt_models",
+    "rydstate version": "0.14.0",
+    "n range of the data": [11, 83],
+    "config": "fits/cesium/fit_config.json"
+  }
 }

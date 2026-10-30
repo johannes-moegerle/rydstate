@@ -1,0 +1,19 @@
+{
+  "dataset": "shen2025",
+  "species": "Cs",
+  "reference": "Shen 2025, Phys. Rev. A 112, 022814, https://doi.org/10.1103/dkb4-kb5b",
+  "authors": "P. Shen, M. Pawlak, D. Booth, K. Nickerson, H. Miladi, H. R. Sadeghpour, J. P. Shaffer",
+  "title": "Precision measurement of Cs(nFJ) quantum defects and calculations of scalar and tensor polarizabilities of the nS1/2, nPJ, nDJ, and nFJ series",
+  "year": 2025,
+  "doi": "10.1103/dkb4-kb5b",
+  "url": "https://doi.org/10.1103/dkb4-kb5b",
+  "method": "three-photon (852 nm + 509 nm + rf) excitation of laser-cooled Cs, comb-referenced lasers, field ionization",
+  "uncertainty": "statistical per level in brackets (kHz); systematic budget Table II, total < 50 kHz",
+  "conversion": [
+    "Energies from '6S1/2 hyperfine center of gravity (inferred; caption states |6S1/2,F=3>, see metadata caveats)', energy zero: INFERRED, not as printed: the Table I caption says the frequencies are from |6S1/2, F=3>, but the numbers behave as energies above the 6S1/2 hyperfine centre of gravity (refit reproduces the published E_I and delta0; Bai2023 D->F intervals reproduced with Shen2024 c.o.g. D levels; a further -5.17 GHz would give inconsistent quantum defects; with the published Ritz parameters 28F7/2 is reproduced to 0.11 MHz without shift). If the caption were literally correct the shift would be -5.170855370625 GHz as in Cs/shen2024. See content.energy_reference."
+  ],
+  "caveats": [
+    "reference level ambiguity: caption says F=3, numbers behave as referenced to the 6S1/2 center of gravity (see energy_reference); levels.csv reference_level states the inferred reference",
+    "uncertainties statistical only"
+  ]
+}

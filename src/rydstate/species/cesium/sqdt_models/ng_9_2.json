@@ -2,8 +2,13 @@
   "model_class": "ModelSQDT",
   "species": "Cs",
   "channel": "ng_9/2",
-  "quantum_defects": [0.0],
-  "reference": null,
+  "reference": ["Allinson 2025, Phys. Rev. A 111, 062802, https://doi.org/10.1103/PhysRevA.111.062802"],
   "n_range": [12, "inf"],
-  "comment": "no quantum defects known, assumed to be zero"
+  "quantum_defects": [0.007032612996608797, -0.0483342469846257],
+  "fit_info": {
+    "method": "rydstate.fit.fit_sqdt_models",
+    "rydstate version": "0.14.0",
+    "n range of the data": [15, 19],
+    "config": "fits/cesium/fit_config.json"
+  }
 }

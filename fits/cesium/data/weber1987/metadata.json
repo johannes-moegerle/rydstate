@@ -1,0 +1,21 @@
+{
+  "dataset": "weber1987",
+  "species": "Cs",
+  "reference": "Weber 1987, Phys. Rev. A 35, 4650, https://doi.org/10.1103/PhysRevA.35.4650",
+  "authors": "K.-H. Weber, C. J. Sansonetti",
+  "title": "Accurate energies of nS, nP, nD, nF, and nG levels of neutral cesium",
+  "year": 1987,
+  "doi": "10.1103/PhysRevA.35.4650",
+  "url": "https://doi.org/10.1103/PhysRevA.35.4650",
+  "method": "Doppler-free resonantly enhanced two-photon spectroscopy in a thermionic diode, Fabry-Perot wavelength calibration against I2-stabilized He-Ne",
+  "uncertainty": "95% confidence: 0.00015 cm^-1 (p, f, g series), 0.00020 cm^-1 (s, d series and all Table II levels) unless given in parentheses (then 0.0005 cm^-1 for 4-decimal values)",
+  "conversion": [
+    "Rows without uncertainty are not exported: ['6S1/2'].",
+    "Energies from '6s 2S1/2 hyperfine center of gravity', energy zero: Measured from 6S1/2 F=4 and increased by 0.13415 cm^-1 by the authors (= 7/16 of the ground hfs), excited levels reduced to their hfs centres of gravity; pressure-shift corrected."
+  ],
+  "caveats": [
+    "31S1/2 (31260.38452 cm^-1) as printed in the S column is inconsistent with the S series (it gives the P1/2 quantum defect 3.592); probable misplacement in the source; flagged in levels.csv, exclude from S fits",
+    "energies at low n (n<=10) include values with larger uncertainty (0.0005 cm^-1, marked (5))",
+    "thermal-vapor measurement: pressure-shift corrections applied by the authors (up to +0.00008 cm^-1)"
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "species": "Cs",
+  "comment": [
+    "Global SQDT fit of the Cs s, p, d, f and g series; every dataset of energies from the ground state has its own ionization threshold (free offset), so the quantum defects only describe binding energies and intervals and are used with the threshold of rydstate.",
+    "n_min: the lowest measured level of each series (ng_9/2: the next n after its NIST levels, its data start at n = 15); the NIST levels (the *_nist.json models) are used below. A leave-out test (refit without the levels below a trial boundary, prediction of the left-out levels) shows that the fitted models describe the measured levels down to n_min.",
+    "orders: 4 coefficients for ns_1/2 and nf_5/2 are needed to describe their lowest measured levels (n = 11) together with the rest of the series (with them, ng_7/2 needs no third coefficient); the additional coefficients change the energies at n >= 20 by less than 0.3 MHz."
+  ],
+  "data_directory": "data",
+  "models_directory": "../../src/rydstate/species/cesium/sqdt_models",
+  "report_file": "fit_report.json",
+  "series": {
+    "ns_1/2": {"orders": 4, "n_min": 11},
+    "np_1/2": {"orders": 3, "n_min": 11},
+    "np_3/2": {"orders": 3, "n_min": 18},
+    "nd_3/2": {"orders": 3, "n_min": 11},
+    "nd_5/2": {"orders": 3, "n_min": 11},
+    "nf_5/2": {"orders": 4, "n_min": 11},
+    "nf_7/2": {"orders": 3, "n_min": 14},
+    "ng_7/2": {"orders": 2, "n_min": 11},
+    "ng_9/2": {"orders": 2, "n_min": 12}
+  },
+  "datasets": {
+    "deiglmayr2016": {
+      "free_offset": true,
+      "intervals": false,
+      "comment": "the Table III intervals are inconsistent with the Table I levels and Shen 2024 (49s1/2 <- 45p3/2 by 418 kHz)"
+    },
+    "shen2024": {
+      "free_offset": true,
+      "systematic": {"value": 50, "unit": "kHz"},
+      "comment": "statistical uncertainties only, but the levels scatter by ~40 kHz around any smooth series; systematic budget < 59 kHz (Table S2)"
+    },
+    "shen2025": {
+      "free_offset": true,
+      "systematic": {"value": 50, "unit": "kHz"},
+      "comment": "statistical uncertainties only; systematic budget < 50 kHz (Table II)"
+    },
+    "bai2023": {
+      "systematic": {"value": 1.4, "unit": "kHz"},
+      "comment": "statistical uncertainties plus the two systematics of 1 kHz (dc electric and magnetic field)"
+    },
+    "sansonetti1984": {},
+    "weber1987": {
+      "free_offset": true,
+      "n_min": 11,
+      "exclude": {"31S1/2": "printed in the S column of the source, but it gives the P1/2 quantum defect (probable misplacement)"},
+      "comment": "the levels below n = 11 are not described by a 3-coefficient Ritz formula; the uncertainties are 95% confidence as given"
+    },
+    "allinson2025": {
+      "channels": ["nf_5/2", "nf_7/2", "ng_7/2", "ng_9/2"],
+      "exclude": {
+        "18f7/2 -> 19g9/2": "THz interval between different n, 12 sigma off the g fit (few-MHz systematics of large intervals)",
+        "19f7/2 -> 18g9/2": "THz interval between different n, 19 sigma off the g fit (few-MHz systematics of large intervals)"
+      },
+      "comment": "only the f -> g intervals of the same n; the other intervals of this thermal vapour experiment deviate by a few MHz from cold-atom data"
+    }
+  }
+}

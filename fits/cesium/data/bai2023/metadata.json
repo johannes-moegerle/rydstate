@@ -1,0 +1,16 @@
+{
+  "dataset": "bai2023",
+  "species": "Cs",
+  "reference": "Bai 2023, Phys. Rev. A 108, 022804, https://doi.org/10.1103/PhysRevA.108.022804",
+  "authors": "J. Bai, R. Song, J. Fan, Y. Jiao, J. Zhao, S. Jia, G. Raithel",
+  "title": "Quantum defects of nFJ levels of Cs Rydberg atoms",
+  "year": 2023,
+  "doi": "10.1103/PhysRevA.108.022804",
+  "url": "https://doi.org/10.1103/PhysRevA.108.022804",
+  "method": "microwave spectroscopy of laser-excited cold Cs (n+2)D5/2 atoms, state-selective field ionization, zero-field extrapolation",
+  "uncertainty": "statistical in parentheses (0.9-3.9 kHz); 1 kHz systematic each (dc electric, magnetic) added in quadrature in the analysis",
+  "conversion": [],
+  "caveats": [
+    "intervals only; need nD5/2 term values (e.g. Shen2024) to place the nF levels"
+  ]
+}
