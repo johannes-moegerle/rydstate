@@ -491,3 +491,62 @@ def test_model_set_without_models() -> None:
     assert sqdt.models == []
     angular = AngularKetLS(l_r=0, j_tot=0.5, f_tot=0.5, species="H")
     assert sqdt.calc_nui(60, angular) == 60
+
+
+def test_fit_nui_gradient() -> None:
+    """The analytic derivatives of nui agree with central finite differences.
+
+    nui is linear in the higher orders and only weakly nonlinear in delta_0, so a large step is accurate.
+    """
+    model = ModelSQDTFit("Cs", "nf_5/2", [0.0334149, -0.20036, 0.2825])
+    n = 30
+    step = 1e-3
+    parameters = model.get_parameters()
+    for index, derivative in enumerate(model.calc_nui_gradient(n)):
+        shifted = [list(parameters), list(parameters)]
+        shifted[0][index] += step
+        shifted[1][index] -= step
+        model.set_parameters(shifted[0])
+        upper = model.calc_nui(n)
+        model.set_parameters(shifted[1])
+        lower = model.calc_nui(n)
+        model.set_parameters(parameters)
+        assert derivative == pytest.approx((upper - lower) / (2 * step), rel=1e-6, abs=1e-12)
+
+
+def test_fit_binding_energy_gradient() -> None:
+    """The analytic derivatives of the binding energy agree with central finite differences."""
+    model = ModelSQDTFit("Cs", "nf_5/2", [0.0334149, -0.20036, 0.2825])
+    n = 30
+    step = 1e-3
+    parameters = model.get_parameters()
+    for index, derivative in enumerate(model.calc_binding_energy_gradient(n)):
+        shifted = [list(parameters), list(parameters)]
+        shifted[0][index] += step
+        shifted[1][index] -= step
+        model.set_parameters(shifted[0])
+        upper = model.calc_binding_energy_au(n=n)
+        model.set_parameters(shifted[1])
+        lower = model.calc_binding_energy_au(n=n)
+        model.set_parameters(parameters)
+        assert derivative == pytest.approx((upper - lower) / (2 * step), rel=1e-5, abs=1e-18)
+
+
+def test_fit_to_model() -> None:
+    """to_model returns an independent ModelSQDT with the present parameters and the fit info."""
+    model_fit = ModelSQDTFit.from_model(
+        ModelSQDT("Rb", "ns_1/2", [3.1311807, 0.1787], reference="test", n_range=(9, 99))
+    )
+    model_fit.set_parameters([3.13, 0.18])
+    model = model_fit.to_model({"chi2": 1.0})
+    assert type(model) is ModelSQDT
+    assert model.quantum_defects == (3.13, 0.18)
+    assert (model.reference, model.n_range, model.fit_info) == ("test", (9, 99), {"chi2": 1.0})
+    model_fit.set_parameters([3.0, 0.1])
+    assert model.quantum_defects == (3.13, 0.18)
+    assert model_fit.to_model().fit_info is None
+
+    class ModelSQDTOtherFit(ModelSQDTFit):
+        pass
+
+    assert type(ModelSQDTOtherFit.from_model(model).to_model()) is ModelSQDT  # a subclass overrides to_model
