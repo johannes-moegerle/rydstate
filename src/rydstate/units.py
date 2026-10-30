@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, Literal, get_args, overload
 
+import numpy as np
 from pint import UnitRegistry
 from pint.facets.plain import PlainQuantity
 
@@ -118,6 +119,18 @@ def _contexts(dimension: DimensionLike | None) -> tuple[Context, ...]:
     return tuple(contexts)
 
 
+def _convert(quantity: PintFloat | PintArray, unit: str | PlainUnit, dimension: DimensionLike) -> float | NDArray:
+    """Convert the quantity to the unit, with the pint contexts of the dimension.
+
+    The spectroscopy context converts wave numbers via 1/value. With a numpy magnitude, a zero wave number
+    (or frequency, energy) gives 1/inf = 0 instead of a ZeroDivisionError, and a zero wavelength an infinite energy.
+    """
+    with np.errstate(divide="ignore"):
+        float_quantity = ureg.Quantity(np.float64(quantity.magnitude), quantity.units)  # also for offset units (degC)
+        magnitude = float_quantity.to(unit, *_contexts(dimension)).magnitude
+    return float(magnitude) if np.ndim(magnitude) == 0 else magnitude
+
+
 def user_to_au(value: PintFloat | float, unit: str | None, dimension: Dimension | None = None) -> float:
     """Convert a user-defined value + unit to a value in atomic units.
 
@@ -144,7 +157,7 @@ def user_to_au(value: PintFloat | float, unit: str | None, dimension: Dimension 
 
     if dimension is None:
         return float(quantity.to_base_units().magnitude)
-    return float(quantity.to(BaseUnits[dimension], *_contexts(dimension)).magnitude)
+    return float(_convert(quantity, BaseUnits[dimension], dimension))
 
 
 @overload
@@ -190,4 +203,4 @@ def au_to_user(
 
     if unit is None:
         return quantity
-    return quantity.to(unit, *_contexts(dimension)).magnitude
+    return _convert(quantity, unit, dimension)
