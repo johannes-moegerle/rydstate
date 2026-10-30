@@ -46,3 +46,5 @@ data or the config needs a rerun of the fit.
   85Rb data converted to 87Rb, every dataset of absolute energies with its own ionization threshold.
 - K (`potassium/`): global fit of the s, p, d, f, g series (506 values from 7 datasets, chi2/dof = 0.54), every
   dataset of absolute energies with its own ionization threshold; f and g fine structure unresolved (same_as).
+- Na (`sodium/`): global fit of the s, p, d, f, g, h series to microwave intervals between Rydberg levels (161 values
+  from 6 datasets, chi2/dof = 0.50); no absolute energies, so no threshold enters.

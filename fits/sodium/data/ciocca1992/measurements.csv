@@ -1,0 +1,3 @@
+level,lower_level,value,uncertainty,unit,source_label,source_location,note
+11s_1/2,,40271.396,0.002,1/cm,11S,Table V (p. 4725),row 1; energy relative to Na 3 2S = E_ion + binding energy; derived from this work's binding energy and the paper's ionization energy
+12s_1/2,,40482.236,0.002,1/cm,12S,Table V (p. 4725),row 2; energy relative to Na 3 2S = E_ion + binding energy; derived from this work's binding energy and the paper's ionization energy

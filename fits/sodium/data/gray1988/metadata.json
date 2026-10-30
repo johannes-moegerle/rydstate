@@ -1,0 +1,20 @@
+{
+  "dataset": "gray1988",
+  "species": "Na",
+  "reference": "Gray 1988, Phys. Rev. A 38, 4985, https://doi.org/10.1103/PhysRevA.38.4985",
+  "authors": "L. G. Gray, X. Sun, K. B. MacAdam",
+  "title": "Resonance measurements of d-f-g-h intervals in Rydberg states of sodium and a redetermination of the core polarizabilities",
+  "year": 1988,
+  "doi": "10.1103/PhysRevA.38.4985",
+  "url": "https://doi.org/10.1103/PhysRevA.38.4985",
+  "method": "microwave resonance (single-photon d-f, rf-assisted two-photon d-g and three-photon d-h) with selective field ionization in a sodium beam; Stark-shift corrected",
+  "uncertainty": "per-line 1 SD, 0.5-5.4 MHz",
+  "conversion": [
+    "Not exported, no uncertainty: 3 rows (27d3/2 - 27g7/2, 28d3/2 - 28g7/2, 28d3/2 - 28h9/2)."
+  ],
+  "caveats": [
+    "Three entries are calculated, not measured (bracketed; flagged in comment).",
+    "Residual stray field ~21 mV/cm: Stark corrections applied, but values are systematically lower than Sun 1994 by up to ~2 MHz for d-g/d-h.",
+    "Use sun1994 instead where both exist."
+  ]
+}

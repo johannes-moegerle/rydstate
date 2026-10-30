@@ -2,7 +2,13 @@
   "model_class": "ModelSQDT",
   "species": "Na",
   "channel": "ns_1/2",
-  "quantum_defects": [1.34796938, 0.0609892, 0.0196743, -0.001045, 0],
-  "reference": ["Phys. Rev. A 45, 4720 (1992)", "Quantum Electron. 25 914 (1995)"],
-  "n_range": [17, "inf"]
+  "reference": ["Dyubko 1995, Phys. Rev. A 52, 514, https://doi.org/10.1103/PhysRevA.52.514", "Goy 1980, J. Phys. B: At. Mol. Phys. 13, L83, https://doi.org/10.1088/0022-3700/13/3/001", "Fabre 1980, Phys. Rev. A 22, 778, https://doi.org/10.1103/PhysRevA.22.778", "Gerasimov 1991, Sov. J. Quantum Electron. 21, 369, https://doi.org/10.1070/QE1991v021n04ABEH003809"],
+  "n_range": [11, "inf"],
+  "quantum_defects": [1.347968927808669, 0.061414363457786794],
+  "fit_info": {
+    "method": "rydstate.fit.fit_sqdt_models",
+    "rydstate version": "0.14.0",
+    "n range of the data": [22, 41],
+    "config": "fits/sodium/fit_config.json"
+  }
 }

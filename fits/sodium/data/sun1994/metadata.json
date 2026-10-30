@@ -1,0 +1,18 @@
+{
+  "dataset": "sun1994",
+  "species": "Na",
+  "reference": "Sun 1994, Phys. Rev. A 49, 2453, https://doi.org/10.1103/PhysRevA.49.2453",
+  "authors": "X. Sun, K. B. MacAdam",
+  "title": "Microwave measurements of d-f-g-h intervals and d and f fine structure of sodium Rydberg states",
+  "year": 1994,
+  "doi": "10.1103/PhysRevA.49.2453",
+  "url": "https://doi.org/10.1103/PhysRevA.49.2453",
+  "method": "microwave resonance (single-, two-, three-photon) with selective field ionization, stray field reduced to ~8 mV/cm, residual Stark shifts corrected by series fits",
+  "uncertainty": "per-line 1 SD: 0.03-0.13 MHz (d-f), 0.17-0.8 MHz (d-g), 0.5-1.5 MHz (d-h)",
+  "conversion": [],
+  "caveats": [
+    "Intervals relative to nd levels; absolute f, g, h energies need nd energies (e.g. from Dyubko 1995 / Ciocca 1992 quantum defects).",
+    "Fine-structure rows are differences of measured lines; do not use them together with the underlying lines as independent data.",
+    "Supersedes gray1988 for n=22-30 (same group)."
+  ]
+}

@@ -1,0 +1,7 @@
+level,lower_level,value,uncertainty,unit,source_label,source_location,note
+23p_3/2,23p_1/2,493,18,MHz,23P fine structure,Table III (p. 234),row 1; from splittings of S-P and P-D resonance lines; P3/2 above P1/2
+31p_3/2,31p_1/2,221,30,MHz,31P fine structure,Table III (p. 234),row 2; from splittings of S-P and P-D resonance lines; P3/2 above P1/2
+32p_3/2,32p_1/2,157,30,MHz,32P fine structure,Table III (p. 234),row 3; from splittings of S-P and P-D resonance lines; P3/2 above P1/2
+34p_3/2,34p_1/2,129,30,MHz,34P fine structure,Table III (p. 234),row 4; from splittings of S-P and P-D resonance lines; P3/2 above P1/2
+40p_3/2,40p_1/2,82,30,MHz,40P fine structure,Table III (p. 234),row 5; from splittings of S-P and P-D resonance lines; P3/2 above P1/2
+41p_3/2,41p_1/2,99,30,MHz,41P fine structure,Table III (p. 234),row 6; from splittings of S-P and P-D resonance lines; P3/2 above P1/2

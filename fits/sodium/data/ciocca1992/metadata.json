@@ -1,0 +1,26 @@
+{
+  "dataset": "ciocca1992",
+  "species": "Na",
+  "reference": "Ciocca 1992, Phys. Rev. A 45, 4720, https://doi.org/10.1103/PhysRevA.45.4720",
+  "authors": "M. Ciocca, C. E. Burkhardt, J. J. Leventhal, T. Bergeman",
+  "title": "Precision Stark spectroscopy of sodium: Improved values for the ionization limit and bound states",
+  "year": 1992,
+  "doi": "10.1103/PhysRevA.45.4720",
+  "url": "https://doi.org/10.1103/PhysRevA.45.4720",
+  "method": "CO2-laser excitation of Stark-shifted Rydberg states (n~30-55) from 11S, 12S, 10D in an electric field, analysed with Stark-structure calculations; global QD fits to literature optical/IR/MW data",
+  "uncertainty": "own binding energies 0.0004-0.0033 cm^-1; ionization limit 41449.451(2) cm^-1",
+  "conversion": [
+    "Not exported, quantity 'binding energy' (derived values): 11 rows (11S1/2, 11S1/2, 12S1/2, 12S1/2, 10D3/2, 10D5/2, 11S, 12S, ...).",
+    "Not exported, fine structure not resolved (no J): 1 rows (10D).",
+    "Not exported, values quoted from other sources (secondary): 15 rows (3S - 4S, 3S - 5S, 3S - 6S, 3S - 7S, 3S - 8S, 3S - 9S, 3S - 10S, 3S - 11S, ...).",
+    "Not exported, quantity 'quantum defect' (derived values): 28 rows (3P1/2, 3P3/2, 4P1/2, 4P3/2, 5P1/2, 5P3/2, 6P1/2, 6P3/2, ...).",
+    "Energies from '3s 2S1/2 ground state (hyperfine centroid), using E_ion = 41449.451(2) cm^-1', energy zero: The paper says its E_ion 'applies to the mean of the hyperfine levels of the 3 S ground state', so Table V column 5 has the same zero. If an unweighted mean were meant, the centre of gravity would lie (5/8-1/2) x 1771.6 MHz = 221 MHz = 0.0074 cm^-1 higher (more than the 0.002 cm^-1 uncertainty); the paper does not say, so no shift is given. Table VI 3S-nS intervals are literature values (Risberg 1956 [12], Refs. [13,14]) whose ground-hfs reference is not stated."
+  ],
+  "caveats": [
+    "SECONDARY rows (Table VI except 'this work' rows, all of Table IX) are literature data re-quoted, not measured here; prefer the primary sources where available (fabre1980 for n=23-36 P).",
+    "Table VI microwave rows: value in GHz but residual and uncertainty in kHz (footnotes b, c).",
+    "Table IX uncertainties are 10^6 sigma; they include E_ion uncertainty propagation.",
+    "Binding energies depend on the Stark-structure calculation and on the quantum defects assumed for the Stark basis.",
+    "n_levels_total counts only the 3 levels measured in this work."
+  ]
+}

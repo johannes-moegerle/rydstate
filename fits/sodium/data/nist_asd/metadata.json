@@ -1,0 +1,24 @@
+{
+  "dataset": "nist_asd",
+  "species": "Na",
+  "reference": "Kramida 2024, NIST Atomic Spectra Database (ver. 5.12), https://doi.org/10.18434/T4W30F",
+  "authors": "A. Kramida, Yu. Ralchenko, J. Reader, and NIST ASD Team",
+  "title": "NIST Atomic Spectra Database (ver. 5.12)",
+  "year": 2024,
+  "doi": "10.18434/T4W30F",
+  "url": "https://doi.org/10.18434/T4W30F",
+  "method": "NIST critically evaluated compilation (see asd_compilation and asd_references for the original measurements)",
+  "uncertainty": "per-level ASD uncertainties in column 'Uncertainty (cm-1)' (empty where ASD gives none)",
+  "conversion": [
+    "Not exported, no uncertainty: 1 rows (2p6.3s 2S 1/2).",
+    "Not exported, fine structure not resolved (no J): 27 rows (2p6.5g 2G 7/2,9/2, 2p6.7g 2G 7/2,9/2, 2p6.7h 2H* 9/2,11/2, 2p6.8g 2G 7/2,9/2, 2p6.8h 2H* 9/2,11/2, 2p6.9g 2G 7/2,9/2, 2p6.9h 2H* 9/2,11/2, 2p6.10g 2G 7/2,9/2, ...).",
+    "Not exported, no single valence electron level: 291 rows (Na II (2p6 1S<0>) Limit ---, 2p5.3s2 2P* 3/2, 2p5.3s2 2P* 1/2, 2p5.(2P*).3s.3p.(3P*) 4S 3/2, 2p5.(2P*).3s.3p.(3P*) 4D 7/2, 2p5.(2P*).3s.3p.(3P*) 4D 5/2, 2p5.(2P*).3s.3p.(3P*) 4D 3/2, 2p5.(2P*).3s.3p.(3P*) 4D 1/2, ...).",
+    "Energies from 'ground state 2p6.3s 2S 1/2', energy zero: The ASD output and the downloaded bibliography pages do not state a hyperfine reference (levels are not hyperfine resolved). The adopted ionization energy (Ciocca 1992) applies to the mean of the 3S hyperfine levels."
+  ],
+  "caveats": [
+    "Energies are term energies in cm^-1 relative to the ASD ground state 2p6.3s 2S 1/2; the ionization limit is a separate 'Limit' row and in ionization_energy.",
+    "ASD levels are not isotope resolved: the compilation mixes data from different isotopes and natural samples; isotope shifts and hyperfine structure are not separated. RydState 'Na' uses mass number 23; hyperfine structure is not resolved in ASD (centroid / fine-structure energies).",
+    "Energy precision is ASD's (compilation) precision; for many Rydberg series more precise modern measurements exist (e.g. mm-wave or laser spectroscopy) and should be preferred in fits.",
+    "Column j in levels.csv is the total J of the level as given by ASD; s is the total spin from the LS term multiplicity; for jj/jK-coupled terms only n and l are assigned. n, l are filled only when the configuration has exactly one electron outside the RydState core configuration '2p6' (same rule as rydstate.species.nist.parse_nist_energy_levels)."
+  ]
+}

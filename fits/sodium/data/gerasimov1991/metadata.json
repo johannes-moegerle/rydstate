@@ -1,0 +1,22 @@
+{
+  "dataset": "gerasimov1991",
+  "species": "Na",
+  "reference": "Gerasimov 1991, Sov. J. Quantum Electron. 21, 369, https://doi.org/10.1070/QE1991v021n04ABEH003809",
+  "authors": "V. G. Gerasimov, S. F. Dyubko, M. N. Efimenko, V. A. Efremov, V. B. Podoba, S. V. Podnos, A. V. Reznik",
+  "title": "Measurement of microwave transition frequencies involving the Rydberg states of sodium atoms",
+  "year": 1991,
+  "doi": "10.1070/QE1991v021n04ABEH003809",
+  "url": "https://doi.org/10.1070/QE1991v021n04ABEH003809",
+  "method": "atomic-beam microwave spectroscopy 39-156 GHz, pulsed dye-laser excitation via 3P, field ionization (predecessor apparatus of dyubko1995pra)",
+  "uncertainty": "'scatter not exceeding +-2 MHz for most frequencies'; asterisked lines worse (poor S/N)",
+  "conversion": [
+    "Not exported, intervals from a reference that is no single level: 2 rows (35D3/2,5/2 - 36D3/2,5/2, 35D3/2,5/2 - 37P1/2)."
+  ],
+  "caveats": [
+    "Low precision (~2 MHz), some lines with poor S/N (flagged); values scatter by up to +7 MHz from dyubko1995pra for the same transitions.",
+    "Values printed with decimal commas; converted to decimal points (notation only).",
+    "Row 11 number misprinted as 1' in both the Russian original and the English translation (the English Table I reproduces the Russian table layout).",
+    "The English text calls the three-photon resonance '35D -> 37D'; the Russian text and both tables say 35D -> 37P (37P1/2), which is also the only parity-allowed assignment; levels.csv follows the tables.",
+    "The English translation is not a fully independent typesetting of Table I (same layout and misprint); the agreement confirms the transcription of the Russian scan, not the authors' numbers."
+  ]
+}

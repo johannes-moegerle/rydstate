@@ -1,0 +1,18 @@
+{
+  "dataset": "goy1980",
+  "species": "Na",
+  "reference": "Goy 1980, J. Phys. B: At. Mol. Phys. 13, L83, https://doi.org/10.1088/0022-3700/13/3/001",
+  "authors": "P. Goy, C. Fabre, M. Gross, S. Haroche",
+  "title": "High-resolution two-photon millimetre spectroscopy in sodium Rydberg states: possible applications to metrology",
+  "year": 1980,
+  "doi": "10.1088/0022-3700/13/3/001",
+  "url": "https://doi.org/10.1088/0022-3700/13/3/001",
+  "method": "two-photon millimetre-wave spectroscopy in a Fabry-Perot cavity (Doppler-free), atomic beam",
+  "uncertainty": "4-12 kHz (as quoted by Ciocca 1992 Table VI)",
+  "conversion": [
+    "The source was not obtained: the values are those re-quoted in Ciocca 1992 Table VI (microwave rows, values in GHz, uncertainties in kHz, footnotes b, c of that table)."
+  ],
+  "caveats": [
+    "Content unverified; use the Ciocca 1992 re-quotation with that caveat."
+  ]
+}

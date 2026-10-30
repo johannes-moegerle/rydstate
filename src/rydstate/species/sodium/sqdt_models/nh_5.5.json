@@ -2,7 +2,13 @@
   "model_class": "ModelSQDT",
   "species": "Na",
   "channel": "nh_5.5",
-  "quantum_defects": [0.00015796, -0.00148, 0, 0, 0],
-  "reference": "J. Phys. B: At. Mol. Opt. Phys. 30 2345 (1997)",
-  "n_range": [11, "inf"]
+  "reference": ["Sun 1994, Phys. Rev. A 49, 2453, https://doi.org/10.1103/PhysRevA.49.2453"],
+  "n_range": [11, "inf"],
+  "quantum_defects": [0.00015595863030269227, -7.394566868427379e-05],
+  "fit_info": {
+    "method": "rydstate.fit.fit_sqdt_models",
+    "rydstate version": "0.14.0",
+    "n range of the data": [23, 31],
+    "config": "fits/sodium/fit_config.json"
+  }
 }

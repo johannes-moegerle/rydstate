@@ -1,0 +1,100 @@
+level,lower_level,value,uncertainty,unit,source_label,source_location,note
+21f_5/2,21d_3/2,9385.97,0.05,MHz,21d3/2 - 21f5/2,Table I (p. 2456),column d3/2-f5/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+21f_7/2,21d_5/2,9397.94,0.03,MHz,21d5/2 - 21f7/2,Table I (p. 2456),column d5/2-f7/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+22f_5/2,22d_3/2,8167.36,0.05,MHz,22d3/2 - 22f5/2,Table I (p. 2456),column d3/2-f5/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+22f_7/2,22d_5/2,8177.79,0.03,MHz,22d5/2 - 22f7/2,Table I (p. 2456),column d5/2-f7/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+22g_7/2,22d_3/2,8900.15,0.20,MHz,22d3/2 - 22g7/2,Table I (p. 2456),column d3/2-g7/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+23f_5/2,23d_3/2,7150.73,0.06,MHz,23d3/2 - 23f5/2,Table I (p. 2456),column d3/2-f5/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+23f_7/2,23d_5/2,7159.87,0.04,MHz,23d5/2 - 23f7/2,Table I (p. 2456),column d5/2-f7/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+23g_7/2,23d_3/2,7792.51,0.25,MHz,23d3/2 - 23g7/2,Table I (p. 2456),column d3/2-g7/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+23g_9/2,23d_5/2,7801.18,0.20,MHz,23d5/2 - 23g9/2,Table I (p. 2456),column d5/2-g9/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+23h_9/2,23d_3/2,7941.28,0.50,MHz,23d3/2 - 23h9/2,Table I (p. 2456),column d3/2-h9/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+23h_5.5,23d_5/2,7950.60,0.59,MHz,23d5/2 - 23h11/2,Table I (p. 2456),column d5/2-h11/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+24f_5/2,24d_3/2,6295.95,0.07,MHz,24d3/2 - 24f5/2,Table I (p. 2456),column d3/2-f5/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+24f_7/2,24d_5/2,6304.00,0.04,MHz,24d5/2 - 24f7/2,Table I (p. 2456),column d5/2-f7/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+24g_7/2,24d_3/2,6861.18,0.17,MHz,24d3/2 - 24g7/2,Table I (p. 2456),column d3/2-g7/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+24g_9/2,24d_5/2,6868.80,0.18,MHz,24d5/2 - 24g9/2,Table I (p. 2456),column d5/2-g9/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+24h_9/2,24d_3/2,6992.19,0.60,MHz,24d3/2 - 24h9/2,Table I (p. 2456),column d3/2-h9/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+24h_5.5,24d_5/2,7000.43,1.21,MHz,24d5/2 - 24h11/2,Table I (p. 2456),column d5/2-h11/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+25f_5/2,25d_3/2,5572.06,0.07,MHz,25d3/2 - 25f5/2,Table I (p. 2456),column d3/2-f5/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+25f_7/2,25d_5/2,5579.19,0.05,MHz,25d5/2 - 25f7/2,Table I (p. 2456),column d5/2-f7/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+25g_7/2,25d_3/2,6072.45,0.26,MHz,25d3/2 - 25g7/2,Table I (p. 2456),column d3/2-g7/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+25g_9/2,25d_5/2,6079.19,0.24,MHz,25d5/2 - 25g9/2,Table I (p. 2456),column d5/2-g9/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+25h_9/2,25d_3/2,6188.41,0.80,MHz,25d3/2 - 25h9/2,Table I (p. 2456),column d3/2-h9/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+25h_5.5,25d_5/2,6195.73,0.90,MHz,25d5/2 - 25h11/2,Table I (p. 2456),column d5/2-h11/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+26f_5/2,26d_3/2,4954.96,0.07,MHz,26d3/2 - 26f5/2,Table I (p. 2456),column d3/2-f5/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+26f_7/2,26d_5/2,4961.30,0.04,MHz,26d5/2 - 26f7/2,Table I (p. 2456),column d5/2-f7/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+26g_7/2,26d_3/2,5400.05,0.35,MHz,26d3/2 - 26g7/2,Table I (p. 2456),column d3/2-g7/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+26g_9/2,26d_5/2,5406.05,0.36,MHz,26d5/2 - 26g9/2,Table I (p. 2456),column d5/2-g9/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+26h_9/2,26d_3/2,5503.19,0.95,MHz,26d3/2 - 26h9/2,Table I (p. 2456),column d3/2-h9/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+26h_5.5,26d_5/2,5509.71,0.90,MHz,26d5/2 - 26h11/2,Table I (p. 2456),column d5/2-h11/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+27f_5/2,27d_3/2,4425.67,0.07,MHz,27d3/2 - 27f5/2,Table I (p. 2456),column d3/2-f5/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+27f_7/2,27d_5/2,4431.33,0.04,MHz,27d5/2 - 27f7/2,Table I (p. 2456),column d5/2-f7/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+27g_7/2,27d_3/2,4823.32,0.37,MHz,27d3/2 - 27g7/2,Table I (p. 2456),column d3/2-g7/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+27g_9/2,27d_5/2,4828.67,0.27,MHz,27d5/2 - 27g9/2,Table I (p. 2456),column d5/2-g9/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+27h_9/2,27d_3/2,4915.45,1.00,MHz,27d3/2 - 27h9/2,Table I (p. 2456),column d3/2-h9/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+27h_5.5,27d_5/2,4921.30,0.97,MHz,27d5/2 - 27h11/2,Table I (p. 2456),column d5/2-h11/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+28f_5/2,28d_3/2,3969.12,0.07,MHz,28d3/2 - 28f5/2,Table I (p. 2456),column d3/2-f5/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+28f_7/2,28d_5/2,3974.20,0.05,MHz,28d5/2 - 28f7/2,Table I (p. 2456),column d5/2-f7/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+28g_7/2,28d_3/2,4325.84,0.40,MHz,28d3/2 - 28g7/2,Table I (p. 2456),column d3/2-g7/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+28g_9/2,28d_5/2,4330.63,0.40,MHz,28d5/2 - 28g9/2,Table I (p. 2456),column d5/2-g9/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+28h_9/2,28d_3/2,4408.47,1.20,MHz,28d3/2 - 28h9/2,Table I (p. 2456),column d3/2-h9/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+28h_5.5,28d_5/2,4413.73,1.00,MHz,28d5/2 - 28h11/2,Table I (p. 2456),column d5/2-h11/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+29f_5/2,29d_3/2,3573.24,0.07,MHz,29d3/2 - 29f5/2,Table I (p. 2456),column d3/2-f5/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+29f_7/2,29d_5/2,3577.81,0.06,MHz,29d5/2 - 29f7/2,Table I (p. 2456),column d5/2-f7/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+29g_7/2,29d_3/2,3894.45,0.61,MHz,29d3/2 - 29g7/2,Table I (p. 2456),column d3/2-g7/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+29g_9/2,29d_5/2,3898.77,0.62,MHz,29d5/2 - 29g9/2,Table I (p. 2456),column d5/2-g9/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+29h_9/2,29d_3/2,3968.85,1.20,MHz,29d3/2 - 29h9/2,Table I (p. 2456),column d3/2-h9/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+29h_5.5,29d_5/2,3973.59,0.94,MHz,29d5/2 - 29h11/2,Table I (p. 2456),column d5/2-h11/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+30f_5/2,30d_3/2,3228.27,0.08,MHz,30d3/2 - 30f5/2,Table I (p. 2456),column d3/2-f5/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+30f_7/2,30d_5/2,3232.41,0.07,MHz,30d5/2 - 30f7/2,Table I (p. 2456),column d5/2-f7/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+30g_7/2,30d_3/2,3518.55,0.56,MHz,30d3/2 - 30g7/2,Table I (p. 2456),column d3/2-g7/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+30g_9/2,30d_5/2,3522.44,0.50,MHz,30d5/2 - 30g9/2,Table I (p. 2456),column d5/2-g9/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+30h_9/2,30d_3/2,3585.77,1.20,MHz,30d3/2 - 30h9/2,Table I (p. 2456),column d3/2-h9/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+30h_5.5,30d_5/2,3590.06,1.11,MHz,30d5/2 - 30h11/2,Table I (p. 2456),column d5/2-h11/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+31f_5/2,31d_3/2,2926.30,0.09,MHz,31d3/2 - 31f5/2,Table I (p. 2456),column d3/2-f5/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+31f_7/2,31d_5/2,2930.05,0.08,MHz,31d5/2 - 31f7/2,Table I (p. 2456),column d5/2-f7/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+31g_7/2,31d_3/2,3189.48,0.55,MHz,31d3/2 - 31g7/2,Table I (p. 2456),column d3/2-g7/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+31g_9/2,31d_5/2,3193.01,0.57,MHz,31d5/2 - 31g9/2,Table I (p. 2456),column d5/2-g9/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+31h_9/2,31d_3/2,3250.42,1.42,MHz,31d3/2 - 31h9/2,Table I (p. 2456),column d3/2-h9/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+31h_5.5,31d_5/2,3254.32,1.12,MHz,31d5/2 - 31h11/2,Table I (p. 2456),column d5/2-h11/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+32f_5/2,32d_3/2,2660.83,0.10,MHz,32d3/2 - 32f5/2,Table I (p. 2456),column d3/2-f5/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+32f_7/2,32d_5/2,2664.25,0.08,MHz,32d5/2 - 32f7/2,Table I (p. 2456),column d5/2-f7/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+32g_7/2,32d_3/2,2900.19,0.75,MHz,32d3/2 - 32g7/2,Table I (p. 2456),column d3/2-g7/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+32g_9/2,32d_5/2,2903.40,0.65,MHz,32d5/2 - 32g9/2,Table I (p. 2456),column d5/2-g9/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+32h_9/2,32d_3/2,2955.61,1.50,MHz,32d3/2 - 32h9/2,Table I (p. 2456),column d3/2-h9/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+33f_5/2,33d_3/2,2426.52,0.12,MHz,33d3/2 - 33f5/2,Table I (p. 2456),column d3/2-f5/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+33f_7/2,33d_5/2,2429.63,0.10,MHz,33d5/2 - 33f7/2,Table I (p. 2456),column d5/2-f7/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+33g_7/2,33d_3/2,2644.84,0.80,MHz,33d3/2 - 33g7/2,Table I (p. 2456),column d3/2-g7/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+33g_9/2,33d_5/2,2647.77,0.70,MHz,33d5/2 - 33g9/2,Table I (p. 2456),column d5/2-g9/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+34f_5/2,34d_3/2,2218.92,0.12,MHz,34d3/2 - 34f5/2,Table I (p. 2456),column d3/2-f5/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+34f_7/2,34d_5/2,2221.76,0.13,MHz,34d5/2 - 34f7/2,Table I (p. 2456),column d5/2-f7/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+35f_5/2,35d_3/2,2034.33,0.13,MHz,35d3/2 - 35f5/2,Table I (p. 2456),column d3/2-f5/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+35f_7/2,35d_5/2,2036.94,0.13,MHz,35d5/2 - 35f7/2,Table I (p. 2456),column d5/2-f7/2; after Stark corrections; 1 SD uncertainties incl. Stark correction
+21f_5/2,21d_5/2,9396.45,0.01,MHz,21d5/2 - 21f5/2,Table II (p. 2456),"d5/2-f5/2 frequency; uncertainty in source as '9396.45(1)' = last-digit notation, kept in parentheses notation: (1) = 1 units of the last decimal of the value; Stark corrected"
+21f_7/2,21f_5/2,1.49,0.03,MHz,21f5/2 <-> 21f7/2,Table II (p. 2456),"f fine-structure interval = difference of Table II columns 2 and 3 (derived, not independent); uncertainty '1.49(3)' in last-digit notation. Table II column 3 (d5/2-f7/2 = 9397.94(3)) duplicates Table I d5/2-f7/2 up to rounding and is not repeated"
+22f_5/2,22d_5/2,8176.48,0.02,MHz,22d5/2 - 22f5/2,Table II (p. 2456),"d5/2-f5/2 frequency; uncertainty in source as '8176.48(2)' = last-digit notation, kept in parentheses notation: (2) = 2 units of the last decimal of the value; Stark corrected"
+22f_7/2,22f_5/2,1.30,0.02,MHz,22f5/2 <-> 22f7/2,Table II (p. 2456),"f fine-structure interval = difference of Table II columns 2 and 3 (derived, not independent); uncertainty '1.30(2)' in last-digit notation. Table II column 3 (d5/2-f7/2 = 8177.78(1)) duplicates Table I d5/2-f7/2 up to rounding and is not repeated"
+23f_5/2,23d_5/2,7158.73,0.02,MHz,23d5/2 - 23f5/2,Table II (p. 2456),"d5/2-f5/2 frequency; uncertainty in source as '7158.73(2)' = last-digit notation, kept in parentheses notation: (2) = 2 units of the last decimal of the value; Stark corrected"
+23f_7/2,23f_5/2,1.13,0.03,MHz,23f5/2 <-> 23f7/2,Table II (p. 2456),"f fine-structure interval = difference of Table II columns 2 and 3 (derived, not independent); uncertainty '1.13(3)' in last-digit notation. Table II column 3 (d5/2-f7/2 = 7159.86(2)) duplicates Table I d5/2-f7/2 up to rounding and is not repeated"
+24f_5/2,24d_5/2,6302.99,0.02,MHz,24d5/2 - 24f5/2,Table II (p. 2456),"d5/2-f5/2 frequency; uncertainty in source as '6302.99(2)' = last-digit notation, kept in parentheses notation: (2) = 2 units of the last decimal of the value; Stark corrected"
+24f_7/2,24f_5/2,1.00,0.03,MHz,24f5/2 <-> 24f7/2,Table II (p. 2456),"f fine-structure interval = difference of Table II columns 2 and 3 (derived, not independent); uncertainty '1.00(3)' in last-digit notation. Table II column 3 (d5/2-f7/2 = 6303.99(2)) duplicates Table I d5/2-f7/2 up to rounding and is not repeated"
+25f_5/2,25d_5/2,5578.30,0.03,MHz,25d5/2 - 25f5/2,Table II (p. 2456),"d5/2-f5/2 frequency; uncertainty in source as '5578.30(3)' = last-digit notation, kept in parentheses notation: (3) = 3 units of the last decimal of the value; Stark corrected"
+25f_7/2,25f_5/2,0.88,0.04,MHz,25f5/2 <-> 25f7/2,Table II (p. 2456),"f fine-structure interval = difference of Table II columns 2 and 3 (derived, not independent); uncertainty '0.88(4)' in last-digit notation. Table II column 3 (d5/2-f7/2 = 5579.18(3)) duplicates Table I d5/2-f7/2 up to rounding and is not repeated"
+26f_5/2,26d_5/2,4960.51,0.02,MHz,26d5/2 - 26f5/2,Table II (p. 2456),"d5/2-f5/2 frequency; uncertainty in source as '4960.51(2)' = last-digit notation, kept in parentheses notation: (2) = 2 units of the last decimal of the value; Stark corrected"
+26f_7/2,26f_5/2,0.79,0.03,MHz,26f5/2 <-> 26f7/2,Table II (p. 2456),"f fine-structure interval = difference of Table II columns 2 and 3 (derived, not independent); uncertainty '0.79(3)' in last-digit notation. Table II column 3 (d5/2-f7/2 = 4961.30(2)) duplicates Table I d5/2-f7/2 up to rounding and is not repeated"
+27f_5/2,27d_5/2,4430.63,0.02,MHz,27d5/2 - 27f5/2,Table II (p. 2456),"d5/2-f5/2 frequency; uncertainty in source as '4430.63(2)' = last-digit notation, kept in parentheses notation: (2) = 2 units of the last decimal of the value; Stark corrected"
+27f_7/2,27f_5/2,0.70,0.04,MHz,27f5/2 <-> 27f7/2,Table II (p. 2456),"f fine-structure interval = difference of Table II columns 2 and 3 (derived, not independent); uncertainty '0.70(4)' in last-digit notation. Table II column 3 (d5/2-f7/2 = 4431.33(3)) duplicates Table I d5/2-f7/2 up to rounding and is not repeated"
+28f_5/2,28d_5/2,3973.57,0.02,MHz,28d5/2 - 28f5/2,Table II (p. 2456),"d5/2-f5/2 frequency; uncertainty in source as '3973.57(2)' = last-digit notation, kept in parentheses notation: (2) = 2 units of the last decimal of the value; Stark corrected"
+28f_7/2,28f_5/2,0.63,0.04,MHz,28f5/2 <-> 28f7/2,Table II (p. 2456),"f fine-structure interval = difference of Table II columns 2 and 3 (derived, not independent); uncertainty '0.63(4)' in last-digit notation. Table II column 3 (d5/2-f7/2 = 3974.20(3)) duplicates Table I d5/2-f7/2 up to rounding and is not repeated"
+29f_5/2,29d_5/2,3577.24,0.03,MHz,29d5/2 - 29f5/2,Table II (p. 2456),"d5/2-f5/2 frequency; uncertainty in source as '3577.24(3)' = last-digit notation, kept in parentheses notation: (3) = 3 units of the last decimal of the value; Stark corrected"
+29f_7/2,29f_5/2,0.57,0.04,MHz,29f5/2 <-> 29f7/2,Table II (p. 2456),"f fine-structure interval = difference of Table II columns 2 and 3 (derived, not independent); uncertainty '0.57(4)' in last-digit notation. Table II column 3 (d5/2-f7/2 = 3577.81(3)) duplicates Table I d5/2-f7/2 up to rounding and is not repeated"
+21d_3/2,21d_5/2,10.48,0.05,MHz,21d5/2 <-> 21d3/2,Table IV (p. 2457),"d fine-structure interval (d3/2 above d5/2, inverted) = d5/2-f5/2 minus d3/2-f5/2 (derived, not independent); uncertainty '10.48(5)' in last-digit notation"
+22d_3/2,22d_5/2,9.12,0.05,MHz,22d5/2 <-> 22d3/2,Table IV (p. 2457),"d fine-structure interval (d3/2 above d5/2, inverted) = d5/2-f5/2 minus d3/2-f5/2 (derived, not independent); uncertainty '9.12(5)' in last-digit notation"
+23d_3/2,23d_5/2,8.00,0.06,MHz,23d5/2 <-> 23d3/2,Table IV (p. 2457),"d fine-structure interval (d3/2 above d5/2, inverted) = d5/2-f5/2 minus d3/2-f5/2 (derived, not independent); uncertainty '8.00(6)' in last-digit notation"
+24d_3/2,24d_5/2,7.04,0.07,MHz,24d5/2 <-> 24d3/2,Table IV (p. 2457),"d fine-structure interval (d3/2 above d5/2, inverted) = d5/2-f5/2 minus d3/2-f5/2 (derived, not independent); uncertainty '7.04(7)' in last-digit notation"
+25d_3/2,25d_5/2,6.24,0.08,MHz,25d5/2 <-> 25d3/2,Table IV (p. 2457),"d fine-structure interval (d3/2 above d5/2, inverted) = d5/2-f5/2 minus d3/2-f5/2 (derived, not independent); uncertainty '6.24(8)' in last-digit notation"
+26d_3/2,26d_5/2,5.55,0.07,MHz,26d5/2 <-> 26d3/2,Table IV (p. 2457),"d fine-structure interval (d3/2 above d5/2, inverted) = d5/2-f5/2 minus d3/2-f5/2 (derived, not independent); uncertainty '5.55(7)' in last-digit notation"
+27d_3/2,27d_5/2,4.96,0.07,MHz,27d5/2 <-> 27d3/2,Table IV (p. 2457),"d fine-structure interval (d3/2 above d5/2, inverted) = d5/2-f5/2 minus d3/2-f5/2 (derived, not independent); uncertainty '4.96(7)' in last-digit notation"
+28d_3/2,28d_5/2,4.45,0.07,MHz,28d5/2 <-> 28d3/2,Table IV (p. 2457),"d fine-structure interval (d3/2 above d5/2, inverted) = d5/2-f5/2 minus d3/2-f5/2 (derived, not independent); uncertainty '4.45(7)' in last-digit notation"
+29d_3/2,29d_5/2,4.00,0.08,MHz,29d5/2 <-> 29d3/2,Table IV (p. 2457),"d fine-structure interval (d3/2 above d5/2, inverted) = d5/2-f5/2 minus d3/2-f5/2 (derived, not independent); uncertainty '4.00(8)' in last-digit notation"

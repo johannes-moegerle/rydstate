@@ -1,0 +1,18 @@
+{
+  "dataset": "fabre1980",
+  "species": "Na",
+  "reference": "Fabre 1980, Phys. Rev. A 22, 778, https://doi.org/10.1103/PhysRevA.22.778",
+  "authors": "C. Fabre, S. Haroche, P. Goy",
+  "title": "Addendum to \"Millimeter spectroscopy in sodium Rydberg states\"",
+  "year": 1980,
+  "doi": "10.1103/PhysRevA.22.778",
+  "url": "https://doi.org/10.1103/PhysRevA.22.778",
+  "method": "atomic-beam millimeter-wave spectroscopy (50-315 GHz, carcinotrons, frequency counted), selective field ionization",
+  "uncertainty": "per-line, 0.3-8 MHz",
+  "conversion": [],
+  "caveats": [
+    "Intervals only; nS energies needed to place nP levels.",
+    "Dyubko et al. (1995) report the same nS-nP transitions (n=23-25, 32) lower by 0.5-3 MHz and attribute the difference to stray-field Stark shifts in this experiment (residual field ~40 mV/cm quoted here).",
+    "Fine-structure rows are differences of Table I/II rows."
+  ]
+}

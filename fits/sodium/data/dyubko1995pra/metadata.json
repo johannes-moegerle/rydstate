@@ -1,0 +1,22 @@
+{
+  "dataset": "dyubko1995pra",
+  "species": "Na",
+  "reference": "Dyubko 1995, Phys. Rev. A 52, 514, https://doi.org/10.1103/PhysRevA.52.514",
+  "authors": "S. Dyubko, M. Efimenko, V. Efremov, S. Podnos",
+  "title": "Microwave spectroscopy of S, P, and D states of sodium Rydberg atoms",
+  "year": 1995,
+  "doi": "10.1103/PhysRevA.52.514",
+  "url": "https://doi.org/10.1103/PhysRevA.52.514",
+  "method": "atomic-beam microwave spectroscopy (53-350 GHz), two-step pulsed dye-laser excitation via 3P, selective field ionization",
+  "uncertainty": "'better than 50 kHz' for all frequencies (abstract); no per-line uncertainties",
+  "conversion": [
+    "Not exported, no uncertainty: 19 rows (22P1/2 <-> 22P3/2, 23P1/2 <-> 23P3/2, 24P1/2 <-> 24P3/2, 25P1/2 <-> 25P3/2, 25P1/2 <-> 25P3/2, 26P1/2 <-> 26P3/2, 26P1/2 <-> 26P3/2, 27P1/2 <-> 27P3/2, ...)."
+  ],
+  "caveats": [
+    "Only intervals; absolute positions need the nS quantum defects/ionization energy from other sources.",
+    "Rows 3, 4 (23S-23P) and 8 (25S1/2-25P1/2) deviate from the fit by an order of magnitude more than the others; authors could not identify the reason.",
+    "Fine-structure rows (Table III) are differences of Table I rows; do not use them together with Table I as independent data.",
+    "Values differ from Fabre et al. PRA 22, 778 (1980) by ~0.5-3 MHz for the same transitions; the authors attribute this to stray-field Stark shifts in the Fabre experiment.",
+    "Duplicate publication: do not combine with dyubko1995qe (same measurements)."
+  ]
+}

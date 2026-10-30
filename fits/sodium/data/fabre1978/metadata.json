@@ -1,0 +1,20 @@
+{
+  "dataset": "fabre1978",
+  "species": "Na",
+  "reference": "Fabre 1978, Phys. Rev. A 18, 229, https://doi.org/10.1103/PhysRevA.18.229",
+  "authors": "C. Fabre, S. Haroche, P. Goy",
+  "title": "Millimeter spectroscopy in sodium Rydberg states: Quantum-defect, fine-structure, and polarizability measurements",
+  "year": 1978,
+  "doi": "10.1103/PhysRevA.18.229",
+  "url": "https://doi.org/10.1103/PhysRevA.18.229",
+  "method": "atomic-beam millimeter-wave spectroscopy with free-running BWO, wavemeter, selective field ionization",
+  "uncertainty": "+-0.06 GHz except 23S-24S and 28D-29D (+-0.03 GHz); fine structure 18-30 MHz",
+  "conversion": [
+    "Not exported, fine structure not resolved (no J): 11 rows (23S-24S, 23S-23P, 24S-23P, 29D-31P, 28D-29F, 29D-28F, 28D-29D, 33S-34P, ...)."
+  ],
+  "caveats": [
+    "Low precision (+-60 MHz), fine structure of P levels not resolved in Table I (fine-structure-free positions).",
+    "Two-photon lines are given as 2 x (frequency): the value column holds the frequency inside the brackets.",
+    "28D-29D is a nominally forbidden single-photon Delta l=0 line made allowed by stray-field Stark mixing (p. 233); it may carry a Stark shift."
+  ]
+}

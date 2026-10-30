@@ -1,0 +1,75 @@
+{
+  "species": "Na",
+  "comment": [
+    "Global SQDT fit of the Na s, p, d, f, g and h series to microwave intervals between Rydberg levels (no measured absolute Rydberg energies), so no ionization threshold enters.",
+    "n_min: the data start at n = 21-23; the models are used below them down to the lowest n at which they agree with independent levels within their 60 MHz uncertainty (the NIST levels, and Ciocca 1992's 11S, 12S, 10D, not fitted: -25, -16, -47 MHz): ns and np 11, nd and nf 10, ng and nh 11. The NIST nd levels at n = 11-20 lie 0.07-1.6 GHz below the fit, while NIST 10d and Ciocca's 10D agree with it within 47 MHz."
+  ],
+  "data_directory": "data",
+  "models_directory": "../../src/rydstate/species/sodium/sqdt_models",
+  "report_file": "fit_report.json",
+  "series": {
+    "ns_1/2": {"orders": 2, "n_min": 11},
+    "np_1/2": {"orders": 2, "n_min": 11},
+    "np_3/2": {"orders": 2, "n_min": 11},
+    "nd_3/2": {"orders": 2, "n_min": 10},
+    "nd_5/2": {"orders": 2, "n_min": 10},
+    "nf_5/2": {"orders": 2, "n_min": 10},
+    "nf_7/2": {"orders": 2, "n_min": 10},
+    "ng_7/2": {"orders": 2, "n_min": 11},
+    "ng_9/2": {"orders": 2, "n_min": 11},
+    "nh_9/2": {"orders": 2, "n_min": 11},
+    "nh_5.5": {"orders": 2, "n_min": 11}
+  },
+  "datasets": {
+    "dyubko1995pra": {
+      "exclude": {
+        "23S1/2 -> 23P1/2": "deviates also from the fit of the source (deltaF -0.50 MHz), the authors could not identify the reason",
+        "23S1/2 -> 23P3/2": "deviates also from the fit of the source (deltaF -0.23 MHz), the authors could not identify the reason",
+        "25S1/2 -> 25P3/2": "deviates also from the fit of the source (deltaF +0.61 MHz), the authors could not identify the reason"
+      },
+      "comment": "the same measurements as dyubko1995qe (not used); its derived fine-structure intervals have no uncertainty and are not exported"
+    },
+    "goy1980": {
+      "comment": "re-quoted in Ciocca 1992 (the source was not obtained)"
+    },
+    "sun1994": {
+      "exclude": {
+        "21f5/2 <-> 21f7/2": "fine-structure interval derived from the measured lines (not independent)",
+        "22f5/2 <-> 22f7/2": "fine-structure interval derived from the measured lines (not independent)",
+        "23f5/2 <-> 23f7/2": "fine-structure interval derived from the measured lines (not independent)",
+        "24f5/2 <-> 24f7/2": "fine-structure interval derived from the measured lines (not independent)",
+        "25f5/2 <-> 25f7/2": "fine-structure interval derived from the measured lines (not independent)",
+        "26f5/2 <-> 26f7/2": "fine-structure interval derived from the measured lines (not independent)",
+        "27f5/2 <-> 27f7/2": "fine-structure interval derived from the measured lines (not independent)",
+        "28f5/2 <-> 28f7/2": "fine-structure interval derived from the measured lines (not independent)",
+        "29f5/2 <-> 29f7/2": "fine-structure interval derived from the measured lines (not independent)",
+        "21d5/2 <-> 21d3/2": "fine-structure interval derived from the measured lines (not independent)",
+        "22d5/2 <-> 22d3/2": "fine-structure interval derived from the measured lines (not independent)",
+        "23d5/2 <-> 23d3/2": "fine-structure interval derived from the measured lines (not independent)",
+        "24d5/2 <-> 24d3/2": "fine-structure interval derived from the measured lines (not independent)",
+        "25d5/2 <-> 25d3/2": "fine-structure interval derived from the measured lines (not independent)",
+        "26d5/2 <-> 26d3/2": "fine-structure interval derived from the measured lines (not independent)",
+        "27d5/2 <-> 27d3/2": "fine-structure interval derived from the measured lines (not independent)",
+        "28d5/2 <-> 28d3/2": "fine-structure interval derived from the measured lines (not independent)",
+        "29d5/2 <-> 29d3/2": "fine-structure interval derived from the measured lines (not independent)"
+      }
+    },
+    "fabre1980": {
+      "exclude": {
+        "23P1/2 <-> 23P3/2": "fine-structure interval derived from the measured lines (not independent)",
+        "24P1/2 <-> 24P3/2": "fine-structure interval derived from the measured lines (not independent)",
+        "25P1/2 <-> 25P3/2": "fine-structure interval derived from the measured lines (not independent)",
+        "32P1/2 <-> 32P3/2": "fine-structure interval derived from the measured lines (not independent)",
+        "33P1/2 <-> 33P3/2": "fine-structure interval derived from the measured lines (not independent)",
+        "34P1/2 <-> 34P3/2": "fine-structure interval derived from the measured lines (not independent)",
+        "35P1/2 <-> 35P3/2": "fine-structure interval derived from the measured lines (not independent)",
+        "36P1/2 <-> 36P3/2 (Table III (p. 780)) (1)": "fine-structure interval derived from the measured lines (not independent)",
+        "36P1/2 <-> 36P3/2 (Table III (p. 780)) (2)": "fine-structure interval derived from the measured lines (not independent)"
+      },
+      "systematic": {"value": 2, "unit": "MHz"},
+      "comment": "residual stray field of about 40 mV/cm: the values lie 0.5-3 MHz above Dyubko 1995 for the same transitions (Stark shifts, as Dyubko et al. state)"
+    },
+    "fabre1978": {},
+    "gerasimov1991": {}
+  }
+}
