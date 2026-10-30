@@ -191,6 +191,39 @@ def test_summary_lists_large_residuals(tmp_path: Path) -> None:
     assert float(outliers[0].split()[2]) < -50
 
 
+def test_same_as_n_max_and_channel_systematic(tmp_path: Path) -> None:
+    """A series with same_as gets the quantum defects of its fitted series; n_max limits the used levels."""
+    write_dataset(tmp_path / "data" / "levels", level_rows(TRUE_NP, range(30, 80, 3)) + interval_rows(range(30, 40)))
+    series = {
+        "np_3/2": {"orders": 2, "n_min": 19},
+        "ns_1/2": {"orders": 2, "n_min": 20},
+        "np_1/2": {"same_as": "np_3/2", "n_min": 15},
+    }
+    options = {"n_max": 60, "systematic": {"value": 1, "unit": "MHz", "channels": ["np_1/2"]}}
+    with pytest.raises(ValueError, match="systematic channels"):  # np_1/2 is not fitted
+        fit_from_config(write_config(tmp_path / "test.json", {"levels": options}, series=series))
+    options["systematic"] = {"value": 1, "unit": "MHz", "channels": ["ns_1/2"]}
+    fit = fit_from_config(write_config(tmp_path / "test.json", {"levels": options}, series=series))
+    assert fit.datasets["levels"] == {"loaded": 27, "used": 21, "level above n_max": 6}
+    assert mhz(fit.result.measurements[0].uncertainty_au) == pytest.approx(SIGMA_MHZ)  # not of the channel
+    assert mhz(fit.result.measurements[-1].uncertainty_au) == pytest.approx(math.hypot(SIGMA_MHZ, 1))  # interval
+    copy = fit.copies[0]
+    assert [model.name for model in fit.models] == ["np_3/2", "ns_1/2", "np_1/2"]
+    assert copy.quantum_defects == fit.result.models[0].quantum_defects
+    assert copy.n_range == (15, math.inf)
+    assert copy.fit_info is not None
+    assert copy.fit_info["same as"] == "np_3/2"
+    assert "np_1/2     same as np_3/2" in _summary(fit)
+    write_fit(fit)
+    assert check_fit(fit) == []
+    series["np_1/2"] = {"same_as": "nd_5/2", "n_min": 15}
+    with pytest.raises(ValueError, match="must be fitted series"):
+        fit_from_config(write_config(tmp_path / "test.json", {"levels": {}}, series=series))
+    series["np_1/2"] = {"same_as": "np_3/2", "orders": 2, "n_min": 15}
+    with pytest.raises(ValueError, match="unknown keys"):
+        fit_from_config(write_config(tmp_path / "test.json", {"levels": {}}, series=series))
+
+
 def test_config_errors(tmp_path: Path) -> None:
     write_dataset(tmp_path / "data" / "levels", level_rows(TRUE_NP, range(30, 40)))
     with pytest.raises(ValueError, match="unknown keys"):

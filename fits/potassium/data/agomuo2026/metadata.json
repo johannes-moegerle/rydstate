@@ -1,0 +1,25 @@
+{
+  "dataset": "agomuo2026",
+  "species": "K",
+  "reference": "Agomuo 2026, J. Quant. Spectrosc. Radiat. Transf. 355, 109889, https://doi.org/10.1016/j.jqsrt.2026.109889",
+  "authors": "J. C. Agomuo, M. Harvey, A. J. Murray",
+  "title": "Spectroscopy of ultra-cold 39K Rydberg Atoms in an AC-Driven magneto-optical Trap (AC-MOT)",
+  "year": 2026,
+  "doi": "10.1016/j.jqsrt.2026.109889",
+  "url": "https://doi.org/10.1016/j.jqsrt.2026.109889",
+  "method": "two-step pulsed cw-laser excitation of ultracold 39K (350-500 uK, 1.9e10 cm^-3) in an AC-MOT during the B = 0 off-cycle: Ti:S at 770.11 nm to 4p 2P1/2 F'=2, tunable cw dye laser 454-460 nm (linewidth ~500 kHz) to nS1/2 / nD3/2; detection of ions from Rydberg-Rydberg interactions with a pulsed extraction field and a channel electron multiplier; frequencies from a High Finesse WSU-10 wavemeter calibrated every 300 s to a stabilised HeNe; line centres from Gaussian fits.",
+  "uncertainty": "no per-level uncertainties; Table A.2 caption: 'accuracy ... limited by that of the wavemeter, which was around +-5 MHz' (stored as 5 MHz in every row); mean offset to NIST stated as -3.6(0.8) MHz. Observed scatter vs Peper 2019 (after F=1 -> c.o.g. correction): 2-5 MHz rms for n = 47-100, 5-8 MHz rms with single outliers up to 25 MHz for n = 18-46; density-dependent shifts of tens to >100 MHz above n ~ 120 (S) / 100 (D).",
+  "conversion": [
+    "Energies from \"4s 2S1/2 F=1 ground hyperfine level (Table 1 caption, Sec. 3.1); Table A.2 caption says 'centre of gravity of the ground state', but the values lie 288.6 MHz (= 5/8 of the 461.7 MHz ground HFS) above the c.o.g.-referenced Peper 2019 energies (agomuo2026_xcheck.py)\", energy zero: The paper contradicts itself: Table A.2 caption and the Appendix text say 'centre of gravity of the ground state', Table 1 caption and Sec. 3.1 say 'F = 1 ground state'. All values n = 18-120 lie +288.6 MHz above the c.o.g.-referenced Peper 2019 energies, so the zero is the F=1 component (our deduction from the data, see content.energy_reference). Upper levels: measured peak, Rydberg hfs unresolved.",
+    "Shifted by -288.57 MHz to the ground state hyperfine centre of gravity (-5/8 x 461.7197 MHz (39K ground hfs, Peper 2019); our metadata caveats)."
+  ],
+  "caveats": [
+    "Energy reference: values are relative to the 4s 2S1/2 F=1 hyperfine level, NOT the centre of gravity stated in the Table A.2 caption; subtract 5/8 x 461.7197 MHz = 288.57 MHz for c.o.g.-referenced term energies.",
+    "Density-dependent shifts and broadening from Rydberg-Rydberg interactions in the MOT (rho ~ 1.9e10 cm^-3): negative shifts grow from ~-10 MHz at n ~ 120 (S) / 105 (D) to -150 MHz (199S) and -176 MHz (D n~160); exclude S n > ~120 and D n > ~100 from QDT fits, as the authors also did.",
+    "198S (1049482315 MHz) is ~150 MHz above the trend of its neighbours 197S/199S (value as printed, checked at 300 dpi); possible misprint or misassignment.",
+    "Single outliers 15-25 MHz from the smooth trend at n <= 102: 35S, 39S, 102S, 33D, 100D (residuals vs Peper -17, +25, -14, -15, -18 MHz after c.o.g. correction).",
+    "Only the global +-5 MHz wavemeter accuracy is given; observed scatter at n = 18-46 is larger (sd 5-8 MHz).",
+    "nD3/2 only: from 4p 2P1/2 the nD5/2 levels are dipole-forbidden; K nD is inverted (D3/2 above D5/2).",
+    "Appendix tables are numbered A.2-A.4; there is no Table A.1. Eq. (1) is misprinted (see content.derived_parameters)."
+  ]
+}

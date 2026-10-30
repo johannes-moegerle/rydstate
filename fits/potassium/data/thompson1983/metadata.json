@@ -1,0 +1,29 @@
+{
+  "dataset": "thompson1983",
+  "species": "K",
+  "reference": "Thompson 1983, Can. J. Phys. 61, 949, https://doi.org/10.1139/p83-117",
+  "authors": "D. C. Thompson, M. S. O'Sullivan, B. P. Stoicheff, G.-X. Xu",
+  "title": "Doppler-free two-photon absorption spectrum of potassium",
+  "year": 1983,
+  "doi": "10.1139/p83-117",
+  "url": "https://doi.org/10.1139/p83-117",
+  "method": "Doppler-free two-photon absorption in a thermionic diode (K cell, 2.5-6 mTorr) with a cw ring dye laser (Coherent 599-21; R6G, R640, LD700); wavelengths with a wavemeter referenced to a He-Ne laser (632.991406(3) nm), accuracy 1e-7; fine-structure and hyperfine spacings from a calibrated confocal interferometer.",
+  "uncertainty": "term values: quoted error of measurement +-0.003 cm^-1 (+-100 MHz), not per level (fit standard deviations < 0.001 cm^-1); Delta_FS and Table 3 per value in parentheses",
+  "conversion": [
+    "Rows with {'l': '2', 'quantity': 'interval'}: the level has j = 3/2 (given in the label only).",
+    "Not exported, fine structure not resolved (no J): 7 rows (38 2D (fine structure unresolved), 40 2D (fine structure unresolved), 42 2D (fine structure unresolved), 44 2D (fine structure unresolved), 46 2D (fine structure unresolved), 48 2D (fine structure unresolved), 50 2D (fine structure unresolved)).",
+    "Not exported, intervals from a reference that is no single level: 5 rows (6 2S1/2 hyperfine interval (39K), 7 2S1/2 hyperfine interval (39K), 8 2S1/2 hyperfine interval (39K), 7 2S1/2 hyperfine interval (41K), 8 2S1/2 hyperfine interval (41K)).",
+    "Energies from '4s 2S1/2 F=1 (lower hyperfine component of the ground state; Table 1/2 footnotes b, c)', energy zero: Table 1 footnote: 'Term values of n2S levels relative to 4 2S(F = 1) as the ground state'; T = 2/lambda_vac (transition from F=2) + 0.0154013 cm^-1.",
+    "Shifted by -0.0096258 cm^-1 to the ground state hyperfine centre of gravity (-5/8 x 0.0154013 cm^-1 (461.7197 MHz ground hfs, Table 1/2 footnotes); our metadata)."
+  ],
+  "caveats": [
+    "Energy zero is the 4s F=1 hyperfine level (not the c.o.g. and not F=2 as in Lorenzen 1981): subtract 0.0096258 cm^-1 for the c.o.g.",
+    "9S (32648.3966 cm^-1) lies 0.030 cm^-1 above Lorenzen 1981 and the Peper 2019 model (10x the quoted error); wavelength and quantum defect are consistent with the printed T, so it is an error in the source measurement or in both printed numbers, not a transcription error. Exclude from fits.",
+    "Table 2 n=7: printed D_cg 32598.3625 is 0.0015 cm^-1 below T5/2 + 0.4 Delta_FS = 32598.3640 (all other rows agree within 2e-5); n_eff matches the printed D_cg. D_cg is not stored as a row.",
+    "nD n>=38: fine structure unresolved, a single value printed in the D5/2, D3/2 and D_cg columns (stored once with j empty).",
+    "D3/2 term values are T5/2 + Delta_FS (not independent wavemeter measurements).",
+    "Low-n rows (nS n<=8) were not fitted by the source; the source Ritz fit uses n>=9 (S) and n>=5 (D_cg).",
+    "Uncertainty +-0.003 cm^-1 is the quoted error of measurement (wavemeter 1e-7), not per level; Thompson nS sit on average 1e-3 cm^-1 below Lorenzen/Peper.",
+    "Table 3 rows 4-5 are 41K, not 39K."
+  ]
+}

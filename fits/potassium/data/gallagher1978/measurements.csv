@@ -1,0 +1,5 @@
+level,lower_level,value,uncertainty,unit,source_label,source_location,note
+15d_5/2,15d_3/2,-375.33,0.40,MHz,15d fine-structure interval S_d,"Table II, p. 2515",rf resonance with selective field ionization; zero-field value from fit of Eq. (7) to Stark-shifted resonances
+16d_5/2,16d_3/2,-306.25,0.15,MHz,16d fine-structure interval S_d,"Table II, p. 2515",rf resonance with selective field ionization; zero-field value from fit of Eq. (7) to Stark-shifted resonances
+18d_5/2,18d_3/2,-211.68,0.20,MHz,18d fine-structure interval S_d,"Table II, p. 2515","rf resonance with selective field ionization; zero-field value from fit of Eq. (7) to Stark-shifted resonances; the abstract text layer drops the minus sign, the table and printed abstract have it"
+20d_5/2,20d_3/2,-152.42,0.45,MHz,20d fine-structure interval S_d,"Table II, p. 2515",rf resonance with selective field ionization; zero-field value from fit of Eq. (7) to Stark-shifted resonances

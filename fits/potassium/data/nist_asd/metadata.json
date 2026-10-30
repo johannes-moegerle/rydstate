@@ -1,0 +1,24 @@
+{
+  "dataset": "nist_asd",
+  "species": "K",
+  "reference": "Kramida 2024, NIST Atomic Spectra Database (ver. 5.12), https://doi.org/10.18434/T4W30F",
+  "authors": "A. Kramida, Yu. Ralchenko, J. Reader, and NIST ASD Team",
+  "title": "NIST Atomic Spectra Database (ver. 5.12)",
+  "year": 2024,
+  "doi": "10.18434/T4W30F",
+  "url": "https://doi.org/10.18434/T4W30F",
+  "method": "NIST critically evaluated compilation (see asd_compilation and asd_references for the original measurements)",
+  "uncertainty": "per-level ASD uncertainties in column 'Uncertainty (cm-1)' (empty where ASD gives none)",
+  "conversion": [
+    "Not exported, no single valence electron level: 111 rows (K II (3p6 1S<0>) Limit ---, 3p5.4s2 2P* 3/2, 3p5.4s2 2P* 1/2, 3p5.3d.(3P*).4s 4P* 1/2, 3p5.3d.(3P*).4s 4P* 3/2, 3p5.3d.(3P*).4s 4P* 5/2, 3p5.(2P*).4s.4p.(3P*) 4S 3/2, 3p5.3d.(3P*).4s 2P* 1/2, ...).",
+    "Energies from 'ground state 3p6.4s 2S 1/2', energy zero: ASD does not state a hyperfine reference. Inferred, not stated: the L5770 (Thompson 1983) levels are the F=1-referenced values minus 0.0096 cm^-1 (e.g. 6S 27450.7104 vs 27450.7200), the L8995 4p levels (Falke 2006) and the L5783 nP levels (Lorenzen & Niemax 1983) are c.o.g.-referenced, and the IE is Lorenzen 1981's c.o.g. limit.",
+    "Energy zero of the levels with ASD ref L5451: copied verbatim from Lorenzen 1981 Table 1 (89/89 identical), which is relative to F=2; ASD did not shift them, so they lie ~0.0058 cm^-1 below ASD's own c.o.g. scale and IE.",
+    "Shifted by 0.0057755 cm^-1 to the ground state hyperfine centre of gravity (K/lorenzen1981 (3/8 x 461.72 MHz)), rows of levels with ASD ref L5451: nS n = 9-46, nD n = 7-46."
+  ],
+  "caveats": [
+    "Energies are term energies in cm^-1 relative to the ASD ground state 3p6.4s 2S 1/2; the ionization limit is a separate 'Limit' row and in ionization_energy.",
+    "ASD levels are not isotope resolved: the compilation mixes data from different isotopes and natural samples; isotope shifts and hyperfine structure are not separated. RydState 'K' uses mass number 39; hyperfine structure is not resolved in ASD (centroid / fine-structure energies).",
+    "Energy precision is ASD's (compilation) precision; for many Rydberg series more precise modern measurements exist (e.g. mm-wave or laser spectroscopy) and should be preferred in fits.",
+    "Column j in levels.csv is the total J of the level as given by ASD; s is the total spin from the LS term multiplicity; for jj/jK-coupled terms only n and l are assigned. n, l are filled only when the configuration has exactly one electron outside the RydState core configuration '3p6' (same rule as rydstate.species.nist.parse_nist_energy_levels)."
+  ]
+}

@@ -2,7 +2,14 @@
   "model_class": "ModelSQDT",
   "species": "K",
   "channel": "nf_5/2",
-  "quantum_defects": [0.010098, -0.100224, 1.56334, -12.6851, 0],
-  "reference": ["Phys. Scr. 27, 300 (1983)", "Ark. Fys., 10 p.583 (1956)"],
-  "n_range": [15, "inf"]
+  "reference": ["Peper 2019, Phys. Rev. A 100, 012501, https://doi.org/10.1103/PhysRevA.100.012501"],
+  "n_range": [15, "inf"],
+  "quantum_defects": [0.009457447544218884, -0.0443885610318931],
+  "fit_info": {
+    "method": "rydstate.fit.fit_sqdt_models",
+    "rydstate version": "0.14.0",
+    "n range of the data": [30, 47],
+    "config": "fits/potassium/fit_config.json",
+    "same as": "nf_7/2"
+  }
 }

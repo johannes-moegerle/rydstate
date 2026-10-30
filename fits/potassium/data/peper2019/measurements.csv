@@ -1,0 +1,93 @@
+level,lower_level,value,uncertainty,unit,source_label,source_location,note
+22p_1/2,,34743.1426469,0.0000003,1/cm,22p1/2 <- 4s1/2,Table II,"fit residual −1 kHz; this work, measurement configuration II"
+22p_3/2,,34743.2226878,0.0000005,1/cm,22p3/2 <- 4s1/2,Table II,"fit residual 9 kHz; this work, measurement configuration II"
+23p_3/2,,34767.6811325,0.0000009,1/cm,23p3/2 <- 4s1/2,Table II,"fit residual −18 kHz; this work, measurement configuration II"
+25p_1/2,,34807.4321004,0.0000007,1/cm,25p1/2 <- 4s1/2,Table II,"fit residual 8 kHz; this work, measurement configuration II"
+25p_3/2,,34807.4850300,0.0000007,1/cm,25p3/2 <- 4s1/2,Table II,"fit residual −20 kHz; this work, measurement configuration II"
+28p_1/2,,34850.9930019,0.0000004,1/cm,28p1/2 <- 4s1/2,Table II,"fit residual −1 kHz; this work, measurement configuration II"
+28p_3/2,,34851.0298046,0.0000003,1/cm,28p3/2 <- 4s1/2,Table II,"fit residual −9 kHz; this work, measurement configuration II"
+32p_1/2,,34890.1758731,0.0000006,1/cm,32p1/2 <- 4s1/2,Table II,"fit residual 11 kHz; this work, measurement configuration II"
+32p_3/2,,34890.1999393,0.0000005,1/cm,32p3/2 <- 4s1/2,Table II,"fit residual 35 kHz; this work, measurement configuration II"
+37p_1/2,,34921.6794350,0.0000010,1/cm,37p1/2 <- 4s1/2,Table II,"fit residual −40 kHz; this work, measurement configuration II"
+37p_3/2,,34921.6946544,0.0000004,1/cm,37p3/2 <- 4s1/2,Table II,"fit residual −1 kHz; this work, measurement configuration II"
+50p_1/2,,34962.7480893,0.0000018,1/cm,50p1/2 <- 4s1/2,Table II,"fit residual 54 kHz; this work, measurement configuration I"
+50p_3/2,,34962.7540292,0.0000018,1/cm,50p3/2 <- 4s1/2,Table II,"fit residual 55 kHz; this work, measurement configuration I"
+52p_1/2,,34966.4175066,0.0000018,1/cm,52p1/2 <- 4s1/2,Table II,"fit residual −20 kHz; this work, measurement configuration I"
+52p_3/2,,34966.4227658,0.0000018,1/cm,52p3/2 <- 4s1/2,Table II,"fit residual −16 kHz; this work, measurement configuration I"
+54p_1/2,,34969.6739514,0.0000018,1/cm,54p1/2 <- 4s1/2,Table II,"fit residual −55 kHz; this work, measurement configuration I"
+54p_3/2,,34969.6786309,0.0000018,1/cm,54p3/2 <- 4s1/2,Table II,"fit residual −21 kHz; this work, measurement configuration I"
+56p_1/2,,34972.5771511,0.0000018,1/cm,56p1/2 <- 4s1/2,Table II,"fit residual 63 kHz; this work, measurement configuration I"
+56p_3/2,,34972.5813316,0.0000018,1/cm,56p3/2 <- 4s1/2,Table II,"fit residual 71 kHz; this work, measurement configuration I"
+58p_1/2,,34975.1764005,0.0000018,1/cm,58p1/2 <- 4s1/2,Table II,"fit residual 24 kHz; this work, measurement configuration I"
+58p_3/2,,34975.1801512,0.0000018,1/cm,58p3/2 <- 4s1/2,Table II,"fit residual 39 kHz; this work, measurement configuration I"
+60p_1/2,,34977.5126981,0.0000018,1/cm,60p1/2 <- 4s1/2,Table II,"fit residual −17 kHz; this work, measurement configuration I"
+60p_3/2,,34977.5160755,0.0000018,1/cm,60p3/2 <- 4s1/2 (Table II) (1),Table II,"fit residual −18 kHz; this work, measurement configuration I"
+60p_3/2,,34977.5160756,0.0000018,1/cm,60p3/2 <- 4s1/2 (Table II) (2),Table II,"fit residual −14 kHz; this work, measurement configuration I"
+60p_3/2,,34977.5160758,0.0000018,1/cm,60p3/2 <- 4s1/2 (Table II) (3),Table II,"fit residual −9 kHz; this work, measurement configuration I"
+60p_3/2,,34977.5160758,0.0000018,1/cm,60p3/2 <- 4s1/2 (Table II) (4),Table II,"fit residual −6 kHz; this work, measurement configuration I"
+60p_3/2,,34977.5160765,0.0000018,1/cm,60p3/2 <- 4s1/2 (Table II) (5),Table II,"fit residual 13 kHz; this work, measurement configuration I"
+60p_3/2,,34977.5160770,0.0000005,1/cm,60p3/2 <- 4s1/2 (Table II) (6),Table II,"fit residual 30 kHz; this work, measurement configuration II"
+60p_3/2,,34977.5160792,0.0000018,1/cm,60p3/2 <- 4s1/2 (Table II) (7),Table II,"fit residual 94 kHz; this work, measurement configuration I"
+62p_1/2,,34979.6203553,0.0000018,1/cm,62p1/2 <- 4s1/2,Table II,"fit residual 21 kHz; this work, measurement configuration I"
+62p_3/2,,34979.6234072,0.0000018,1/cm,62p3/2 <- 4s1/2,Table II,"fit residual 9 kHz; this work, measurement configuration I"
+64p_1/2,,34981.5282569,0.0000018,1/cm,64p1/2 <- 4s1/2,Table II,"fit residual −19 kHz; this work, measurement configuration I"
+64p_3/2,,34981.5310248,0.0000018,1/cm,64p3/2 <- 4s1/2,Table II,"fit residual −10 kHz; this work, measurement configuration I"
+66p_1/2,,34983.2608729,0.0000018,1/cm,66p1/2 <- 4s1/2,Table II,"fit residual −55 kHz; this work, measurement configuration I"
+66p_3/2,,34983.2633916,0.0000018,1/cm,66p3/2 <- 4s1/2,Table II,"fit residual −15 kHz; this work, measurement configuration I"
+68p_1/2,,34984.8390359,0.0000018,1/cm,68p1/2 <- 4s1/2,Table II,"fit residual −90 kHz; this work, measurement configuration I"
+68p_3/2,,34984.8413326,0.0000018,1/cm,68p3/2 <- 4s1/2,Table II,"fit residual −77 kHz; this work, measurement configuration I"
+70p_1/2,,34986.2805762,0.0000018,1/cm,70p1/2 <- 4s1/2,Table II,"fit residual −28 kHz; this work, measurement configuration I"
+70p_3/2,,34986.2826765,0.0000018,1/cm,70p3/2 <- 4s1/2 (Table II) (1),Table II,"fit residual −30 kHz; this work, measurement configuration I"
+70p_3/2,,34986.2826766,0.0000008,1/cm,70p3/2 <- 4s1/2 (Table II) (2),Table II,"fit residual −28 kHz; this work, measurement configuration II"
+72p_1/2,,34987.6008173,0.0000018,1/cm,72p1/2 <- 4s1/2,Table II,"fit residual 9 kHz; this work, measurement configuration I"
+72p_3/2,,34987.6027450,0.0000018,1/cm,72p3/2 <- 4s1/2,Table II,"fit residual 56 kHz; this work, measurement configuration I"
+76p_1/2,,34989.9285927,0.0000018,1/cm,76p1/2 <- 4s1/2,Table II,"fit residual 56 kHz; this work, measurement configuration I"
+76p_3/2,,34989.9302238,0.0000018,1/cm,76p3/2 <- 4s1/2,Table II,"fit residual 43 kHz; this work, measurement configuration I"
+80p_1/2,,34991.9087544,0.0000018,1/cm,80p1/2 <- 4s1/2,Table II,"fit residual 40 kHz; this work, measurement configuration I"
+80p_3/2,,34991.9101456,0.0000018,1/cm,80p3/2 <- 4s1/2,Table II,"fit residual −44 kHz; this work, measurement configuration I"
+84p_1/2,,34993.6072228,0.0000018,1/cm,84p1/2 <- 4s1/2,Table II,"fit residual 14 kHz; this work, measurement configuration I"
+84p_3/2,,34993.6084239,0.0000018,1/cm,84p3/2 <- 4s1/2,Table II,"fit residual 34 kHz; this work, measurement configuration I"
+88p_1/2,,34995.0750037,0.0000018,1/cm,88p1/2 <- 4s1/2,Table II,"fit residual 60 kHz; this work, measurement configuration I"
+88p_3/2,,34995.0760398,0.0000018,1/cm,88p3/2 <- 4s1/2,Table II,"fit residual −89 kHz; this work, measurement configuration I"
+92p_1/2,,34996.3520484,0.0000018,1/cm,92p1/2 <- 4s1/2,Table II,"fit residual −124 kHz; this work, measurement configuration I"
+92p_3/2,,34996.3529579,0.0000018,1/cm,92p3/2 <- 4s1/2,Table II,"fit residual −103 kHz; this work, measurement configuration I"
+96p_1/2,,34997.4700401,0.0000018,1/cm,96p1/2 <- 4s1/2,Table II,"fit residual −108 kHz; this work, measurement configuration I"
+96p_3/2,,34997.4708384,0.0000018,1/cm,96p3/2 <- 4s1/2,Table II,"fit residual −97 kHz; this work, measurement configuration I"
+100p_1/2,,34998.4543352,0.0000018,1/cm,100p1/2 <- 4s1/2,Table II,"fit residual 39 kHz; this work, measurement configuration I"
+100p_3/2,,34998.4550390,0.0000018,1/cm,100p3/2 <- 4s1/2,Table II,"fit residual 20 kHz; this work, measurement configuration I"
+35s_1/2,35p_3/2,-85498.564,0.019,MHz,35s1/2 <- 35p3/2,Table IV,fit residual -11 kHz; final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects)
+36s_1/2,35p_3/2,92450.458,0.014,MHz,36s1/2 <- 35p3/2,Table IV,fit residual -13 kHz; final state lies above initial state (ordering estimated by this extraction from Table III/VIII quantum defects)
+38s_1/2,37p_3/2,77707.357,0.030,MHz,38s1/2 <- 37p3/2,Table IV,fit residual -11 kHz; final state lies above initial state (ordering estimated by this extraction from Table III/VIII quantum defects)
+50s_1/2,51p_3/2,-84493.027,0.020,MHz,50s1/2 <- 51p3/2,Table IV,fit residual 14 kHz; final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects)
+53s_1/2,51p_3/2,80347.017,0.010,MHz,53s1/2 <- 51p3/2,Table IV,fit residual 11 kHz; final state lies above initial state (ordering estimated by this extraction from Table III/VIII quantum defects)
+67s_1/2,70p_3/2,-77535.721,0.020,MHz,67s1/2 <- 70p3/2,Table IV,fit residual 10 kHz; final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects)
+75s_1/2,70p_3/2,85052.474,0.019,MHz,75s1/2 <- 70p3/2,Table IV,fit residual -1 kHz; final state lies above initial state (ordering estimated by this extraction from Table III/VIII quantum defects)
+32d_3/2,34p_3/2,-113369.342,0.011,MHz,32d3/2 <- 34p3/2,Table V,fit residual -8 kHz; final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects)
+32d_5/2,34p_3/2,-113405.206,0.011,MHz,32d5/2 <- 34p3/2,Table V,fit residual 8 kHz; final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects)
+33d_3/2,35p_3/2,-103387.013,0.012,MHz,33d3/2 <- 35p3/2,Table V,fit residual 15 kHz; final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects)
+33d_5/2,35p_3/2,-103419.729,0.012,MHz,33d5/2 <- 35p3/2,Table V,fit residual -33 kHz; final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects)
+35d_3/2,37p_3/2,-86678.837,0.016,MHz,35d3/2 <- 37p3/2,Table V,fit residual 14 kHz; final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects)
+35d_5/2,37p_3/2,-86706.135,0.014,MHz,35d5/2 <- 37p3/2,Table V,fit residual 24 kHz; final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects)
+48d_3/2,51p_3/2,-90302.892,0.014,MHz,48d3/2 <- 51p3/2,Table V,fit residual 3 kHz; final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects)
+48d_5/2,51p_3/2,-90313.359,0.010,MHz,48d5/2 <- 51p3/2,Table V,fit residual 8 kHz; final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects)
+51d_3/2,51p_3/2,75504.404,0.014,MHz,51d3/2 <- 51p3/2,Table V,fit residual -26 kHz; final state lies above initial state (ordering estimated by this extraction from Table III/VIII quantum defects)
+51d_5/2,51p_3/2,75495.704,0.009,MHz,51d5/2 <- 51p3/2,Table V,fit residual -9 kHz; final state lies above initial state (ordering estimated by this extraction from Table III/VIII quantum defects)
+30f_7/2,32p_3/2,-71683.751,0.034,MHz,30fj <- 32p3/2,Table VI,"fit residual -36 kHz; fine structure unresolved (j not assigned, centre of gravity / line centre); two-photon transition, value is the total energy difference; final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects); j not resolved in the source, j = l + 1/2 assumed"
+31f_7/2,32d_3/2,-156556.214,0.020,MHz,31fj <- 32d3/2,Table VI,"fit residual 32 kHz; fine structure unresolved (j not assigned, centre of gravity / line centre); final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects); j not resolved in the source, j = l + 1/2 assumed"
+31f_7/2,32d_5/2,-156520.393,0.014,MHz,31fj <- 32d5/2,Table VI,"fit residual -26 kHz; fine structure unresolved (j not assigned, centre of gravity / line centre); final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects); j not resolved in the source, j = l + 1/2 assumed"
+32f_7/2,34p_3/2,-59123.780,0.005,MHz,32fj <- 34p3/2,Table VI,"fit residual -38 kHz; fine structure unresolved (j not assigned, centre of gravity / line centre); two-photon transition, value is the total energy difference; final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects); j not resolved in the source, j = l + 1/2 assumed"
+35f_7/2,37p_1/2,-44786.853,0.006,MHz,35fj <- 37p1/2,Table VI,"fit residual 92 kHz; fine structure unresolved (j not assigned, centre of gravity / line centre); two-photon transition, value is the total energy difference; final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects); j not resolved in the source, j = l + 1/2 assumed"
+35f_7/2,37p_3/2,-45243.104,0.008,MHz,35fj <- 37p3/2,Table VI,"fit residual 71 kHz; fine structure unresolved (j not assigned, centre of gravity / line centre); two-photon transition, value is the total energy difference; final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects); j not resolved in the source, j = l + 1/2 assumed"
+38f_7/2,40p_3/2,-35388.501,0.006,MHz,38fj <- 40p3/2 (Table VI) (1),Table VI,"fit residual -31 kHz; fine structure unresolved (j not assigned, centre of gravity / line centre); two-photon transition, value is the total energy difference; final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects); j not resolved in the source, j = l + 1/2 assumed"
+38f_7/2,40p_3/2,-35388.553,0.008,MHz,38fj <- 40p3/2 (Table VI) (2),Table VI,"fit residual -83 kHz; fine structure unresolved (j not assigned, centre of gravity / line centre); two-photon transition, value is the total energy difference; final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects); j not resolved in the source, j = l + 1/2 assumed"
+39f_7/2,41p_1/2,-32415.165,0.005,MHz,39fj <- 41p1/2,Table VI,"fit residual -67 kHz; fine structure unresolved (j not assigned, centre of gravity / line centre); two-photon transition, value is the total energy difference; final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects); j not resolved in the source, j = l + 1/2 assumed"
+39f_7/2,41p_3/2,-32745.659,0.012,MHz,39fj <- 41p3/2,Table VI,"fit residual 42 kHz; fine structure unresolved (j not assigned, centre of gravity / line centre); two-photon transition, value is the total energy difference; final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects); j not resolved in the source, j = l + 1/2 assumed"
+40f_7/2,42p_3/2,-30359.580,0.009,MHz,40fj <- 42p3/2,Table VI,"fit residual 58 kHz; fine structure unresolved (j not assigned, centre of gravity / line centre); two-photon transition, value is the total energy difference; final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects); j not resolved in the source, j = l + 1/2 assumed"
+41f_7/2,43p_3/2,-28199.945,0.007,MHz,41fj <- 43p3/2,Table VI,"fit residual -86 kHz; fine structure unresolved (j not assigned, centre of gravity / line centre); two-photon transition, value is the total energy difference; final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects); j not resolved in the source, j = l + 1/2 assumed"
+42f_7/2,44p_3/2,-26240.076,0.015,MHz,42fj <- 44p3/2,Table VI,"fit residual 86 kHz; fine structure unresolved (j not assigned, centre of gravity / line centre); two-photon transition, value is the total energy difference; final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects); j not resolved in the source, j = l + 1/2 assumed"
+45f_7/2,47p_3/2,-21349.724,0.013,MHz,45fj <- 47p3/2,Table VI,"fit residual 5 kHz; fine structure unresolved (j not assigned, centre of gravity / line centre); two-photon transition, value is the total energy difference; final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects); j not resolved in the source, j = l + 1/2 assumed"
+47f_7/2,49p_3/2,-18746.660,0.011,MHz,47fj <- 49p3/2,Table VI,"fit residual -19 kHz; fine structure unresolved (j not assigned, centre of gravity / line centre); two-photon transition, value is the total energy difference; final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects); j not resolved in the source, j = l + 1/2 assumed"
+30g_9/2,31f_7/2,-230525.74,0.06,MHz,30gj <- 31fj,Table VII,"fit residual -43 kHz; line position = centre of gravity of the partially resolved g fine-structure lineshape; fine structure unresolved (j not assigned, centre of gravity / line centre); final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects); j not resolved in the source, j = l + 1/2 assumed"
+34g_9/2,35f_7/2,-159250.24,0.05,MHz,34gj <- 35fj,Table VII,"fit residual 39 kHz; line position = centre of gravity of the partially resolved g fine-structure lineshape; fine structure unresolved (j not assigned, centre of gravity / line centre); final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects); j not resolved in the source, j = l + 1/2 assumed"
+35g_9/2,36f_7/2,-146162.36,0.04,MHz,35gj <- 36fj,Table VII,"fit residual 73 kHz; line position = centre of gravity of the partially resolved g fine-structure lineshape; fine structure unresolved (j not assigned, centre of gravity / line centre); final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects); j not resolved in the source, j = l + 1/2 assumed"
+37g_9/2,38f_7/2,-123993.16,0.05,MHz,37gj <- 38fj,Table VII,"fit residual -169 kHz; line position = centre of gravity of the partially resolved g fine-structure lineshape; fine structure unresolved (j not assigned, centre of gravity / line centre); final state lies below initial state (downward transition; ordering estimated by this extraction from Table III/VIII quantum defects); j not resolved in the source, j = l + 1/2 assumed"

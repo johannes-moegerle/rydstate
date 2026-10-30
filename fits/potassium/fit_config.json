@@ -1,0 +1,49 @@
+{
+  "species": "K",
+  "comment": [
+    "Global SQDT fit of the 39K s, p, d, f and g series; every dataset of energies from the ground state has its own ionization threshold (free offset), so the quantum defects only describe binding energies and intervals and are used with the threshold of rydstate.",
+    "n_min: the lowest n from which the Ritz formula describes the measured levels (ns 10: 9s is 3 sigma off with 3 coefficients; np 9: the lowest measured level; nd 6: 5d is not described with 5 coefficients), for nf and ng the next n after the NIST levels of the channel; orders: as many coefficients as needed down to n_min.",
+    "The nf models below n = 30 are extrapolated from the Peper 2019 f levels at n = 30-47 (no measured f levels at lower n; the NIST 12f-14f from Risberg 1956, 1.5-2 GHz uncertainty, lie 6.5 GHz below the extrapolation, and about 5 GHz below the previous model).",
+    "The f and g fine structure is not resolved by the data (Peper 2019: below 100 kHz at 31f): the f and g data are assigned to j = l + 1/2, and the models of j = l - 1/2 are the same (same_as)."
+  ],
+  "data_directory": "data",
+  "models_directory": "../../src/rydstate/species/potassium/sqdt_models",
+  "report_file": "fit_report.json",
+  "series": {
+    "ns_1/2": {"orders": 3, "n_min": 10},
+    "np_1/2": {"orders": 3, "n_min": 9},
+    "np_3/2": {"orders": 3, "n_min": 9},
+    "nd_3/2": {"orders": 4, "n_min": 6},
+    "nd_5/2": {"orders": 4, "n_min": 6},
+    "nf_5/2": {"same_as": "nf_7/2", "n_min": 15},
+    "nf_7/2": {"orders": 2, "n_min": 15},
+    "ng_7/2": {"same_as": "ng_9/2", "n_min": 6},
+    "ng_9/2": {"orders": 2, "n_min": 6}
+  },
+  "datasets": {
+    "peper2019": {
+      "free_offset": true,
+      "systematic": {"value": 70, "unit": "kHz", "channels": ["nf_7/2"]},
+      "comment": "the f intervals scatter by about 70 kHz around any smooth series (also around the 2-coefficient fit of the source), far more than their quoted uncertainties of 5-15 kHz"
+    },
+    "gallagher1978": {},
+    "agomuo2026": {
+      "free_offset": true,
+      "n_max": 100,
+      "exclude": {
+        "35 2S1/2": "25 MHz off the smooth series (metadata caveats)",
+        "39 2S1/2": "25 MHz off the smooth series (metadata caveats)",
+        "33 2D3/2": "15 MHz off the smooth series (metadata caveats)",
+        "100 2D3/2": "18 MHz off the smooth series (metadata caveats)"
+      },
+      "comment": "density shifts in the MOT grow from about -10 MHz at n = 105 (D) and 120 (S): only n <= 100 are used"
+    },
+    "lorenzen1981": {"free_offset": true},
+    "lorenzen1983": {"free_offset": true},
+    "thompson1983": {"free_offset": true},
+    "chen2020": {
+      "free_offset": true,
+      "exclude": {"68S": "0.12 cm^-1 off the s series (metadata caveats)"}
+    }
+  }
+}

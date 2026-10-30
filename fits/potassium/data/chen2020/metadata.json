@@ -1,0 +1,21 @@
+{
+  "dataset": "chen2020",
+  "species": "K",
+  "reference": "Chen 2020, Phys. Rev. A 101, 052507, https://doi.org/10.1103/PhysRevA.101.052507",
+  "authors": "T.-L. Chen, S.-Y. Chang, Y.-J. Huang, K. Shukla, Y.-C. Huang, T.-H. Suen, T.-Y. Kuan, J.-T. Shy, Y.-W. Liu",
+  "title": "Inverted-ladder-type optical excitation of potassium Rydberg states with hot and cold ensembles",
+  "year": 2020,
+  "doi": "10.1103/PhysRevA.101.052507",
+  "url": "https://doi.org/10.1103/PhysRevA.101.052507",
+  "method": "sub-Doppler two-step (405 nm 4S-5P3/2 + 980 nm 5P3/2-nS) EIT/absorption spectroscopy in a hot cell, laser frequencies from wavelength meters, E = f12 + f23 using the 4S-5P3/2 frequency of Sansonetti, JPCRD 37, 7 (2008)",
+  "uncertainty": "20S-26S: 0.0011 cm^-1 (two high-precision wavelength meters, 32 MHz); 27S-70S: 0.03 cm^-1 (1 GHz wavemeter). Ionization energy derived: 35009.87(6) cm^-1.",
+  "conversion": [
+    "Not exported, values quoted from other sources (secondary): 14 rows (20S, 21S, 22S, 24S, 25S, 26S, 26S, 27S, ...).",
+    "Energies from 'ground state 4S1/2 (caption: excited from 4S1/2 F=2; whether values refer to F=2 or the hyperfine centre of gravity is not stated)', energy zero: Table I caption: levels 'excited from the ground state 4S1/2 F = 2'; E = f12 + f23 with the 4S-5P3/2 frequency f12 of Sansonetti, JPCRD 37, 7 (2008). The paper does not say whether the energies refer to F=2 or to the hyperfine centre of gravity. 'This work' values lie ~0.0105 cm^-1 below Peper 2019 (c.o.g.) at n = 20-26, which matches neither F=2 (+0.0058) nor c.o.g. cleanly. Columns [48] (Thompson 1983) and [41] (Xu 2016) are secondary copies with their own (unclear) zero."
+  ],
+  "caveats": [
+    "Systematic offset of about -0.0105 cm^-1 (-315 MHz) relative to the precise Peper 2019 s-series at n = 20-26; plausibly from the 4S-5P3/2 reference frequency and/or the F = 2 hyperfine reference (F = 2 lies 0.0058 cm^-1 above the centre of gravity). Do not combine with the Peper data without an offset parameter or inflated uncertainties.",
+    "68S value deviates by -0.12 cm^-1 from the s-series fit.",
+    "Columns [48] and [41] are secondary copies; the primary Thompson 1983 paper was not obtained."
+  ]
+}

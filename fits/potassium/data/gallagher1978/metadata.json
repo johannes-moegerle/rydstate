@@ -1,0 +1,19 @@
+{
+  "dataset": "gallagher1978",
+  "species": "K",
+  "reference": "Gallagher 1978, Phys. Rev. A 18, 2510, https://doi.org/10.1103/PhysRevA.18.2510",
+  "authors": "T. F. Gallagher, W. E. Cooke",
+  "title": "Fine-structure intervals and polarizabilities of highly excited d states of K",
+  "year": 1978,
+  "doi": "10.1103/PhysRevA.18.2510",
+  "url": "https://doi.org/10.1103/PhysRevA.18.2510",
+  "method": "radio-frequency resonance between nd3/2 and nd5/2 in a weak dc field, detected by state-selective field ionization; zero-field interval from a fit in E^2 and E^4 (Eq. 7)",
+  "uncertainty": "0.15-0.45 MHz, per value",
+  "conversion": [
+    "Rows with {'l': '2'}: the level has j = 5/2 (given in the label only)."
+  ],
+  "caveats": [
+    "Only fine-structure differences, no absolute energies.",
+    "Text-layer abstract drops the minus sign of the 18d value; the printed table has -211.68(20)."
+  ]
+}

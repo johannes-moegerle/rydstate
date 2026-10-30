@@ -1,0 +1,189 @@
+level,lower_level,value,uncertainty,unit,source_label,source_location,note
+4s_1/2,,0.0000,0.0005,1/cm,3p6.4s 2S 1/2,raw/asd_levels_cm-1.txt line 2,Lande g 2.002295; ASD ref L7185
+4p_1/2,,12985.185724,0.000002,1/cm,3p6.4p 2P* 1/2,raw/asd_levels_cm-1.txt line 3,ASD ref L8995
+4p_3/2,,13042.896027,0.000004,1/cm,3p6.4p 2P* 3/2,raw/asd_levels_cm-1.txt line 4,ASD ref L8995
+5s_1/2,,21026.551,0.005,1/cm,3p6.5s 2S 1/2,raw/asd_levels_cm-1.txt line 5,ASD ref L1792
+3d_5/2,,21534.680,0.005,1/cm,3p6.3d 2D 5/2,raw/asd_levels_cm-1.txt line 6,ASD ref L1792
+3d_3/2,,21536.988,0.005,1/cm,3p6.3d 2D 3/2,raw/asd_levels_cm-1.txt line 7,ASD ref L1792
+5p_1/2,,24701.382,0.005,1/cm,3p6.5p 2P* 1/2,raw/asd_levels_cm-1.txt line 8,Lande g 0.665; ASD ref L1792
+5p_3/2,,24720.139,0.005,1/cm,3p6.5p 2P* 3/2,raw/asd_levels_cm-1.txt line 9,ASD ref L1792
+4d_5/2,,27397.077,0.005,1/cm,3p6.4d 2D 5/2,raw/asd_levels_cm-1.txt line 10,ASD ref L1792
+4d_3/2,,27398.147,0.005,1/cm,3p6.4d 2D 3/2,raw/asd_levels_cm-1.txt line 11,ASD ref L1792
+6s_1/2,,27450.7104,0.003,1/cm,3p6.6s 2S 1/2,raw/asd_levels_cm-1.txt line 12,ASD ref L5770
+4f_5/2,,28127.85,0.05,1/cm,3p6.4f 2F* 5/2,raw/asd_levels_cm-1.txt line 13,ASD ref L6096
+4f_7/2,,28127.85,0.05,1/cm,3p6.4f 2F* 7/2,raw/asd_levels_cm-1.txt line 14,ASD ref L6096
+6p_1/2,,28999.27,0.05,1/cm,3p6.6p 2P* 1/2,raw/asd_levels_cm-1.txt line 15,Lande g 0.6663; ASD ref L6096
+6p_3/2,,29007.71,0.05,1/cm,3p6.6p 2P* 3/2,raw/asd_levels_cm-1.txt line 16,Lande g 1.3337; ASD ref L6096
+5d_5/2,,30185.2439,0.003,1/cm,3p6.5d 2D 5/2,raw/asd_levels_cm-1.txt line 17,Lande g 1.2004; ASD ref L5770
+5d_3/2,,30185.7476,0.003,1/cm,3p6.5d 2D 3/2,raw/asd_levels_cm-1.txt line 18,Lande g 0.7997; ASD ref L5770
+7s_1/2,,30274.2487,0.003,1/cm,3p6.7s 2S 1/2,raw/asd_levels_cm-1.txt line 19,Lande g 2.0020; ASD ref L5770
+5f_5/2,,30606.73,0.06,1/cm,3p6.5f 2F* 5/2,raw/asd_levels_cm-1.txt line 20,ASD ref L6096
+5f_7/2,,30606.73,0.06,1/cm,3p6.5f 2F* 7/2,raw/asd_levels_cm-1.txt line 21,ASD ref L6096
+5g_7/2,,30617.31,0.01,1/cm,3p6.5g 2G 7/2,raw/asd_levels_cm-1.txt line 22,ASD ref L873
+5g_9/2,,30617.31,0.01,1/cm,3p6.5g 2G 9/2,raw/asd_levels_cm-1.txt line 23,ASD ref L873
+7p_1/2,,31069.90,0.06,1/cm,3p6.7p 2P* 1/2,raw/asd_levels_cm-1.txt line 24,Lande g 0.6659; ASD ref L6096
+7p_3/2,,31074.40,0.06,1/cm,3p6.7p 2P* 3/2,raw/asd_levels_cm-1.txt line 25,Lande g 1.3336; ASD ref L6096
+6d_5/2,,31695.9005,0.003,1/cm,3p6.6d 2D 5/2,raw/asd_levels_cm-1.txt line 26,Lande g 1.2013; ASD ref L5770
+6d_3/2,,31696.1661,0.003,1/cm,3p6.6d 2D 3/2,raw/asd_levels_cm-1.txt line 27,Lande g 0.7999; ASD ref L5770
+8s_1/2,,31765.3767,0.003,1/cm,3p6.8s 2S 1/2,raw/asd_levels_cm-1.txt line 28,Lande g 2.0028; ASD ref L5770
+6f_5/2,,31953.17,0.06,1/cm,3p6.6f 2F* 5/2,raw/asd_levels_cm-1.txt line 29,ASD ref L6096
+6f_7/2,,31953.17,0.06,1/cm,3p6.6f 2F* 7/2,raw/asd_levels_cm-1.txt line 30,ASD ref L6096
+8p_1/2,,32227.44,0.06,1/cm,3p6.8p 2P* 1/2,raw/asd_levels_cm-1.txt line 31,ASD ref L6096
+8p_3/2,,32230.11,0.06,1/cm,3p6.8p 2P* 3/2,raw/asd_levels_cm-1.txt line 32,ASD ref L6096
+7d_5/2,,32598.2938755,0.0007,1/cm,3p6.7d 2D 5/2,raw/asd_levels_cm-1.txt line 33,ASD ref L5451
+7d_3/2,,32598.4494755,0.0007,1/cm,3p6.7d 2D 3/2,raw/asd_levels_cm-1.txt line 34,ASD ref L5451
+9s_1/2,,32648.3568755,0.0007,1/cm,3p6.9s 2S 1/2,raw/asd_levels_cm-1.txt line 35,ASD ref L5451
+7f_5/2,,32764.80,0.06,1/cm,3p6.7f 2F* 5/2,raw/asd_levels_cm-1.txt line 36,ASD ref L6096
+7f_7/2,,32764.80,0.06,1/cm,3p6.7f 2F* 7/2,raw/asd_levels_cm-1.txt line 37,ASD ref L6096
+9p_1/2,,32940.2030,0.003,1/cm,3p6.9p 2P* 1/2,raw/asd_levels_cm-1.txt line 38,ASD ref L5783
+9p_3/2,,32941.9262,0.003,1/cm,3p6.9p 2P* 3/2,raw/asd_levels_cm-1.txt line 39,ASD ref L5783
+8d_5/2,,33178.1396755,0.0007,1/cm,3p6.8d 2D 5/2,raw/asd_levels_cm-1.txt line 40,ASD ref L5451
+8d_3/2,,33178.2381755,0.0007,1/cm,3p6.8d 2D 3/2,raw/asd_levels_cm-1.txt line 41,ASD ref L5451
+10s_1/2,,33214.2324755,0.0007,1/cm,3p6.10s 2S 1/2,raw/asd_levels_cm-1.txt line 42,ASD ref L5451
+8f_5/2,,33291.40,0.06,1/cm,3p6.8f 2F* 5/2,raw/asd_levels_cm-1.txt line 43,ASD ref L6096
+8f_7/2,,33291.40,0.06,1/cm,3p6.8f 2F* 7/2,raw/asd_levels_cm-1.txt line 44,ASD ref L6096
+10p_1/2,,33410.2306,0.003,1/cm,3p6.10p 2P* 1/2,raw/asd_levels_cm-1.txt line 45,ASD ref L5783
+10p_3/2,,33411.3986,0.003,1/cm,3p6.10p 2P* 3/2,raw/asd_levels_cm-1.txt line 46,ASD ref L5783
+9d_5/2,,33572.0649755,0.0007,1/cm,3p6.9d 2D 5/2,raw/asd_levels_cm-1.txt line 47,ASD ref L5451
+9d_3/2,,33572.1306755,0.0007,1/cm,3p6.9d 2D 3/2,raw/asd_levels_cm-1.txt line 48,ASD ref L5451
+11s_1/2,,33598.5654755,0.0007,1/cm,3p6.11s 2S 1/2,raw/asd_levels_cm-1.txt line 49,ASD ref L5451
+9f_5/2,,33652.32,0.06,1/cm,3p6.9f 2F* 5/2,raw/asd_levels_cm-1.txt line 50,ASD ref L6096
+9f_7/2,,33652.32,0.06,1/cm,3p6.9f 2F* 7/2,raw/asd_levels_cm-1.txt line 51,ASD ref L6096
+11p_1/2,,33736.4979,0.003,1/cm,3p6.11p 2P* 1/2,raw/asd_levels_cm-1.txt line 52,ASD ref L5783
+11p_3/2,,33737.3284,0.003,1/cm,3p6.11p 2P* 3/2,raw/asd_levels_cm-1.txt line 53,ASD ref L5783
+10d_5/2,,33851.6013755,0.0007,1/cm,3p6.10d 2D 5/2,raw/asd_levels_cm-1.txt line 54,ASD ref L5451
+10d_3/2,,33851.6475755,0.0007,1/cm,3p6.10d 2D 3/2,raw/asd_levels_cm-1.txt line 55,ASD ref L5451
+12s_1/2,,33871.4845755,0.0007,1/cm,3p6.12s 2S 1/2,raw/asd_levels_cm-1.txt line 56,ASD ref L5451
+10f_5/2,,33910.42,0.06,1/cm,3p6.10f 2F* 5/2,raw/asd_levels_cm-1.txt line 57,ASD ref L6096
+10f_7/2,,33910.42,0.06,1/cm,3p6.10f 2F* 7/2,raw/asd_levels_cm-1.txt line 58,ASD ref L6096
+12p_1/2,,33972.2064,0.003,1/cm,3p6.12p 2P* 1/2,raw/asd_levels_cm-1.txt line 59,ASD ref L5783
+12p_3/2,,33972.8148,0.003,1/cm,3p6.12p 2P* 3/2,raw/asd_levels_cm-1.txt line 60,ASD ref L5783
+11d_5/2,,34057.0108755,0.0007,1/cm,3p6.11d 2D 5/2,raw/asd_levels_cm-1.txt line 61,ASD ref L5451
+11d_3/2,,34057.0442755,0.0007,1/cm,3p6.11d 2D 3/2,raw/asd_levels_cm-1.txt line 62,ASD ref L5451
+13s_1/2,,34072.2450755,0.0007,1/cm,3p6.13s 2S 1/2,raw/asd_levels_cm-1.txt line 63,ASD ref L5451
+11f_5/2,,34101.36,0.06,1/cm,3p6.11f 2F* 5/2,raw/asd_levels_cm-1.txt line 64,ASD ref L6096
+11f_7/2,,34101.36,0.06,1/cm,3p6.11f 2F* 7/2,raw/asd_levels_cm-1.txt line 65,ASD ref L6096
+13p_1/2,,34148.0284,0.003,1/cm,3p6.13p 2P* 1/2,raw/asd_levels_cm-1.txt line 66,ASD ref L5783
+13p_3/2,,34148.4861,0.003,1/cm,3p6.13p 2P* 3/2,raw/asd_levels_cm-1.txt line 67,ASD ref L5783
+12d_5/2,,34212.3196755,0.0007,1/cm,3p6.12d 2D 5/2,raw/asd_levels_cm-1.txt line 68,ASD ref L5451
+12d_3/2,,34212.3450755,0.0007,1/cm,3p6.12d 2D 3/2,raw/asd_levels_cm-1.txt line 69,ASD ref L5451
+14s_1/2,,34224.2170755,0.0007,1/cm,3p6.14s 2S 1/2,raw/asd_levels_cm-1.txt line 70,ASD ref L5451
+12f_5/2,,34246.37,0.05,1/cm,3p6.12f 2F* 5/2,raw/asd_levels_cm-1.txt line 71,ASD ref L2996
+12f_7/2,,34246.37,0.05,1/cm,3p6.12f 2F* 7/2,raw/asd_levels_cm-1.txt line 72,ASD ref L2996
+14p_1/2,,34282.6573,0.003,1/cm,3p6.14p 2P* 1/2,raw/asd_levels_cm-1.txt line 73,ASD ref L5783
+14p_3/2,,34283.0181,0.003,1/cm,3p6.14p 2P* 3/2,raw/asd_levels_cm-1.txt line 74,ASD ref L5783
+13d_5/2,,34332.5684755,0.0007,1/cm,3p6.13d 2D 5/2,raw/asd_levels_cm-1.txt line 75,ASD ref L5451
+13d_3/2,,34332.5880755,0.0007,1/cm,3p6.13d 2D 3/2,raw/asd_levels_cm-1.txt line 76,ASD ref L5451
+15s_1/2,,34342.0207755,0.0007,1/cm,3p6.15s 2S 1/2,raw/asd_levels_cm-1.txt line 77,ASD ref L5451
+13f_5/2,,34359.36,0.06,1/cm,3p6.13f 2F* 5/2,raw/asd_levels_cm-1.txt line 78,ASD ref L2996
+13f_7/2,,34359.36,0.06,1/cm,3p6.13f 2F* 7/2,raw/asd_levels_cm-1.txt line 79,ASD ref L2996
+15p_1/2,,34388.0315,0.003,1/cm,3p6.15p 2P* 1/2,raw/asd_levels_cm-1.txt line 80,ASD ref L5783
+15p_3/2,,34388.3148,0.003,1/cm,3p6.15p 2P* 3/2,raw/asd_levels_cm-1.txt line 81,ASD ref L5783
+14d_5/2,,34427.5570755,0.0007,1/cm,3p6.14d 2D 5/2,raw/asd_levels_cm-1.txt line 82,ASD ref L5451
+14d_3/2,,34427.5724755,0.0007,1/cm,3p6.14d 2D 3/2,raw/asd_levels_cm-1.txt line 83,ASD ref L5451
+16s_1/2,,34435.1819755,0.0007,1/cm,3p6.16s 2S 1/2,raw/asd_levels_cm-1.txt line 84,ASD ref L5451
+14f_5/2,,34448.98,0.07,1/cm,3p6.14f 2F* 5/2,raw/asd_levels_cm-1.txt line 85,ASD ref L2996
+14f_7/2,,34448.98,0.07,1/cm,3p6.14f 2F* 7/2,raw/asd_levels_cm-1.txt line 86,ASD ref L2996
+16p_1/2,,34472.0505,0.003,1/cm,3p6.16p 2P* 1/2,raw/asd_levels_cm-1.txt line 87,ASD ref L5783
+16p_3/2,,34472.2798,0.003,1/cm,3p6.16p 2P* 3/2,raw/asd_levels_cm-1.txt line 88,ASD ref L5783
+15d_5/2,,34503.8901755,0.0007,1/cm,3p6.15d 2D 5/2,raw/asd_levels_cm-1.txt line 89,ASD ref L5451
+15d_3/2,,34503.9024755,0.0007,1/cm,3p6.15d 2D 3/2,raw/asd_levels_cm-1.txt line 90,ASD ref L5451
+17s_1/2,,34510.1247755,0.0007,1/cm,3p6.17s 2S 1/2,raw/asd_levels_cm-1.txt line 91,ASD ref L5451
+17p_1/2,,34540.1250,0.003,1/cm,3p6.17p 2P* 1/2,raw/asd_levels_cm-1.txt line 92,ASD ref L5783
+17p_3/2,,34540.3088,0.003,1/cm,3p6.17p 2P* 3/2,raw/asd_levels_cm-1.txt line 93,ASD ref L5783
+16d_5/2,,34566.1477755,0.0007,1/cm,3p6.16d 2D 5/2,raw/asd_levels_cm-1.txt line 94,ASD ref L5451
+16d_3/2,,34566.1579755,0.0007,1/cm,3p6.16d 2D 3/2,raw/asd_levels_cm-1.txt line 95,ASD ref L5451
+18s_1/2,,34571.3074755,0.0007,1/cm,3p6.18s 2S 1/2,raw/asd_levels_cm-1.txt line 96,ASD ref L5451
+18p_1/2,,34596.0448,0.003,1/cm,3p6.18p 2P* 1/2,raw/asd_levels_cm-1.txt line 97,ASD ref L5783
+18p_3/2,,34596.1996,0.003,1/cm,3p6.18p 2P* 3/2,raw/asd_levels_cm-1.txt line 98,ASD ref L5783
+17d_5/2,,34617.5872755,0.0007,1/cm,3p6.17d 2D 5/2,raw/asd_levels_cm-1.txt line 99,ASD ref L5451
+17d_3/2,,34617.5956755,0.0007,1/cm,3p6.17d 2D 3/2,raw/asd_levels_cm-1.txt line 100,ASD ref L5451
+19s_1/2,,34621.9033755,0.0007,1/cm,3p6.19s 2S 1/2,raw/asd_levels_cm-1.txt line 101,ASD ref L5451
+19p_3/2,,34642.6698,0.003,1/cm,3p6.19p 2P* 3/2,raw/asd_levels_cm-1.txt line 102,ASD ref L5783
+18d_5/2,,34660.5759755,0.0007,1/cm,3p6.18d 2D 5/2,raw/asd_levels_cm-1.txt line 103,ASD ref L5451
+18d_3/2,,34660.5829755,0.0007,1/cm,3p6.18d 2D 3/2,raw/asd_levels_cm-1.txt line 104,ASD ref L5451
+20s_1/2,,34664.2218755,0.0007,1/cm,3p6.20s 2S 1/2,raw/asd_levels_cm-1.txt line 105,ASD ref L5451
+20p_3/2,,34681.7220,0.003,1/cm,3p6.20p 2P* 3/2,raw/asd_levels_cm-1.txt line 106,ASD ref L5783
+19d_5/2,,34696.8686755,0.0007,1/cm,3p6.19d 2D 5/2,raw/asd_levels_cm-1.txt line 107,ASD ref L5451
+19d_3/2,,34696.8746755,0.0007,1/cm,3p6.19d 2D 3/2,raw/asd_levels_cm-1.txt line 108,ASD ref L5451
+21s_1/2,,34699.9749755,0.0007,1/cm,3p6.21s 2S 1/2,raw/asd_levels_cm-1.txt line 109,ASD ref L5451
+21p_3/2,,34714.8646,0.003,1/cm,3p6.21p 2P* 3/2,raw/asd_levels_cm-1.txt line 110,ASD ref L5783
+20d_5/2,,34727.7855755,0.0007,1/cm,3p6.20d 2D 5/2,raw/asd_levels_cm-1.txt line 111,ASD ref L5451
+20d_3/2,,34727.7906755,0.0007,1/cm,3p6.20d 2D 3/2,raw/asd_levels_cm-1.txt line 112,ASD ref L5451
+22s_1/2,,34730.4533755,0.0007,1/cm,3p6.22s 2S 1/2,raw/asd_levels_cm-1.txt line 113,ASD ref L5451
+21d_5/2,,34754.3384755,0.0007,1/cm,3p6.21d 2D 5/2,raw/asd_levels_cm-1.txt line 114,ASD ref L5451
+21d_3/2,,34754.3428755,0.0007,1/cm,3p6.21d 2D 3/2,raw/asd_levels_cm-1.txt line 115,ASD ref L5451
+23s_1/2,,34756.6464755,0.0007,1/cm,3p6.23s 2S 1/2,raw/asd_levels_cm-1.txt line 116,ASD ref L5451
+22d_5/2,,34777.3115755,0.0007,1/cm,3p6.22d 2D 5/2,raw/asd_levels_cm-1.txt line 117,ASD ref L5451
+22d_3/2,,34777.3153755,0.0007,1/cm,3p6.22d 2D 3/2,raw/asd_levels_cm-1.txt line 118,ASD ref L5451
+24s_1/2,,34779.3204755,0.0007,1/cm,3p6.24s 2S 1/2,raw/asd_levels_cm-1.txt line 119,ASD ref L5451
+23d_5/2,,34797.3198755,0.0007,1/cm,3p6.23d 2D 5/2,raw/asd_levels_cm-1.txt line 120,ASD ref L5451
+23d_3/2,,34797.3231755,0.0007,1/cm,3p6.23d 2D 3/2,raw/asd_levels_cm-1.txt line 121,ASD ref L5451
+25s_1/2,,34799.0797755,0.0007,1/cm,3p6.25s 2S 1/2,raw/asd_levels_cm-1.txt line 122,ASD ref L5451
+24d_5/2,,34814.8529755,0.0007,1/cm,3p6.24d 2D 5/2,raw/asd_levels_cm-1.txt line 123,ASD ref L5451
+24d_3/2,,34814.8559755,0.0007,1/cm,3p6.24d 2D 3/2,raw/asd_levels_cm-1.txt line 124,ASD ref L5451
+26s_1/2,,34816.4028755,0.0007,1/cm,3p6.26s 2S 1/2,raw/asd_levels_cm-1.txt line 125,ASD ref L5451
+25d_5/2,,34830.3026755,0.0007,1/cm,3p6.25d 2D 5/2,raw/asd_levels_cm-1.txt line 126,ASD ref L5451
+25d_3/2,,34830.3051755,0.0007,1/cm,3p6.25d 2D 3/2,raw/asd_levels_cm-1.txt line 127,ASD ref L5451
+27s_1/2,,34831.6747755,0.0007,1/cm,3p6.27s 2S 1/2,raw/asd_levels_cm-1.txt line 128,ASD ref L5451
+26d_5/2,,34843.9861755,0.0007,1/cm,3p6.26d 2D 5/2,raw/asd_levels_cm-1.txt line 129,ASD ref L5451
+26d_3/2,,34843.9884755,0.0007,1/cm,3p6.26d 2D 3/2,raw/asd_levels_cm-1.txt line 130,ASD ref L5451
+28s_1/2,,34845.2061755,0.0007,1/cm,3p6.28s 2S 1/2,raw/asd_levels_cm-1.txt line 131,ASD ref L5451
+27d_5/2,,34856.1627755,0.0007,1/cm,3p6.27d 2D 5/2,raw/asd_levels_cm-1.txt line 132,ASD ref L5451
+27d_3/2,,34856.1647755,0.0007,1/cm,3p6.27d 2D 3/2,raw/asd_levels_cm-1.txt line 133,ASD ref L5451
+29s_1/2,,34857.2527755,0.0007,1/cm,3p6.29s 2S 1/2,raw/asd_levels_cm-1.txt line 134,ASD ref L5451
+28d_5/2,,34867.0461755,0.0007,1/cm,3p6.28d 2D 5/2,raw/asd_levels_cm-1.txt line 135,ASD ref L5451
+28d_3/2,,34867.0480755,0.0007,1/cm,3p6.28d 2D 3/2,raw/asd_levels_cm-1.txt line 136,ASD ref L5451
+30s_1/2,,34868.0237755,0.0007,1/cm,3p6.30s 2S 1/2,raw/asd_levels_cm-1.txt line 137,ASD ref L5451
+29d_5/2,,34876.8127755,0.0007,1/cm,3p6.29d 2D 5/2,raw/asd_levels_cm-1.txt line 138,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451
+29d_3/2,,34876.8144755,0.0007,1/cm,3p6.29d 2D 3/2,raw/asd_levels_cm-1.txt line 139,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451
+31s_1/2,,34877.6928755,0.0007,1/cm,3p6.31s 2S 1/2,raw/asd_levels_cm-1.txt line 140,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451
+30d_5/2,,34885.6105755,0.0007,1/cm,3p6.30d 2D 5/2,raw/asd_levels_cm-1.txt line 141,ASD ref L5451
+30d_3/2,,34885.6119755,0.0007,1/cm,3p6.30d 2D 3/2,raw/asd_levels_cm-1.txt line 142,ASD ref L5451
+32s_1/2,,34886.4056755,0.0007,1/cm,3p6.32s 2S 1/2,raw/asd_levels_cm-1.txt line 143,ASD ref L5451
+31d_5/2,,34893.5635755,0.0007,1/cm,3p6.31d 2D 5/2,raw/asd_levels_cm-1.txt line 144,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451
+31d_3/2,,34893.5648755,0.0007,1/cm,3p6.31d 2D 3/2,raw/asd_levels_cm-1.txt line 145,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451
+33s_1/2,,34894.2842755,0.0007,1/cm,3p6.33s 2S 1/2,raw/asd_levels_cm-1.txt line 146,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451
+32d_5/2,,34900.7764755,0.0007,1/cm,3p6.32d 2D 5/2,raw/asd_levels_cm-1.txt line 147,ASD ref L5451
+32d_3/2,,34900.7776755,0.0007,1/cm,3p6.32d 2D 3/2,raw/asd_levels_cm-1.txt line 148,ASD ref L5451
+34s_1/2,,34901.4321755,0.0007,1/cm,3p6.34s 2S 1/2,raw/asd_levels_cm-1.txt line 149,ASD ref L5451
+33d_5/2,,34907.3383755,0.0007,1/cm,3p6.33d 2D 5/2,raw/asd_levels_cm-1.txt line 150,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451
+33d_3/2,,34907.3394755,0.0007,1/cm,3p6.33d 2D 3/2,raw/asd_levels_cm-1.txt line 151,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451
+35s_1/2,,34907.9358755,0.0007,1/cm,3p6.35s 2S 1/2,raw/asd_levels_cm-1.txt line 152,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451
+34d_5/2,,34913.3251755,0.0007,1/cm,3p6.34d 2D 5/2,raw/asd_levels_cm-1.txt line 153,ASD ref L5451
+34d_3/2,,34913.3261755,0.0007,1/cm,3p6.34d 2D 3/2,raw/asd_levels_cm-1.txt line 154,ASD ref L5451
+36s_1/2,,34913.8714755,0.0007,1/cm,3p6.36s 2S 1/2,raw/asd_levels_cm-1.txt line 155,ASD ref L5451
+35d_5/2,,34918.8025755,0.0007,1/cm,3p6.35d 2D 5/2,raw/asd_levels_cm-1.txt line 156,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451
+35d_3/2,,34918.8033755,0.0007,1/cm,3p6.35d 2D 3/2,raw/asd_levels_cm-1.txt line 157,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451
+37s_1/2,,34919.3033755,0.0007,1/cm,3p6.37s 2S 1/2,raw/asd_levels_cm-1.txt line 158,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451
+36d_5/2,,34923.8260755,0.0007,1/cm,3p6.36d 2D 5/2,raw/asd_levels_cm-1.txt line 159,ASD ref L5451
+36d_3/2,,34923.8269755,0.0007,1/cm,3p6.36d 2D 3/2,raw/asd_levels_cm-1.txt line 160,ASD ref L5451
+38s_1/2,,34924.2865755,0.0007,1/cm,3p6.38s 2S 1/2,raw/asd_levels_cm-1.txt line 161,ASD ref L5451
+37d_5/2,,34928.4453755,0.0007,1/cm,3p6.37d 2D 5/2,raw/asd_levels_cm-1.txt line 162,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451
+37d_3/2,,34928.4460755,0.0007,1/cm,3p6.37d 2D 3/2,raw/asd_levels_cm-1.txt line 163,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451
+39s_1/2,,34928.8691755,0.0007,1/cm,3p6.39s 2S 1/2,raw/asd_levels_cm-1.txt line 164,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451
+38d_5/2,,34932.7018755,0.0007,1/cm,3p6.38d 2D 5/2,raw/asd_levels_cm-1.txt line 165,ASD ref L5451
+38d_3/2,,34932.7026755,0.0007,1/cm,3p6.38d 2D 3/2,raw/asd_levels_cm-1.txt line 166,ASD ref L5451
+40s_1/2,,34933.0931755,0.0007,1/cm,3p6.40s 2S 1/2,raw/asd_levels_cm-1.txt line 167,ASD ref L5451
+39d_5/2,,34936.6330755,0.0007,1/cm,3p6.39d 2D 5/2,raw/asd_levels_cm-1.txt line 168,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451
+39d_3/2,,34936.6336755,0.0007,1/cm,3p6.39d 2D 3/2,raw/asd_levels_cm-1.txt line 169,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451
+41s_1/2,,34936.9949755,0.0007,1/cm,3p6.41s 2S 1/2,raw/asd_levels_cm-1.txt line 170,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451
+40d_5/2,,34940.2710755,0.0007,1/cm,3p6.40d 2D 5/2,raw/asd_levels_cm-1.txt line 171,ASD ref L5451
+40d_3/2,,34940.2717755,0.0007,1/cm,3p6.40d 2D 3/2,raw/asd_levels_cm-1.txt line 172,ASD ref L5451
+42s_1/2,,34940.6066755,0.0007,1/cm,3p6.42s 2S 1/2,raw/asd_levels_cm-1.txt line 173,ASD ref L5451
+41d_5/2,,34943.6443755,0.0007,1/cm,3p6.41d 2D 5/2,raw/asd_levels_cm-1.txt line 174,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451
+41d_3/2,,34943.6450755,0.0007,1/cm,3p6.41d 2D 3/2,raw/asd_levels_cm-1.txt line 175,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451
+43s_1/2,,34943.9557755,0.0007,1/cm,3p6.43s 2S 1/2,raw/asd_levels_cm-1.txt line 176,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451
+42d_5/2,,34946.7783755,0.0007,1/cm,3p6.42d 2D 5/2,raw/asd_levels_cm-1.txt line 177,ASD ref L5451
+42d_3/2,,34946.7787755,0.0007,1/cm,3p6.42d 2D 3/2,raw/asd_levels_cm-1.txt line 178,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451
+44s_1/2,,34947.0677755,0.0007,1/cm,3p6.44s 2S 1/2,raw/asd_levels_cm-1.txt line 179,ASD ref L5451
+43d_5/2,,34949.6943755,0.0007,1/cm,3p6.43d 2D 5/2,raw/asd_levels_cm-1.txt line 180,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451
+43d_3/2,,34949.6949755,0.0007,1/cm,3p6.43d 2D 3/2,raw/asd_levels_cm-1.txt line 181,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451
+45s_1/2,,34949.9642755,0.0007,1/cm,3p6.45s 2S 1/2,raw/asd_levels_cm-1.txt line 182,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451
+44d_5/2,,34952.4128755,0.0007,1/cm,3p6.44d 2D 5/2,raw/asd_levels_cm-1.txt line 183,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451
+44d_3/2,,34952.4134755,0.0007,1/cm,3p6.44d 2D 3/2,raw/asd_levels_cm-1.txt line 184,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451
+46s_1/2,,34952.6646755,0.0007,1/cm,3p6.46s 2S 1/2,raw/asd_levels_cm-1.txt line 185,ASD ref L5451
+45d_5/2,,34954.9510755,0.0007,1/cm,3p6.45d 2D 5/2,raw/asd_levels_cm-1.txt line 186,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451
+45d_3/2,,34954.9515755,0.0007,1/cm,3p6.45d 2D 3/2,raw/asd_levels_cm-1.txt line 187,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451
+46d_5/2,,34957.3244755,0.0007,1/cm,3p6.46d 2D 5/2,raw/asd_levels_cm-1.txt line 188,ASD ref L5451
+46d_3/2,,34957.3250755,0.0007,1/cm,3p6.46d 2D 3/2,raw/asd_levels_cm-1.txt line 189,ASD prefix '[' suffix ']': semi-empirical (interpolated/extrapolated) value; ASD ref L5451

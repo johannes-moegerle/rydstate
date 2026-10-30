@@ -2,8 +2,13 @@
   "model_class": "ModelSQDT",
   "species": "K",
   "channel": "ng_9/2",
-  "quantum_defects": [0.0],
-  "reference": null,
+  "reference": ["Peper 2019, Phys. Rev. A 100, 012501, https://doi.org/10.1103/PhysRevA.100.012501"],
   "n_range": [6, "inf"],
-  "comment": "no quantum defects known, assumed to be zero"
+  "quantum_defects": [0.0024082046243404484, -0.021018906173943024],
+  "fit_info": {
+    "method": "rydstate.fit.fit_sqdt_models",
+    "rydstate version": "0.14.0",
+    "n range of the data": [30, 37],
+    "config": "fits/potassium/fit_config.json"
+  }
 }

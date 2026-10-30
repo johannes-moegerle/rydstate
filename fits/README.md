@@ -44,3 +44,5 @@ data or the config needs a rerun of the fit.
   in the rydstate_qdt project (T002).
 - Rb (`rubidium/`): global fit of the s, p, d, f, g series (395 values from 10 datasets, chi2/dof = 0.66), the
   85Rb data converted to 87Rb, every dataset of absolute energies with its own ionization threshold.
+- K (`potassium/`): global fit of the s, p, d, f, g series (506 values from 7 datasets, chi2/dof = 0.54), every
+  dataset of absolute energies with its own ionization threshold; f and g fine structure unresolved (same_as).

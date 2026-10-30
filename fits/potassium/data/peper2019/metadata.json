@@ -1,0 +1,25 @@
+{
+  "dataset": "peper2019",
+  "species": "K",
+  "reference": "Peper 2019, Phys. Rev. A 100, 012501, https://doi.org/10.1103/PhysRevA.100.012501",
+  "authors": "M. Peper, F. Helmrich, J. Butscher, J. A. Agner, H. Schmutz, F. Merkt, J. Deiglmayr",
+  "title": "Precision measurement of the ionization energy and quantum defects of 39K I",
+  "year": 2019,
+  "doi": "10.1103/PhysRevA.100.012501",
+  "url": "https://doi.org/10.1103/PhysRevA.100.012501",
+  "method": "Table II: frequency-comb-referenced single-photon UV laser spectroscopy of ultracold 39K (n = 22-100; configurations I and II), plus literature values for n = 4-21 quoted in the table; Tables IV-VII: millimeter-wave spectroscopy (18-250 GHz) of ultracold np Rydberg atoms, one-photon s<-p, d<-p, f<-d, g<-f and two-photon f<-p.",
+  "uncertainty": "one standard deviation per value; Table II this work 0.3-1.8e-6 cm^-1 (configuration I limited by 50 kHz calibration error), literature rows 3e-3 to 3e-2 cm^-1; mm-wave intervals 5-60 kHz (1/10 of linewidth). E_I = 35009.8139710(22)sys(3)stat cm^-1.",
+  "conversion": [
+    "Not exported, values quoted from other sources (secondary): 33 rows (4p1/2 <- 4s1/2, 4p3/2 <- 4s1/2, 5p1/2 <- 4s1/2, 5p3/2 <- 4s1/2, 6p1/2 <- 4s1/2, 6p3/2 <- 4s1/2, 7p1/2 <- 4s1/2, 7p3/2 <- 4s1/2, ...).",
+    "Energies from '4s1/2 hyperfine centre of gravity (photon-recoil corrected)', energy zero: Table II caption: 'relative to the center of gravity of the 4s1/2 ground-state level and ... corrected by the photon-recoil shift'; also for the literature rows n = 4-21 as quoted. Ground hfs measured here: 461.719700(5) MHz.",
+    "The source gives the intervals as magnitudes; their signs E(level) - E(lower_level) are taken from rydstate's quantum defect models (the intervals are much larger than any model error).",
+    "No J in the source from l = 3 on (fine structure unresolved): j = l + 1/2 assumed (the fine structure of these levels is far below the uncertainties)."
+  ],
+  "caveats": [
+    "Tables IV-VII are intervals between two Rydberg levels; absolute s, d, f, g energies require the np energies (Table II or the Table III fit).",
+    "Label 'final <- initial' is the experimental transition direction; check the comment for which level is lower before assigning a sign.",
+    "f and g fine structure unresolved (j column empty); the paper bounds the 31f splitting below 100 kHz.",
+    "Two separate measurements of 38f <- 40p3/2 (35388.501(6) and 35388.553(8) MHz) are both listed.",
+    "Table II rows n <= 21 have uncertainties 3-5 orders of magnitude larger and are not this work; their delta_fit residuals are large (up to 0.76 GHz for n = 6)."
+  ]
+}
