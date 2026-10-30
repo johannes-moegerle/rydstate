@@ -10,6 +10,7 @@ from rydstate.angular.angular_ket import AngularKetBase
 from rydstate.angular.utils import is_not_set
 from rydstate.qdt.model import Model
 from rydstate.qdt.utils import calc_modified_ritz_formula, check_expansion_coefficients
+from rydstate.utils import calc_energy_from_nu
 
 if TYPE_CHECKING:
     from collections.abc import Mapping
@@ -172,6 +173,33 @@ class ModelSQDTBase(Model):
             n: The principal quantum number of the Rydberg state.
 
         """
+
+    def calc_binding_energy_au(self, *, n: int) -> float:
+        """Calculate the binding energy of the state with the given n in atomic units (Hartree).
+
+        The binding energy is negative and given with respect to :attr:`ionization_threshold_au`,
+        see :meth:`~rydstate.rydberg_state.RydbergStateSQDT.get_binding_energy`.
+        In contrast to :class:`~rydstate.rydberg_state.RydbergStateSQDT`, it is always calculated from this model,
+        also if n is outside of its :attr:`n_range` (e.g. to compare or fit models).
+
+        Args:
+            n: The principal quantum number of the Rydberg state (keyword-only, see :meth:`calc_energy_au`).
+
+        """
+        properties = self.element_properties
+        return calc_energy_from_nu(properties.reduced_mass_au, self.calc_nui(n), properties.net_charge)
+
+    def calc_energy_au(self, *, n: int) -> float:
+        """Calculate the energy of the state with the given n in atomic units (Hartree), measured from the ground state.
+
+        The energy is :attr:`ionization_threshold_au` plus the binding energy, see :meth:`calc_binding_energy_au`.
+
+        Args:
+            n: The principal quantum number of the Rydberg state. It is keyword-only, so that it is not confused with
+                the effective principal quantum number nu of :meth:`~rydstate.qdt.ModelMQDT.calc_energy_au`.
+
+        """
+        return self.ionization_threshold_au + self.calc_binding_energy_au(n=n)
 
     @property
     def n_min(self) -> int:

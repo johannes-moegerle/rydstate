@@ -11,6 +11,7 @@ from rydstate.angular import AngularKetJJ, AngularKetLS
 from rydstate.qdt import Model, ModelSetSQDT, ModelSQDT, ModelSQDTBase, ModelSQDTNist, get_sqdt, register_model_set_sqdt
 from rydstate.qdt.sqdt.model_set_sqdt import _SQDT_MODEL_SETS
 from rydstate.qdt.sqdt.model_sqdt_nist import _load_nist_energies_by_channel
+from rydstate.rydberg_state import RydbergStateSQDTAlkali
 
 
 def test_channel_from_short_label() -> None:
@@ -64,6 +65,23 @@ def test_calc_nui() -> None:
     model = ModelSQDT("Rb", "ns_1/2", [3.1311807, 0.1787])
     n = 50
     assert model.calc_nui(n) == pytest.approx(n - 3.1311807 - 0.1787 / (n - 3.1311807) ** 2)
+
+
+def test_calc_energy() -> None:
+    """The energy of a state is the ionization threshold plus the binding energy of nui = n - delta(n)."""
+    model = ModelSQDT("Cs", "np_3/2", [3.5590676, 0.37469])
+    n = 50
+    reduced_mass_au = model.element_properties.reduced_mass_au
+    binding_energy_au = -0.5 * reduced_mass_au / model.calc_nui(n) ** 2
+    assert model.calc_binding_energy_au(n=n) == pytest.approx(binding_energy_au, rel=1e-14)
+    assert model.calc_energy_au(n=n) == pytest.approx(model.ionization_threshold_au + binding_energy_au, rel=1e-14)
+    state = RydbergStateSQDTAlkali("Cs", n=n, l=1, j=1.5)
+    assert get_sqdt("Cs").get_model(n, state.angular).calc_energy_au(n=n) == pytest.approx(state.get_energy("a.u."))
+    # n is keyword-only, so that a nu meant for ModelMQDT.calc_energy_au(nu) is not taken as n
+    with pytest.raises(TypeError):
+        model.calc_energy_au(48.4)  # type: ignore [misc, arg-type]
+    with pytest.raises(TypeError):
+        model.calc_energy_au(nu=48.4)  # type: ignore [call-arg]
 
 
 def test_model_set_uses_model_of_n_range(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -298,6 +316,13 @@ def test_nist_model_of_single_channel() -> None:
     channel = AngularKetLS(l_r=20, j_tot=20.5, f_tot=20.5, species="Rb")
     with pytest.raises(ValueError, match="has no energy levels of this channel"):
         ModelSQDTNist.from_nist_file("Rb", channel, RUBIDIUM_NIST_DATA_FILE)
+
+
+def test_nist_model_calc_energy() -> None:
+    """The energy of a NIST model is its measured energy level."""
+    model = ModelSQDTNist.from_nist_file("Rb", "np_3/2", RUBIDIUM_NIST_DATA_FILE)
+    for n, energy_au in model.energies.items():
+        assert model.calc_energy_au(n=n) == pytest.approx(energy_au, rel=1e-12)
 
 
 def test_nist_model_json_round_trip(tmp_path: Path) -> None:

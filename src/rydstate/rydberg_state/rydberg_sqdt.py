@@ -95,10 +95,11 @@ class RydbergStateSQDT(RydbergState, Generic[GenericT_AngularKet]):
         return f"{self.__class__.__name__}({self.species}, n={self.n}, {self.angular!r})"
 
     @cached_property
-    def model(self) -> ModelSQDTBase | ModelOSQDT:
+    def model(self) -> ModelSQDTBase:
         """The model describing this state.
 
         This is the model of the SQDT model set of the species, see :meth:`~rydstate.qdt.ModelSetSQDT.get_model`.
+        The effective principal quantum number :attr:`nui` and the energies of the state are calculated by it.
         """
         return get_sqdt(self.species).get_model(self.n, self.angular)
 
@@ -115,10 +116,10 @@ class RydbergStateSQDT(RydbergState, Generic[GenericT_AngularKet]):
         where :math:`R_M = R_\infty \mu/m_e` is the mass corrected Rydberg constant.
 
         Therefore, nui is the quantum number that determines the radial wavefunction, see :attr:`radial`.
-        For low lying states, nui is taken from the NIST energy levels if available,
-        see :meth:`~rydstate.qdt.ModelSetSQDT.calc_nui`.
+        nui is calculated by the :attr:`model` of the state, i.e. for low lying states it is usually
+        taken from the NIST energy levels, see :meth:`~rydstate.qdt.ModelSetSQDT.calc_nui`.
         """
-        return get_sqdt(self.species).calc_nui(self.n, self.angular)
+        return self.model.calc_nui(self.n)
 
     @cached_property
     def nu(self) -> float:  # type: ignore [override]
@@ -144,8 +145,12 @@ class RydbergStateSQDT(RydbergState, Generic[GenericT_AngularKet]):
         return calc_nu_from_energy(reduced_mass_au, energy_wrt_reference_au, net_charge)
 
     @cached_property
+    def _binding_energy_au(self) -> float:
+        return self.model.calc_binding_energy_au(n=self.n)
+
+    @cached_property
     def _energy_au(self) -> float:  # type: ignore [override]
-        return self.get_binding_energy("a.u.") + self.model.ionization_threshold_au
+        return self._binding_energy_au + self.model.ionization_threshold_au
 
     @cached_property
     def radial(self) -> RadialKet:
@@ -188,11 +193,10 @@ class RydbergStateSQDT(RydbergState, Generic[GenericT_AngularKet]):
         (note :math:`E_H = 2 R_\infty`), :math:`\mu/m_e` the reduced mass in atomic units
         and :math:`\nu_i` the effective principal quantum number
         with reference to the ionization energy, see :attr:`nui`.
+        It is calculated by the :attr:`model` of the state,
+        see :meth:`~rydstate.qdt.ModelSQDTBase.calc_binding_energy_au`.
         """
-        energy_au = calc_energy_from_nu(
-            self.element_properties.reduced_mass_au, self.nui, self.element_properties.net_charge
-        )
-        return units.au_to_user(energy_au, "energy", unit)
+        return units.au_to_user(self._binding_energy_au, "energy", unit)
 
     def calc_exp_qn(self, qn: str) -> float:
         if qn == "nui":
@@ -297,7 +301,7 @@ class RydbergStateOSQDT(RydbergStateSQDT[AngularKetFJ[AllKnown]]):
     of an MQDT model in the outer channel frame.
     """
 
-    model: ModelOSQDT
+    model: ModelOSQDT  # type: ignore [assignment]
     """The OSQDT model describing this state."""
 
     def __init__(
@@ -332,6 +336,12 @@ class RydbergStateOSQDT(RydbergStateSQDT[AngularKetFJ[AllKnown]]):
     def nui(self) -> float:
         """The effective principal quantum number nui of the channel, given by the OSQDT model."""
         return self.model.solutions[self.n]
+
+    @cached_property
+    def _binding_energy_au(self) -> float:
+        return calc_energy_from_nu(
+            self.element_properties.reduced_mass_au, self.nui, self.element_properties.net_charge
+        )
 
     @cached_property
     def radial(self) -> RadialKet | RadialDummy:  # type: ignore [override]
