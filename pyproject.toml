@@ -82,6 +82,7 @@ Repository = "https://github.com/pairinteraction/rydstate"
 
 [project.scripts]
 generate_database = "rydstate.cli:main"
+fit_sqdt = "rydstate.fit.fit_config:main"
 
 
 [tool.setuptools.dynamic]
